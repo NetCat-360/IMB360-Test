@@ -33,7 +33,7 @@ const OutlinedFloatingInput = ({ label, value, onChangeText, secureTextEntry, ke
 
   const animatedLabelStyle = useAnimatedStyle(() => {
     const activeLeftPosition = 12;
-    const inactiveLeftPosition = prefixComponent ? 78 : 12; // Adjusted slightly to clear the flag + code width cleanly
+    const inactiveLeftPosition = prefixComponent ? 78 : 12;
 
     return {
       top: interpolate(focusAnim.value, [0, 1], [16.5, -9]),
@@ -201,10 +201,6 @@ const RegisterScreen = ({ navigation, route }: any) => {
           <View style={styles.formFlowWrapper}>
             <Image source={require('../../../assets/images/IMB360_v2.png')} style={styles.logo} resizeMode="contain" />
             <Text style={styles.screenHeaderTitle}>CREATE YOUR ACCOUNT</Text>
-            
-            <Text style={{ color: '#666666', fontSize: 12, marginBottom: 15, textTransform: 'uppercase', letterSpacing: 1 }}>
-              Signing up as: <Text style={{ color: '#00b9c0', fontWeight: 'bold' }}>{userRole}</Text>
-            </Text>
 
             <OutlinedFloatingInput label="Full Name" value={name} onChangeText={setName} autoCapitalize="words" />
             
