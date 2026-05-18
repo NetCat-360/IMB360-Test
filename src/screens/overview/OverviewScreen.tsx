@@ -140,7 +140,12 @@ const OverviewScreen = ({ navigation }: Props) => {
       >
         <SafeAreaView edges={['top']} style={styles.headerInner}>
           <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
-            <Text style={styles.backBtnText}>←</Text>
+            <Image
+              source={require('../../assets/images/backbutton.png')}
+              style={
+                styles.backIcon
+              }
+            />
           </TouchableOpacity>
           <Text style={styles.headerTitle}>Profile Overview</Text>
         </SafeAreaView>
@@ -352,6 +357,14 @@ const styles = StyleSheet.create({
   legendLabel: {
     color: '#888888',
     fontSize: moderateScale(11),
+  },
+  backIcon: {
+    width: scale(30),
+    height: scale(30),
+    resizeMode:
+      'contain',
+    marginRight:
+      scale(12),
   },
 });
 

@@ -18,6 +18,7 @@ export type AppStackParamList = {
   Overview: undefined;
   Content: undefined;
   Pricing: undefined;
+  MyEarnings: undefined;
 };
 
 export type AuthNavigationProp<T extends keyof AuthStackParamList> =

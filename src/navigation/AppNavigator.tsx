@@ -9,6 +9,7 @@ import HomeScreen from '../screens/home/HomeScreen';
 import OverviewScreen from '../screens/overview/OverviewScreen';
 import ContentScreen from '../screens/content/ContentScreen';
 import PricingScreen from '../screens/pricing/PricingScreen';
+import MyEarnings from '../screens/MyEarnings/MyEarnings'
 
 // ── Placeholder tab screens ──────────────────────────────────────────────────
 // Replace each one with real screens as you build them out.
@@ -39,6 +40,7 @@ const ProfileStackNavigator = () => (
     <ProfileStack.Screen name="Overview" component={OverviewScreen} />
     <ProfileStack.Screen name="Content"  component={ContentScreen} />
     <ProfileStack.Screen name="Pricing"  component={PricingScreen} />
+    <ProfileStack.Screen name="MyEarnings" component={MyEarnings} />
   </ProfileStack.Navigator>
 );
 

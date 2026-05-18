@@ -280,10 +280,14 @@ export default function HomeScreen() {
 
         <MenuItem
           title="Content"
+          onPress={() => navigation.navigate('Content')}
+          icon={require('../../assets/images/contentlogo.png')}
         />
 
         <MenuItem
           title="Pricing"
+          onPress={() => navigation.navigate('Pricing')}
+          icon={require('../../assets/images/pricinglogo.png')}
         />
 
         <MenuItem
@@ -292,6 +296,12 @@ export default function HomeScreen() {
 
         <MenuItem
           title="My Earnings"
+          icon={require('../../assets/images/earninglogo.png')}
+          onPress={() =>
+            navigation.navigate(
+              'MyEarnings'
+            )
+          }
         />
       </ScrollView>
     </SafeAreaView>
@@ -555,9 +565,9 @@ const styles = StyleSheet.create({
   menuIcon: {
     width: scale(32),
     height: scale(32),
-    resizeMode: 'contain',
+    resizeMode: 'cover',
     marginRight:
-      scale(-32),
+      scale(-22),
   },
   arrowIcon: {
     width: scale(14),
