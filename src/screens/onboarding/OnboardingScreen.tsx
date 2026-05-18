@@ -29,11 +29,11 @@ const ONBOARDING_DATA = [
   },
 ];
 
+// 1. Destructure navigation here so the component can redirect
 const OnboardingScreen = ({ navigation }: any) => {
   const [index, setIndex] = useState(0);
   const data = ONBOARDING_DATA[index];
 
-  // Handle hardware back button (Android)
   useEffect(() => {
     const backAction = () => {
       if (index > 0) {
@@ -42,12 +42,7 @@ const OnboardingScreen = ({ navigation }: any) => {
       }
       return false; 
     };
-
-    const backHandler = BackHandler.addEventListener(
-      'hardwareBackPress',
-      backAction,
-    );
-
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', backAction);
     return () => backHandler.remove();
   }, [index]);
 
@@ -55,7 +50,7 @@ const OnboardingScreen = ({ navigation }: any) => {
     if (index < ONBOARDING_DATA.length - 1) {
       setIndex(index + 1);
     } else {
-      // 1. Arrived at the final slide -> Proceed to Role Selection
+      // Takes user to Role Selection from the last slide
       navigation.replace('RoleSelection');
     }
   };
@@ -64,8 +59,8 @@ const OnboardingScreen = ({ navigation }: any) => {
     if (index > 0) setIndex(index - 1);
   };
 
+  // 2. Redirect function for the skip button
   const handleSkip = () => {
-    // 2. Instantly jump directly to Role Selection from the first slide
     navigation.replace('RoleSelection');
   };
 
@@ -81,6 +76,7 @@ const OnboardingScreen = ({ navigation }: any) => {
         ) : <View />}
         
         {index === 0 ? (
+          // 3. Wired up the onPress event here
           <TouchableOpacity onPress={handleSkip}>
             <Text style={styles.skipText}>Skip</Text>
           </TouchableOpacity>

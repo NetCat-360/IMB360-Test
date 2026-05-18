@@ -23,44 +23,25 @@ const styles = StyleSheet.create({
   cardsContainer: {
     flex: 1,
     paddingHorizontal: scale(24),
-    justifyContent: 'space-evenly', // Even spacing for both stacked sections
+    justifyContent: 'center', // Centers the block on the screen
     paddingVertical: verticalScale(10),
   },
   card: {
-    height: (height * 0.32), // Constrains height perfectly to fit screens cleanly
-    backgroundColor: '#0A0A0C',
+    height: (height * 0.30),
     borderRadius: moderateScale(20),
     borderWidth: 2,
-    borderColor: '#1C1C1E',
-    flexDirection: 'row', // Left/Right allocation inside the card layout
+    flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: scale(16),
     overflow: 'hidden',
-    // Subtle default shadow
+    marginBottom: verticalScale(24), // Explicit gap padding between cards
+    
+    // Default Base Shadow Configurations
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 5,
     elevation: 4,
-  },
-  cardSelectedBrand: {
-    borderColor: '#00b9c0', // Bright cyan brand glow accent
-    backgroundColor: '#0A1416',
-    shadowColor: '#00b9c0',
-    shadowOpacity: 0.4,
-    shadowRadius: 10,
-    elevation: 10,
-  },
-  cardSelectedCreator: {
-    borderColor: '#b6d82c', // Vivid neon yellow/green glow accent
-    backgroundColor: '#12160A',
-    shadowColor: '#b6d82c',
-    shadowOpacity: 0.4,
-    shadowRadius: 10,
-    elevation: 10,
-  },
-  cardDimmed: {
-    opacity: 0.4, // Automatically fades unselected card smoothly
   },
   imageWrapper: {
     width: '40%',
@@ -97,7 +78,7 @@ const styles = StyleSheet.create({
   },
   footer: {
     paddingHorizontal: scale(30),
-    paddingBottom: verticalScale(60), // Fits beautifully alongside onboarding height specs
+    paddingBottom: verticalScale(50),
     alignItems: 'center',
   },
   buttonGradient: {
