@@ -1,13 +1,7 @@
 import React, { useState } from 'react';
 import {
-  View,
-  Text,
-  Image,
-  TouchableOpacity,
-  StatusBar,
-  KeyboardAvoidingView,
-  Platform,
-  StyleSheet,
+  View, Text, Image, TouchableOpacity,
+  StatusBar, KeyboardAvoidingView, Platform, StyleSheet,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Animated from 'react-native-reanimated';
@@ -16,31 +10,32 @@ import { scale, verticalScale, moderateScale } from '../../../utils/scaling';
 import { AuthNavigationProp } from '../../../types/navigation';
 import FloatingInput from '../../../components/common/FloatingInput';
 import { useToast } from '../../../hooks/useToast';
+import { useAppDispatch } from '../../../hooks/redux';
+import { login } from '../../../features/auth/store/authSlice';
 import styles from '../register/styles';
 
-// Typed props — TypeScript now knows exactly which screens this
-// navigator can reach, so a typo in a screen name is a compile error
-// instead of a silent runtime crash.
 type Props = {
   navigation: AuthNavigationProp<'Login'>;
 };
 
 const LoginScreen = ({ navigation }: Props) => {
-  const [email, setEmail] = useState('');
+  const [email, setEmail]       = useState('');
   const [password, setPassword] = useState('');
-  const [rememberMe, setRememberMe] = useState(false);
+  const [rememberMe, setRememberMe]       = useState(false);
   const [securePassword, setSecurePassword] = useState(true);
 
-  // Replaces ~30 lines of duplicated toast logic across screens.
-  // The hook handles the memory leak fix internally via useEffect cleanup.
+  const dispatch = useAppDispatch();
   const { message: toastMessage, toastOpacity, showToast } = useToast();
 
-  const isEmailValid = (text: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(text);
+  const isEmailValid   = (text: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(text);
   const isFormComplete = isEmailValid(email) && password.trim() !== '';
 
   const handleLogin = () => {
-    // TODO: Replace with real API call — dispatch login() action on success
-    showToast('Login successful!');
+    // Dispatching login flips isAuthenticated to true in Redux.
+    // RootNavigator watches that value and automatically renders
+    // AppNavigator — no navigation.navigate() call needed here.
+    // TODO: Replace the mock payload with real API response data.
+    dispatch(login({ id: '1', email: email.trim().toLowerCase() }));
   };
 
   const renderPasswordToggle = () => (
@@ -80,9 +75,6 @@ const LoginScreen = ({ navigation }: Props) => {
               WELCOME BACK!
             </Text>
 
-            {/* Shared FloatingInput — animation runs on the UI thread via
-                Reanimated, fixing the stutter on lower-end Android devices
-                that the old inline JS-thread approach caused. */}
             <FloatingInput
               label="Email address"
               value={email}
@@ -134,10 +126,7 @@ const LoginScreen = ({ navigation }: Props) => {
 
             <View style={styles.socialRow}>
               <TouchableOpacity style={styles.socialButton}>
-                <Image
-                  source={require('../../../assets/images/google.png')}
-                  style={styles.socialIcon}
-                />
+                <Image source={require('../../../assets/images/google.png')} style={styles.socialIcon} />
                 <Text style={styles.socialText}>Google</Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.socialButton}>
@@ -150,11 +139,6 @@ const LoginScreen = ({ navigation }: Props) => {
             </View>
           </View>
 
-          {/* Navigate to RoleSelection rather than Register directly.
-              Register requires a 'role' param, so jumping there without
-              one would either crash or silently drop the role context.
-              Sending the user back through RoleSelection is also better
-              UX — they confirm whether they're a Brand or Creator first. */}
           <TouchableOpacity
             onPress={() => navigation.navigate('RoleSelection')}
             style={styles.redirectLinkWrapper}
