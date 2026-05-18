@@ -1,37 +1,29 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import SplashScreen from '../screens/splash';
-import OnboardingScreen from '../screens/onboarding';
-import RoleSelectionScreen from '../screens/auth/role-selection';
-import AuthEntryPointScreen from '../screens/auth/entry-point';
-import RegisterScreen from '../screens/auth/register';
-import LoginScreen from '../screens/auth/login';
-import ForgotPasswordScreen from '../screens/auth/forgot-password';
+import { useAppSelector } from '../hooks/redux';
+import AuthNavigator from './AuthNavigator';
+import AppNavigator from './AppNavigator';
 
-const Stack = createNativeStackNavigator();
+const Root = createNativeStackNavigator();
 
 const RootNavigator = () => {
+  const isAuthenticated = useAppSelector(state => state.auth.isAuthenticated);
+
   return (
-    <Stack.Navigator 
-      initialRouteName="Splash"
-      screenOptions={{ 
+    <Root.Navigator
+      screenOptions={{
         headerShown: false,
-        gestureEnabled: false 
+        animation: 'none',
+        // Same fix applied at the root level, covering the Auth <-> App swap
+        contentStyle: { backgroundColor: '#000000' },
       }}
     >
-      {/* App Initialization Sequence */}
-      <Stack.Screen name="Splash" component={SplashScreen} />
-      <Stack.Screen name="Onboarding" component={OnboardingScreen} />
-      
-      {/* Persona Gateways */}
-      <Stack.Screen name="RoleSelection" component={RoleSelectionScreen} />
-      <Stack.Screen name="AuthEntryPoint" component={AuthEntryPointScreen} />
-      
-      {/* Core Security & Identity Matrix */}
-      <Stack.Screen name="Register" component={RegisterScreen} />
-      <Stack.Screen name="Login" component={LoginScreen} />
-      <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
-    </Stack.Navigator>
+      {isAuthenticated ? (
+        <Root.Screen name="App" component={AppNavigator} />
+      ) : (
+        <Root.Screen name="Auth" component={AuthNavigator} />
+      )}
+    </Root.Navigator>
   );
 };
 

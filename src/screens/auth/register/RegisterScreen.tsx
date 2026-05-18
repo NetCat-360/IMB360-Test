@@ -1,12 +1,17 @@
 import React, { useState } from 'react';
-import { View, Text, Image, TouchableOpacity, TextInput, StatusBar, KeyboardAvoidingView, Platform, StyleSheet, Modal, FlatList } from 'react-native';
+import {
+  View, Text, Image, TouchableOpacity, TextInput, StatusBar,
+  KeyboardAvoidingView, Platform, StyleSheet, Modal, FlatList,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import Animated, { useSharedValue, useAnimatedStyle, withTiming, interpolate, runOnJS } from 'react-native-reanimated';
+import Animated, { useAnimatedStyle, interpolate } from 'react-native-reanimated';
 import LinearGradient from 'react-native-linear-gradient';
 import { scale, verticalScale, moderateScale } from '../../../utils/scaling';
 import { COUNTRIES } from '../../../utils/countries';
+import { AuthNavigationProp, AuthRouteProp } from '../../../types/navigation';
+import FloatingInput from '../../../components/common/FloatingInput';
+import { useToast } from '../../../hooks/useToast';
 import styles from './styles';
-import { authInputStyles } from '../inputStyles';
 
 interface Country {
   code: string;
@@ -15,61 +20,14 @@ interface Country {
   callingCode: string;
 }
 
-const OutlinedFloatingInput = ({ label, value, onChangeText, secureTextEntry, keyboardType, autoCapitalize, prefixComponent, rightComponent }: any) => {
-  const [isFocused, setIsFocused] = useState(false);
-  const focusAnim = useSharedValue(value ? 1 : 0);
-
-  const handleFocus = () => {
-    setIsFocused(true);
-    focusAnim.value = withTiming(1, { duration: 180 });
-  };
-
-  const handleBlur = () => {
-    setIsFocused(false);
-    if (!value) {
-      focusAnim.value = withTiming(0, { duration: 180 });
-    }
-  };
-
-  const animatedLabelStyle = useAnimatedStyle(() => {
-    const activeLeftPosition = 12;
-    const inactiveLeftPosition = prefixComponent ? 78 : 12;
-
-    return {
-      top: interpolate(focusAnim.value, [0, 1], [16.5, -9]),
-      left: interpolate(focusAnim.value, [0, 1], [inactiveLeftPosition, activeLeftPosition]),
-      fontSize: interpolate(focusAnim.value, [0, 1], [15, 12]),
-      color: isFocused ? '#b6d82c' : '#666666',
-    };
-  });
-
-  return (
-    <View style={authInputStyles.inputWrapper}>
-      <View style={[authInputStyles.inputOutline, isFocused && authInputStyles.inputOutlineActive]} />
-      <Animated.Text style={[authInputStyles.floatingLabel, animatedLabelStyle]}>
-        {label}
-      </Animated.Text>
-      <View style={{ flexDirection: 'row', flex: 1, alignItems: 'center' }}>
-        {prefixComponent && prefixComponent}
-        <TextInput
-          style={authInputStyles.textInput}
-          value={value}
-          onChangeText={onChangeText}
-          secureTextEntry={secureTextEntry}
-          keyboardType={keyboardType}
-          autoCapitalize={autoCapitalize || 'none'}
-          onFocus={handleFocus}
-          onBlur={handleBlur}
-          placeholderTextColor="transparent"
-        />
-        {rightComponent && rightComponent}
-      </View>
-    </View>
-  );
+// Typed props — no more 'any'
+type Props = {
+  navigation: AuthNavigationProp<'Register'>;
+  route: AuthRouteProp<'Register'>;
 };
 
-const RegisterScreen = ({ navigation, route }: any) => {
-  const userRole = route?.params?.role || 'talent';
+const RegisterScreen = ({ navigation, route }: Props) => {
+  const userRole = route?.params?.role || 'CREATOR';
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -77,44 +35,26 @@ const RegisterScreen = ({ navigation, route }: any) => {
   const [password, setPassword] = useState('');
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
   const [securePassword, setSecurePassword] = useState(true);
-  
-  // Country Selector States
+
   const [selectedCountry, setSelectedCountry] = useState<Country>({
     code: 'US',
     flag: '🇺🇸',
     name: 'United States',
-    callingCode: '+1'
+    callingCode: '+1',
   });
   const [modalVisible, setModalVisible] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 
-  const [toastMessage, setToastMessage] = useState('');
-  const toastOpacity = useSharedValue(0);
+  // Single line replaces ~30 lines of duplicated toast logic
+  const { message: toastMessage, toastOpacity, showToast } = useToast();
 
-  const isEmailValid = (text: string) => {
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return regex.test(text);
-  };
+  const isEmailValid = (text: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(text);
 
-  const isFormComplete = 
-    name.trim() !== '' && 
-    isEmailValid(email) && 
-    phone.trim() !== '' && 
+  const isFormComplete =
+    name.trim() !== '' &&
+    isEmailValid(email) &&
+    phone.trim() !== '' &&
     password.trim() !== '';
-
-  const clearToastState = () => setToastMessage('');
-
-  const showToast = (message: string) => {
-    setToastMessage(message);
-    toastOpacity.value = withTiming(1, { duration: 250 }, () => {
-      setTimeout(() => {
-        toastOpacity.value = withTiming(0, { duration: 250 }, () => {
-          'worklet';
-          runOnJS(clearToastState)();
-        });
-      }, 3000);
-    });
-  };
 
   const filteredCountries = COUNTRIES.filter(
     (item) =>
@@ -138,12 +78,13 @@ const RegisterScreen = ({ navigation, route }: any) => {
       fullName: name,
       emailAddress: email.toLowerCase().trim(),
       phoneNumber: `${selectedCountry.callingCode}${phone}`,
-      password: password,
-      role: userRole
+      password,
+      role: userRole,
     };
 
+    // TODO: Replace with real API call
     console.log('Sending Registration Payload to API Backend:', signupDataPayload);
-    showToast(`Account created successfully as a ${userRole.toUpperCase()}!`);
+    showToast(`Account created successfully as a ${userRole}!`);
   };
 
   const handleSendVerificationCode = () => {
@@ -151,19 +92,18 @@ const RegisterScreen = ({ navigation, route }: any) => {
       showToast('Please enter a valid email address.');
       return;
     }
+    // TODO: Replace with real API call
     showToast('Verification code sent successfully!');
   };
 
-  const animatedToastStyle = useAnimatedStyle(() => {
-    return {
-      opacity: toastOpacity.value,
-      transform: [{ translateY: interpolate(toastOpacity.value, [0, 1], [15, 0]) }]
-    };
-  });
+  // Animated style for the toast slide-up effect
+  const animatedToastStyle = useAnimatedStyle(() => ({
+    opacity: toastOpacity.value,
+    transform: [{ translateY: interpolate(toastOpacity.value, [0, 1], [15, 0]) }],
+  }));
 
-  // Dynamic Multi-Country Modal Sheet Picker Trigger
   const renderCountryCodePicker = () => (
-    <TouchableOpacity 
+    <TouchableOpacity
       style={localStyles.codePickerWrapper}
       activeOpacity={0.7}
       onPress={() => setModalVisible(true)}
@@ -181,7 +121,10 @@ const RegisterScreen = ({ navigation, route }: any) => {
   );
 
   const renderPasswordToggle = () => (
-    <TouchableOpacity onPress={() => setSecurePassword(!securePassword)} style={styles.inlineActionWrapper}>
+    <TouchableOpacity
+      onPress={() => setSecurePassword(!securePassword)}
+      style={styles.inlineActionWrapper}
+    >
       <Text style={[styles.inlineActionText, { color: '#666666' }]}>
         {securePassword ? 'Show' : 'Hide'}
       </Text>
@@ -191,50 +134,62 @@ const RegisterScreen = ({ navigation, route }: any) => {
   return (
     <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
       <StatusBar barStyle="light-content" backgroundColor="#000000" />
-      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={{ flex: 1 }}
+      >
         <View style={styles.fixedContentContainer}>
-          
+
           <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
             <Text style={styles.backButtonText}>←</Text>
           </TouchableOpacity>
 
           <View style={styles.formFlowWrapper}>
-            <Image source={require('../../../assets/images/IMB360_v2.png')} style={styles.logo} resizeMode="contain" />
+            <Image
+              source={require('../../../assets/images/IMB360_v2.png')}
+              style={styles.logo}
+              resizeMode="contain"
+            />
             <Text style={styles.screenHeaderTitle}>CREATE YOUR ACCOUNT</Text>
 
-            <OutlinedFloatingInput label="Full Name" value={name} onChangeText={setName} autoCapitalize="words" />
-            
-            <OutlinedFloatingInput 
-              label="Email address" 
-              value={email} 
-              onChangeText={setEmail} 
-              keyboardType="email-address" 
+            {/* All inputs now use the shared FloatingInput component */}
+            <FloatingInput
+              label="Full Name"
+              value={name}
+              onChangeText={setName}
+              autoCapitalize="words"
+            />
+
+            <FloatingInput
+              label="Email address"
+              value={email}
+              onChangeText={setEmail}
+              keyboardType="email-address"
               rightComponent={renderVerificationButton()}
             />
 
-            {/* Injected the updated country code data sheet component portal */}
-            <OutlinedFloatingInput 
-              label="Phone" 
-              value={phone} 
-              onChangeText={setPhone} 
-              keyboardType="phone-pad" 
-              prefixComponent={renderCountryCodePicker()} 
+            <FloatingInput
+              label="Phone"
+              value={phone}
+              onChangeText={setPhone}
+              keyboardType="phone-pad"
+              prefixComponent={renderCountryCodePicker()}
             />
-            
-            <OutlinedFloatingInput 
-              label="Create a Password" 
-              value={password} 
-              onChangeText={setPassword} 
-              secureTextEntry={securePassword} 
+
+            <FloatingInput
+              label="Create a Password"
+              value={password}
+              onChangeText={setPassword}
+              secureTextEntry={securePassword}
               rightComponent={renderPasswordToggle()}
             />
-            
+
             <Text style={styles.passRequirementText}>
               Password must be 8 characters long and must contain a special character, number, a-z, A-Z.
             </Text>
 
             <View style={styles.checkboxContainer}>
-              <TouchableOpacity 
+              <TouchableOpacity
                 activeOpacity={0.8}
                 style={[styles.customCheckbox, toggleCheckBox && styles.customCheckboxChecked]}
                 onPress={() => setToggleCheckBox(!toggleCheckBox)}
@@ -242,16 +197,24 @@ const RegisterScreen = ({ navigation, route }: any) => {
                 {toggleCheckBox && <Text style={styles.checkmarkIcon}>✓</Text>}
               </TouchableOpacity>
               <Text style={styles.checkboxLabel}>
-                I accept <Text style={styles.underlineText}>Privacy Policy</Text> and <Text style={styles.underlineText}>Terms of use</Text>
+                I accept{' '}
+                <Text style={styles.underlineText}>Privacy Policy</Text>
+                {' '}and{' '}
+                <Text style={styles.underlineText}>Terms of use</Text>
               </Text>
             </View>
 
-            <TouchableOpacity 
-              style={[styles.submitButton, { opacity: isFormComplete ? 1 : 0.4 }]} 
+            <TouchableOpacity
+              style={[styles.submitButton, { opacity: isFormComplete ? 1 : 0.4 }]}
               onPress={validateAndSubmit}
               disabled={!isFormComplete}
             >
-              <LinearGradient colors={['#00b9c0', '#b6d82c']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.gradientButtonLayout}>
+              <LinearGradient
+                colors={['#00b9c0', '#b6d82c']}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 0 }}
+                style={styles.gradientButtonLayout}
+              >
                 <Text style={styles.submitButtonText}>Register</Text>
               </LinearGradient>
             </TouchableOpacity>
@@ -264,14 +227,22 @@ const RegisterScreen = ({ navigation, route }: any) => {
                 <Text style={styles.socialText}>Google</Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.socialButton}>
-                <Image source={require('../../../assets/images/apple.png')} style={[styles.socialIcon, { tintColor: '#ffffff' }]} />
+                <Image
+                  source={require('../../../assets/images/apple.png')}
+                  style={[styles.socialIcon, { tintColor: '#ffffff' }]}
+                />
                 <Text style={styles.socialText}>Apple</Text>
               </TouchableOpacity>
             </View>
           </View>
 
-          <TouchableOpacity onPress={() => navigation.navigate('Login')} style={styles.redirectLinkWrapper}>
-            <Text style={styles.footerRedirectText}>Already have an account? <Text style={styles.linkTextInline}>Login</Text></Text>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('Login')}
+            style={styles.redirectLinkWrapper}
+          >
+            <Text style={styles.footerRedirectText}>
+              Already have an account? <Text style={styles.linkTextInline}>Login</Text>
+            </Text>
           </TouchableOpacity>
 
           {toastMessage ? (
@@ -309,8 +280,8 @@ const RegisterScreen = ({ navigation, route }: any) => {
               initialNumToRender={15}
               keyboardShouldPersistTaps="handled"
               renderItem={({ item }) => (
-                <TouchableOpacity 
-                  style={localStyles.countryItem} 
+                <TouchableOpacity
+                  style={localStyles.countryItem}
                   onPress={() => handleCountrySelect(item)}
                 >
                   <Text style={localStyles.itemFlag}>{item.flag}</Text>
