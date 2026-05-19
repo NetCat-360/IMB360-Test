@@ -1,7 +1,18 @@
+// src/screens/auth/register/RegisterScreen.tsx
+// Improvements: useGlobalToast replaces local toast state, Typography applied.
 import React, { useState } from 'react';
 import {
-  View, Text, Image, TouchableOpacity, TextInput, StatusBar,
-  KeyboardAvoidingView, Platform, StyleSheet, Modal, FlatList,
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  TextInput,
+  StatusBar,
+  KeyboardAvoidingView,
+  Platform,
+  StyleSheet,
+  Modal,
+  FlatList,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Animated, { useAnimatedStyle, interpolate } from 'react-native-reanimated';
@@ -10,7 +21,9 @@ import { scale, verticalScale, moderateScale } from '../../../utils/scaling';
 import { COUNTRIES } from '../../../utils/countries';
 import { AuthNavigationProp, AuthRouteProp } from '../../../types/navigation';
 import FloatingInput from '../../../components/common/FloatingInput';
-import { useToast } from '../../../hooks/useToast';
+import { useGlobalToast } from '../../../context/ToastContext';
+import { Colors } from '../../../config/theme';
+import Typography from '../../../styles/typography';
 import styles from './styles';
 
 interface Country {
@@ -20,7 +33,6 @@ interface Country {
   callingCode: string;
 }
 
-// Typed props — no more 'any'
 type Props = {
   navigation: AuthNavigationProp<'Register'>;
   route: AuthRouteProp<'Register'>;
@@ -29,12 +41,13 @@ type Props = {
 const RegisterScreen = ({ navigation, route }: Props) => {
   const userRole = route?.params?.role || 'CREATOR';
 
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
+  const [name, setName]         = useState('');
+  const [email, setEmail]       = useState('');
+  const [phone, setPhone]       = useState('');
   const [password, setPassword] = useState('');
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
   const [securePassword, setSecurePassword] = useState(true);
+  const [loading, setLoading]   = useState(false);
 
   const [selectedCountry, setSelectedCountry] = useState<Country>({
     code: 'US',
@@ -43,10 +56,10 @@ const RegisterScreen = ({ navigation, route }: Props) => {
     callingCode: '+1',
   });
   const [modalVisible, setModalVisible] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery]   = useState('');
 
-  // Single line replaces ~30 lines of duplicated toast logic
-  const { message: toastMessage, toastOpacity, showToast } = useToast();
+  // FIX: replaced local useToast with global toast — no duplicate state
+  const { showToast } = useGlobalToast();
 
   const isEmailValid = (text: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(text);
 
@@ -54,12 +67,12 @@ const RegisterScreen = ({ navigation, route }: Props) => {
     name.trim() !== '' &&
     isEmailValid(email) &&
     phone.trim() !== '' &&
-    password.trim() !== '';
+    password.trim().length >= 8;
 
   const filteredCountries = COUNTRIES.filter(
-    (item) =>
+    item =>
       item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.callingCode.includes(searchQuery)
+      item.callingCode.includes(searchQuery),
   );
 
   const handleCountrySelect = (country: Country) => {
@@ -70,37 +83,42 @@ const RegisterScreen = ({ navigation, route }: Props) => {
 
   const validateAndSubmit = async () => {
     if (!toggleCheckBox) {
-      showToast('Please accept the Privacy Policy and Terms of use.');
+      showToast('Please accept the Privacy Policy and Terms of use.', 'error');
+      return;
+    }
+    if (password.trim().length < 8) {
+      showToast('Password must be at least 8 characters.', 'error');
       return;
     }
 
-    const signupDataPayload = {
-      fullName: name,
-      emailAddress: email.toLowerCase().trim(),
-      phoneNumber: `${selectedCountry.callingCode}${phone}`,
-      password,
-      role: userRole,
-    };
-
-    // TODO: Replace with real API call
-    console.log('Sending Registration Payload to API Backend:', signupDataPayload);
-    showToast(`Account created successfully as a ${userRole}!`);
+    setLoading(true);
+    try {
+      const signupDataPayload = {
+        fullName: name,
+        emailAddress: email.toLowerCase().trim(),
+        phoneNumber: `${selectedCountry.callingCode}${phone}`,
+        password,
+        role: userRole,
+      };
+      // TODO: Replace with real API call
+      console.log('Sending Registration Payload:', signupDataPayload);
+      await new Promise(resolve => setTimeout(resolve, 800));
+      showToast(`Account created successfully as a ${userRole}!`, 'success');
+    } catch {
+      showToast('Registration failed. Please try again.', 'error');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleSendVerificationCode = () => {
     if (!isEmailValid(email)) {
-      showToast('Please enter a valid email address.');
+      showToast('Please enter a valid email address.', 'error');
       return;
     }
     // TODO: Replace with real API call
-    showToast('Verification code sent successfully!');
+    showToast('Verification code sent!', 'success');
   };
-
-  // Animated style for the toast slide-up effect
-  const animatedToastStyle = useAnimatedStyle(() => ({
-    opacity: toastOpacity.value,
-    transform: [{ translateY: interpolate(toastOpacity.value, [0, 1], [15, 0]) }],
-  }));
 
   const renderCountryCodePicker = () => (
     <TouchableOpacity
@@ -125,7 +143,7 @@ const RegisterScreen = ({ navigation, route }: Props) => {
       onPress={() => setSecurePassword(!securePassword)}
       style={styles.inlineActionWrapper}
     >
-      <Text style={[styles.inlineActionText, { color: '#666666' }]}>
+      <Text style={[styles.inlineActionText, { color: Colors.textDim }]}>
         {securePassword ? 'Show' : 'Hide'}
       </Text>
     </TouchableOpacity>
@@ -133,13 +151,12 @@ const RegisterScreen = ({ navigation, route }: Props) => {
 
   return (
     <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
-      <StatusBar barStyle="light-content" backgroundColor="#000000" />
+      <StatusBar barStyle="light-content" backgroundColor={Colors.bgBlack} />
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={{ flex: 1 }}
       >
         <View style={styles.fixedContentContainer}>
-
           <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
             <Text style={styles.backButtonText}>←</Text>
           </TouchableOpacity>
@@ -150,16 +167,11 @@ const RegisterScreen = ({ navigation, route }: Props) => {
               style={styles.logo}
               resizeMode="contain"
             />
-            <Text style={styles.screenHeaderTitle}>CREATE YOUR ACCOUNT</Text>
+            <Text style={[Typography.h2, { color: Colors.lime, marginVertical: verticalScale(12) }]}>
+              CREATE YOUR ACCOUNT
+            </Text>
 
-            {/* All inputs now use the shared FloatingInput component */}
-            <FloatingInput
-              label="Full Name"
-              value={name}
-              onChangeText={setName}
-              autoCapitalize="words"
-            />
-
+            <FloatingInput label="Full Name" value={name} onChangeText={setName} autoCapitalize="words" />
             <FloatingInput
               label="Email address"
               value={email}
@@ -167,7 +179,6 @@ const RegisterScreen = ({ navigation, route }: Props) => {
               keyboardType="email-address"
               rightComponent={renderVerificationButton()}
             />
-
             <FloatingInput
               label="Phone"
               value={phone}
@@ -175,7 +186,6 @@ const RegisterScreen = ({ navigation, route }: Props) => {
               keyboardType="phone-pad"
               prefixComponent={renderCountryCodePicker()}
             />
-
             <FloatingInput
               label="Create a Password"
               value={password}
@@ -185,7 +195,7 @@ const RegisterScreen = ({ navigation, route }: Props) => {
             />
 
             <Text style={styles.passRequirementText}>
-              Password must be 8 characters long and must contain a special character, number, a-z, A-Z.
+              Password must be 8+ characters with a special character, number, a-z, A-Z.
             </Text>
 
             <View style={styles.checkboxContainer}>
@@ -205,17 +215,19 @@ const RegisterScreen = ({ navigation, route }: Props) => {
             </View>
 
             <TouchableOpacity
-              style={[styles.submitButton, { opacity: isFormComplete ? 1 : 0.4 }]}
+              style={[styles.submitButton, { opacity: isFormComplete && !loading ? 1 : 0.4 }]}
               onPress={validateAndSubmit}
-              disabled={!isFormComplete}
+              disabled={!isFormComplete || loading}
             >
               <LinearGradient
-                colors={['#00b9c0', '#b6d82c']}
+                colors={[Colors.teal, Colors.lime]}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 0 }}
                 style={styles.gradientButtonLayout}
               >
-                <Text style={styles.submitButtonText}>Register</Text>
+                <Text style={styles.submitButtonText}>
+                  {loading ? 'Registering...' : 'Register'}
+                </Text>
               </LinearGradient>
             </TouchableOpacity>
 
@@ -229,7 +241,7 @@ const RegisterScreen = ({ navigation, route }: Props) => {
               <TouchableOpacity style={styles.socialButton}>
                 <Image
                   source={require('../../../assets/images/apple.png')}
-                  style={[styles.socialIcon, { tintColor: '#ffffff' }]}
+                  style={[styles.socialIcon, { tintColor: Colors.textPrimary }]}
                 />
                 <Text style={styles.socialText}>Apple</Text>
               </TouchableOpacity>
@@ -244,18 +256,11 @@ const RegisterScreen = ({ navigation, route }: Props) => {
               Already have an account? <Text style={styles.linkTextInline}>Login</Text>
             </Text>
           </TouchableOpacity>
-
-          {toastMessage ? (
-            <Animated.View style={[styles.toastContainer, animatedToastStyle]}>
-              <Text style={styles.toastText}>{toastMessage}</Text>
-            </Animated.View>
-          ) : null}
-
         </View>
       </KeyboardAvoidingView>
 
-      {/* Country Selection Overlay Sheet */}
-      <Modal visible={modalVisible} animationType="slide" transparent={true}>
+      {/* Country Selection Modal */}
+      <Modal visible={modalVisible} animationType="slide" transparent>
         <View style={localStyles.modalOverlay}>
           <View style={localStyles.modalContent}>
             <View style={localStyles.modalHeader}>
@@ -264,19 +269,17 @@ const RegisterScreen = ({ navigation, route }: Props) => {
                 <Text style={localStyles.closeButton}>✕</Text>
               </TouchableOpacity>
             </View>
-
             <TextInput
               style={localStyles.searchBar}
               placeholder="Search country name or calling code..."
-              placeholderTextColor="#666666"
+              placeholderTextColor={Colors.textDim}
               value={searchQuery}
               onChangeText={setSearchQuery}
               autoCorrect={false}
             />
-
             <FlatList
               data={filteredCountries}
-              keyExtractor={(item) => item.code}
+              keyExtractor={item => item.code}
               initialNumToRender={15}
               keyboardShouldPersistTaps="handled"
               renderItem={({ item }) => (
@@ -305,30 +308,15 @@ const localStyles = StyleSheet.create({
     paddingRight: scale(8),
     height: '100%',
     borderRightWidth: 1,
-    borderRightColor: '#2C2C2E',
+    borderRightColor: Colors.borderStrong,
     marginRight: scale(8),
   },
-  flagText: {
-    fontSize: moderateScale(16),
-    marginRight: scale(4),
-  },
-  callingCodeText: {
-    color: '#ffffff',
-    fontSize: moderateScale(14),
-    fontWeight: '500',
-  },
-  dropdownArrow: {
-    color: '#666666',
-    fontSize: moderateScale(9),
-    marginLeft: scale(4),
-  },
-  modalOverlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.8)',
-    justifyContent: 'flex-end',
-  },
+  flagText: { fontSize: moderateScale(16), marginRight: scale(4) },
+  callingCodeText: { color: Colors.textPrimary, fontSize: moderateScale(14), fontWeight: '500' },
+  dropdownArrow: { color: Colors.textDim, fontSize: moderateScale(9), marginLeft: scale(4) },
+  modalOverlay: { flex: 1, backgroundColor: Colors.bgModalOverlay, justifyContent: 'flex-end' },
   modalContent: {
-    backgroundColor: '#121214',
+    backgroundColor: Colors.bgModalSheet,
     borderTopLeftRadius: moderateScale(20),
     borderTopRightRadius: moderateScale(20),
     height: '75%',
@@ -341,26 +329,18 @@ const localStyles = StyleSheet.create({
     paddingHorizontal: scale(20),
     marginBottom: verticalScale(15),
   },
-  modalTitle: {
-    color: '#ffffff',
-    fontSize: moderateScale(18),
-    fontWeight: 'bold',
-  },
-  closeButton: {
-    color: '#666666',
-    fontSize: moderateScale(18),
-    padding: scale(4),
-  },
+  modalTitle: { color: Colors.textPrimary, fontSize: moderateScale(18), fontWeight: 'bold' },
+  closeButton: { color: Colors.textDim, fontSize: moderateScale(18), padding: scale(4) },
   searchBar: {
-    backgroundColor: '#1C1C1E',
-    color: '#ffffff',
+    backgroundColor: Colors.bgInput,
+    color: Colors.textPrimary,
     borderRadius: moderateScale(8),
     height: verticalScale(42),
     paddingHorizontal: scale(12),
     marginHorizontal: scale(20),
     marginBottom: verticalScale(15),
     borderWidth: 1,
-    borderColor: '#2C2C2E',
+    borderColor: Colors.borderStrong,
   },
   countryItem: {
     flexDirection: 'row',
@@ -368,22 +348,11 @@ const localStyles = StyleSheet.create({
     paddingVertical: verticalScale(14),
     paddingHorizontal: scale(20),
     borderBottomWidth: 1,
-    borderBottomColor: '#1C1C1E',
+    borderBottomColor: Colors.borderDefault,
   },
-  itemFlag: {
-    fontSize: moderateScale(20),
-    marginRight: scale(14),
-  },
-  itemName: {
-    flex: 1,
-    color: '#ffffff',
-    fontSize: moderateScale(15),
-  },
-  itemCallingCode: {
-    color: '#b6d82c',
-    fontSize: moderateScale(14),
-    fontWeight: '600',
-  },
+  itemFlag: { fontSize: moderateScale(20), marginRight: scale(14) },
+  itemName: { flex: 1, color: Colors.textPrimary, fontSize: moderateScale(15) },
+  itemCallingCode: { color: Colors.lime, fontSize: moderateScale(14), fontWeight: '600' },
 });
 
 export default RegisterScreen;

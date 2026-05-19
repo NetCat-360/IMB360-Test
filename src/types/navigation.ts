@@ -1,3 +1,5 @@
+// src/types/navigation.ts
+// FIX: Added CampaignQueue to AppStackParamList
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RouteProp } from '@react-navigation/native';
 
@@ -19,6 +21,7 @@ export type AppStackParamList = {
   Content: undefined;
   Pricing: undefined;
   MyEarnings: undefined;
+  CampaignQueue: undefined; // FIX: was missing, caused Campaign Queue menu to dead-end
 };
 
 export type AuthNavigationProp<T extends keyof AuthStackParamList> =
