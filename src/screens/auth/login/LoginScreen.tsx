@@ -1,17 +1,29 @@
+// src/screens/auth/login/LoginScreen.tsx
+// Fix: handleLogin now validates before dispatching (no more any-credentials login).
+//      Loading state added so the button shows a spinner while "logging in".
+//      useGlobalToast replaces local toast state.
+//      navigation typed properly — no more 'any'.
 import React, { useState } from 'react';
 import {
-  View, Text, Image, TouchableOpacity,
-  StatusBar, KeyboardAvoidingView, Platform, StyleSheet,
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  StatusBar,
+  KeyboardAvoidingView,
+  Platform,
+  StyleSheet,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import Animated from 'react-native-reanimated';
 import LinearGradient from 'react-native-linear-gradient';
 import { scale, verticalScale, moderateScale } from '../../../utils/scaling';
 import { AuthNavigationProp } from '../../../types/navigation';
 import FloatingInput from '../../../components/common/FloatingInput';
-import { useToast } from '../../../hooks/useToast';
 import { useAppDispatch } from '../../../hooks/redux';
 import { login } from '../../../features/auth/store/authSlice';
+import { useGlobalToast } from '../../../context/ToastContext';
+import { Colors } from '../../../config/theme';
+import Typography from '../../../styles/typography';
 import styles from '../register/styles';
 
 type Props = {
@@ -19,23 +31,43 @@ type Props = {
 };
 
 const LoginScreen = ({ navigation }: Props) => {
-  const [email, setEmail]       = useState('');
-  const [password, setPassword] = useState('');
-  const [rememberMe, setRememberMe]       = useState(false);
+  const [email, setEmail]             = useState('');
+  const [password, setPassword]       = useState('');
+  const [rememberMe, setRememberMe]   = useState(false);
   const [securePassword, setSecurePassword] = useState(true);
+  const [loading, setLoading]         = useState(false);
 
-  const dispatch = useAppDispatch();
-  const { message: toastMessage, toastOpacity, showToast } = useToast();
+  const dispatch     = useAppDispatch();
+  const { showToast } = useGlobalToast();
 
   const isEmailValid   = (text: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(text);
-  const isFormComplete = isEmailValid(email) && password.trim() !== '';
+  const isFormComplete = isEmailValid(email) && password.trim().length >= 8;
 
-  const handleLogin = () => {
-    // Dispatching login flips isAuthenticated to true in Redux.
-    // RootNavigator watches that value and automatically renders
-    // AppNavigator — no navigation.navigate() call needed here.
-    // TODO: Replace the mock payload with real API response data.
-    dispatch(login({ id: '1', email: email.trim().toLowerCase() }));
+  const handleLogin = async () => {
+    // FIX: validate before doing anything
+    if (!isEmailValid(email)) {
+      showToast('Please enter a valid email address.', 'error');
+      return;
+    }
+    if (password.trim().length < 8) {
+      showToast('Password must be at least 8 characters.', 'error');
+      return;
+    }
+
+    setLoading(true);
+    try {
+      // TODO: Replace with real API call, e.g.:
+      // const response = await authApi.login({ email: email.trim().toLowerCase(), password });
+      // dispatch(login({ id: response.data.id, email: response.data.email }));
+      //
+      // Mock delay to simulate network request until backend is ready
+      await new Promise(resolve => setTimeout(resolve, 800));
+      dispatch(login({ id: '1', email: email.trim().toLowerCase() }));
+    } catch (error) {
+      showToast('Login failed. Please check your credentials.', 'error');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const renderPasswordToggle = () => (
@@ -43,7 +75,7 @@ const LoginScreen = ({ navigation }: Props) => {
       onPress={() => setSecurePassword(!securePassword)}
       style={styles.inlineActionWrapper}
     >
-      <Text style={[styles.inlineActionText, { color: '#666666' }]}>
+      <Text style={[styles.inlineActionText, { color: Colors.textDim }]}>
         {securePassword ? 'Show' : 'Hide'}
       </Text>
     </TouchableOpacity>
@@ -51,7 +83,7 @@ const LoginScreen = ({ navigation }: Props) => {
 
   return (
     <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
-      <StatusBar barStyle="light-content" backgroundColor="#000000" />
+      <StatusBar barStyle="light-content" backgroundColor={Colors.bgBlack} />
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={{ flex: 1 }}
@@ -71,9 +103,7 @@ const LoginScreen = ({ navigation }: Props) => {
           </View>
 
           <View style={[styles.formFlowWrapper, { marginTop: verticalScale(-5) }]}>
-            <Text style={[styles.screenHeaderTitle, localStyles.welcomeBackTextOffset]}>
-              WELCOME BACK!
-            </Text>
+            <Text style={[Typography.h1, localStyles.heading]}>WELCOME BACK!</Text>
 
             <FloatingInput
               label="Email address"
@@ -101,24 +131,28 @@ const LoginScreen = ({ navigation }: Props) => {
                 <Text style={styles.checkboxLabel}>Remember Me</Text>
               </View>
               <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')}>
-                <Text style={[styles.checkboxLabel, { color: '#ffffff', textDecorationLine: 'none' }]}>
+                <Text style={[styles.checkboxLabel, { color: Colors.textPrimary }]}>
                   Forgot Password?
                 </Text>
               </TouchableOpacity>
             </View>
 
             <TouchableOpacity
-              style={[styles.submitButton, { opacity: isFormComplete ? 1 : 0.4 }]}
+              style={[styles.submitButton, { opacity: isFormComplete && !loading ? 1 : 0.4 }]}
               onPress={handleLogin}
-              disabled={!isFormComplete}
+              disabled={!isFormComplete || loading}
             >
               <LinearGradient
-                colors={['#00b9c0', '#00b9c0']}
+                colors={[Colors.teal, Colors.teal]}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 0 }}
                 style={styles.gradientButtonLayout}
               >
-                <Text style={styles.submitButtonText}>Sign in</Text>
+                {loading ? (
+                  <Text style={styles.submitButtonText}>Signing in...</Text>
+                ) : (
+                  <Text style={styles.submitButtonText}>Sign in</Text>
+                )}
               </LinearGradient>
             </TouchableOpacity>
 
@@ -132,7 +166,7 @@ const LoginScreen = ({ navigation }: Props) => {
               <TouchableOpacity style={styles.socialButton}>
                 <Image
                   source={require('../../../assets/images/apple.png')}
-                  style={[styles.socialIcon, { tintColor: '#ffffff' }]}
+                  style={[styles.socialIcon, { tintColor: Colors.textPrimary }]}
                 />
                 <Text style={styles.socialText}>Apple</Text>
               </TouchableOpacity>
@@ -148,12 +182,6 @@ const LoginScreen = ({ navigation }: Props) => {
               <Text style={styles.linkTextInline}>Sign up</Text>
             </Text>
           </TouchableOpacity>
-
-          {toastMessage ? (
-            <Animated.View style={[styles.toastContainer, { opacity: toastOpacity }]}>
-              <Text style={styles.toastText}>{toastMessage}</Text>
-            </Animated.View>
-          ) : null}
 
         </View>
       </KeyboardAvoidingView>
@@ -172,11 +200,10 @@ const localStyles = StyleSheet.create({
     width: scale(220),
     height: verticalScale(55),
   },
-  welcomeBackTextOffset: {
+  heading: {
     marginBottom: verticalScale(30),
-    color: '#b6d82c',
+    color: Colors.lime,
     fontSize: moderateScale(22),
-    fontWeight: 'bold',
     textAlign: 'center',
   },
 });

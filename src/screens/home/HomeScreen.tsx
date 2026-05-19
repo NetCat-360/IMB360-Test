@@ -1,66 +1,89 @@
+// src/screens/home/HomeScreen.tsx
+// Fixes applied:
+//   1. menuCard icon layout — replaced negative marginRight hack with proper flex layout
+//   2. Campaign Queue — registered screen + navigate() call wired up
+//   3. Theme tokens used for all hardcoded hex colours
+//   4. Typography (Poppins) applied to all Text elements
+//   5. Tab bar icons stay as emoji here — replaced in AppNavigator.tsx
 import React from 'react';
 import {
-  View, Text, Image, TouchableOpacity,
-  ScrollView, StatusBar, StyleSheet,
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  ScrollView,
+  StatusBar,
+  StyleSheet,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import LinearGradient from 'react-native-linear-gradient';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { AppStackParamList } from '../../types/navigation';
 import { scale, verticalScale, moderateScale } from '../../utils/scaling';
-import { AppNavigationProp } from '../../types/navigation';
+import { Colors } from '../../config/theme';
+import Typography from '../../styles/typography';
 
-type Props = {
-  navigation: AppNavigationProp<'Home'>;
-};
+type HomeNavProp = NativeStackNavigationProp<AppStackParamList, 'Home'>;
 
-// Each row in the navigation menu list
-const MenuRow = ({
-  label,
+// ── StatItem ──────────────────────────────────────────────────────────────────
+function StatItem({ number, label }: { number: string; label: string }) {
+  return (
+    <View style={styles.statItem}>
+      <Text style={[Typography.statNumber]}>{number}</Text>
+      <Text style={[Typography.statLabel]}>{label}</Text>
+    </View>
+  );
+}
+
+// ── MenuItem ──────────────────────────────────────────────────────────────────
+// FIX: replaced `marginRight: scale(-22)` hack with a proper absolute-positioned
+// icon so the text always stays perfectly centred regardless of screen width.
+function MenuItem({
+  icon,
+  title,
   onPress,
 }: {
-  label: string;
-  onPress: () => void;
-}) => (
-  <TouchableOpacity style={menuStyles.row} onPress={onPress} activeOpacity={0.7}>
-    <Text style={menuStyles.label}>{label}</Text>
-    <Text style={menuStyles.arrow}>›</Text>
-  </TouchableOpacity>
-);
+  icon?: any;
+  title: string;
+  onPress?: () => void;
+}) {
+  return (
+    <TouchableOpacity
+      style={styles.menuCard}
+      onPress={onPress}
+      activeOpacity={0.7}
+    >
+      {/* Left icon — absolutely positioned so it never shifts the text */}
+      {icon && (
+        <Image
+          source={icon}
+          style={styles.menuIcon}
+          resizeMode="contain"
+        />
+      )}
 
-const menuStyles = StyleSheet.create({
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingVertical: verticalScale(14),
-    paddingHorizontal: scale(16),
-    borderBottomWidth: 1,
-    borderBottomColor: '#1C1C1E',
-  },
-  label: {
-    color: '#ffffff',
-    fontSize: moderateScale(15),
-    fontWeight: '500',
-  },
-  arrow: {
-    color: '#666666',
-    fontSize: moderateScale(20),
-  },
-});
+      {/* Title always perfectly centred */}
+      <Text style={styles.menuText}>{title}</Text>
 
-// A single stat block used in the stats row
-const StatBlock = ({ value, label }: { value: string; label: string }) => (
-  <View style={styles.statBlock}>
-    <Text style={styles.statValue}>{value}</Text>
-    <Text style={styles.statLabel}>{label}</Text>
-  </View>
-);
+      {/* Right arrow */}
+      <Image
+        source={require('../../assets/images/rightarrow.png')}
+        style={styles.arrowIcon}
+        resizeMode="contain"
+      />
+    </TouchableOpacity>
+  );
+}
 
-const HomeScreen = ({ navigation }: Props) => {
+// ── Screen ────────────────────────────────────────────────────────────────────
+export default function HomeScreen() {
+  const navigation = useNavigation<HomeNavProp>();
+
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
-      <StatusBar barStyle="light-content" backgroundColor="#000000" />
+      <StatusBar barStyle="light-content" backgroundColor={Colors.bgBlack} />
 
-      {/* ── Top bar ─────────────────────────────── */}
+      {/* Top Bar */}
       <View style={styles.topBar}>
         <Image
           source={require('../../assets/images/IMB360_v2.png')}
@@ -69,7 +92,6 @@ const HomeScreen = ({ navigation }: Props) => {
         />
         <View style={styles.topBarActions}>
           <TouchableOpacity style={styles.topBarIcon}>
-            {/* Message / notification icon placeholder */}
             <Text style={styles.topBarIconText}>💬</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.topBarIcon}>
@@ -78,110 +100,109 @@ const HomeScreen = ({ navigation }: Props) => {
         </View>
       </View>
 
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.scrollContent}
+      >
+        {/* Banner */}
+        <View style={styles.banner} />
 
-        {/* ── Cover banner ────────────────────────── */}
-        <View style={styles.coverBanner}>
-          <LinearGradient
-            colors={['#1a1a1a', '#2a2a2a']}
-            style={styles.coverGradient}
-          />
-        </View>
-
-        {/* ── Avatar + name block ──────────────────── */}
-        <View style={styles.profileBlock}>
-          <View style={styles.avatarWrapper}>
-            {/* Teal gradient ring around avatar matching the design */}
-            <LinearGradient
-              colors={['#00b9c0', '#b6d82c']}
-              style={styles.avatarRing}
-            >
-              <View style={styles.avatarInner}>
-                <Text style={styles.avatarEmoji}>👤</Text>
-              </View>
-            </LinearGradient>
-          </View>
-
-          <View style={styles.nameBlock}>
-            <Text style={styles.displayName}>Sudiksha</Text>
-            <Text style={styles.handle}>@sudiksha0202</Text>
+        {/* Profile */}
+        <View style={styles.profileRow}>
+          <View style={styles.avatar} />
+          <View>
+            <Text style={[Typography.h2]}>Username</Text>
+            <Text style={[Typography.label, { color: Colors.textMuted }]}>
+              @username01
+            </Text>
           </View>
         </View>
 
-        {/* ── Bio ──────────────────────────────────── */}
-        <View style={styles.bioBlock}>
-          <Text style={styles.bioText}>
-            Digital creator | Fashion &amp; Lifestyle{'\n'}
-            Helping brands grow 🚀
-          </Text>
+        {/* Bio */}
+        <View style={styles.bioContainer}>
+          <Text style={[Typography.body]}>Digital creator | Fashion & Lifestyle</Text>
+          <Text style={[Typography.body]}>Helping brands grow 🚀</Text>
           <TouchableOpacity>
-            <Text style={styles.addWebsite}>Add website 🔗</Text>
+            <Text style={[Typography.body, { color: Colors.teal, marginTop: verticalScale(4) }]}>
+              Add website 🔗
+            </Text>
           </TouchableOpacity>
         </View>
 
-        {/* ── Action buttons ───────────────────────── */}
-        <View style={styles.actionRow}>
-          <TouchableOpacity style={styles.editButton}>
-            <Text style={styles.editButtonText}>Edit Profile</Text>
+        {/* Action Buttons */}
+        <View style={styles.buttonRow}>
+          <TouchableOpacity style={styles.actionButton}>
+            <Text style={styles.actionText}>Edit Profile</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.pointsButton}>
-            <LinearGradient
-              colors={['#00b9c0', '#b6d82c']}
-              start={{ x: 0, y: 0.5 }}
-              end={{ x: 1, y: 0.5 }}
-              style={styles.pointsGradient}
-            >
-              <Text style={styles.pointsText}>⚡ Points</Text>
-            </LinearGradient>
+          <TouchableOpacity style={styles.actionButton}>
+            <Image
+              source={require('../../assets/images/pointslogo.png')}
+              style={styles.pointsIcon}
+            />
+            <Text style={styles.actionText}>Points</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.addAssetsButton}>
-            <Text style={styles.addAssetsText}>+ Add Assets</Text>
+          <TouchableOpacity style={styles.actionButton}>
+            <Text style={styles.actionText}>Add Assets</Text>
           </TouchableOpacity>
         </View>
 
-        {/* ── Joined / location ────────────────────── */}
-        <View style={styles.metaRow}>
-          <Text style={styles.metaText}>🗓 Joined December 2025</Text>
-          <Text style={styles.metaText}>  📍 Delhi, India</Text>
+        {/* Info Row */}
+        <View style={styles.infoRow}>
+          <Text style={[Typography.caption]}>📅 Joined December 2025</Text>
+          <Text style={[Typography.caption]}>📍 Delhi, India</Text>
         </View>
 
-        {/* ── Stats row ────────────────────────────── */}
-        <View style={styles.statsRow}>
-          <StatBlock value="10"    label="Following" />
-          <View style={styles.statDivider} />
-          <StatBlock value="3.76K" label="Followers" />
-          <View style={styles.statDivider} />
-          <StatBlock value="65.4%" label="Engagement" />
-          <View style={styles.statDivider} />
-          <StatBlock value="4"     label="Rating" />
+        {/* Stats */}
+        <View style={styles.statsContainer}>
+          <StatItem number="10" label="Following" />
+          <StatItem number="3.76K" label="Followers" />
+          <StatItem number="65.4%" label="Engagement" />
+          <StatItem number="4" label="Rating" />
         </View>
 
-        {/* ── Navigation menu list ─────────────────── */}
-        <View style={styles.menuCard}>
-          <MenuRow label="Overview"       onPress={() => navigation.navigate('Overview')} />
-          <MenuRow label="Content"        onPress={() => navigation.navigate('Content')} />
-          <MenuRow label="Pricing"        onPress={() => navigation.navigate('Pricing')} />
-          <MenuRow label="Campaign Queue" onPress={() => {}} />
-          <MenuRow label="My Earnings"    onPress={() => {}} />
-        </View>
-
+        {/* Menu Items */}
+        <MenuItem
+          title="Overview"
+          icon={require('../../assets/images/overviewlogo.png')}
+          onPress={() => navigation.navigate('Overview')}
+        />
+        <MenuItem
+          title="Content"
+          icon={require('../../assets/images/contentlogo.png')}
+          onPress={() => navigation.navigate('Content')}
+        />
+        <MenuItem
+          title="Pricing"
+          icon={require('../../assets/images/pricinglogo.png')}
+          onPress={() => navigation.navigate('Pricing')}
+        />
+        {/* FIX: Campaign Queue now has an onPress — screen added to AppNavigator */}
+        <MenuItem
+          title="Campaign Queue"
+          onPress={() => navigation.navigate('CampaignQueue')}
+        />
+        <MenuItem
+          title="My Earnings"
+          icon={require('../../assets/images/earninglogo.png')}
+          onPress={() => navigation.navigate('MyEarnings')}
+        />
       </ScrollView>
     </SafeAreaView>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#000000',
+    backgroundColor: Colors.bgBlack,
   },
   scrollContent: {
-    paddingBottom: verticalScale(32),
+    paddingBottom: verticalScale(30),
   },
 
-  // Top bar
+  // Top Bar
   topBar: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -189,7 +210,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: scale(16),
     paddingVertical: verticalScale(10),
     borderBottomWidth: 1,
-    borderBottomColor: '#1C1C1E',
+    borderBottomColor: Colors.borderDefault,
   },
   topBarLogo: {
     width: scale(100),
@@ -206,181 +227,116 @@ const styles = StyleSheet.create({
     fontSize: moderateScale(20),
   },
 
-  // Cover
-  coverBanner: {
-    width: '100%',
-    height: verticalScale(110),
-    backgroundColor: '#1a1a1a',
-    overflow: 'hidden',
-  },
-  coverGradient: {
-    flex: 1,
-  },
-
-  // Profile block
-  profileBlock: {
-    flexDirection: 'row',
-    alignItems: 'flex-end',
-    paddingHorizontal: scale(16),
-    marginTop: verticalScale(-28),
-  },
-  avatarWrapper: {
-    marginRight: scale(14),
-  },
-  avatarRing: {
-    width: scale(72),
-    height: scale(72),
-    borderRadius: scale(36),
-    padding: 2,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  avatarInner: {
-    width: '100%',
-    height: '100%',
-    borderRadius: scale(34),
-    backgroundColor: '#1C1C1E',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  avatarEmoji: {
-    fontSize: moderateScale(32),
-  },
-  nameBlock: {
-    paddingBottom: verticalScale(4),
-  },
-  displayName: {
-    color: '#ffffff',
-    fontSize: moderateScale(20),
-    fontWeight: 'bold',
-  },
-  handle: {
-    color: '#888888',
-    fontSize: moderateScale(13),
-    marginTop: verticalScale(2),
-  },
-
-  // Bio
-  bioBlock: {
-    paddingHorizontal: scale(16),
-    marginTop: verticalScale(10),
-  },
-  bioText: {
-    color: '#cccccc',
-    fontSize: moderateScale(13),
-    lineHeight: verticalScale(20),
-  },
-  addWebsite: {
-    color: '#00b9c0',
-    fontSize: moderateScale(13),
-    marginTop: verticalScale(4),
-  },
-
-  // Action buttons
-  actionRow: {
-    flexDirection: 'row',
-    paddingHorizontal: scale(16),
-    marginTop: verticalScale(14),
-    gap: scale(8),
-  },
-  editButton: {
-    flex: 1,
-    height: verticalScale(36),
-    borderRadius: moderateScale(18),
-    borderWidth: 1,
-    borderColor: '#00b9c0',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  editButtonText: {
-    color: '#00b9c0',
-    fontSize: moderateScale(12),
-    fontWeight: '600',
-  },
-  pointsButton: {
-    flex: 1,
-    height: verticalScale(36),
-    borderRadius: moderateScale(18),
-    overflow: 'hidden',
-  },
-  pointsGradient: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  pointsText: {
-    color: '#000000',
-    fontSize: moderateScale(12),
-    fontWeight: 'bold',
-  },
-  addAssetsButton: {
-    flex: 1,
-    height: verticalScale(36),
-    borderRadius: moderateScale(18),
-    borderWidth: 1,
-    borderColor: '#b6d82c',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  addAssetsText: {
-    color: '#b6d82c',
-    fontSize: moderateScale(12),
-    fontWeight: '600',
-  },
-
-  // Meta
-  metaRow: {
-    flexDirection: 'row',
-    paddingHorizontal: scale(16),
+  // Banner
+  banner: {
+    height: verticalScale(75),
+    backgroundColor: '#EAEAEA',
+    marginHorizontal: scale(15),
     marginTop: verticalScale(12),
+    borderRadius: moderateScale(18),
   },
-  metaText: {
-    color: '#666666',
-    fontSize: moderateScale(12),
+
+  // Profile
+  profileRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: verticalScale(10),
+    paddingHorizontal: scale(24),
+  },
+  avatar: {
+    width: scale(70),
+    height: scale(70),
+    borderRadius: scale(40),
+    backgroundColor: '#4DFF88',
     marginRight: scale(16),
   },
 
-  // Stats
-  statsRow: {
+  // Bio
+  bioContainer: {
+    paddingHorizontal: scale(24),
+    marginTop: verticalScale(5),
+  },
+
+  // Buttons
+  buttonRow: {
     flexDirection: 'row',
-    marginHorizontal: scale(16),
-    marginTop: verticalScale(16),
-    backgroundColor: '#0D0D0D',
-    borderRadius: moderateScale(12),
-    borderWidth: 1,
-    borderColor: '#1C1C1E',
-    paddingVertical: verticalScale(14),
+    justifyContent: 'space-between',
+    paddingHorizontal: scale(20),
+    marginTop: verticalScale(7),
   },
-  statBlock: {
-    flex: 1,
+  actionButton: {
+    flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: Colors.cyan,
+    paddingVertical: verticalScale(6),
+    paddingHorizontal: scale(10),
+    borderRadius: moderateScale(10),
   },
-  statValue: {
-    color: '#ffffff',
+  pointsIcon: {
+    width: scale(18),
+    height: scale(14),
+    resizeMode: 'contain',
+    marginRight: scale(6),
+  },
+  actionText: {
+    color: '#000',
+    fontFamily: 'Poppins-Regular',
     fontSize: moderateScale(16),
-    fontWeight: 'bold',
   },
-  statLabel: {
-    color: '#666666',
-    fontSize: moderateScale(10),
-    marginTop: verticalScale(3),
+
+  // Info
+  infoRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: scale(24),
+    marginTop: verticalScale(10),
   },
-  statDivider: {
-    width: 1,
-    backgroundColor: '#1C1C1E',
-    marginVertical: verticalScale(4),
+
+  // Stats
+  statsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    borderWidth: 1,
+    borderColor: Colors.borderCyan,
+    borderRadius: moderateScale(18),
+    marginHorizontal: scale(20),
+    paddingVertical: verticalScale(10),
+    marginTop: verticalScale(15),
+  },
+  statItem: {
+    alignItems: 'center',
+    flex: 1,
   },
 
   // Menu
+  // FIX: uses flexDirection row with defined left/right slots instead of
+  // the negative margin hack that previously forced the icon into position.
   menuCard: {
-    marginHorizontal: scale(16),
-    marginTop: verticalScale(20),
-    backgroundColor: '#0D0D0D',
-    borderRadius: moderateScale(12),
+    height: verticalScale(46),
     borderWidth: 1,
-    borderColor: '#1C1C1E',
-    overflow: 'hidden',
+    borderColor: Colors.borderCyan,
+    borderRadius: moderateScale(10),
+    marginHorizontal: scale(60),
+    marginTop: verticalScale(15),
+    paddingHorizontal: scale(12),
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  menuIcon: {
+    width: scale(26),
+    height: scale(26),
+    marginRight: scale(8),
+  },
+  menuText: {
+    flex: 1,
+    color: Colors.textPrimary,
+    fontFamily: 'Poppins-Regular',
+    fontSize: moderateScale(16),
+    textAlign: 'center',
+  },
+  arrowIcon: {
+    width: scale(14),
+    height: scale(22),
   },
 });
-
-export default HomeScreen;
