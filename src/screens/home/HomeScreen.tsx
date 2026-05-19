@@ -94,8 +94,21 @@ export default function HomeScreen() {
           <TouchableOpacity style={styles.topBarIcon}>
             <Text style={styles.topBarIconText}>💬</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.topBarIcon}>
-            <Text style={styles.topBarIconText}>⚙️</Text>
+          <TouchableOpacity
+            style={styles.topBarIcon}
+            onPress={() =>
+              navigation.navigate(
+                'Settings'
+              )
+            }
+          >
+            <Text
+              style={
+                styles.topBarIconText
+              }
+            >
+              ⚙️
+            </Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -313,7 +326,7 @@ const styles = StyleSheet.create({
   // FIX: uses flexDirection row with defined left/right slots instead of
   // the negative margin hack that previously forced the icon into position.
   menuCard: {
-    height: verticalScale(46),
+    height: verticalScale(35),
     borderWidth: 1,
     borderColor: Colors.borderCyan,
     borderRadius: moderateScale(10),

@@ -12,12 +12,11 @@ import {
   StatusBar,
   StyleSheet,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import LinearGradient from 'react-native-linear-gradient';
 import { scale, verticalScale, moderateScale } from '../../utils/scaling';
 import { AppNavigationProp } from '../../types/navigation';
 import { Colors } from '../../config/theme';
 import Typography from '../../styles/typography';
+import ScreenHeader from '../../components/ScreenHeader'
 
 type Props = { navigation: AppNavigationProp<'MyEarnings'> };
 
@@ -68,22 +67,12 @@ const MyEarnings = ({ navigation }: Props) => {
     <>
       <StatusBar barStyle="light-content" backgroundColor="#000" />
 
-      <LinearGradient
-        colors={[Colors.teal, Colors.lime]}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 0 }}
-        style={styles.header}
-      >
-        <SafeAreaView edges={['top']} style={styles.headerInner}>
-          <TouchableOpacity onPress={() => navigation.goBack()}>
-            <Image
-              source={require('../../assets/images/backbutton.png')}
-              style={styles.backIcon}
-            />
-          </TouchableOpacity>
-          <Text style={styles.headerTitle}>My Earnings</Text>
-        </SafeAreaView>
-      </LinearGradient>
+          <ScreenHeader
+              title="My Earnings"
+              onBack={() =>
+                  navigation.goBack()
+              }
+          />
 
       <ScrollView
         style={styles.container}
@@ -129,17 +118,6 @@ const MyEarnings = ({ navigation }: Props) => {
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: Colors.bgBlack, paddingHorizontal: scale(20) },
   scrollContent: { paddingBottom: verticalScale(120) },
-
-  header: { width: '100%' },
-  headerInner: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: scale(16),
-    paddingBottom: verticalScale(16),
-    paddingTop: verticalScale(4),
-  },
-  backIcon: { width: scale(30), height: scale(30), resizeMode: 'contain', marginRight: scale(12) },
-  headerTitle: { color: '#000', fontSize: moderateScale(22), fontWeight: '700' },
 
   totalCard: {
     borderRadius: moderateScale(20),

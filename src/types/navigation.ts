@@ -21,7 +21,16 @@ export type AppStackParamList = {
   Content: undefined;
   Pricing: undefined;
   MyEarnings: undefined;
-  CampaignQueue: undefined; // FIX: was missing, caused Campaign Queue menu to dead-end
+  CampaignQueue: undefined;
+  
+  Settings: undefined;
+  ManageAccount: undefined
+  Bio: undefined
+  SocialMedia: undefined
+  AdditionalInfo: undefined
+  ViewPlans: undefined
+  Subscription: undefined
+  ChangePassword: undefined
 };
 
 export type AuthNavigationProp<T extends keyof AuthStackParamList> =
