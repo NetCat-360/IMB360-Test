@@ -10,15 +10,24 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { moderateScale, verticalScale } from '../utils/scaling';
 import { Colors } from '../config/theme';
-
+import {
+  getFocusedRouteNameFromRoute,
+} from '@react-navigation/native'
 // Home stack screens
 import HomeScreen from '../screens/home/HomeScreen';
+import SettingsScreen from '../screens/settings/SettingsScreen'
 import OverviewScreen from '../screens/overview/OverviewScreen';
 import ContentScreen from '../screens/content/ContentScreen';
 import PricingScreen from '../screens/pricing/PricingScreen';
 import MyEarnings from '../screens/MyEarnings/MyEarnings';
 import CampaignQueueScreen from '../screens/CampaignQueue/CampaignQueueScreen';
-
+import ManageAccountScreen from '../screens/settings/ManageAccount/ManageAccountScreen'
+import BioScreen from '../screens/settings/Bio/BioScreen'
+import SocialMediaScreen from '../screens/settings/SocialMedia/SocialMediaScreen'
+import AdditionalInfoScreen from '../screens/settings/AdditionalInfo/AdditionalInfoScreen'
+import ViewPlansScreen from '../screens/settings/ViewPlans/ViewPlansScreen'
+import SubscriptionScreen from '../screens/settings/Subscription/SubscriptionScreen'
+import ChangePasswordScreen from '../screens/settings/ChangePassword/ChangePasswordScreen'
 // ── Placeholder tab screens ──────────────────────────────────────────────────
 const PlaceholderScreen = ({ label }: { label: string }) => (
   <View style={placeholderStyles.container}>
@@ -49,8 +58,48 @@ const ProfileStackNavigator = () => (
     <ProfileStack.Screen name="Content"       component={ContentScreen} />
     <ProfileStack.Screen name="Pricing"       component={PricingScreen} />
     <ProfileStack.Screen name="MyEarnings"    component={MyEarnings} />
-    {/* FIX: CampaignQueue registered so navigation.navigate('CampaignQueue') works */}
     <ProfileStack.Screen name="CampaignQueue" component={CampaignQueueScreen} />
+    <ProfileStack.Screen
+      name="Settings"
+      component={SettingsScreen}
+      options={{
+        presentation: 'card',
+      }}
+    />
+    <ProfileStack.Screen
+      name="ManageAccount"
+      component={ManageAccountScreen}
+    />
+
+    <ProfileStack.Screen
+      name="Bio"
+      component={BioScreen}
+    />
+
+    <ProfileStack.Screen
+      name="SocialMedia"
+      component={SocialMediaScreen}
+    />
+
+    <ProfileStack.Screen
+      name="AdditionalInfo"
+      component={AdditionalInfoScreen}
+    />
+
+    <ProfileStack.Screen
+      name="ViewPlans"
+      component={ViewPlansScreen}
+    />
+
+    <ProfileStack.Screen
+      name="Subscription"
+      component={SubscriptionScreen}
+    />
+
+    <ProfileStack.Screen
+      name="ChangePassword"
+      component={ChangePasswordScreen}
+    />
   </ProfileStack.Navigator>
 );
 
@@ -99,9 +148,59 @@ const AppNavigator = () => {
       <Tab.Screen
         name="ProfileTab"
         component={ProfileStackNavigator}
-        options={{
-          tabBarLabel: 'Profile',
-          tabBarIcon: ({ focused }) => <TabIcon name="account-outline" focused={focused} />,
+        options={({ route }) => {
+          const routeName =
+            getFocusedRouteNameFromRoute(
+              route
+            ) ?? 'Home'
+
+          const hideFooterScreens =
+            [
+              'Settings',
+              'ManageAccount',
+              'Bio',
+              'SocialMedia',
+              'AdditionalInfo',
+              'ViewPlans',
+              'Subscription',
+              'ChangePassword',
+            ]
+
+          return {
+            tabBarStyle: {
+              display:
+                hideFooterScreens.includes(
+                  routeName
+                )
+                  ? 'none'
+                  : 'flex',
+
+              backgroundColor:
+                Colors.bgSurface,
+              borderTopColor:
+                Colors.borderDefault,
+              borderTopWidth: 1,
+              height:
+                verticalScale(60),
+              paddingBottom:
+                verticalScale(8),
+              paddingTop:
+                verticalScale(6),
+            },
+
+            tabBarLabel:
+              'Profile',
+
+            tabBarIcon:
+              ({ focused }) => (
+                <TabIcon
+                  name="account-outline"
+                  focused={
+                    focused
+                  }
+                />
+              ),
+          }
         }}
       />
       <Tab.Screen
@@ -136,6 +235,7 @@ const AppNavigator = () => {
           tabBarIcon: ({ focused }) => <TabIcon name="folder-outline" focused={focused} />,
         }}
       />
+      
     </Tab.Navigator>
   );
 };
