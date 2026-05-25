@@ -79,11 +79,11 @@ const styles =
             flexDirection: 'row',
             alignItems: 'center',
             paddingHorizontal:
-                scale(16),
+                scale(20),
             paddingBottom:
-                verticalScale(16),
+                verticalScale(20),
             paddingTop:
-                verticalScale(4),
+                verticalScale(10),
         },
 
         backIcon: {

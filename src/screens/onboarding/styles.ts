@@ -41,8 +41,14 @@ const styles = StyleSheet.create({
   image: {
     width: '100%',
     height: '100%',
-  },
+    transform: [
+        {
+            scale: 1.3,
+        },
+    ],
+},
   textContainer: {
+    paddingTop: verticalScale(10),
     width: '100%',
   },
   title: {
@@ -73,11 +79,12 @@ const styles = StyleSheet.create({
   },
   footer: {
     paddingHorizontal: scale(30),
-    paddingBottom: verticalScale(70), // Pushes the button higher up
+    paddingBottom: verticalScale(60), // Pushes the button higher up
     alignItems: 'center', // Centers the shortened button
+    marginTop: verticalScale(30)
   },
   buttonGradient: {
-    height: verticalScale(54),
+    height: verticalScale(40),
     width: scale(190), // Shortened button length
     borderRadius: moderateScale(20),
     flexDirection: 'row',
