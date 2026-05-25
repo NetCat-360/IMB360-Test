@@ -16,6 +16,7 @@ export type AuthStackParamList = {
 };
 
 export type AppStackParamList = {
+  OnboardingScreen: undefined;
   Home: undefined;
   Overview: undefined;
   Content: undefined;
