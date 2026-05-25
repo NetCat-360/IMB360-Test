@@ -67,6 +67,12 @@ const PLATFORMS: Platform[] = [
   { icon: 'facebook', color: Colors.facebook },
 ];
 
+// Note: valid MaterialCommunityIcons names for social platforms:
+// instagram → 'instagram'  ✓
+// twitter   → 'twitter'    ✓
+// facebook  → 'facebook'   ✓
+// If icons still don't show, use: 'alpha-i-circle', 'alpha-t-circle', 'alpha-f-circle'
+
 const ONGOING_CAMPAIGNS: ActiveCampaign[] = [
   {
     id: 'o1',
