@@ -1,158 +1,257 @@
 // src/navigation/AppNavigator.tsx
-// Fixes applied:
-//   1. Tab bar icons replaced with react-native-vector-icons (MaterialCommunityIcons)
-//      — the package is already installed, just unused
-//   2. CampaignQueue screen registered in ProfileStack
+
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { moderateScale, verticalScale } from '../utils/scaling';
+
+import {
+  View,
+  Text,
+  StyleSheet,
+} from 'react-native';
+
+import {
+  createBottomTabNavigator,
+} from '@react-navigation/bottom-tabs';
+
+import {
+  createNativeStackNavigator,
+} from '@react-navigation/native-stack';
+
+import {
+  moderateScale,
+  verticalScale,
+} from '../utils/scaling';
+
 import { Colors } from '../config/theme';
+
 import {
   getFocusedRouteNameFromRoute,
-} from '@react-navigation/native'
-// Home stack screens
+} from '@react-navigation/native';
+
+// Screens
 import HomeScreen from '../screens/home/HomeScreen';
-import SettingsScreen from '../screens/settings/SettingsScreen'
+
+import SettingsScreen from '../screens/settings/SettingsScreen';
+
 import OverviewScreen from '../screens/overview/OverviewScreen';
+
 import ContentScreen from '../screens/content/ContentScreen';
+
 import PricingScreen from '../screens/pricing/PricingScreen';
+
 import MyEarnings from '../screens/MyEarnings/MyEarnings';
+
 import CampaignQueueScreen from '../screens/CampaignQueue/CampaignQueueScreen';
-import ManageAccountScreen from '../screens/settings/ManageAccount/ManageAccountScreen'
-import BioScreen from '../screens/settings/Bio/BioScreen'
-import SocialMediaScreen from '../screens/settings/SocialMedia/SocialMediaScreen'
-import AdditionalInfoScreen from '../screens/settings/AdditionalInfo/AdditionalInfoScreen'
-import ViewPlansScreen from '../screens/settings/ViewPlans/ViewPlansScreen'
-import SubscriptionScreen from '../screens/settings/Subscription/SubscriptionScreen'
-import ChangePasswordScreen from '../screens/settings/ChangePassword/ChangePasswordScreen'
-// ── Placeholder tab screens ──────────────────────────────────────────────────
-const PlaceholderScreen = ({ label }: { label: string }) => (
-  <View style={placeholderStyles.container}>
-    <Text style={placeholderStyles.text}>{label}</Text>
+
+import ManageAccountScreen from '../screens/settings/ManageAccount/ManageAccountScreen';
+
+import BioScreen from '../screens/settings/Bio/BioScreen';
+
+import SocialMediaScreen from '../screens/settings/SocialMedia/SocialMediaScreen';
+
+import AdditionalInfoScreen from '../screens/settings/AdditionalInfo/AdditionalInfoScreen';
+
+import ViewPlansScreen from '../screens/settings/ViewPlans/ViewPlansScreen';
+
+import SubscriptionScreen from '../screens/settings/Subscription/SubscriptionScreen';
+
+import ChangePasswordScreen from '../screens/settings/ChangePassword/ChangePasswordScreen';
+
+// ─────────────────────────────────────────────
+// Placeholder Screens
+// ─────────────────────────────────────────────
+
+const PlaceholderScreen = ({
+  label,
+}: {
+  label: string;
+}) => (
+  <View style={styles.placeholderContainer}>
+    <Text style={styles.placeholderText}>
+      {label}
+    </Text>
   </View>
 );
 
-const CampaignsScreen  = () => <PlaceholderScreen label="Campaigns" />;
-const ExploreScreen    = () => <PlaceholderScreen label="Explore" />;
-const AnalyticsScreen  = () => <PlaceholderScreen label="Analytics" />;
-const AssetsScreen     = () => <PlaceholderScreen label="Assets" />;
+const CampaignsScreen = () => (
+  <PlaceholderScreen label="Campaigns" />
+);
 
-const placeholderStyles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: Colors.bgBlack, justifyContent: 'center', alignItems: 'center' },
-  text: { color: Colors.lime, fontSize: moderateScale(18), fontWeight: 'bold' },
-});
-// ────────────────────────────────────────────────────────────────────────────
+const ExploreScreen = () => (
+  <PlaceholderScreen label="Explore" />
+);
 
-// ProfileStack — Home + all sub-screens pushed on top
-const ProfileStack = createNativeStackNavigator();
+const AnalyticsScreen = () => (
+  <PlaceholderScreen label="Analytics" />
+);
 
-const ProfileStackNavigator = () => (
-  <ProfileStack.Navigator
-    screenOptions={{ headerShown: false, contentStyle: { backgroundColor: Colors.bgBlack } }}
-  >
-    <ProfileStack.Screen name="Home"          component={HomeScreen} />
-    <ProfileStack.Screen name="Overview"      component={OverviewScreen} />
-    <ProfileStack.Screen name="Content"       component={ContentScreen} />
-    <ProfileStack.Screen name="Pricing"       component={PricingScreen} />
-    <ProfileStack.Screen name="MyEarnings"    component={MyEarnings} />
-    <ProfileStack.Screen name="CampaignQueue" component={CampaignQueueScreen} />
-    <ProfileStack.Screen
-      name="Settings"
-      component={SettingsScreen}
-      options={{
-        presentation: 'card',
+const AssetsScreen = () => (
+  <PlaceholderScreen label="Assets" />
+);
+
+// ─────────────────────────────────────────────
+// Profile Stack
+// ─────────────────────────────────────────────
+
+const ProfileStack =
+  createNativeStackNavigator();
+
+const ProfileStackNavigator =
+  () => (
+    <ProfileStack.Navigator
+      screenOptions={{
+        headerShown: false,
+
+        contentStyle: {
+          backgroundColor:
+            Colors.bgBlack,
+        },
       }}
-    />
-    <ProfileStack.Screen
-      name="ManageAccount"
-      component={ManageAccountScreen}
-    />
+    >
+      <ProfileStack.Screen
+        name="Home"
+        component={HomeScreen}
+      />
 
-    <ProfileStack.Screen
-      name="Bio"
-      component={BioScreen}
-    />
+      <ProfileStack.Screen
+        name="Overview"
+        component={OverviewScreen}
+      />
 
-    <ProfileStack.Screen
-      name="SocialMedia"
-      component={SocialMediaScreen}
-    />
+      <ProfileStack.Screen
+        name="Content"
+        component={ContentScreen}
+      />
 
-    <ProfileStack.Screen
-      name="AdditionalInfo"
-      component={AdditionalInfoScreen}
-    />
+      <ProfileStack.Screen
+        name="Pricing"
+        component={PricingScreen}
+      />
 
-    <ProfileStack.Screen
-      name="ViewPlans"
-      component={ViewPlansScreen}
-    />
+      <ProfileStack.Screen
+        name="MyEarnings"
+        component={MyEarnings}
+      />
 
-    <ProfileStack.Screen
-      name="Subscription"
-      component={SubscriptionScreen}
-    />
+      <ProfileStack.Screen
+        name="CampaignQueue"
+        component={
+          CampaignQueueScreen
+        }
+      />
 
-    <ProfileStack.Screen
-      name="ChangePassword"
-      component={ChangePasswordScreen}
-    />
-  </ProfileStack.Navigator>
-);
+      <ProfileStack.Screen
+        name="Settings"
+        component={SettingsScreen}
+      />
 
-// ── Tab icon using react-native-vector-icons ─────────────────────────────────
-// FIX: replaced emoji Text components with proper vector icons.
-// react-native-vector-icons is already in package.json — just wasn't used.
-const TabIcon = ({
-  name,
-  focused,
-}: {
-  name: string;
-  focused: boolean;
-}) => (
-  <Icon
-    name={name}
-    size={moderateScale(22)}
-    color={focused ? Colors.teal : '#666666'}
-  />
-);
-// ────────────────────────────────────────────────────────────────────────────
+      <ProfileStack.Screen
+        name="ManageAccount"
+        component={
+          ManageAccountScreen
+        }
+      />
 
-const Tab = createBottomTabNavigator();
+      <ProfileStack.Screen
+        name="Bio"
+        component={BioScreen}
+      />
+
+      <ProfileStack.Screen
+        name="SocialMedia"
+        component={
+          SocialMediaScreen
+        }
+      />
+
+      <ProfileStack.Screen
+        name="AdditionalInfo"
+        component={
+          AdditionalInfoScreen
+        }
+      />
+
+      <ProfileStack.Screen
+        name="ViewPlans"
+        component={
+          ViewPlansScreen
+        }
+      />
+
+      <ProfileStack.Screen
+        name="Subscription"
+        component={
+          SubscriptionScreen
+        }
+      />
+
+      <ProfileStack.Screen
+        name="ChangePassword"
+        component={
+          ChangePasswordScreen
+        }
+      />
+    </ProfileStack.Navigator>
+  );
+
+// ─────────────────────────────────────────────
+// Tabs
+// ─────────────────────────────────────────────
+
+const Tab =
+  createBottomTabNavigator();
 
 const AppNavigator = () => {
   return (
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
+
         tabBarStyle: {
-          backgroundColor: Colors.bgSurface,
-          borderTopColor: Colors.borderDefault,
+          backgroundColor:
+            Colors.bgSurface,
+
+          borderTopColor:
+            Colors.borderDefault,
+
           borderTopWidth: 1,
-          height: verticalScale(60),
-          paddingBottom: verticalScale(8),
-          paddingTop: verticalScale(6),
+
+          height:
+            verticalScale(60),
+
+          paddingBottom:
+            verticalScale(8),
+
+          paddingTop:
+            verticalScale(6),
         },
-        tabBarActiveTintColor: Colors.teal,
-        tabBarInactiveTintColor: '#666666',
+
+        tabBarActiveTintColor:
+          Colors.teal,
+
+        tabBarInactiveTintColor:
+          '#666666',
+
+        // TEMP FIX:
+        // removed fontFamily
         tabBarLabelStyle: {
-          fontSize: moderateScale(10),
-          fontFamily: 'Poppins-SemiBold',
-          marginTop: verticalScale(2),
+          fontSize:
+            moderateScale(10),
+
+          marginTop:
+            verticalScale(2),
         },
       }}
     >
       <Tab.Screen
         name="ProfileTab"
-        component={ProfileStackNavigator}
+        component={
+          ProfileStackNavigator
+        }
         options={({ route }) => {
           const routeName =
             getFocusedRouteNameFromRoute(
-              route
-            ) ?? 'Home'
+              route,
+            ) ?? 'Home';
 
           const hideFooterScreens =
             [
@@ -164,26 +263,31 @@ const AppNavigator = () => {
               'ViewPlans',
               'Subscription',
               'ChangePassword',
-            ]
+            ];
 
           return {
             tabBarStyle: {
               display:
                 hideFooterScreens.includes(
-                  routeName
+                  routeName,
                 )
                   ? 'none'
                   : 'flex',
 
               backgroundColor:
                 Colors.bgSurface,
+
               borderTopColor:
                 Colors.borderDefault,
+
               borderTopWidth: 1,
+
               height:
                 verticalScale(60),
+
               paddingBottom:
                 verticalScale(8),
+
               paddingTop:
                 verticalScale(6),
             },
@@ -191,53 +295,112 @@ const AppNavigator = () => {
             tabBarLabel:
               'Profile',
 
-            tabBarIcon:
-              ({ focused }) => (
-                <TabIcon
-                  name="account-outline"
-                  focused={
-                    focused
-                  }
-                />
-              ),
-          }
+            // TEMP FIX:
+            // removed vector icons
+            tabBarIcon: () => (
+              <Text
+                style={{
+                  fontSize: 18,
+                }}
+              >
+                👤
+              </Text>
+            ),
+          };
         }}
       />
+
       <Tab.Screen
         name="Campaigns"
-        component={CampaignsScreen}
+        component={
+          CampaignsScreen
+        }
         options={{
-          tabBarLabel: 'Campaigns',
-          tabBarIcon: ({ focused }) => <TabIcon name="bullhorn-outline" focused={focused} />,
+          tabBarIcon: () => (
+            <Text
+              style={{
+                fontSize: 18,
+              }}
+            >
+              📢
+            </Text>
+          ),
         }}
       />
+
       <Tab.Screen
         name="Explore"
         component={ExploreScreen}
         options={{
-          tabBarLabel: 'Explore',
-          tabBarIcon: ({ focused }) => <TabIcon name="compass-outline" focused={focused} />,
+          tabBarIcon: () => (
+            <Text
+              style={{
+                fontSize: 18,
+              }}
+            >
+              🧭
+            </Text>
+          ),
         }}
       />
+
       <Tab.Screen
         name="Analytics"
-        component={AnalyticsScreen}
+        component={
+          AnalyticsScreen
+        }
         options={{
-          tabBarLabel: 'Analytics',
-          tabBarIcon: ({ focused }) => <TabIcon name="chart-bar" focused={focused} />,
+          tabBarIcon: () => (
+            <Text
+              style={{
+                fontSize: 18,
+              }}
+            >
+              📊
+            </Text>
+          ),
         }}
       />
+
       <Tab.Screen
         name="Assets"
         component={AssetsScreen}
         options={{
-          tabBarLabel: 'Assets',
-          tabBarIcon: ({ focused }) => <TabIcon name="folder-outline" focused={focused} />,
+          tabBarIcon: () => (
+            <Text
+              style={{
+                fontSize: 18,
+              }}
+            >
+              📁
+            </Text>
+          ),
         }}
       />
-      
     </Tab.Navigator>
   );
 };
+
+const styles = StyleSheet.create({
+  placeholderContainer: {
+    flex: 1,
+
+    backgroundColor:
+      Colors.bgBlack,
+
+    justifyContent: 'center',
+
+    alignItems: 'center',
+  },
+
+  placeholderText: {
+    color: Colors.lime,
+
+    fontSize:
+      moderateScale(18),
+
+    fontWeight: 'bold',
+  },
+});
 
 export default AppNavigator;

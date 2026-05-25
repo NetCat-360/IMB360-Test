@@ -1,6 +1,7 @@
 // src/screens/auth/register/RegisterScreen.tsx
-// Improvements: useGlobalToast replaces local toast state, Typography applied.
+
 import React, { useState } from 'react';
+
 import {
   View,
   Text,
@@ -14,17 +15,43 @@ import {
   Modal,
   FlatList,
 } from 'react-native';
+
 import { SafeAreaView } from 'react-native-safe-area-context';
-import Animated, { useAnimatedStyle, interpolate } from 'react-native-reanimated';
+
 import LinearGradient from 'react-native-linear-gradient';
-import { scale, verticalScale, moderateScale } from '../../../utils/scaling';
+
+import {
+  scale,
+  verticalScale,
+  moderateScale,
+} from '../../../utils/scaling';
+
 import { COUNTRIES } from '../../../utils/countries';
-import { AuthNavigationProp, AuthRouteProp } from '../../../types/navigation';
+
+import {
+  AuthNavigationProp,
+  AuthRouteProp,
+} from '../../../types/navigation';
+
 import FloatingInput from '../../../components/common/FloatingInput';
+
 import { useGlobalToast } from '../../../context/ToastContext';
+
 import { Colors } from '../../../config/theme';
+
 import Typography from '../../../styles/typography';
+
 import styles from './styles';
+
+import apiClient from '../../../api/client';
+
+import {
+  containsFourByteUnicode,
+  safeDatabaseText,
+  sanitizeEmail,
+  sanitizePhone,
+  sanitizeText,
+} from '../../../security/sanitize';
 
 interface Country {
   code: string;
@@ -38,30 +65,58 @@ type Props = {
   route: AuthRouteProp<'Register'>;
 };
 
-const RegisterScreen = ({ navigation, route }: Props) => {
-  const userRole = route?.params?.role || 'CREATOR';
+const RegisterScreen = ({
+  navigation,
+  route,
+}: Props) => {
+  const userRole =
+    route?.params?.role || 'CREATOR';
 
-  const [name, setName]         = useState('');
-  const [email, setEmail]       = useState('');
-  const [phone, setPhone]       = useState('');
-  const [password, setPassword] = useState('');
-  const [toggleCheckBox, setToggleCheckBox] = useState(false);
-  const [securePassword, setSecurePassword] = useState(true);
-  const [loading, setLoading]   = useState(false);
+  const [name, setName] = useState('');
+  const [email, setEmail] =
+    useState('');
+  const [phone, setPhone] =
+    useState('');
+  const [password, setPassword] =
+    useState('');
 
-  const [selectedCountry, setSelectedCountry] = useState<Country>({
-    code: 'US',
-    flag: '🇺🇸',
-    name: 'United States',
-    callingCode: '+1',
-  });
-  const [modalVisible, setModalVisible] = useState(false);
-  const [searchQuery, setSearchQuery]   = useState('');
+  const [toggleCheckBox, setToggleCheckBox] =
+    useState(false);
 
-  // FIX: replaced local useToast with global toast — no duplicate state
+  const [securePassword, setSecurePassword] =
+    useState(true);
+
+  const [loading, setLoading] =
+    useState(false);
+
+  const [selectedCountry, setSelectedCountry] =
+    useState<Country>({
+      code: 'US',
+      flag: '🇺🇸',
+      name: 'United States',
+      callingCode: '+1',
+    });
+
+  const [modalVisible, setModalVisible] =
+    useState(false);
+
+  const [searchQuery, setSearchQuery] =
+    useState('');
+
   const { showToast } = useGlobalToast();
 
-  const isEmailValid = (text: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(text);
+  const isEmailValid = (text: string) =>
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(
+      text,
+    );
+
+  const isStrongPassword = (
+    passwordText: string,
+  ) => {
+    return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{8,}$/.test(
+      passwordText,
+    );
+  };
 
   const isFormComplete =
     name.trim() !== '' &&
@@ -69,227 +124,638 @@ const RegisterScreen = ({ navigation, route }: Props) => {
     phone.trim() !== '' &&
     password.trim().length >= 8;
 
-  const filteredCountries = COUNTRIES.filter(
-    item =>
-      item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.callingCode.includes(searchQuery),
-  );
+  const filteredCountries =
+    COUNTRIES.filter(
+      item =>
+        item.name
+          .toLowerCase()
+          .includes(
+            searchQuery.toLowerCase(),
+          ) ||
+        item.callingCode.includes(
+          searchQuery,
+        ),
+    );
 
-  const handleCountrySelect = (country: Country) => {
+  const handleCountrySelect = (
+    country: Country,
+  ) => {
     setSelectedCountry(country);
     setModalVisible(false);
     setSearchQuery('');
   };
 
-  const validateAndSubmit = async () => {
-    if (!toggleCheckBox) {
-      showToast('Please accept the Privacy Policy and Terms of use.', 'error');
-      return;
-    }
-    if (password.trim().length < 8) {
-      showToast('Password must be at least 8 characters.', 'error');
-      return;
-    }
+  const validateAndSubmit =
+    async () => {
+      const cleanName =
+        safeDatabaseText(name, 80);
 
-    setLoading(true);
-    try {
-      const signupDataPayload = {
-        fullName: name,
-        emailAddress: email.toLowerCase().trim(),
-        phoneNumber: `${selectedCountry.callingCode}${phone}`,
-        password,
-        role: userRole,
-      };
-      // TODO: Replace with real API call
-      console.log('Sending Registration Payload:', signupDataPayload);
-      await new Promise(resolve => setTimeout(resolve, 800));
-      showToast(`Account created successfully as a ${userRole}!`, 'success');
-    } catch {
-      showToast('Registration failed. Please try again.', 'error');
-    } finally {
-      setLoading(false);
-    }
-  };
+      const cleanEmail =
+        sanitizeEmail(email);
 
-  const handleSendVerificationCode = () => {
-    if (!isEmailValid(email)) {
-      showToast('Please enter a valid email address.', 'error');
-      return;
-    }
-    // TODO: Replace with real API call
-    showToast('Verification code sent!', 'success');
-  };
+      const cleanPhone =
+        sanitizePhone(phone);
 
-  const renderCountryCodePicker = () => (
-    <TouchableOpacity
-      style={localStyles.codePickerWrapper}
-      activeOpacity={0.7}
-      onPress={() => setModalVisible(true)}
-    >
-      <Text style={localStyles.flagText}>{selectedCountry.flag}</Text>
-      <Text style={localStyles.callingCodeText}>{selectedCountry.callingCode}</Text>
-      <Text style={localStyles.dropdownArrow}>▼</Text>
-    </TouchableOpacity>
-  );
+      const cleanPassword =
+        sanitizeText(password, 128);
 
-  const renderVerificationButton = () => (
-    <TouchableOpacity onPress={handleSendVerificationCode} style={styles.inlineActionWrapper}>
-      <Text style={styles.inlineActionText}>Send Code</Text>
-    </TouchableOpacity>
-  );
+      if (!toggleCheckBox) {
+        showToast(
+          'Please accept the Privacy Policy and Terms of use.',
+          'error',
+        );
+        return;
+      }
 
-  const renderPasswordToggle = () => (
-    <TouchableOpacity
-      onPress={() => setSecurePassword(!securePassword)}
-      style={styles.inlineActionWrapper}
-    >
-      <Text style={[styles.inlineActionText, { color: Colors.textDim }]}>
-        {securePassword ? 'Show' : 'Hide'}
-      </Text>
-    </TouchableOpacity>
-  );
+      if (
+        containsFourByteUnicode(
+          cleanName,
+        )
+      ) {
+        showToast(
+          'Emojis are not supported in name fields.',
+          'error',
+        );
+        return;
+      }
+
+      if (
+        !isEmailValid(cleanEmail)
+      ) {
+        showToast(
+          'Please enter a valid email address.',
+          'error',
+        );
+        return;
+      }
+
+      if (
+        !isStrongPassword(
+          cleanPassword,
+        )
+      ) {
+        showToast(
+          'Password must contain uppercase, lowercase, number and special character.',
+          'error',
+        );
+        return;
+      }
+
+      setLoading(true);
+
+      try {
+        const signupDataPayload = {
+          fullName: cleanName,
+          emailAddress: cleanEmail,
+          phoneNumber: `${selectedCountry.callingCode}${cleanPhone}`,
+          password: cleanPassword,
+          role: userRole,
+        };
+
+        // Backend endpoint
+        await apiClient.post(
+          '/auth/register',
+          signupDataPayload,
+        );
+
+        showToast(
+          `Account created successfully as a ${userRole}!`,
+          'success',
+        );
+
+        navigation.navigate(
+          'Login',
+        );
+      } catch (error: any) {
+        if (
+          error?.response?.status ===
+          409
+        ) {
+          showToast(
+            'An account with this email already exists.',
+            'error',
+          );
+        } else {
+          showToast(
+            'Registration failed. Please try again.',
+            'error',
+          );
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+  const handleSendVerificationCode =
+    () => {
+      const cleanEmail =
+        sanitizeEmail(email);
+
+      if (
+        !isEmailValid(cleanEmail)
+      ) {
+        showToast(
+          'Please enter a valid email address.',
+          'error',
+        );
+        return;
+      }
+
+      // Replace with backend OTP endpoint
+      showToast(
+        'Verification code sent!',
+        'success',
+      );
+    };
+
+  const renderCountryCodePicker =
+    () => (
+      <TouchableOpacity
+        style={
+          localStyles.codePickerWrapper
+        }
+        activeOpacity={0.7}
+        onPress={() =>
+          setModalVisible(true)
+        }
+      >
+        <Text
+          style={localStyles.flagText}
+        >
+          {selectedCountry.flag}
+        </Text>
+
+        <Text
+          style={
+            localStyles.callingCodeText
+          }
+        >
+          {
+            selectedCountry.callingCode
+          }
+        </Text>
+
+        <Text
+          style={
+            localStyles.dropdownArrow
+          }
+        >
+          ▼
+        </Text>
+      </TouchableOpacity>
+    );
+
+  const renderVerificationButton =
+    () => (
+      <TouchableOpacity
+        onPress={
+          handleSendVerificationCode
+        }
+        style={
+          styles.inlineActionWrapper
+        }
+      >
+        <Text
+          style={
+            styles.inlineActionText
+          }
+        >
+          Send Code
+        </Text>
+      </TouchableOpacity>
+    );
+
+  const renderPasswordToggle =
+    () => (
+      <TouchableOpacity
+        onPress={() =>
+          setSecurePassword(
+            !securePassword,
+          )
+        }
+        style={
+          styles.inlineActionWrapper
+        }
+      >
+        <Text
+          style={[
+            styles.inlineActionText,
+            {
+              color:
+                Colors.textDim,
+            },
+          ]}
+        >
+          {securePassword
+            ? 'Show'
+            : 'Hide'}
+        </Text>
+      </TouchableOpacity>
+    );
 
   return (
-    <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
-      <StatusBar barStyle="light-content" backgroundColor={Colors.bgBlack} />
+    <SafeAreaView
+      style={styles.container}
+      edges={['top', 'bottom']}
+    >
+      <StatusBar
+        barStyle="light-content"
+        backgroundColor={
+          Colors.bgBlack
+        }
+      />
+
       <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        behavior={
+          Platform.OS === 'ios'
+            ? 'padding'
+            : 'height'
+        }
         style={{ flex: 1 }}
       >
-        <View style={styles.fixedContentContainer}>
-          <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-            <Text style={styles.backButtonText}>←</Text>
+        <View
+          style={
+            styles.fixedContentContainer
+          }
+        >
+          <TouchableOpacity
+            style={styles.backButton}
+            onPress={() =>
+              navigation.goBack()
+            }
+          >
+            <Text
+              style={
+                styles.backButtonText
+              }
+            >
+              ←
+            </Text>
           </TouchableOpacity>
 
-          <View style={styles.formFlowWrapper}>
+          <View
+            style={
+              styles.formFlowWrapper
+            }
+          >
             <Image
               source={require('../../../assets/images/IMB360_v2.png')}
               style={styles.logo}
               resizeMode="contain"
             />
-            <Text style={[Typography.h2, { color: Colors.lime, marginVertical: verticalScale(12) }]}>
+
+            <Text
+              style={[
+                Typography.h2,
+                {
+                  color: Colors.lime,
+                  marginVertical:
+                    verticalScale(12),
+                },
+              ]}
+            >
               CREATE YOUR ACCOUNT
             </Text>
 
-            <FloatingInput label="Full Name" value={name} onChangeText={setName} autoCapitalize="words" />
+            <FloatingInput
+              label="Full Name"
+              value={name}
+              onChangeText={text =>
+                setName(
+                  sanitizeText(
+                    text,
+                    80,
+                  ),
+                )
+              }
+              autoCapitalize="words"
+            />
+
             <FloatingInput
               label="Email address"
               value={email}
-              onChangeText={setEmail}
+              onChangeText={text =>
+                setEmail(
+                  sanitizeText(
+                    text,
+                    320,
+                  ),
+                )
+              }
               keyboardType="email-address"
               rightComponent={renderVerificationButton()}
             />
+
             <FloatingInput
               label="Phone"
               value={phone}
-              onChangeText={setPhone}
+              onChangeText={text =>
+                setPhone(
+                  sanitizePhone(
+                    text,
+                  ),
+                )
+              }
               keyboardType="phone-pad"
               prefixComponent={renderCountryCodePicker()}
             />
+
             <FloatingInput
               label="Create a Password"
               value={password}
-              onChangeText={setPassword}
-              secureTextEntry={securePassword}
+              onChangeText={text =>
+                setPassword(
+                  sanitizeText(
+                    text,
+                    128,
+                  ),
+                )
+              }
+              secureTextEntry={
+                securePassword
+              }
               rightComponent={renderPasswordToggle()}
             />
 
-            <Text style={styles.passRequirementText}>
-              Password must be 8+ characters with a special character, number, a-z, A-Z.
+            <Text
+              style={
+                styles.passRequirementText
+              }
+            >
+              Password must be 8+
+              characters with a special
+              character, number, a-z,
+              A-Z.
             </Text>
 
-            <View style={styles.checkboxContainer}>
+            <View
+              style={
+                styles.checkboxContainer
+              }
+            >
               <TouchableOpacity
                 activeOpacity={0.8}
-                style={[styles.customCheckbox, toggleCheckBox && styles.customCheckboxChecked]}
-                onPress={() => setToggleCheckBox(!toggleCheckBox)}
+                style={[
+                  styles.customCheckbox,
+                  toggleCheckBox &&
+                    styles.customCheckboxChecked,
+                ]}
+                onPress={() =>
+                  setToggleCheckBox(
+                    !toggleCheckBox,
+                  )
+                }
               >
-                {toggleCheckBox && <Text style={styles.checkmarkIcon}>✓</Text>}
+                {toggleCheckBox && (
+                  <Text
+                    style={
+                      styles.checkmarkIcon
+                    }
+                  >
+                    ✓
+                  </Text>
+                )}
               </TouchableOpacity>
-              <Text style={styles.checkboxLabel}>
+
+              <Text
+                style={
+                  styles.checkboxLabel
+                }
+              >
                 I accept{' '}
-                <Text style={styles.underlineText}>Privacy Policy</Text>
-                {' '}and{' '}
-                <Text style={styles.underlineText}>Terms of use</Text>
+                <Text
+                  style={
+                    styles.underlineText
+                  }
+                >
+                  Privacy Policy
+                </Text>{' '}
+                and{' '}
+                <Text
+                  style={
+                    styles.underlineText
+                  }
+                >
+                  Terms of use
+                </Text>
               </Text>
             </View>
 
             <TouchableOpacity
-              style={[styles.submitButton, { opacity: isFormComplete && !loading ? 1 : 0.4 }]}
-              onPress={validateAndSubmit}
-              disabled={!isFormComplete || loading}
+              style={[
+                styles.submitButton,
+                {
+                  opacity:
+                    isFormComplete &&
+                    !loading
+                      ? 1
+                      : 0.4,
+                },
+              ]}
+              onPress={
+                validateAndSubmit
+              }
+              disabled={
+                !isFormComplete ||
+                loading
+              }
             >
               <LinearGradient
-                colors={[Colors.teal, Colors.lime]}
+                colors={[
+                  Colors.teal,
+                  Colors.lime,
+                ]}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 0 }}
-                style={styles.gradientButtonLayout}
+                style={
+                  styles.gradientButtonLayout
+                }
               >
-                <Text style={styles.submitButtonText}>
-                  {loading ? 'Registering...' : 'Register'}
+                <Text
+                  style={
+                    styles.submitButtonText
+                  }
+                >
+                  {loading
+                    ? 'Registering...'
+                    : 'Register'}
                 </Text>
               </LinearGradient>
             </TouchableOpacity>
 
-            <Text style={styles.dividerText}>Or continue with</Text>
+            <Text
+              style={styles.dividerText}
+            >
+              Or continue with
+            </Text>
 
             <View style={styles.socialRow}>
-              <TouchableOpacity style={styles.socialButton}>
-                <Image source={require('../../../assets/images/google.png')} style={styles.socialIcon} />
-                <Text style={styles.socialText}>Google</Text>
+              <TouchableOpacity
+                style={styles.socialButton}
+              >
+                <Image
+                  source={require('../../../assets/images/google.png')}
+                  style={styles.socialIcon}
+                />
+
+                <Text
+                  style={
+                    styles.socialText
+                  }
+                >
+                  Google
+                </Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.socialButton}>
+
+              <TouchableOpacity
+                style={styles.socialButton}
+              >
                 <Image
                   source={require('../../../assets/images/apple.png')}
-                  style={[styles.socialIcon, { tintColor: Colors.textPrimary }]}
+                  style={[
+                    styles.socialIcon,
+                    {
+                      tintColor:
+                        Colors.textPrimary,
+                    },
+                  ]}
                 />
-                <Text style={styles.socialText}>Apple</Text>
+
+                <Text
+                  style={
+                    styles.socialText
+                  }
+                >
+                  Apple
+                </Text>
               </TouchableOpacity>
             </View>
           </View>
 
           <TouchableOpacity
-            onPress={() => navigation.navigate('Login')}
-            style={styles.redirectLinkWrapper}
+            onPress={() =>
+              navigation.navigate(
+                'Login',
+              )
+            }
+            style={
+              styles.redirectLinkWrapper
+            }
           >
-            <Text style={styles.footerRedirectText}>
-              Already have an account? <Text style={styles.linkTextInline}>Login</Text>
+            <Text
+              style={
+                styles.footerRedirectText
+              }
+            >
+              Already have an account?{' '}
+              <Text
+                style={
+                  styles.linkTextInline
+                }
+              >
+                Login
+              </Text>
             </Text>
           </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>
 
-      {/* Country Selection Modal */}
-      <Modal visible={modalVisible} animationType="slide" transparent>
-        <View style={localStyles.modalOverlay}>
-          <View style={localStyles.modalContent}>
-            <View style={localStyles.modalHeader}>
-              <Text style={localStyles.modalTitle}>Select Country</Text>
-              <TouchableOpacity onPress={() => { setModalVisible(false); setSearchQuery(''); }}>
-                <Text style={localStyles.closeButton}>✕</Text>
+      <Modal
+        visible={modalVisible}
+        animationType="slide"
+        transparent
+      >
+        <View
+          style={localStyles.modalOverlay}
+        >
+          <View
+            style={localStyles.modalContent}
+          >
+            <View
+              style={localStyles.modalHeader}
+            >
+              <Text
+                style={
+                  localStyles.modalTitle
+                }
+              >
+                Select Country
+              </Text>
+
+              <TouchableOpacity
+                onPress={() => {
+                  setModalVisible(
+                    false,
+                  );
+                  setSearchQuery('');
+                }}
+              >
+                <Text
+                  style={
+                    localStyles.closeButton
+                  }
+                >
+                  ✕
+                </Text>
               </TouchableOpacity>
             </View>
+
             <TextInput
               style={localStyles.searchBar}
               placeholder="Search country name or calling code..."
-              placeholderTextColor={Colors.textDim}
+              placeholderTextColor={
+                Colors.textDim
+              }
               value={searchQuery}
-              onChangeText={setSearchQuery}
+              onChangeText={
+                setSearchQuery
+              }
               autoCorrect={false}
             />
+
             <FlatList
               data={filteredCountries}
-              keyExtractor={item => item.code}
+              keyExtractor={item =>
+                item.code
+              }
               initialNumToRender={15}
               keyboardShouldPersistTaps="handled"
               renderItem={({ item }) => (
                 <TouchableOpacity
-                  style={localStyles.countryItem}
-                  onPress={() => handleCountrySelect(item)}
+                  style={
+                    localStyles.countryItem
+                  }
+                  onPress={() =>
+                    handleCountrySelect(
+                      item,
+                    )
+                  }
                 >
-                  <Text style={localStyles.itemFlag}>{item.flag}</Text>
-                  <Text style={localStyles.itemName}>{item.name}</Text>
-                  <Text style={localStyles.itemCallingCode}>{item.callingCode}</Text>
+                  <Text
+                    style={
+                      localStyles.itemFlag
+                    }
+                  >
+                    {item.flag}
+                  </Text>
+
+                  <Text
+                    style={
+                      localStyles.itemName
+                    }
+                  >
+                    {item.name}
+                  </Text>
+
+                  <Text
+                    style={
+                      localStyles.itemCallingCode
+                    }
+                  >
+                    {
+                      item.callingCode
+                    }
+                  </Text>
                 </TouchableOpacity>
               )}
             />
@@ -308,20 +774,46 @@ const localStyles = StyleSheet.create({
     paddingRight: scale(8),
     height: '100%',
     borderRightWidth: 1,
-    borderRightColor: Colors.borderStrong,
+    borderRightColor:
+      Colors.borderStrong,
     marginRight: scale(8),
   },
-  flagText: { fontSize: moderateScale(16), marginRight: scale(4) },
-  callingCodeText: { color: Colors.textPrimary, fontSize: moderateScale(14), fontWeight: '500' },
-  dropdownArrow: { color: Colors.textDim, fontSize: moderateScale(9), marginLeft: scale(4) },
-  modalOverlay: { flex: 1, backgroundColor: Colors.bgModalOverlay, justifyContent: 'flex-end' },
+
+  flagText: {
+    fontSize: moderateScale(16),
+    marginRight: scale(4),
+  },
+
+  callingCodeText: {
+    color: Colors.textPrimary,
+    fontSize: moderateScale(14),
+    fontWeight: '500',
+  },
+
+  dropdownArrow: {
+    color: Colors.textDim,
+    fontSize: moderateScale(9),
+    marginLeft: scale(4),
+  },
+
+  modalOverlay: {
+    flex: 1,
+    backgroundColor:
+      Colors.bgModalOverlay,
+    justifyContent: 'flex-end',
+  },
+
   modalContent: {
-    backgroundColor: Colors.bgModalSheet,
-    borderTopLeftRadius: moderateScale(20),
-    borderTopRightRadius: moderateScale(20),
+    backgroundColor:
+      Colors.bgModalSheet,
+    borderTopLeftRadius:
+      moderateScale(20),
+    borderTopRightRadius:
+      moderateScale(20),
     height: '75%',
     paddingTop: verticalScale(20),
   },
+
   modalHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -329,10 +821,22 @@ const localStyles = StyleSheet.create({
     paddingHorizontal: scale(20),
     marginBottom: verticalScale(15),
   },
-  modalTitle: { color: Colors.textPrimary, fontSize: moderateScale(18), fontWeight: 'bold' },
-  closeButton: { color: Colors.textDim, fontSize: moderateScale(18), padding: scale(4) },
+
+  modalTitle: {
+    color: Colors.textPrimary,
+    fontSize: moderateScale(18),
+    fontWeight: 'bold',
+  },
+
+  closeButton: {
+    color: Colors.textDim,
+    fontSize: moderateScale(18),
+    padding: scale(4),
+  },
+
   searchBar: {
-    backgroundColor: Colors.bgInput,
+    backgroundColor:
+      Colors.bgInput,
     color: Colors.textPrimary,
     borderRadius: moderateScale(8),
     height: verticalScale(42),
@@ -340,19 +844,36 @@ const localStyles = StyleSheet.create({
     marginHorizontal: scale(20),
     marginBottom: verticalScale(15),
     borderWidth: 1,
-    borderColor: Colors.borderStrong,
+    borderColor:
+      Colors.borderStrong,
   },
+
   countryItem: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingVertical: verticalScale(14),
     paddingHorizontal: scale(20),
     borderBottomWidth: 1,
-    borderBottomColor: Colors.borderDefault,
+    borderBottomColor:
+      Colors.borderDefault,
   },
-  itemFlag: { fontSize: moderateScale(20), marginRight: scale(14) },
-  itemName: { flex: 1, color: Colors.textPrimary, fontSize: moderateScale(15) },
-  itemCallingCode: { color: Colors.lime, fontSize: moderateScale(14), fontWeight: '600' },
+
+  itemFlag: {
+    fontSize: moderateScale(20),
+    marginRight: scale(14),
+  },
+
+  itemName: {
+    flex: 1,
+    color: Colors.textPrimary,
+    fontSize: moderateScale(15),
+  },
+
+  itemCallingCode: {
+    color: Colors.lime,
+    fontSize: moderateScale(14),
+    fontWeight: '600',
+  },
 });
 
 export default RegisterScreen;
