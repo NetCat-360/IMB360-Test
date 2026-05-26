@@ -1,5 +1,4 @@
 // src/types/navigation.ts
-// FIX: Added CampaignQueue to AppStackParamList
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RouteProp } from '@react-navigation/native';
 
@@ -19,19 +18,33 @@ export type AppStackParamList = {
   OnboardingScreen: undefined;
   Home: undefined;
   Overview: undefined;
+
+  // Content
   Content: undefined;
+  AddContent: undefined;
+  EditContent: { contentId: string };
+
+  // Pricing
   Pricing: undefined;
-  MyEarnings: undefined;
+  AddPricing: undefined;
+  EditPricing: { pricingId: string };
+
+  // Campaigns
   CampaignQueue: undefined;
-  
+  CampaignURL: { campaignId: string };
+
+  // Earnings
+  MyEarnings: undefined;
+
+  // Settings
   Settings: undefined;
-  ManageAccount: undefined
-  Bio: undefined
-  SocialMedia: undefined
-  AdditionalInfo: undefined
-  ViewPlans: undefined
-  Subscription: undefined
-  ChangePassword: undefined
+  ManageAccount: undefined;
+  Bio: undefined;
+  SocialMedia: undefined;
+  AdditionalInfo: undefined;
+  ViewPlans: undefined;
+  Subscription: undefined;
+  ChangePassword: undefined;
 };
 
 export type AuthNavigationProp<T extends keyof AuthStackParamList> =
