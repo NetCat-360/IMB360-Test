@@ -2,13 +2,13 @@
 import React, { useState } from 'react';
 import {
   View, Text, Image, TouchableOpacity,
-  ScrollView, StatusBar, StyleSheet,
+  ScrollView, StatusBar,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import LinearGradient from 'react-native-linear-gradient';
-import { scale, verticalScale, moderateScale } from '../../utils/scaling';
 import { Colors } from '../../config/theme';
 import { AppNavigationProp } from '../../types/navigation';
+import { tabStyles, pcStyles, emptyStyles, styles } from './styles';
 
 type Props = { navigation: AppNavigationProp<'Pricing'> };
 
@@ -38,25 +38,7 @@ const FilterTab = ({
   </TouchableOpacity>
 );
 
-const tabStyles = StyleSheet.create({
-  tab: {
-    paddingHorizontal: scale(10),
-    paddingVertical: verticalScale(6),
-    borderRadius: moderateScale(20),
-    marginRight: scale(6),
-    backgroundColor: '#1C1C1E',
-    justifyContent: 'center',
-    alignItems: 'center',
-    minWidth: scale(36),
-    height: scale(36),
-  },
-  activeTab: { backgroundColor: Colors.teal },
-  label: { color: '#888888', fontSize: moderateScale(13), fontWeight: '600' },
-  activeLabel: { color: '#000000' },
-  tabIcon: { width: scale(18), height: scale(18) },
-});
-
-// ── Pricing card (real item) ──────────────────────────────────────────────────
+// ── Pricing card ──────────────────────────────────────────────────────────────
 
 type PricingItem = {
   id: string;
@@ -112,62 +94,6 @@ const PricingCard = ({
   );
 };
 
-const pcStyles = StyleSheet.create({
-  card: {
-    backgroundColor: Colors.bgCard,
-    borderRadius: moderateScale(12),
-    borderWidth: 1.5,
-    borderColor: Colors.borderTeal,
-    marginBottom: verticalScale(16),
-    overflow: 'hidden',
-  },
-  cardHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#0D1A1A',
-    paddingHorizontal: scale(14),
-    paddingVertical: verticalScale(10),
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.borderTeal + '44',
-  },
-  platformIcon: { width: scale(20), height: scale(20), marginRight: scale(8) },
-  platformName: {
-    color: Colors.teal,
-    fontSize: moderateScale(12),
-    fontFamily: 'Poppins-Bold',
-    letterSpacing: 1,
-    flex: 1,
-  },
-  cardActions: { flexDirection: 'row', alignItems: 'center', gap: scale(8) },
-  editBtn: {
-    borderWidth: 1,
-    borderColor: Colors.teal,
-    borderRadius: moderateScale(6),
-    paddingHorizontal: scale(10),
-    paddingVertical: verticalScale(3),
-  },
-  editBtnText: { color: Colors.teal, fontSize: moderateScale(11), fontFamily: 'Poppins-Medium' },
-  deleteBtn: {
-    backgroundColor: Colors.error,
-    width: scale(22),
-    height: scale(22),
-    borderRadius: scale(11),
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  deleteBtnText: { color: '#fff', fontSize: moderateScale(10), fontWeight: 'bold' },
-  priceRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingHorizontal: scale(14),
-    paddingVertical: verticalScale(10),
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.borderDefault,
-  },
-  priceLabel: { color: Colors.textSecondary, fontSize: moderateScale(13), fontFamily: 'Poppins-Regular' },
-  priceValue: { color: Colors.lime, fontSize: moderateScale(13), fontFamily: 'Poppins-SemiBold' },
-});
-
 // ── Empty state ───────────────────────────────────────────────────────────────
 
 const EmptyState = ({ onAdd }: { onAdd: () => void }) => (
@@ -183,39 +109,10 @@ const EmptyState = ({ onAdd }: { onAdd: () => void }) => (
   </View>
 );
 
-const emptyStyles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingHorizontal: scale(40),
-    paddingTop: verticalScale(60),
-  },
-  icon: { fontSize: moderateScale(52), marginBottom: verticalScale(16) },
-  title: {
-    color: Colors.textPrimary, fontSize: moderateScale(18),
-    fontFamily: 'Poppins-SemiBold', marginBottom: verticalScale(8),
-  },
-  subtitle: {
-    color: Colors.textMuted, fontSize: moderateScale(13),
-    fontFamily: 'Poppins-Regular', textAlign: 'center',
-    lineHeight: verticalScale(20), marginBottom: verticalScale(28),
-  },
-  addBtn: {
-    backgroundColor: Colors.teal,
-    paddingHorizontal: scale(32),
-    paddingVertical: verticalScale(12),
-    borderRadius: moderateScale(12),
-  },
-  addBtnText: { color: '#000', fontSize: moderateScale(15), fontFamily: 'Poppins-SemiBold' },
-});
-
 // ── Screen ────────────────────────────────────────────────────────────────────
 
 const PricingScreen = ({ navigation }: Props) => {
   const [activeFilter, setActiveFilter] = useState<FilterKey>('all');
-
-  // Empty — real data from API
   const [pricing] = useState<PricingItem[]>([]);
 
   const filtered = activeFilter === 'all'
@@ -239,36 +136,33 @@ const PricingScreen = ({ navigation }: Props) => {
             <Text style={styles.backBtnText}>←</Text>
           </TouchableOpacity>
           <Text style={styles.headerTitle}>Pricing</Text>
-          <TouchableOpacity
-            style={styles.headerAddBtn}
-            onPress={() => navigation.navigate('AddPricing')}
-            activeOpacity={0.8}
-          >
-            <Text style={styles.headerAddBtnText}>+ Add</Text>
-          </TouchableOpacity>
         </SafeAreaView>
       </LinearGradient>
 
       <View style={styles.body}>
-        {/* Filter strip */}
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.filterStrip}
-        >
-          {FILTER_TABS.map(tab => (
-            <FilterTab
-              key={tab.key}
-              label={tab.label}
-              icon={tab.icon}
-              active={activeFilter === tab.key}
-              onPress={() => setActiveFilter(tab.key)}
-            />
-          ))}
-        </ScrollView>
+        <View style={styles.filterContainer}>
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            style={styles.filterScrollView}
+            contentContainerStyle={styles.filterStrip}
+          >
+            {FILTER_TABS.map(tab => (
+              <FilterTab
+                key={tab.key}
+                label={tab.label}
+                icon={tab.icon}
+                active={activeFilter === tab.key}
+                onPress={() => setActiveFilter(tab.key)}
+              />
+            ))}
+          </ScrollView>
+        </View>
 
         {isEmpty ? (
-          <EmptyState onAdd={() => navigation.navigate('AddPricing')} />
+          <View style={styles.emptyWrapper}>
+            <EmptyState onAdd={() => navigation.navigate('AddPricing')} />
+          </View>
         ) : (
           <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
             {filtered.map(item => (
@@ -285,30 +179,5 @@ const PricingScreen = ({ navigation }: Props) => {
     </>
   );
 };
-
-const styles = StyleSheet.create({
-  header: { width: '100%' },
-  headerInner: {
-    flexDirection: 'row', alignItems: 'center',
-    paddingHorizontal: scale(16), paddingBottom: verticalScale(14), paddingTop: verticalScale(4),
-  },
-  backBtn: { marginRight: scale(12), padding: scale(4) },
-  backBtnText: { color: '#000000', fontSize: moderateScale(22), fontWeight: 'bold' },
-  headerTitle: { color: '#000000', fontSize: moderateScale(20), fontWeight: 'bold', flex: 1 },
-  headerAddBtn: {
-    backgroundColor: 'rgba(0,0,0,0.15)',
-    paddingHorizontal: scale(14),
-    paddingVertical: verticalScale(5),
-    borderRadius: moderateScale(20),
-    borderWidth: 1,
-    borderColor: 'rgba(0,0,0,0.2)',
-  },
-  headerAddBtnText: { color: '#000', fontSize: moderateScale(13), fontFamily: 'Poppins-SemiBold' },
-  body: { flex: 1, backgroundColor: '#000000' },
-  filterStrip: {
-    paddingHorizontal: scale(16), paddingVertical: verticalScale(12), alignItems: 'center',
-  },
-  scrollContent: { paddingHorizontal: scale(16), paddingBottom: verticalScale(32) },
-});
 
 export default PricingScreen;

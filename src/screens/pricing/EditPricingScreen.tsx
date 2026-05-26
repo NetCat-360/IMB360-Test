@@ -26,6 +26,7 @@ const Dropdown = ({ label, value, onPress }: { label: string; value: string; onP
     <Text style={dropStyles.arrow}>▾</Text>
   </TouchableOpacity>
 );
+
 const dropStyles = StyleSheet.create({
   container: {
     flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',
@@ -52,9 +53,10 @@ const PickerOverlay = ({ options, onSelect, onClose }: { options: string[]; onSe
     </View>
   </View>
 );
+
 const pickerStyles = StyleSheet.create({
   overlay: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, zIndex: 100 },
-  backdrop: { ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(0,0,0,0.7)' },
+  backdrop: { ...StyleSheet.absoluteFill, backgroundColor: 'rgba(0,0,0,0.7)' },
   sheet: {
     position: 'absolute', bottom: 0, left: 0, right: 0,
     backgroundColor: Colors.bgCard,
@@ -81,6 +83,7 @@ const PriceInput = ({ label, value, onChange }: { label: string; value: string; 
     />
   </View>
 );
+
 const piStyles = StyleSheet.create({
   row: { marginBottom: verticalScale(14) },
   label: { color: Colors.textSecondary, fontSize: moderateScale(13), fontFamily: 'Poppins-Medium', marginBottom: verticalScale(6) },
