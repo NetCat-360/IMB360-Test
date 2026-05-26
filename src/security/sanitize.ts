@@ -7,7 +7,7 @@ export const sanitizeText = (value: string, maxLength = 255): string => {
 
   return value
     .normalize('NFKC')
-    .replace(/[<>]/g, '')
+    .replace(/<[^>]*>/g, '')
     .replace(/[\u0000-\u001F\u007F]/g, '')
     .trim()
     .slice(0, maxLength);
@@ -18,7 +18,8 @@ export const sanitizeEmail = (email: string): string => {
 };
 
 export const sanitizePhone = (phone: string): string => {
-  return phone.replace(/[^0-9+]/g, '').slice(0, 20);
+  const cleaned = phone.match(/[0-9\+]/g)?.join('') || '';
+  return cleaned.slice(0, 20);
 };
 
 export const containsFourByteUnicode = (value: string): boolean => {
