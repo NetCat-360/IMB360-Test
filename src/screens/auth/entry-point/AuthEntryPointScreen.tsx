@@ -3,8 +3,15 @@ import { View, Text, Image, TouchableOpacity, StatusBar } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import LinearGradient from 'react-native-linear-gradient';
 import styles from './styles';
+import { AuthNavigationProp, AuthStackParamList } from '../../../types/navigation';
+import { RouteProp } from '@react-navigation/native';
 
-const AuthEntryPointScreen = ({ route, navigation }: any) => {
+type Props = {
+  navigation: AuthNavigationProp<'AuthEntryPoint'>;
+  route: RouteProp<AuthStackParamList, 'AuthEntryPoint'>;
+};
+
+const AuthEntryPointScreen = ({ route, navigation }: Props) => {
   // Extract selection fallback to 'CREATOR' gracefully if route values drop
   const { role } = route.params || { role: 'CREATOR' };
   const isBrand = role === 'BRAND';

@@ -4,6 +4,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import Animated, { useSharedValue, withTiming, runOnJS } from 'react-native-reanimated';
 import LinearGradient from 'react-native-linear-gradient';
 import { scale, verticalScale, moderateScale } from '../../../utils/scaling';
+import apiClient from '../../../api/client';
+import { AUTH } from '../../../api/endpoints';
 import styles from '../register/styles';
 
 const VerificationScreen = ({ navigation, route }: any) => {
@@ -66,10 +68,11 @@ const VerificationScreen = ({ navigation, route }: any) => {
 
   const handleVerifyCode = async () => {
     const completeOtp = code.join('');
-    
-    if (completeOtp === '123456') {
+
+    try {
+      await apiClient.post(AUTH.VERIFY_OTP, { otp: completeOtp });
       showToast('Code verified successfully!');
-      
+
       if (flowType === 'password_reset') {
         navigation.reset({
           index: 0,
@@ -81,7 +84,7 @@ const VerificationScreen = ({ navigation, route }: any) => {
           routes: [{ name: 'HomeDashboard' }],
         });
       }
-    } else {
+    } catch {
       showToast('Invalid verification code. Please try again.');
     }
   };

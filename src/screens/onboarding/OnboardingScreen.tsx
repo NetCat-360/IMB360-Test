@@ -4,6 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import Animated, { FadeInRight, FadeOutLeft } from 'react-native-reanimated';
 import LinearGradient from 'react-native-linear-gradient';
 import styles from './styles';
+import { AuthNavigationProp } from '../../types/navigation';
 
 const ONBOARDING_DATA = [
   {
@@ -29,8 +30,7 @@ const ONBOARDING_DATA = [
   },
 ];
 
-// 1. Destructure navigation here so the component can redirect
-const OnboardingScreen = ({ navigation }: any) => {
+const OnboardingScreen = ({ navigation }: { navigation: AuthNavigationProp<'Onboarding'> }) => {
   const [index, setIndex] = useState(0);
   const data = ONBOARDING_DATA[index];
 

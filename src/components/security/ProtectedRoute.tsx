@@ -29,11 +29,20 @@ const ProtectedRoute = ({
     );
   }
 
-  const permissions = auth.user?.permissions as UserPermissions;
+  if (!auth?.user) {
+    return (
+      <View style={styles.center}>
+        <Text style={styles.text}>
+          You must be logged in to access this page.
+        </Text>
+      </View>
+    );
+  }
+
+  const permissions = auth.user.permissions;
 
   if (
     requiredPermission &&
-    permissions &&
     !permissions[requiredPermission]
   ) {
     return (

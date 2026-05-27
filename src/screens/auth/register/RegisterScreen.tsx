@@ -1,6 +1,6 @@
 // src/screens/auth/register/RegisterScreen.tsx
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 
 import {
   View,
@@ -51,6 +51,7 @@ import {
   sanitizeEmail,
   sanitizePhone,
   sanitizeText,
+  isStrongPassword,
 } from '../../../security/sanitize';
 
 interface Country {
@@ -110,14 +111,6 @@ const RegisterScreen = ({
       text,
     );
 
-  const isStrongPassword = (
-    passwordText: string,
-  ) => {
-    return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{8,}$/.test(
-      passwordText,
-    );
-  };
-
   const isFormComplete =
     name.trim() !== '' &&
     isEmailValid(email) &&
@@ -125,16 +118,20 @@ const RegisterScreen = ({
     password.trim().length >= 8;
 
   const filteredCountries =
-    COUNTRIES.filter(
-      item =>
-        item.name
-          .toLowerCase()
-          .includes(
-            searchQuery.toLowerCase(),
-          ) ||
-        item.callingCode.includes(
-          searchQuery,
+    useMemo(
+      () =>
+        COUNTRIES.filter(
+          item =>
+            item.name
+              .toLowerCase()
+              .includes(
+                searchQuery.toLowerCase(),
+              ) ||
+            item.callingCode.includes(
+              searchQuery,
+            ),
         ),
+      [searchQuery],
     );
 
   const handleCountrySelect = (
@@ -191,7 +188,7 @@ const RegisterScreen = ({
 
       if (
         !isStrongPassword(
-          cleanPassword,
+          password,
         )
       ) {
         showToast(

@@ -83,6 +83,9 @@ export default function BioScreen({
                     style={
                         styles.saveButton
                     }
+                    onPress={() =>
+                        navigation.goBack()
+                    }
                 >
                     <Text
                         style={

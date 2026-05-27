@@ -12,6 +12,7 @@ import {
   Alert,
   ScrollView,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { Colors } from '../../config/theme';
 
@@ -63,7 +64,8 @@ export default function CampaignURLScreen({
         backgroundColor={Colors.bgBlack}
       />
 
-      <ScrollView
+      <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
+        <ScrollView
         style={styles.container}
         contentContainerStyle={styles.contentContainer}
         showsVerticalScrollIndicator={false}
@@ -120,6 +122,7 @@ export default function CampaignURLScreen({
           </TouchableOpacity>
         </View>
       </ScrollView>
+      </SafeAreaView>
     </>
   );
 }

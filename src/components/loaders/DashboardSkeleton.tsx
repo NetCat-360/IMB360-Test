@@ -35,3 +35,5 @@ const DashboardSkeleton = () => {
     </SkeletonPlaceholder>
   );
 };
+
+export default DashboardSkeleton;

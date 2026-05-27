@@ -52,14 +52,16 @@ export default function ScreenHeader({
                 edges={['top']}
                 style={styles.headerInner}
             >
-                <TouchableOpacity
-                    onPress={onBack}
-                >
-                    <Image
-                        source={require('../assets/images/backbutton.png')}
-                        style={styles.backIcon}
-                    />
-                </TouchableOpacity>
+                {onBack && (
+                    <TouchableOpacity
+                        onPress={onBack}
+                    >
+                        <Image
+                            source={require('../assets/images/backbutton.png')}
+                            style={styles.backIcon}
+                        />
+                    </TouchableOpacity>
+                )}
 
                 <Text style={styles.title}>
                     {title}

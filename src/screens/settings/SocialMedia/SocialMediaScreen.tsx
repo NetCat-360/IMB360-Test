@@ -259,6 +259,9 @@ export default function
                     style={
                         styles.addButton
                     }
+                    onPress={() => {
+                        // TODO: Replace with real API POST
+                    }}
                 >
                     <Text
                         style={

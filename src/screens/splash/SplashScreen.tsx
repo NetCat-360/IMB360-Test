@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
 import { Image, StatusBar, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { AuthStackParamList } from '../../types/navigation';
 import Animated, { 
   useSharedValue, 
   useAnimatedStyle, 
@@ -14,7 +16,7 @@ import Animated, {
 import styles from './styles';
 
 const SplashScreen = () => {
-  const navigation = useNavigation<any>();
+  const navigation = useNavigation<NativeStackNavigationProp<AuthStackParamList>>();
 
   const blob1Value = useSharedValue(0);
   const blob2Value = useSharedValue(0);

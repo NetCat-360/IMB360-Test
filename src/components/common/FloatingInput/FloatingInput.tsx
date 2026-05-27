@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, TextInput, TouchableOpacity, Text } from 'react-native';
 import Animated, {
   useSharedValue,
@@ -33,11 +33,11 @@ const FloatingInput: React.FC<FloatingInputProps> = ({
 }) => {
   const [isFocused, setIsFocused] = useState(false);
 
-  // focusAnim drives both the label position and its font size.
-  // We initialise it to 1 if the field already has a value (e.g. when
-  // the component re-renders with pre-filled data) so the label
-  // doesn't overlap the text.
   const focusAnim = useSharedValue(value ? 1 : 0);
+
+  useEffect(() => {
+    focusAnim.value = value ? withTiming(1, { duration: 180 }) : withTiming(0, { duration: 180 });
+  }, [value]);
 
   const handleFocus = () => {
     setIsFocused(true);

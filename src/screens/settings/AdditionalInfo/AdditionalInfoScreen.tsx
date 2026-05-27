@@ -37,6 +37,21 @@ import {
     AppNavigationProp,
 } from '../../../types/navigation'
 
+const GENDER_OPTIONS = [
+    {
+        label:
+            'Male',
+        value:
+            'Male',
+    },
+    {
+        label:
+            'Female',
+        value:
+            'Female',
+    },
+]
+
 type Props = {
     navigation:
     AppNavigationProp<'AdditionalInfo'>
@@ -71,13 +86,16 @@ export default function AdditionalInfoScreen({
         useState(false)
 
     const countries =
-        Country.getAllCountries()
-            .map(item => ({
-                label:
-                    item.name,
-                value:
-                    item.isoCode,
-            }))
+        useMemo(() =>
+            Country.getAllCountries()
+                .map(item => ({
+                    label:
+                        item.name,
+                    value:
+                        item.isoCode,
+                })),
+            []
+        )
 
     const states =
         useMemo(() => {
@@ -95,21 +113,6 @@ export default function AdditionalInfoScreen({
                         item.isoCode,
                 })) || []
         }, [country])
-
-    const genderOptions = [
-        {
-            label:
-                'Male',
-            value:
-                'Male',
-        },
-        {
-            label:
-                'Female',
-            value:
-                'Female',
-        },
-    ]
 
     const handlePinCode =
         (text: string) => {
@@ -332,7 +335,7 @@ export default function AdditionalInfoScreen({
                         styles.dropdownContainer
                     }
                     data={
-                        genderOptions
+                        GENDER_OPTIONS
                     }
                     labelField="label"
                     valueField="value"
@@ -423,6 +426,9 @@ export default function AdditionalInfoScreen({
                     style={
                         styles.saveButton
                     }
+                    onPress={() => {
+                        // TODO: Replace with real API POST
+                    }}
                 >
                     <Text
                         style={

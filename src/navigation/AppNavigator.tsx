@@ -14,13 +14,14 @@ import {
  * TAB SCREENS
  */
 import HomeScreen from '../screens/home/HomeScreen';
+import CampaignQueueScreen from '../screens/CampaignQueue/CampaignQueueScreen';
+import ContentScreen from '../screens/content/ContentScreen';
+import OverviewScreen from '../screens/overview/OverviewScreen';
+import MyEarnings from '../screens/MyEarnings/MyEarnings';
 
 /**
  * STACK SCREENS
  */
-import OverviewScreen from '../screens/overview/OverviewScreen';
-
-import ContentScreen from '../screens/content/ContentScreen';
 import AddContentScreen from '../screens/content/AddContentScreen';
 import EditContentScreen from '../screens/content/EditContentScreen';
 
@@ -28,10 +29,7 @@ import PricingScreen from '../screens/pricing/PricingScreen';
 import AddPricingScreen from '../screens/pricing/AddPricingScreen';
 import EditPricingScreen from '../screens/pricing/EditPricingScreen';
 
-import CampaignQueueScreen from '../screens/CampaignQueue/CampaignQueueScreen';
 import CampaignURLScreen from '../screens/CampaignQueue/CampaignURLScreen';
-
-import MyEarnings from '../screens/MyEarnings/MyEarnings';
 
 import SettingsScreen from '../screens/settings/SettingsScreen';
 
@@ -116,22 +114,22 @@ function MainTabs() {
 
       <Tab.Screen
         name="Campaign"
-        component={HomeScreen}
+        component={CampaignQueueScreen}
       />
 
       <Tab.Screen
         name="Explore"
-        component={HomeScreen}
+        component={ContentScreen}
       />
 
       <Tab.Screen
         name="Analytics"
-        component={HomeScreen}
+        component={OverviewScreen}
       />
 
       <Tab.Screen
         name="Assets"
-        component={HomeScreen}
+        component={MyEarnings}
       />
     </Tab.Navigator>
   );

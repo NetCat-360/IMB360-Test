@@ -4,6 +4,7 @@ import {
   View, Text, Image, TouchableOpacity,
   ScrollView, StatusBar, StyleSheet,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { scale, verticalScale, moderateScale } from '../../utils/scaling';
 import { AppNavigationProp } from '../../types/navigation';
 import { Colors } from '../../config/theme';
@@ -12,7 +13,7 @@ import ScreenHeader from '../../components/ScreenHeader';
 
 type Props = { navigation: AppNavigationProp<'MyEarnings'> };
 
-const CURRENCY = '₱';
+import { CURRENCY } from '../../config/constants';
 
 // ── Empty state ───────────────────────────────────────────────────────────────
 
@@ -91,7 +92,8 @@ const MyEarnings = ({ navigation }: Props) => {
 
       <ScreenHeader title="My Earnings" onBack={() => navigation.goBack()} />
 
-      <ScrollView
+      <SafeAreaView style={{ flex: 1 }} edges={['top', 'bottom']}>
+        <ScrollView
         style={styles.container}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={[styles.scrollContent, isEmpty && styles.scrollContentEmpty]}
@@ -125,6 +127,7 @@ const MyEarnings = ({ navigation }: Props) => {
           currentItems.map((_, i) => <EarningCard key={i} status={selectedTab} />)
         )}
       </ScrollView>
+      </SafeAreaView>
     </>
   );
 };

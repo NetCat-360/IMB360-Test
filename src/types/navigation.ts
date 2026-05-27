@@ -1,3 +1,4 @@
+import { RouteProp } from '@react-navigation/native';
 import {
   NativeStackNavigationProp,
   NativeStackScreenProps,
@@ -12,6 +13,22 @@ export type BottomTabParamList = {
   Explore: undefined;
   Analytics: undefined;
   Assets: undefined;
+};
+
+/**
+ * AUTH STACK TYPES
+ */
+export type AuthStackParamList = {
+  Splash: undefined;
+  Onboarding: undefined;
+  RoleSelection: undefined;
+  AuthEntryPoint: { role?: string };
+  Login: undefined;
+  Register: { role?: string };
+  ForgotPassword: undefined;
+  Verification: { destination?: string; flow?: string };
+  ResetPassword: { verifiedOtp?: string; verifiedEmail?: string };
+  HomeDashboard: undefined;
 };
 
 /**
@@ -45,11 +62,32 @@ export type AppStackParamList = {
   MyEarnings: undefined;
 
   Settings: undefined;
+  ManageAccount: undefined;
+  Bio: undefined;
+  SocialMedia: undefined;
+  AdditionalInfo: undefined;
+  ViewPlans: undefined;
+  Subscription: undefined;
+  ChangePassword: undefined;
 };
 
 /**
  * NAVIGATION PROP
  */
+export type AuthNavigationProp<
+  T extends keyof AuthStackParamList,
+> = NativeStackNavigationProp<
+  AuthStackParamList,
+  T
+>;
+
+export type AuthRouteProp<
+  T extends keyof AuthStackParamList,
+> = RouteProp<
+  AuthStackParamList,
+  T
+>;
+
 export type AppNavigationProp<
   T extends keyof AppStackParamList,
 > = NativeStackNavigationProp<

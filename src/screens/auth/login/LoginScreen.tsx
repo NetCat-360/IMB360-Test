@@ -41,12 +41,24 @@ import Typography from '../../../styles/typography';
 
 import styles from '../register/styles';
 
+import apiClient from '../../../api/client';
+import { AUTH } from '../../../api/endpoints';
+import Config from 'react-native-config';
+
+import {
+  sanitizeEmail,
+  sanitizeText,
+  isStrongPassword,
+} from '../../../security/sanitize';
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 type Props = {
   navigation: AuthNavigationProp<'Login'>;
 };
 
-const ADMIN_EMAIL = 'admin@imb360.com';
-const ADMIN_PASSWORD = 'Admin@123';
+const ADMIN_EMAIL = (Config.ADMIN_EMAIL || 'admin@imb360.com').toLowerCase();
+const ADMIN_PASSWORD = Config.ADMIN_PASSWORD || '';
 
 const LoginScreen = ({
   navigation,
@@ -74,35 +86,10 @@ const LoginScreen = ({
   const { showToast } =
     useGlobalToast();
 
-  // ─────────────────────────────
-  // Sanitizers
-  // ─────────────────────────────
-
-  const sanitizeInput = (
-    value: string,
-  ) => {
-    return value
-      // Remove emojis / 4-byte chars
-      .replace(
-        /[\u{10000}-\u{10FFFF}]/gu,
-        '',
-      )
-      // Remove null bytes
-      .replace(/\0/g, '')
-      .trim();
-  };
-
   const isEmailValid = (
     text: string,
   ) =>
     /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(
-      text,
-    );
-
-  const isPasswordStrong = (
-    text: string,
-  ) =>
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/.test(
       text,
     );
 
@@ -116,120 +103,79 @@ const LoginScreen = ({
 
   const handleLogin =
     async () => {
-      const sanitizedEmail =
-        sanitizeInput(
-          email.toLowerCase(),
-        );
+      const cleanEmail =
+        sanitizeEmail(email);
 
-      const sanitizedPassword =
-        sanitizeInput(password);
+      const cleanPassword =
+        sanitizeText(password, 128);
 
-      // Email validation
-      if (
-        !isEmailValid(
-          sanitizedEmail,
-        )
-      ) {
+      if (!isEmailValid(cleanEmail)) {
         showToast(
           'Please enter a valid email address.',
           'error',
         );
-
         return;
       }
 
-      // Password validation
-      if (
-        !isPasswordStrong(
-          sanitizedPassword,
-        )
-      ) {
+      if (!isStrongPassword(cleanPassword)) {
         showToast(
           'Password must contain uppercase, lowercase, number and special character.',
           'error',
         );
-
         return;
       }
 
       setLoading(true);
 
-      try {
-        // Simulated API delay
-        await new Promise<void>(
-          resolve => {
-            setTimeout(() => {
-              resolve();
-            }, 700);
+      // Check admin credentials first — works offline as fallback
+      if (
+        cleanEmail === ADMIN_EMAIL &&
+        cleanPassword === ADMIN_PASSWORD &&
+        ADMIN_PASSWORD
+      ) {
+        const adminUser = {
+          id: 'admin-id',
+          email: cleanEmail,
+          role: 'ADMIN' as const,
+          permissions: {
+            canViewDashboard: true,
+            canManageCampaigns: true,
+            canManageContent: true,
+            canManagePricing: true,
+            canManageSettings: true,
+            canViewEarnings: true,
           },
-        );
+        };
+        const mockToken = 'mock-admin-token';
+        await AsyncStorage.setItem('accessToken', mockToken);
+        await AsyncStorage.setItem('refreshToken', mockToken);
+        dispatch(loginSuccess({ user: adminUser, accessToken: mockToken, refreshToken: mockToken }));
+        showToast('Admin login successful.', 'success');
+        setLoading(false);
+        return;
+      }
 
-        // ─────────────────────
-        // ADMIN BYPASS LOGIN
-        // ─────────────────────
+      try {
+        const response = await apiClient.post(AUTH.LOGIN, {
+          email: cleanEmail,
+          password: cleanPassword,
+        });
 
-        if (
-          sanitizedEmail ===
-            ADMIN_EMAIL &&
-          sanitizedPassword ===
-            ADMIN_PASSWORD
-        ) {
-          dispatch(
-            loginSuccess({
-              accessToken:
-                'mock-access-token',
+        const { user, accessToken, refreshToken } = response.data;
 
-              refreshToken:
-                'mock-refresh-token',
-
-              user: {
-                id: 'admin-id',
-
-                email:
-                  sanitizedEmail,
-
-                role: 'ADMIN',
-
-                permissions: {
-                  canManageUsers:
-                    true,
-
-                  canCreateCampaigns:
-                    true,
-
-                  canViewPayments:
-                    true,
-
-                  canEditProfile:
-                    true,
-                },
-              },
-            }),
-          );
-
-          showToast(
-            'Admin login successful.',
-            'success',
-          );
-
-          return;
+        await AsyncStorage.setItem('accessToken', accessToken);
+        if (refreshToken) {
+          await AsyncStorage.setItem('refreshToken', refreshToken);
         }
 
-        // Invalid login
-        showToast(
-          'Invalid credentials.',
-          'error',
-        );
-      } catch (error) {
-        console.log(
-          'LOGIN ERROR:',
-          error,
-        );
-
-        showToast(
-          'Login failed. Please try again.',
-          'error',
-        );
+        dispatch(loginSuccess({ user, accessToken, refreshToken }));
+        showToast('Login successful.', 'success');
+      } catch (error: any) {
+        if (error?.response?.status === 401) {
+          showToast('Invalid email or password.', 'error');
+        } else {
+          showToast('Login failed. Please check your connection and try again.', 'error');
+        }
       } finally {
         setLoading(false);
       }

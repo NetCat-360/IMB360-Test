@@ -14,6 +14,9 @@ import {
     moderateScale,
 } from '../../utils/scaling'
 
+import { SafeAreaView }
+    from 'react-native-safe-area-context'
+
 import { Colors }
     from '../../config/theme'
 
@@ -22,6 +25,12 @@ import ScreenHeader
 
 import { AppNavigationProp }
     from '../../types/navigation'
+
+import { useAppDispatch }
+    from '../../hooks/redux'
+
+import { logout }
+    from '../../features/auth/store/authSlice'
 
 type Props = {
     navigation:
@@ -84,8 +93,14 @@ function Section({
 export default function SettingsScreen({
     navigation,
 }: Props) {
+    const dispatch = useAppDispatch()
+
+    const handleLogout = () => {
+        dispatch(logout())
+    }
+
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
             <ScreenHeader
                 title="Settings"
                 onBack={() =>
@@ -212,6 +227,7 @@ export default function SettingsScreen({
                 {/* Logout */}
                 <TouchableOpacity
                     style={styles.logoutButton}
+                    onPress={handleLogout}
                 >
                     <Text
                         style={styles.logoutText}
@@ -220,7 +236,7 @@ export default function SettingsScreen({
                     </Text>
                 </TouchableOpacity>
             </ScrollView>
-        </View>
+        </SafeAreaView>
     )
 }
 
@@ -229,7 +245,7 @@ const styles =
         container: {
             flex: 1,
             backgroundColor:
-                '#000',
+                Colors.bgBlack,
         },
 
         scrollContent: {
@@ -279,7 +295,7 @@ const styles =
 
         section: {
             backgroundColor:
-                '#2E2E2E',
+                Colors.bgInputBorder,
             borderRadius:
                 moderateScale(16),
             borderWidth: 1,

@@ -42,3 +42,6 @@ export const safeDatabaseText = (
     .filter(char => char.codePointAt(0)! <= 0xffff)
     .join('');
 };
+
+export const isStrongPassword = (text: string): boolean =>
+  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{8,}$/.test(text);

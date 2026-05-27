@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { View, Text, TouchableOpacity, TextInput, Modal, FlatList, StyleSheet } from 'react-native';
 import { COUNTRIES } from '../../utils/countries';
 import { scale, verticalScale, moderateScale } from '../../utils/scaling';
@@ -26,10 +26,13 @@ export const CountryPhoneInput: React.FC<CountryPhoneInputProps> = ({
   const [modalVisible, setModalVisible] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 
-  const filteredCountries = COUNTRIES.filter(
-    (item) =>
-      item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.callingCode.includes(searchQuery)
+  const filteredCountries = useMemo(
+    () => COUNTRIES.filter(
+      (item) =>
+        item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        item.callingCode.includes(searchQuery)
+    ),
+    [searchQuery]
   );
 
   const handleSelect = (country: Country) => {
@@ -67,8 +70,8 @@ export const CountryPhoneInput: React.FC<CountryPhoneInputProps> = ({
 
       {/* High-Performance Selector Bottom-Sheet Modal */}
       <Modal visible={modalVisible} animationType="slide" transparent={true}>
-        <View style={localStyles.modalOverlay}>
-          <View style={localStyles.modalContent}>
+        <TouchableOpacity style={localStyles.modalOverlay} activeOpacity={1} onPress={() => setModalVisible(false)}>
+          <TouchableOpacity activeOpacity={1} onPress={(e) => e.stopPropagation()} style={localStyles.modalContent}>
             <View style={localStyles.modalHeader}>
               <Text style={localStyles.modalTitle}>Select Country</Text>
               <TouchableOpacity onPress={() => setModalVisible(false)}>
@@ -101,8 +104,8 @@ export const CountryPhoneInput: React.FC<CountryPhoneInputProps> = ({
                 </TouchableOpacity>
               )}
             />
-          </View>
-        </View>
+          </TouchableOpacity>
+        </TouchableOpacity>
       </Modal>
     </View>
   );

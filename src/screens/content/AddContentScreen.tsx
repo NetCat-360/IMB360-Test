@@ -168,7 +168,10 @@ const AddContentScreen = ({ navigation }: Props) => {
           <TouchableOpacity
             style={[styles.saveBtn, !canSave && styles.saveBtnDisabled]}
             disabled={!canSave}
-            onPress={() => navigation.goBack()}
+            onPress={() => {
+              // TODO: Replace with real API POST
+              navigation.goBack();
+            }}
             activeOpacity={0.85}
           >
             <LinearGradient

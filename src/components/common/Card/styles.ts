@@ -1,8 +1,9 @@
 import { StyleSheet } from 'react-native';
+import { Colors } from '../../../config/theme';
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: '#1A1A1A',
+    backgroundColor: Colors.bgCard,
     borderRadius: 16,
     padding: 16,
     marginBottom: 16,

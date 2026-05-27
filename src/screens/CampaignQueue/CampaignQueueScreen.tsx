@@ -20,7 +20,7 @@ interface BaseCampaign { id: string; companyName: string; description: string; r
 interface ActiveCampaign extends BaseCampaign { budget: number; deadline: string; platforms: Platform[]; }
 interface BidCampaign extends BaseCampaign { status: BidStatus; }
 
-const CURRENCY = '₱';
+import { CURRENCY } from '../../config/constants';
 
 type Props = { navigation: AppNavigationProp<'CampaignQueue'> };
 
@@ -105,7 +105,7 @@ const OngoingCard = ({
   <View style={styles.card}>
     <CompanyRow companyName={campaign.companyName} description={campaign.description} />
     <View style={styles.tagRow}>
-      {['Gifting', 'Corporate', 'Corporate'].map((tag, i) => (
+      {['Gifting', 'Corporate'].map((tag, i) => (
         <View key={i} style={styles.tag}><Text style={styles.tagText}>{tag}</Text></View>
       ))}
     </View>
@@ -145,7 +145,7 @@ const UpcomingCard = ({
   <View style={styles.card}>
     <CompanyRow companyName={campaign.companyName} description={campaign.description} />
     <View style={styles.tagRow}>
-      {['Gifting', 'Corporate', 'Corporate'].map((tag, i) => (
+      {['Gifting', 'Corporate'].map((tag, i) => (
         <View key={i} style={styles.tag}><Text style={styles.tagText}>{tag}</Text></View>
       ))}
     </View>

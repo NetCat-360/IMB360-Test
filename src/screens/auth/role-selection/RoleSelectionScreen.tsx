@@ -4,12 +4,13 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import Animated, { useAnimatedStyle, withTiming } from 'react-native-reanimated';
 import LinearGradient from 'react-native-linear-gradient';
 import { scale, verticalScale, moderateScale } from '../../../utils/scaling';
+import { AuthNavigationProp } from '../../../types/navigation';
 
 export type RoleType = 'BRAND' | 'CREATOR' | null;
 
 const AnimatedTouchableOpacity = Animated.createAnimatedComponent(TouchableOpacity);
 
-const RoleSelectionScreen = ({ navigation }: any) => {
+const RoleSelectionScreen = ({ navigation }: { navigation: AuthNavigationProp<'RoleSelection'> }) => {
   const [selectedRole, setSelectedRole] = useState<RoleType>(null);
 
   const handleContinue = () => {

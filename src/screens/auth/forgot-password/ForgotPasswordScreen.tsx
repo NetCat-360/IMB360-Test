@@ -19,6 +19,8 @@ import { scale, verticalScale, moderateScale } from '../../../utils/scaling';
 import { AuthNavigationProp } from '../../../types/navigation';
 import { OtpModalSheet } from '../../../components/auth/OtpModalSheet';
 import { useToast } from '../../../hooks/useToast';
+import apiClient from '../../../api/client';
+import { AUTH } from '../../../api/endpoints';
 import styles from '../register/styles';
 import { authInputStyles } from '../inputStyles';
 
@@ -86,9 +88,9 @@ const ForgotPasswordScreen = ({ navigation }: Props) => {
     showToast('Verification code dispatched successfully.');
   };
 
-  const handleOtpVerificationCheck = (compiledOtpCode: string) => {
-    // TODO: REPLACE WITH REAL API CALL — '123456' is a placeholder only
-    if (compiledOtpCode === '123456') {
+  const handleOtpVerificationCheck = async (compiledOtpCode: string) => {
+    try {
+      await apiClient.post(AUTH.VERIFY_OTP, { otp: compiledOtpCode });
       setOtpModalVisible(false);
       navigation.reset({
         index: 0,
@@ -97,7 +99,7 @@ const ForgotPasswordScreen = ({ navigation }: Props) => {
           params: { verifiedEmail: email.toLowerCase().trim() },
         }],
       });
-    } else {
+    } catch {
       showToast('Invalid confirmation OTP entered.');
     }
   };

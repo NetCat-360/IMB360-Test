@@ -84,32 +84,18 @@ export default function
         >([])
 
     useEffect(() => {
-        let timer:
-            ReturnType<
-                typeof setInterval
-            >
-
-        if (
-            otpModalVisible &&
-            countdown > 0
-        ) {
-            timer =
-                setInterval(() => {
-                    setCountdown(
-                        prev =>
-                            prev - 1,
-                    )
-                }, 1000)
-        }
-
-        return () =>
-            clearInterval(
-                timer,
-            )
-    }, [
-        otpModalVisible,
-        countdown,
-    ])
+        if (!otpModalVisible) return;
+        const interval = setInterval(() => {
+            setCountdown(prev => {
+                if (prev <= 1) {
+                    clearInterval(interval);
+                    return 0;
+                }
+                return prev - 1;
+            });
+        }, 1000);
+        return () => clearInterval(interval);
+    }, [otpModalVisible]);
 
     const handleOtpChange =
         (
@@ -144,6 +130,15 @@ export default function
             setCountdown(
                 30,
             )
+        }
+
+    const handleVerify =
+        () => {
+            const compiledOtp = otp.join('')
+            if (compiledOtp.length === 6) {
+                setOtpModalVisible(false)
+                setOtp(['', '', '', '', '', ''])
+            }
         }
 
     const handleSave =
@@ -355,6 +350,9 @@ export default function
                         <TouchableOpacity
                             style={
                                 styles.verifyButton
+                            }
+                            onPress={
+                                handleVerify
                             }
                         >
                             <Text
