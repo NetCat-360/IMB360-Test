@@ -43,12 +43,12 @@ const FilterTab = ({
 type PricingItem = {
   id: string;
   platform: FilterKey;
-  reels?: string;
-  story?: string;
-  post?: string;
-  shortVideo?: string;
-  longVideo?: string;
-  meetup?: string;
+  dedicatedVideo?: string;
+  integratedVideo?: string;
+  youtubeShorts?: string;
+  instagramReel?: string;
+  instagramStory?: string;
+  communityPost?: string;
 };
 
 const PricingCard = ({
@@ -61,13 +61,14 @@ const PricingCard = ({
   onDelete: () => void;
 }) => {
   const icon = FILTER_TABS.find(t => t.key === item.platform)?.icon;
+  
   const rows = [
-    { label: 'Reels', value: item.reels },
-    { label: 'Story', value: item.story },
-    { label: 'Post', value: item.post },
-    { label: 'Short Video', value: item.shortVideo },
-    { label: 'Long Video', value: item.longVideo },
-    { label: 'Meetup / Collab', value: item.meetup },
+    { label: 'Dedicated Video', value: item.dedicatedVideo },
+    { label: 'Integrated Video', value: item.integratedVideo },
+    { label: 'Youtube Shorts', value: item.youtubeShorts },
+    { label: 'Instagram Reel', value: item.instagramReel },
+    { label: 'Instagram Story', value: item.instagramStory },
+    { label: 'Community Post', value: item.communityPost },
   ].filter(r => r.value);
 
   return (
@@ -109,17 +110,23 @@ const EmptyState = ({ onAdd }: { onAdd: () => void }) => (
   </View>
 );
 
-// ── Screen ────────────────────────────────────────────────────────────────────
+// ── Screen Component ──────────────────────────────────────────────────────────
 
 const PricingScreen = ({ navigation }: Props) => {
   const [activeFilter, setActiveFilter] = useState<FilterKey>('all');
-  const [pricing] = useState<PricingItem[]>([]);
+  
+  // Clean initialization with no local mock elements
+  const [pricing, setPricing] = useState<PricingItem[]>([]);
 
   const filtered = activeFilter === 'all'
     ? pricing
     : pricing.filter(item => item.platform === activeFilter);
 
   const isEmpty = filtered.length === 0;
+
+  const handleClearCard = (id: string) => {
+    setPricing(prev => prev.filter(element => element.id !== id));
+  };
 
   return (
     <>
@@ -170,7 +177,7 @@ const PricingScreen = ({ navigation }: Props) => {
                 key={item.id}
                 item={item}
                 onEdit={() => navigation.navigate('EditPricing', { pricingId: item.id })}
-                onDelete={() => {}}
+                onDelete={() => handleClearCard(item.id)}
               />
             ))}
           </ScrollView>
@@ -180,4 +187,4 @@ const PricingScreen = ({ navigation }: Props) => {
   );
 };
 
-export default PricingScreen; 
+export default PricingScreen;
