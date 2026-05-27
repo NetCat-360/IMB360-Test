@@ -23,7 +23,7 @@ export type AppStackParamList = {
   Pricing: undefined;
   MyEarnings: undefined;
   CampaignQueue: undefined;
-  
+  Campaigns: undefined;
   Settings: undefined;
   ManageAccount: undefined
   Bio: undefined

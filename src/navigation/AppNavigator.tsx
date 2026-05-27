@@ -15,6 +15,7 @@ import {
 } from '@react-navigation/native'
 // Home stack screens
 import HomeScreen from '../screens/home/HomeScreen';
+import Campaigns from '../screens/Campaigns/Campaigns'
 import SettingsScreen from '../screens/settings/SettingsScreen'
 import OverviewScreen from '../screens/overview/OverviewScreen';
 import ContentScreen from '../screens/content/ContentScreen';
@@ -35,7 +36,6 @@ const PlaceholderScreen = ({ label }: { label: string }) => (
   </View>
 );
 
-const CampaignsScreen  = () => <PlaceholderScreen label="Campaigns" />;
 const ExploreScreen    = () => <PlaceholderScreen label="Explore" />;
 const AnalyticsScreen  = () => <PlaceholderScreen label="Analytics" />;
 const AssetsScreen     = () => <PlaceholderScreen label="Assets" />;
@@ -205,11 +205,17 @@ const AppNavigator = () => {
       />
       <Tab.Screen
         name="Campaigns"
-        component={CampaignsScreen}
+        component={Campaigns}
         options={{
-          tabBarLabel: 'Campaigns',
-          tabBarIcon: ({ focused }) => <TabIcon name="bullhorn-outline" focused={focused} />,
-        }}
+             tabBarLabel: 'Campaigns',
+             tabBarIcon: ({ focused }) => (
+               <TabIcon
+                  name="bullhorn-outline"
+                  focused={focused}
+               />
+             ),
+           }}
+
       />
       <Tab.Screen
         name="Explore"
