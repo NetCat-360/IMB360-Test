@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
 
     scrollContent: {
         flexGrow: 1,
-        paddingBottom: verticalScale(330),
+        paddingBottom: verticalScale(20),
     },
 
     // HEADER

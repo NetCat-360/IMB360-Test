@@ -15,11 +15,15 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import styles from "./CampaignStyles";
 
 import { scale, verticalScale, moderateScale } from "../../utils/scaling";
+import { useSelector } from "react-redux";
+
+import { RootState } from "../../store/store";
 
 import GradientButton from "../../components/GradientButton";
 import { Colors } from "../../config/theme";
 
 export default function Campaigns() {
+  const campaign = useSelector((state: RootState) => state.campaign.campaign);
   const navigation = useNavigation();
   const [expanded, setExpanded] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
@@ -62,10 +66,11 @@ export default function Campaigns() {
 
         {/* AI BUTTON */}
         <TouchableOpacity style={styles.aiButton}>
-        <Image
-             source={require('../../assets/images/ai.png')}
-             style={styles.aiimage}
-             resizeMode="contain"/>
+          <Image
+            source={require("../../assets/images/ai.png")}
+            style={styles.aiimage}
+            resizeMode="contain"
+          />
 
           <Text style={styles.aiButtonText}>AI Browse Campaign</Text>
         </TouchableOpacity>
@@ -79,9 +84,9 @@ export default function Campaigns() {
             onPress={() => setShowFilters(!showFilters)}
           >
             <Image
-             source={require('../../assets/images/filter.png')}
-             style={styles.infoImage}
-             resizeMode="contain"
+              source={require("../../assets/images/filter.png")}
+              style={styles.infoImage}
+              resizeMode="contain"
             />
           </TouchableOpacity>
         </View>
@@ -91,10 +96,11 @@ export default function Campaigns() {
           <View style={styles.filterBox}>
             {/* Search */}
             <View style={styles.searchBox}>
-            <Image
-              source={require('../../assets/images/search.png')}
-              style={styles.dropdownIcon}
-              resizeMode="contain"/>
+              <Image
+                source={require("../../assets/images/search.png")}
+                style={styles.dropdownIcon}
+                resizeMode="contain"
+              />
 
               <Text style={styles.placeholderText}>Search campaign</Text>
             </View>
@@ -103,53 +109,59 @@ export default function Campaigns() {
             <TouchableOpacity style={styles.dropdownItem}>
               {/* Left Icon */}
               <Image
-              source={require('../../assets/images/categories.png')}
-              style={styles.dropdownIcon}
-              resizeMode="contain"/>
+                source={require("../../assets/images/categories.png")}
+                style={styles.dropdownIcon}
+                resizeMode="contain"
+              />
 
               {/* Centered Text */}
               <Text style={styles.dropdownText}>All Categories</Text>
 
               {/* Right Arrow */}
               <Image
-               source={require('../../assets/images/downarrow.png')}
-               style={styles.downArrow}
-               resizeMode="contain"/>
+                source={require("../../assets/images/downarrow.png")}
+                style={styles.downArrow}
+                resizeMode="contain"
+              />
             </TouchableOpacity>
 
             {/* Budget */}
             <TouchableOpacity style={styles.dropdownItem}>
               {/* Left Icon */}
               <Image
-              source={require('../../assets/images/points.png')}
-              style={styles.dropdownIcon}
-              resizeMode="contain"/>
+                source={require("../../assets/images/points.png")}
+                style={styles.dropdownIcon}
+                resizeMode="contain"
+              />
 
               {/* Centered Text */}
               <Text style={styles.dropdownText}>All Budgets</Text>
 
               {/* Right Arrow */}
               <Image
-               source={require('../../assets/images/downarrow.png')}
-               style={styles.downArrow}
-               resizeMode="contain"/>
+                source={require("../../assets/images/downarrow.png")}
+                style={styles.downArrow}
+                resizeMode="contain"
+              />
             </TouchableOpacity>
             {/* Platforms */}
             <TouchableOpacity style={styles.dropdownItem}>
               {/* Left Icon */}
               <Image
-              source={require('../../assets/images/platforms.png')}
-              style={styles.dropdownIcon}
-              resizeMode="contain"/>
+                source={require("../../assets/images/platforms.png")}
+                style={styles.dropdownIcon}
+                resizeMode="contain"
+              />
 
               {/* Centered Text */}
               <Text style={styles.dropdownText}>All Platforms</Text>
 
               {/* Right Arrow */}
               <Image
-               source={require('../../assets/images/downarrow.png')}
-               style={styles.downArrow}
-               resizeMode="contain"/>
+                source={require("../../assets/images/downarrow.png")}
+                style={styles.downArrow}
+                resizeMode="contain"
+              />
             </TouchableOpacity>
 
             {/* Search Button */}
@@ -162,23 +174,21 @@ export default function Campaigns() {
           {/* HEADER */}
           <View style={styles.cardHeader}>
             <View style={styles.companyIcon}>
-            <Image
-             source={require('../../assets/images/icon.png')}
-             resizeMode="contain"/>
+              <Image
+                source={require("../../assets/images/icon.png")}
+                resizeMode="contain"
+              />
             </View>
 
             <View>
-              <Text style={styles.companyName}>WebHelp365</Text>
+              <Text style={styles.companyName}>{campaign.companyName}</Text>
 
-              <Text style={styles.companySubtext}>Software & Services</Text>
+              <Text style={styles.companySubtext}>{campaign?.companyType}</Text>
             </View>
           </View>
 
           {/* DESCRIPTION */}
-          <Text style={styles.companyDescription}>
-            We are looking for tech-savvy influencers to explore and review our
-            latest CMS features. Focus on functionality, UI/UX and performance.
-          </Text>
+          <Text style={styles.companyDescription}>{campaign?.description}</Text>
 
           {/* APPLIED */}
           <View style={styles.appliedRow}>
@@ -192,7 +202,9 @@ export default function Campaigns() {
               </View>
             </View>
 
-            <Text style={styles.appliedText}>27 APPLIED</Text>
+            <Text style={styles.appliedText}>
+              {campaign?.appliedCount} APPLIED
+            </Text>
           </View>
 
           <View style={styles.divider} />
@@ -200,48 +212,51 @@ export default function Campaigns() {
           {/* TIMELINE */}
           <View style={styles.infoBlock}>
             <View style={styles.infoIcon}>
-            <Image
-             source={require('../../assets/images/time.png')}
-             style={styles.infoImage}
-             resizeMode="contain"/>
+              <Image
+                source={require("../../assets/images/time.png")}
+                style={styles.infoImage}
+                resizeMode="contain"
+              />
             </View>
 
             <View>
               <Text style={styles.infoLabel}>TIMELINE</Text>
 
-              <Text style={styles.infoValue}>3 Months</Text>
+              <Text style={styles.infoValue}>{campaign?.timeline}</Text>
             </View>
           </View>
 
           {/* DEADLINE */}
           <View style={styles.infoBlock}>
             <View style={styles.infoIcon}>
-            <Image
-             source={require('../../assets/images/deadline.png')}
-             style={styles.infoImage}
-             resizeMode="contain"/>
+              <Image
+                source={require("../../assets/images/deadline.png")}
+                style={styles.infoImage}
+                resizeMode="contain"
+              />
             </View>
 
             <View>
               <Text style={styles.infoLabel}>DEADLINE</Text>
 
-              <Text style={styles.infoValue}>Oct 15, 2024</Text>
+              <Text style={styles.infoValue}>{campaign?.deadline}</Text>
             </View>
           </View>
 
           {/* BUDGET */}
           <View style={styles.infoBlock}>
             <View style={styles.infoIcon}>
-            <Image
-             source={require('../../assets/images/budget.png')}
-             style={styles.infoImage}
-             resizeMode="contain"/>
+              <Image
+                source={require("../../assets/images/budget.png")}
+                style={styles.infoImage}
+                resizeMode="contain"
+              />
             </View>
 
             <View>
               <Text style={styles.infoLabel}>BUDGET RANGE</Text>
 
-              <Text style={styles.budgetText}>$1.5K - $4.0K</Text>
+              <Text style={styles.budgetText}>{campaign?.budget}</Text>
             </View>
           </View>
         </View>
@@ -249,10 +264,11 @@ export default function Campaigns() {
         {/* CARD 2 */}
         <View style={styles.card}>
           <View style={styles.requirementHeader}>
-          <Image
-             source={require('../../assets/images/shield.png')}
-             style={styles.infoImage}
-             resizeMode="contain"/>
+            <Image
+              source={require("../../assets/images/shield.png")}
+              style={styles.infoImage}
+              resizeMode="contain"
+            />
 
             <Text style={styles.requirementTitle}>Campaign Requirements</Text>
           </View>
@@ -263,7 +279,9 @@ export default function Campaigns() {
 
               <Text style={styles.reqTop}>FOLLOWERS</Text>
 
-              <Text style={styles.reqValue}>50.0K</Text>
+              <Text style={styles.reqValue}>
+                {campaign?.requirements?.minFollowers}
+              </Text>
             </View>
 
             <View style={styles.requirementCard}>
@@ -271,7 +289,9 @@ export default function Campaigns() {
 
               <Text style={styles.reqTop}>ENGAGEMENT</Text>
 
-              <Text style={styles.reqValue}>4.2%</Text>
+              <Text style={styles.reqValue}>
+                {campaign?.requirements?.minEngagement}
+              </Text>
             </View>
           </View>
 
@@ -281,11 +301,8 @@ export default function Campaigns() {
             style={styles.targetText}
             numberOfLines={expanded ? undefined : 3}
           >
-            Influencers should have an audience primarily composed of young
-            professionals, tech enthusiasts and digital creators interested in
-            software, productivity, business tools and web technologies.
+            {campaign?.targetAudience}
           </Text>
-
           <TouchableOpacity onPress={() => setExpanded(!expanded)}>
             <Text style={styles.readMore}>
               {expanded ? "Show less" : "Read more..."}
@@ -296,30 +313,18 @@ export default function Campaigns() {
           <View style={styles.categoryCard}>
             <Text style={styles.categoryTitle}>Campaign Categories</Text>
 
-            <View style={styles.categoryRow}>
-              <View style={styles.categoryBox}>
-                <Text style={styles.categoryText}>Technology</Text>
-              </View>
-
-              <View style={styles.categoryBox}>
-                <Text style={styles.categoryText}>CMS</Text>
-              </View>
-            </View>
-
-            <View style={styles.categoryRow}>
-              <View style={styles.categoryBox}>
-                <Text style={styles.categoryText}>Product Review</Text>
-              </View>
-
-              <View style={styles.categoryBox}>
-                <Text style={styles.categoryText}>Software</Text>
-              </View>
-            </View>
-
-            <View style={styles.categoryRow}>
-              <View style={styles.categoryBox}>
-                <Text style={styles.categoryText}>WebHelp365</Text>
-              </View>
+            <View
+              style={{
+                flexDirection: "row",
+                flexWrap: "wrap",
+                gap: 10,
+              }}
+            >
+              {campaign?.campaignCategories?.map((item, index) => (
+                <View key={index} style={styles.categoryBox}>
+                  <Text style={styles.categoryText}>{item}</Text>
+                </View>
+              ))}
             </View>
           </View>
         </View>
@@ -329,102 +334,79 @@ export default function Campaigns() {
           <Text style={styles.platformTitle}>Eligible Platforms</Text>
 
           <View style={styles.platformCard}>
-           <Image
-              source={require('../../assets/images/Instagram.png')}
-              style={styles.platformicon}
-              resizeMode="contain"/>
             <Image
-              source={require('../../assets/images/facebook.png')}
+              source={require("../../assets/images/Instagram.png")}
               style={styles.platformicon}
-              resizeMode="contain"/>
+              resizeMode="contain"
+            />
+            <Image
+              source={require("../../assets/images/facebook.png")}
+              style={styles.platformicon}
+              resizeMode="contain"
+            />
 
             <Image
-              source={require('../../assets/images/youtube.png')}
+              source={require("../../assets/images/youtube.png")}
               style={styles.platformicon}
-              resizeMode="contain"/>
+              resizeMode="contain"
+            />
 
             <Image
-              source={require('../../assets/images/tiktok.png')}
+              source={require("../../assets/images/tiktok.png")}
               style={styles.platformicon}
-              resizeMode="contain"/>
+              resizeMode="contain"
+            />
 
             <Image
-              source={require('../../assets/images/linkedin.png')}
+              source={require("../../assets/images/linkedin.png")}
               style={styles.platformicon}
-              resizeMode="contain"/>
+              resizeMode="contain"
+            />
 
             <Image
-              source={require('../../assets/images/pinterest.png')}
+              source={require("../../assets/images/pinterest.png")}
               style={styles.platformicon}
-              resizeMode="contain"/>
+              resizeMode="contain"
+            />
 
             <Image
-              source={require('../../assets/images/telegram.png')}
+              source={require("../../assets/images/telegram.png")}
               style={styles.platformicon}
-              resizeMode="contain"/>
+              resizeMode="contain"
+            />
 
             <Image
-              source={require('../../assets/images/whatsapp.png')}
+              source={require("../../assets/images/whatsapp.png")}
               style={styles.platformicon}
-              resizeMode="contain"/>
+              resizeMode="contain"
+            />
           </View>
 
           {/* DELIVERABLES */}
           <View style={styles.deliverableCard}>
             <Text style={styles.deliverableTitle}>Deliverables</Text>
 
-            <View style={styles.deliverableRow}>
-            <Image
-              source={require('../../assets/images/checkbox.png')}
-              style={styles.deliverableIcon}
-              resizeMode="contain"/>
+            {campaign?.deliverables?.map((item, index) => (
+              <View key={index} style={styles.deliverableRow}>
+                <Image
+                  source={require("../../assets/images/checkbox.png")}
+                  style={styles.deliverableIcon}
+                  resizeMode="contain"
+                />
 
-              <Text style={styles.deliverableText}>
-                1x In-depth YouTube video review (min 8 mins)
-              </Text>
-            </View>
-
-            <View style={styles.deliverableRow}>
-            <Image
-              source={require('../../assets/images/checkbox.png')}
-              style={styles.deliverableIcon}
-              resizeMode="contain"/>
-
-              <Text style={styles.deliverableText}>
-                3x High-fidelity Instagram Stories with direct links
-              </Text>
-            </View>
-
-            <View style={styles.deliverableRow}>
-            <Image
-              source={require('../../assets/images/checkbox.png')}
-              style={styles.deliverableIcon}
-              resizeMode="contain"/>
-
-              <Text style={styles.deliverableText}>
-                Functionality walkthrough of WebHelp365 CMS
-              </Text>
-            </View>
-
-            <View style={styles.deliverableRow}>
-            <Image
-              source={require('../../assets/images/checkbox.png')}
-              style={styles.deliverableIcon}
-              resizeMode="contain"/>
-
-              <Text style={styles.deliverableText}>
-                Authentic UX feedback & product critique
-              </Text>
-            </View>
+                <Text style={styles.deliverableText}>{item}</Text>
+              </View>
+            ))}
           </View>
 
           <GradientButton
             title="Apply Now"
             style={styles.applyButton}
             textStyle={{
-            fontSize: moderateScale(20),
-            fontWeight:'bold'
-           }}/>
+              fontSize: moderateScale(20),
+              fontWeight: "bold",
+            }}
+          />
         </View>
       </ScrollView>
     </SafeAreaView>
