@@ -200,4 +200,4 @@ const styles = StyleSheet.create({
   saveBtnText: { color: '#000', fontSize: moderateScale(16), fontFamily: 'Poppins-SemiBold' },
 });
 
-export default AddPricingScreen;
+export default AddPricingScreen; 

@@ -180,4 +180,4 @@ const PricingScreen = ({ navigation }: Props) => {
   );
 };
 
-export default PricingScreen;
+export default PricingScreen; 

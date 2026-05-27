@@ -1,60 +1,133 @@
-// src/types/navigation.ts
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RouteProp } from '@react-navigation/native';
+import {
+  NativeStackNavigationProp,
+  NativeStackScreenProps,
+} from '@react-navigation/native-stack';
 
-export type AuthStackParamList = {
-  Splash: undefined;
-  Onboarding: undefined;
-  RoleSelection: undefined;
-  AuthEntryPoint: { role: 'BRAND' | 'CREATOR' };
-  Register: { role: 'BRAND' | 'CREATOR' };
-  Login: undefined;
-  ForgotPassword: undefined;
-  ResetPassword: { verifiedEmail: string };
-  Verification: { destination: string; flow: 'password_reset' | 'registration' };
+/**
+ * BOTTOM TAB TYPES
+ */
+export type BottomTabParamList = {
+  Profile: undefined;
+  Campaign: undefined;
+  Explore: undefined;
+  Analytics: undefined;
+  Assets: undefined;
 };
 
+/**
+ * ROOT STACK TYPES
+ */
 export type AppStackParamList = {
-  OnboardingScreen: undefined;
+  MainTabs: undefined;
+
   Home: undefined;
   Overview: undefined;
 
-  // Content
   Content: undefined;
   AddContent: undefined;
-  EditContent: { contentId: string };
+  EditContent: {
+    contentId?: string;
+  };
 
-  // Pricing
   Pricing: undefined;
   AddPricing: undefined;
-  EditPricing: { pricingId: string };
+  EditPricing: {
+    pricingId?: string;
+  };
 
-  // Campaigns
   CampaignQueue: undefined;
-  CampaignURL: { campaignId: string };
 
-  // Earnings
+  CampaignURL: {
+    campaignId?: string;
+    url?: string;
+  };
+
   MyEarnings: undefined;
 
-  // Settings
   Settings: undefined;
-  ManageAccount: undefined;
-  Bio: undefined;
-  SocialMedia: undefined;
-  AdditionalInfo: undefined;
-  ViewPlans: undefined;
-  Subscription: undefined;
-  ChangePassword: undefined;
 };
 
-export type AuthNavigationProp<T extends keyof AuthStackParamList> =
-  NativeStackNavigationProp<AuthStackParamList, T>;
+/**
+ * NAVIGATION PROP
+ */
+export type AppNavigationProp<
+  T extends keyof AppStackParamList,
+> = NativeStackNavigationProp<
+  AppStackParamList,
+  T
+>;
 
-export type AuthRouteProp<T extends keyof AuthStackParamList> =
-  RouteProp<AuthStackParamList, T>;
+/**
+ * SCREEN PROP TYPES
+ */
+export type HomeScreenProps =
+  NativeStackScreenProps<
+    AppStackParamList,
+    'Home'
+  >;
 
-export type AppNavigationProp<T extends keyof AppStackParamList> =
-  NativeStackNavigationProp<AppStackParamList, T>;
+export type OverviewScreenProps =
+  NativeStackScreenProps<
+    AppStackParamList,
+    'Overview'
+  >;
 
-export type AppRouteProp<T extends keyof AppStackParamList> =
-  RouteProp<AppStackParamList, T>;
+export type ContentScreenProps =
+  NativeStackScreenProps<
+    AppStackParamList,
+    'Content'
+  >;
+
+export type AddContentScreenProps =
+  NativeStackScreenProps<
+    AppStackParamList,
+    'AddContent'
+  >;
+
+export type EditContentScreenProps =
+  NativeStackScreenProps<
+    AppStackParamList,
+    'EditContent'
+  >;
+
+export type PricingScreenProps =
+  NativeStackScreenProps<
+    AppStackParamList,
+    'Pricing'
+  >;
+
+export type AddPricingScreenProps =
+  NativeStackScreenProps<
+    AppStackParamList,
+    'AddPricing'
+  >;
+
+export type EditPricingScreenProps =
+  NativeStackScreenProps<
+    AppStackParamList,
+    'EditPricing'
+  >;
+
+export type CampaignQueueScreenProps =
+  NativeStackScreenProps<
+    AppStackParamList,
+    'CampaignQueue'
+  >;
+
+export type CampaignURLScreenProps =
+  NativeStackScreenProps<
+    AppStackParamList,
+    'CampaignURL'
+  >;
+
+export type MyEarningsScreenProps =
+  NativeStackScreenProps<
+    AppStackParamList,
+    'MyEarnings'
+  >;
+
+export type SettingsScreenProps =
+  NativeStackScreenProps<
+    AppStackParamList,
+    'Settings'
+  >;

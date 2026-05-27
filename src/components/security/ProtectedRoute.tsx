@@ -1,30 +1,67 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
+
 import { useAppSelector } from '../../hooks/redux';
+import { Colors } from '../../config/theme';
 
-interface Props {
+import type { UserPermissions } from '../../types/global';
+
+type PermissionKey = keyof UserPermissions;
+
+type ProtectedRouteProps = {
   children: React.ReactNode;
-  permission?: keyof ReturnType<
-    typeof useAppSelector
-  >['auth']['user']['permissions'];
-}
+  requiredPermission?: PermissionKey;
+};
 
-const ProtectedRoute = ({ children, permission }: Props) => {
-  const user = useAppSelector(state => state.auth.user);
+const ProtectedRoute = ({
+  children,
+  requiredPermission,
+}: ProtectedRouteProps) => {
+  const auth = useAppSelector(state => state.auth);
 
-  if (!user) {
-    return null;
+  if (!auth?.isAuthenticated) {
+    return (
+      <View style={styles.center}>
+        <Text style={styles.text}>
+          You must be logged in to access this page.
+        </Text>
+      </View>
+    );
   }
 
-  if (permission && !user.permissions[permission]) {
+  const permissions = auth.user?.permissions as UserPermissions;
+
+  if (
+    requiredPermission &&
+    permissions &&
+    !permissions[requiredPermission]
+  ) {
     return (
-      <View>
-        <Text>Access Denied</Text>
+      <View style={styles.center}>
+        <Text style={styles.text}>
+          You do not have permission to access this page.
+        </Text>
       </View>
     );
   }
 
   return <>{children}</>;
 };
+
+const styles = StyleSheet.create({
+  center: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: Colors.bgBlack,
+    paddingHorizontal: 24,
+  },
+
+  text: {
+    color: Colors.textPrimary,
+    fontSize: 16,
+    textAlign: 'center',
+  },
+});
 
 export default ProtectedRoute;

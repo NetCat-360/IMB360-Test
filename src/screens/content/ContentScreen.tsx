@@ -1,5 +1,5 @@
 // src/screens/content/ContentScreen.tsx
-import React, { useState } from 'react';
+import React, { useState } from 'react'; 
 import {
   View, Text, Image, TouchableOpacity,
   ScrollView, StatusBar,

@@ -1,32 +1,58 @@
-import { UserRole, UserPermissions } from '../features/auth/store/authSlice';
+import type {
+  UserPermissions,
+  UserRole,
+} from '../types/global';
 
+/**
+ * DEFAULT PERMISSIONS
+ */
+export const DEFAULT_PERMISSIONS: Record<
+  UserRole,
+  UserPermissions
+> = {
+  ADMIN: {
+    canViewDashboard: true,
+    canManageCampaigns: true,
+    canManageContent: true,
+    canManagePricing: true,
+    canViewEarnings: true,
+    canManageSettings: true,
+  },
+
+  CREATOR: {
+    canViewDashboard: true,
+    canManageCampaigns: false,
+    canManageContent: true,
+    canManagePricing: true,
+    canViewEarnings: true,
+    canManageSettings: false,
+  },
+
+  BRAND: {
+    canViewDashboard: true,
+    canManageCampaigns: true,
+    canManageContent: false,
+    canManagePricing: false,
+    canViewEarnings: false,
+    canManageSettings: false,
+  },
+};
+
+/**
+ * GET ROLE PERMISSIONS
+ */
 export const getPermissionsByRole = (
   role: UserRole,
 ): UserPermissions => {
-  switch (role) {
-    case 'ADMIN':
-      return {
-        canManageUsers: true,
-        canCreateCampaigns: true,
-        canViewPayments: true,
-        canEditProfile: true,
-      };
+  return DEFAULT_PERMISSIONS[role];
+};
 
-    case 'BRAND':
-      return {
-        canManageUsers: false,
-        canCreateCampaigns: true,
-        canViewPayments: true,
-        canEditProfile: true,
-      };
-
-    case 'CREATOR':
-    default:
-      return {
-        canManageUsers: false,
-        canCreateCampaigns: false,
-        canViewPayments: false,
-        canEditProfile: true,
-      };
-  }
+/**
+ * CHECK PERMISSION
+ */
+export const hasPermission = (
+  permissions: UserPermissions,
+  permission: keyof UserPermissions,
+): boolean => {
+  return permissions[permission];
 };

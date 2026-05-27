@@ -1,162 +1,211 @@
-// src/navigation/AppNavigator.tsx
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { moderateScale, verticalScale } from '../utils/scaling';
-import { Colors } from '../config/theme';
-import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 
-// Screens — Profile stack
+import Ionicons from 'react-native-vector-icons/Ionicons';
+
+import {
+  BottomTabParamList,
+  AppStackParamList,
+} from '../types/navigation';
+
+/**
+ * TAB SCREENS
+ */
 import HomeScreen from '../screens/home/HomeScreen';
-import SettingsScreen from '../screens/settings/SettingsScreen';
+
+/**
+ * STACK SCREENS
+ */
 import OverviewScreen from '../screens/overview/OverviewScreen';
+
 import ContentScreen from '../screens/content/ContentScreen';
 import AddContentScreen from '../screens/content/AddContentScreen';
 import EditContentScreen from '../screens/content/EditContentScreen';
+
 import PricingScreen from '../screens/pricing/PricingScreen';
-import AddPricingScreen from '../screens/pricing/AddPricingScreen';
 import EditPricingScreen from '../screens/pricing/EditPricingScreen';
-import MyEarnings from '../screens/MyEarnings/MyEarnings';
+
 import CampaignQueueScreen from '../screens/CampaignQueue/CampaignQueueScreen';
 import CampaignURLScreen from '../screens/CampaignQueue/CampaignURLScreen';
-import ManageAccountScreen from '../screens/settings/ManageAccount/ManageAccountScreen';
-import BioScreen from '../screens/settings/Bio/BioScreen';
-import SocialMediaScreen from '../screens/settings/SocialMedia/SocialMediaScreen';
-import AdditionalInfoScreen from '../screens/settings/AdditionalInfo/AdditionalInfoScreen';
-import ViewPlansScreen from '../screens/settings/ViewPlans/ViewPlansScreen';
-import SubscriptionScreen from '../screens/settings/Subscription/SubscriptionScreen';
-import ChangePasswordScreen from '../screens/settings/ChangePassword/ChangePasswordScreen';
 
-// ── Placeholder screens ───────────────────────────────────────────────────────
+import MyEarnings from '../screens/MyEarnings/MyEarnings';
 
-const PlaceholderScreen = ({ label }: { label: string }) => (
-  <View style={styles.placeholderContainer}>
-    <Text style={styles.placeholderText}>{label}</Text>
-  </View>
-);
+import SettingsScreen from '../screens/settings/SettingsScreen';
 
-const CampaignsScreen = () => <PlaceholderScreen label="Campaigns" />;
-const ExploreScreen   = () => <PlaceholderScreen label="Explore" />;
-const AnalyticsScreen = () => <PlaceholderScreen label="Analytics" />;
-const AssetsScreen    = () => <PlaceholderScreen label="Assets" />;
+const Tab = createBottomTabNavigator<BottomTabParamList>();
+const Stack = createNativeStackNavigator<AppStackParamList>();
 
-// ── Profile stack (hides tab bar on sub-screens) ──────────────────────────────
+/**
+ * TABS
+ */
+function MainTabs() {
+  return (
+    <Tab.Navigator
+      screenOptions={({ route }) => ({
+        headerShown: false,
 
-const ProfileStack = createNativeStackNavigator();
+        tabBarStyle: {
+          backgroundColor: '#000',
+          borderTopWidth: 0,
+          height: 70,
+          paddingBottom: 10,
+          paddingTop: 10,
+        },
 
-const HIDE_TAB_SCREENS = [
-  'Settings', 'ManageAccount', 'Bio', 'SocialMedia', 'AdditionalInfo',
-  'ViewPlans', 'Subscription', 'ChangePassword',
-  'AddContent', 'EditContent',
-  'AddPricing', 'EditPricing',
-  'CampaignURL',
-];
+        tabBarActiveTintColor: '#00D2FF',
+        tabBarInactiveTintColor: '#7A7A7A',
 
-const ProfileStackNavigator = () => (
-  <ProfileStack.Navigator
-    screenOptions={{
-      headerShown: false,
-      contentStyle: { backgroundColor: Colors.bgBlack },
-    }}
-  >
-    <ProfileStack.Screen name="Home"            component={HomeScreen} />
-    <ProfileStack.Screen name="Overview"        component={OverviewScreen} />
-    <ProfileStack.Screen name="Content"         component={ContentScreen} />
-    <ProfileStack.Screen name="AddContent"      component={AddContentScreen} />
-    <ProfileStack.Screen name="EditContent"     component={EditContentScreen} />
-    <ProfileStack.Screen name="Pricing"         component={PricingScreen} />
-    <ProfileStack.Screen name="AddPricing"      component={AddPricingScreen} />
-    <ProfileStack.Screen name="EditPricing"     component={EditPricingScreen} />
-    <ProfileStack.Screen name="MyEarnings"      component={MyEarnings} />
-    <ProfileStack.Screen name="CampaignQueue"   component={CampaignQueueScreen} />
-    <ProfileStack.Screen name="CampaignURL"     component={CampaignURLScreen} />
-    <ProfileStack.Screen name="Settings"        component={SettingsScreen} />
-    <ProfileStack.Screen name="ManageAccount"   component={ManageAccountScreen} />
-    <ProfileStack.Screen name="Bio"             component={BioScreen} />
-    <ProfileStack.Screen name="SocialMedia"     component={SocialMediaScreen} />
-    <ProfileStack.Screen name="AdditionalInfo"  component={AdditionalInfoScreen} />
-    <ProfileStack.Screen name="ViewPlans"       component={ViewPlansScreen} />
-    <ProfileStack.Screen name="Subscription"    component={SubscriptionScreen} />
-    <ProfileStack.Screen name="ChangePassword"  component={ChangePasswordScreen} />
-  </ProfileStack.Navigator>
-);
+        tabBarLabelStyle: {
+          fontSize: 11,
+          fontWeight: '600',
+          marginTop: 4,
+        },
 
-// ── Bottom tabs ───────────────────────────────────────────────────────────────
+        tabBarIcon: ({ color, focused }) => {
+          let iconName = '';
 
-const Tab = createBottomTabNavigator();
+          switch (route.name) {
+            case 'Profile':
+              iconName = focused
+                ? 'person'
+                : 'person-outline';
+              break;
 
-const AppNavigator = () => (
-  <Tab.Navigator
-    screenOptions={{
-      headerShown: false,
-      tabBarStyle: {
-        backgroundColor: Colors.bgSurface,
-        borderTopColor: Colors.borderDefault,
-        borderTopWidth: 1,
-        height: verticalScale(60),
-        paddingBottom: verticalScale(8),
-        paddingTop: verticalScale(6),
-      },
-      tabBarActiveTintColor: Colors.teal,
-      tabBarInactiveTintColor: '#666666',
-      tabBarLabelStyle: {
-        fontSize: moderateScale(10),
-        marginTop: verticalScale(2),
-      },
-    }}
-  >
-    <Tab.Screen
-      name="ProfileTab"
-      component={ProfileStackNavigator}
-      options={({ route }) => {
-        const routeName = getFocusedRouteNameFromRoute(route) ?? 'Home';
-        return {
-          tabBarStyle: {
-            display: HIDE_TAB_SCREENS.includes(routeName) ? 'none' : 'flex',
-            backgroundColor: Colors.bgSurface,
-            borderTopColor: Colors.borderDefault,
-            borderTopWidth: 1,
-            height: verticalScale(60),
-            paddingBottom: verticalScale(8),
-            paddingTop: verticalScale(6),
-          },
-          tabBarLabel: 'Profile',
-          tabBarIcon: () => <Text style={{ fontSize: 18 }}>👤</Text>,
-        };
+            case 'Campaign':
+              iconName = focused
+                ? 'megaphone'
+                : 'megaphone-outline';
+              break;
+
+            case 'Explore':
+              iconName = focused
+                ? 'compass'
+                : 'compass-outline';
+              break;
+
+            case 'Analytics':
+              iconName = focused
+                ? 'stats-chart'
+                : 'stats-chart-outline';
+              break;
+
+            case 'Assets':
+              iconName = focused
+                ? 'folder'
+                : 'folder-outline';
+              break;
+          }
+
+          return (
+            <Ionicons
+              name={iconName}
+              size={24}
+              color={color}
+            />
+          );
+        },
+      })}
+    >
+      <Tab.Screen
+        name="Profile"
+        component={HomeScreen}
+      />
+
+      <Tab.Screen
+        name="Campaign"
+        component={HomeScreen}
+      />
+
+      <Tab.Screen
+        name="Explore"
+        component={HomeScreen}
+      />
+
+      <Tab.Screen
+        name="Analytics"
+        component={HomeScreen}
+      />
+
+      <Tab.Screen
+        name="Assets"
+        component={HomeScreen}
+      />
+    </Tab.Navigator>
+  );
+}
+
+/**
+ * ROOT NAVIGATOR
+ */
+export default function AppNavigator() {
+  return (
+    <Stack.Navigator
+      initialRouteName="MainTabs"
+      screenOptions={{
+        headerShown: false,
       }}
-    />
-    <Tab.Screen
-      name="Campaigns"
-      component={CampaignsScreen}
-      options={{ tabBarIcon: () => <Text style={{ fontSize: 18 }}>📢</Text> }}
-    />
-    <Tab.Screen
-      name="Explore"
-      component={ExploreScreen}
-      options={{ tabBarIcon: () => <Text style={{ fontSize: 18 }}>🧭</Text> }}
-    />
-    <Tab.Screen
-      name="Analytics"
-      component={AnalyticsScreen}
-      options={{ tabBarIcon: () => <Text style={{ fontSize: 18 }}>📊</Text> }}
-    />
-    <Tab.Screen
-      name="Assets"
-      component={AssetsScreen}
-      options={{ tabBarIcon: () => <Text style={{ fontSize: 18 }}>📁</Text> }}
-    />
-  </Tab.Navigator>
-);
+    >
+      <Stack.Screen
+        name="MainTabs"
+        component={MainTabs}
+      />
 
-const styles = StyleSheet.create({
-  placeholderContainer: {
-    flex: 1, backgroundColor: Colors.bgBlack,
-    justifyContent: 'center', alignItems: 'center',
-  },
-  placeholderText: {
-    color: Colors.lime, fontSize: moderateScale(18), fontWeight: 'bold',
-  },
-});
+      <Stack.Screen
+        name="Home"
+        component={HomeScreen}
+      />
 
-export default AppNavigator;
+      <Stack.Screen
+        name="Overview"
+        component={OverviewScreen}
+      />
+
+      <Stack.Screen
+        name="Content"
+        component={ContentScreen}
+      />
+
+      <Stack.Screen
+        name="AddContent"
+        component={AddContentScreen}
+      />
+
+      <Stack.Screen
+        name="EditContent"
+        component={EditContentScreen}
+      />
+
+      <Stack.Screen
+        name="Pricing"
+        component={PricingScreen}
+      />
+
+      <Stack.Screen
+        name="EditPricing"
+        component={EditPricingScreen}
+      />
+
+      <Stack.Screen
+        name="CampaignQueue"
+        component={CampaignQueueScreen}
+      />
+
+      <Stack.Screen
+        name="CampaignURL"
+        component={CampaignURLScreen}
+      />
+
+      <Stack.Screen
+        name="MyEarnings"
+        component={MyEarnings}
+      />
+
+      <Stack.Screen
+        name="Settings"
+        component={SettingsScreen}
+      />
+    </Stack.Navigator>
+  );
+}
