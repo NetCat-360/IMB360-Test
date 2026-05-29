@@ -9,13 +9,12 @@ import {
   StatusBar,
   KeyboardAvoidingView,
   Platform,
-  StyleSheet,
   TextInput,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Animated from 'react-native-reanimated';
 import LinearGradient from 'react-native-linear-gradient';
-import { scale, verticalScale, moderateScale } from '../../../utils/scaling';
+import { verticalScale } from '../../../utils/scaling';
 import { AuthNavigationProp } from '../../../types/navigation';
 import { OtpModalSheet } from '../../../components/auth/OtpModalSheet';
 import { useToast } from '../../../hooks/useToast';
@@ -23,6 +22,7 @@ import apiClient from '../../../api/client';
 import { AUTH } from '../../../api/endpoints';
 import styles from '../register/styles';
 import { authInputStyles } from '../inputStyles';
+import { localStyles } from './styles';
 
 const OutlinedFloatingInput = ({ label, value, onChangeText, keyboardType }: any) => {
   const [isFocused, setIsFocused] = useState(false);
@@ -198,50 +198,6 @@ const ForgotPasswordScreen = ({ navigation }: Props) => {
   );
 };
 
-const localStyles = StyleSheet.create({
-  topAlignedContent: { justifyContent: 'flex-start' },
-  logoTopContainer: {
-    width: '100%',
-    alignItems: 'center',
-    paddingTop: verticalScale(40),
-    paddingBottom: verticalScale(5),
-  },
-  adaptedLogoStyle: {
-    width: scale(220),
-    height: verticalScale(55),
-  },
-  formWrapperOffset: { marginTop: verticalScale(-5) },
-  forgotTextTitle: {
-    marginBottom: verticalScale(14),
-    color: '#b6d82c',
-    fontSize: moderateScale(22),
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  descriptionTextSpacing: {
-    textAlign: 'center',
-    color: '#666666',
-    marginBottom: verticalScale(28),
-    paddingHorizontal: scale(12),
-    lineHeight: verticalScale(18),
-    fontSize: moderateScale(13),
-  },
-  customOutline: {
-    borderColor: '#7f9221',
-    borderWidth: 1.5,
-    borderRadius: moderateScale(10),
-    backgroundColor: '#000000',
-  },
-  customOutlineActive: { borderColor: '#b6d82c' },
-  customFloatingLabel: {
-    backgroundColor: '#000000',
-    paddingHorizontal: scale(6),
-    zIndex: 100,
-  },
-  customTextInput: {
-    color: '#ffffff',
-    fontSize: moderateScale(15),
-  },
-});
+
 
 export default ForgotPasswordScreen;

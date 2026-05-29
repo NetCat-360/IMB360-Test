@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { scale, verticalScale, moderateScale } from '../../../utils/scaling';
+import { Colors } from '../../../config/theme';
 
 export default StyleSheet.create({
   container: { 
@@ -187,5 +188,84 @@ export default StyleSheet.create({
     fontSize: moderateScale(13),
     fontWeight: '600',
     textAlign: 'center'
-  }
+  },
+
+  // ── Local styles (previously inline in RegisterScreen) ──────────────────
+
+  flagText: {
+    fontSize: moderateScale(16),
+    marginRight: scale(4),
+  },
+  callingCodeText: {
+    color: Colors.textPrimary,
+    fontSize: moderateScale(14),
+    fontWeight: '500',
+  },
+  dropdownArrow: {
+    color: Colors.textDim,
+    fontSize: moderateScale(9),
+    marginLeft: scale(4),
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: Colors.bgModalOverlay,
+    justifyContent: 'flex-end',
+  },
+  modalContent: {
+    backgroundColor: Colors.bgModalSheet,
+    borderTopLeftRadius: moderateScale(20),
+    borderTopRightRadius: moderateScale(20),
+    height: '75%',
+    paddingTop: verticalScale(20),
+  },
+  modalHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: scale(20),
+    marginBottom: verticalScale(15),
+  },
+  modalTitle: {
+    color: Colors.textPrimary,
+    fontSize: moderateScale(18),
+    fontWeight: 'bold',
+  },
+  closeButton: {
+    color: Colors.textDim,
+    fontSize: moderateScale(18),
+    padding: scale(4),
+  },
+  searchBar: {
+    backgroundColor: Colors.bgInput,
+    color: Colors.textPrimary,
+    borderRadius: moderateScale(8),
+    height: verticalScale(42),
+    paddingHorizontal: scale(12),
+    marginHorizontal: scale(20),
+    marginBottom: verticalScale(15),
+    borderWidth: 1,
+    borderColor: Colors.borderStrong,
+  },
+  countryItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: verticalScale(14),
+    paddingHorizontal: scale(20),
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.borderDefault,
+  },
+  itemFlag: {
+    fontSize: moderateScale(20),
+    marginRight: scale(14),
+  },
+  itemName: {
+    flex: 1,
+    color: Colors.textPrimary,
+    fontSize: moderateScale(15),
+  },
+  itemCallingCode: {
+    color: Colors.lime,
+    fontSize: moderateScale(14),
+    fontWeight: '600',
+  },
 });

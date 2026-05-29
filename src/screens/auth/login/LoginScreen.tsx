@@ -10,7 +10,6 @@ import {
   StatusBar,
   KeyboardAvoidingView,
   Platform,
-  StyleSheet,
 } from 'react-native';
 
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -18,9 +17,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import LinearGradient from 'react-native-linear-gradient';
 
 import {
-  scale,
   verticalScale,
-  moderateScale,
 } from '../../../utils/scaling';
 
 import { AuthNavigationProp } from '../../../types/navigation';
@@ -40,6 +37,7 @@ import { Colors } from '../../../config/theme';
 import Typography from '../../../styles/typography';
 
 import styles from '../register/styles';
+import { localStyles } from './styles';
 
 import apiClient from '../../../api/client';
 import { AUTH } from '../../../api/endpoints';
@@ -544,31 +542,6 @@ const LoginScreen = ({
   );
 };
 
-const localStyles =
-  StyleSheet.create({
-    logoTopContainer: {
-      width: '100%',
-      alignItems: 'center',
-      paddingTop:
-        verticalScale(40),
-      paddingBottom:
-        verticalScale(5),
-    },
 
-    adaptedLogoStyle: {
-      width: scale(220),
-      height:
-        verticalScale(55),
-    },
-
-    heading: {
-      marginBottom:
-        verticalScale(30),
-      color: Colors.lime,
-      fontSize:
-        moderateScale(22),
-      textAlign: 'center',
-    },
-  });
 
 export default LoginScreen;

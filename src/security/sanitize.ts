@@ -8,7 +8,7 @@ export const sanitizeText = (value: string, maxLength = 255): string => {
   return value
     .normalize('NFKC')
     .replace(/<[^>]*>/g, '')
-    .replace(/[\u0000-\u001F\u007F]/g, '')
+    .replace(/[\u0000-\u001F\u007F]/g, '') // eslint-disable-line no-control-regex
     .trim()
     .slice(0, maxLength);
 };
@@ -18,7 +18,7 @@ export const sanitizeEmail = (email: string): string => {
 };
 
 export const sanitizePhone = (phone: string): string => {
-  const cleaned = phone.match(/[0-9\+]/g)?.join('') || '';
+  const cleaned = phone.match(/[0-9+]/g)?.join('') || '';
   return cleaned.slice(0, 20);
 };
 

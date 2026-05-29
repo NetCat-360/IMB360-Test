@@ -141,3 +141,124 @@ export const mainStyles = StyleSheet.create({
   grid: { paddingHorizontal: scale(16), paddingBottom: verticalScale(32) },
   gridRow: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between' },
 });
+
+// ── AddContentScreen ────────────────────────────────────────────────────────────
+
+export const addDropStyles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: Colors.bgInput,
+    borderRadius: moderateScale(10),
+    paddingHorizontal: scale(14),
+    paddingVertical: verticalScale(12),
+    marginBottom: verticalScale(14),
+    borderWidth: 1,
+    borderColor: Colors.borderStrong,
+  },
+  text: { color: Colors.textPrimary, fontSize: moderateScale(14), fontFamily: 'Poppins-Regular' },
+  placeholder: { color: Colors.textMuted },
+  arrow: { color: Colors.textMuted, fontSize: moderateScale(14) },
+});
+
+export const addPickerStyles = StyleSheet.create({
+  overlay: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, zIndex: 100 },
+  backdrop: { ...StyleSheet.absoluteFill, backgroundColor: 'rgba(0,0,0,0.7)' },
+  sheet: {
+    position: 'absolute',
+    bottom: 0, left: 0, right: 0,
+    backgroundColor: Colors.bgCard,
+    borderTopLeftRadius: moderateScale(20),
+    borderTopRightRadius: moderateScale(20),
+    maxHeight: verticalScale(340),
+    paddingVertical: verticalScale(8),
+  },
+  option: {
+    paddingHorizontal: scale(20),
+    paddingVertical: verticalScale(13),
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.borderDefault,
+  },
+  optionText: {
+    color: Colors.textPrimary,
+    fontSize: moderateScale(14),
+    fontFamily: 'Poppins-Regular',
+  },
+});
+
+export const addContentStyles = StyleSheet.create({
+  header: { width: '100%' },
+  headerInner: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: scale(16),
+    paddingBottom: verticalScale(14),
+    paddingTop: verticalScale(4),
+  },
+  backBtn: { marginRight: scale(12), padding: scale(4) },
+  backBtnText: { color: '#000', fontSize: moderateScale(22), fontWeight: 'bold' },
+  headerTitle: { color: '#000', fontSize: moderateScale(20), fontWeight: 'bold' },
+
+  body: { flex: 1, backgroundColor: Colors.bgBlack },
+  scrollContent: { paddingHorizontal: scale(20), paddingTop: verticalScale(24), paddingBottom: verticalScale(20) },
+
+  fieldLabel: {
+    color: Colors.textSecondary,
+    fontSize: moderateScale(13),
+    fontFamily: 'Poppins-Medium',
+    marginBottom: verticalScale(6),
+  },
+
+  uploadBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: Colors.bgInput,
+    borderRadius: moderateScale(10),
+    paddingHorizontal: scale(14),
+    paddingVertical: verticalScale(12),
+    marginBottom: verticalScale(14),
+    borderWidth: 1,
+    borderColor: Colors.borderStrong,
+  },
+  uploadBtnText: { color: Colors.textMuted, fontSize: moderateScale(14), fontFamily: 'Poppins-Regular' },
+  uploadArrow: { color: Colors.textMuted, fontSize: moderateScale(14) },
+
+  input: {
+    backgroundColor: Colors.bgInput,
+    borderRadius: moderateScale(10),
+    paddingHorizontal: scale(14),
+    paddingVertical: verticalScale(12),
+    marginBottom: verticalScale(14),
+    color: Colors.textPrimary,
+    fontSize: moderateScale(14),
+    fontFamily: 'Poppins-Regular',
+    borderWidth: 1,
+    borderColor: Colors.borderStrong,
+  },
+
+  footer: {
+    paddingHorizontal: scale(20),
+    paddingVertical: verticalScale(16),
+    borderTopWidth: 1,
+    borderTopColor: Colors.borderDefault,
+  },
+  saveBtn: { borderRadius: moderateScale(12), overflow: 'hidden' },
+  saveBtnDisabled: { opacity: 0.5 },
+  saveBtnGradient: {
+    paddingVertical: verticalScale(14),
+    alignItems: 'center',
+  },
+  saveBtnText: { color: '#000', fontSize: moderateScale(16), fontFamily: 'Poppins-SemiBold' },
+});
+
+// ── EditContentScreen ───────────────────────────────────────────────────────────
+
+export const editContentStyles = StyleSheet.create({
+  container: { flex: 1, backgroundColor: '#000', justifyContent: 'center', alignItems: 'center' },
+  title: { color: '#FFF', fontSize: 24, marginBottom: 20 },
+  contentId: { color: '#AAA', marginBottom: 30 },
+  backBtn: { backgroundColor: '#00D2FF', paddingHorizontal: 20, paddingVertical: 12, borderRadius: 10 },
+  backBtnText: { color: '#000', fontWeight: '700' },
+});

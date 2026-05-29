@@ -1,65 +1,48 @@
 import { StyleSheet } from 'react-native';
 import { scale, verticalScale, moderateScale } from '../../../utils/scaling';
 
-export default StyleSheet.create({
-  container: { 
-    flex: 1, 
-    backgroundColor: '#000000' 
-  },
-  innerLayout: { 
-    flex: 1, 
-    paddingHorizontal: scale(24), 
+export const localStyles = StyleSheet.create({
+  topAlignedContent: { justifyContent: 'flex-start' },
+  logoTopContainer: {
+    width: '100%',
     alignItems: 'center',
-    justifyContent: 'center' // Keeps the recovery layout beautifully centered
+    paddingTop: verticalScale(40),
+    paddingBottom: verticalScale(5),
   },
-  backButton: { 
-    alignSelf: 'flex-start', 
-    position: 'absolute',
-    top: verticalScale(10),
-    left: scale(24),
-    padding: scale(4),
-    zIndex: 10
+  adaptedLogoStyle: {
+    width: scale(220),
+    height: verticalScale(55),
   },
-  backButtonText: { 
-    color: '#ffffff', 
-    fontSize: moderateScale(24) 
+  formWrapperOffset: { marginTop: verticalScale(-5) },
+  forgotTextTitle: {
+    marginBottom: verticalScale(14),
+    color: '#b6d82c',
+    fontSize: moderateScale(22),
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
-  logo: { 
-    width: scale(180), 
-    height: verticalScale(65), 
-    marginTop: verticalScale(25) 
+  descriptionTextSpacing: {
+    textAlign: 'center',
+    color: '#666666',
+    marginBottom: verticalScale(28),
+    paddingHorizontal: scale(12),
+    lineHeight: verticalScale(18),
+    fontSize: moderateScale(13),
   },
-  screenHeaderTitle: { 
-    color: '#b6d82c', 
-    fontSize: moderateScale(19), 
-    fontWeight: 'bold', 
-    marginTop: verticalScale(12),
-    marginBottom: verticalScale(10), 
-    letterSpacing: 0.5 
+  customOutline: {
+    borderColor: '#7f9221',
+    borderWidth: 1.5,
+    borderRadius: moderateScale(10),
+    backgroundColor: '#000000',
   },
-  explanationText: { 
-    color: '#666666', 
-    fontSize: moderateScale(13), 
-    textAlign: 'center', 
-    marginBottom: verticalScale(24), 
-    paddingHorizontal: scale(10), 
-    lineHeight: verticalScale(18) 
+  customOutlineActive: { borderColor: '#b6d82c' },
+  customFloatingLabel: {
+    backgroundColor: '#000000',
+    paddingHorizontal: scale(6),
+    zIndex: 100,
   },
-  submitButton: { 
-    width: '100%', 
-    height: verticalScale(48), 
-    borderRadius: moderateScale(24), 
-    overflow: 'hidden', 
-    marginTop: verticalScale(5) 
+  customTextInput: {
+    color: '#ffffff',
+    fontSize: moderateScale(15),
   },
-  gradientButtonLayout: { 
-    flex: 1, 
-    justifyContent: 'center', 
-    alignItems: 'center' 
-  },
-  submitButtonText: { 
-    color: '#000000', 
-    fontSize: moderateScale(16), 
-    fontWeight: 'bold' 
-  }
 });

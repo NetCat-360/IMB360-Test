@@ -32,6 +32,13 @@ import EditPricingScreen from '../screens/pricing/EditPricingScreen';
 import CampaignURLScreen from '../screens/CampaignQueue/CampaignURLScreen';
 
 import SettingsScreen from '../screens/settings/SettingsScreen';
+import ManageAccountScreen from '../screens/settings/ManageAccount/ManageAccountScreen';
+import BioScreen from '../screens/settings/Bio/BioScreen';
+import SocialMediaScreen from '../screens/settings/SocialMedia/SocialMediaScreen';
+import AdditionalInfoScreen from '../screens/settings/AdditionalInfo/AdditionalInfoScreen';
+import ViewPlansScreen from '../screens/settings/ViewPlans/ViewPlansScreen';
+import SubscriptionScreen from '../screens/settings/Subscription/SubscriptionScreen';
+import ChangePasswordScreen from '../screens/settings/ChangePassword/ChangePasswordScreen';
 
 const Tab = createBottomTabNavigator<BottomTabParamList>();
 const Stack = createNativeStackNavigator<AppStackParamList>();
@@ -62,7 +69,7 @@ function MainTabs() {
           marginTop: 4,
         },
 
-        tabBarIcon: ({ color, focused }) => {
+        tabBarIcon: ({ color, focused }) => { // eslint-disable-line react/no-unstable-nested-components
           let iconName = '';
 
           switch (route.name) {
@@ -209,6 +216,41 @@ export default function AppNavigator() {
       <Stack.Screen
         name="Settings"
         component={SettingsScreen}
+      />
+
+      <Stack.Screen
+        name="ManageAccount"
+        component={ManageAccountScreen}
+      />
+
+      <Stack.Screen
+        name="Bio"
+        component={BioScreen}
+      />
+
+      <Stack.Screen
+        name="SocialMedia"
+        component={SocialMediaScreen}
+      />
+
+      <Stack.Screen
+        name="AdditionalInfo"
+        component={AdditionalInfoScreen}
+      />
+
+      <Stack.Screen
+        name="ViewPlans"
+        component={ViewPlansScreen}
+      />
+
+      <Stack.Screen
+        name="Subscription"
+        component={SubscriptionScreen}
+      />
+
+      <Stack.Screen
+        name="ChangePassword"
+        component={ChangePasswordScreen}
       />
     </Stack.Navigator>
   );

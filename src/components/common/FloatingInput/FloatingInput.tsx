@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, TextInput, TouchableOpacity, Text } from 'react-native';
+import { View, TextInput } from 'react-native';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -37,7 +37,7 @@ const FloatingInput: React.FC<FloatingInputProps> = ({
 
   useEffect(() => {
     focusAnim.value = value ? withTiming(1, { duration: 180 }) : withTiming(0, { duration: 180 });
-  }, [value]);
+  }, [value, focusAnim]);
 
   const handleFocus = () => {
     setIsFocused(true);

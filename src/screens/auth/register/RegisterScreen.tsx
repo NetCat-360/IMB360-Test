@@ -11,7 +11,6 @@ import {
   StatusBar,
   KeyboardAvoidingView,
   Platform,
-  StyleSheet,
   Modal,
   FlatList,
 } from 'react-native';
@@ -21,9 +20,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import LinearGradient from 'react-native-linear-gradient';
 
 import {
-  scale,
   verticalScale,
-  moderateScale,
 } from '../../../utils/scaling';
 
 import { COUNTRIES } from '../../../utils/countries';
@@ -269,7 +266,7 @@ const RegisterScreen = ({
     () => (
       <TouchableOpacity
         style={
-          localStyles.codePickerWrapper
+          styles.codePickerWrapper
         }
         activeOpacity={0.7}
         onPress={() =>
@@ -277,14 +274,14 @@ const RegisterScreen = ({
         }
       >
         <Text
-          style={localStyles.flagText}
+          style={styles.flagText}
         >
           {selectedCountry.flag}
         </Text>
 
         <Text
           style={
-            localStyles.callingCodeText
+            styles.callingCodeText
           }
         >
           {
@@ -294,7 +291,7 @@ const RegisterScreen = ({
 
         <Text
           style={
-            localStyles.dropdownArrow
+            styles.dropdownArrow
           }
         >
           ▼
@@ -663,17 +660,17 @@ const RegisterScreen = ({
         transparent
       >
         <View
-          style={localStyles.modalOverlay}
+          style={styles.modalOverlay}
         >
           <View
-            style={localStyles.modalContent}
+            style={styles.modalContent}
           >
             <View
-              style={localStyles.modalHeader}
+              style={styles.modalHeader}
             >
               <Text
                 style={
-                  localStyles.modalTitle
+                  styles.modalTitle
                 }
               >
                 Select Country
@@ -689,7 +686,7 @@ const RegisterScreen = ({
               >
                 <Text
                   style={
-                    localStyles.closeButton
+                    styles.closeButton
                   }
                 >
                   ✕
@@ -698,7 +695,7 @@ const RegisterScreen = ({
             </View>
 
             <TextInput
-              style={localStyles.searchBar}
+              style={styles.searchBar}
               placeholder="Search country name or calling code..."
               placeholderTextColor={
                 Colors.textDim
@@ -720,7 +717,7 @@ const RegisterScreen = ({
               renderItem={({ item }) => (
                 <TouchableOpacity
                   style={
-                    localStyles.countryItem
+                    styles.countryItem
                   }
                   onPress={() =>
                     handleCountrySelect(
@@ -730,7 +727,7 @@ const RegisterScreen = ({
                 >
                   <Text
                     style={
-                      localStyles.itemFlag
+                      styles.itemFlag
                     }
                   >
                     {item.flag}
@@ -738,7 +735,7 @@ const RegisterScreen = ({
 
                   <Text
                     style={
-                      localStyles.itemName
+                      styles.itemName
                     }
                   >
                     {item.name}
@@ -746,7 +743,7 @@ const RegisterScreen = ({
 
                   <Text
                     style={
-                      localStyles.itemCallingCode
+                      styles.itemCallingCode
                     }
                   >
                     {
@@ -763,114 +760,6 @@ const RegisterScreen = ({
   );
 };
 
-const localStyles = StyleSheet.create({
-  codePickerWrapper: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingLeft: scale(12),
-    paddingRight: scale(8),
-    height: '100%',
-    borderRightWidth: 1,
-    borderRightColor:
-      Colors.borderStrong,
-    marginRight: scale(8),
-  },
 
-  flagText: {
-    fontSize: moderateScale(16),
-    marginRight: scale(4),
-  },
-
-  callingCodeText: {
-    color: Colors.textPrimary,
-    fontSize: moderateScale(14),
-    fontWeight: '500',
-  },
-
-  dropdownArrow: {
-    color: Colors.textDim,
-    fontSize: moderateScale(9),
-    marginLeft: scale(4),
-  },
-
-  modalOverlay: {
-    flex: 1,
-    backgroundColor:
-      Colors.bgModalOverlay,
-    justifyContent: 'flex-end',
-  },
-
-  modalContent: {
-    backgroundColor:
-      Colors.bgModalSheet,
-    borderTopLeftRadius:
-      moderateScale(20),
-    borderTopRightRadius:
-      moderateScale(20),
-    height: '75%',
-    paddingTop: verticalScale(20),
-  },
-
-  modalHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: scale(20),
-    marginBottom: verticalScale(15),
-  },
-
-  modalTitle: {
-    color: Colors.textPrimary,
-    fontSize: moderateScale(18),
-    fontWeight: 'bold',
-  },
-
-  closeButton: {
-    color: Colors.textDim,
-    fontSize: moderateScale(18),
-    padding: scale(4),
-  },
-
-  searchBar: {
-    backgroundColor:
-      Colors.bgInput,
-    color: Colors.textPrimary,
-    borderRadius: moderateScale(8),
-    height: verticalScale(42),
-    paddingHorizontal: scale(12),
-    marginHorizontal: scale(20),
-    marginBottom: verticalScale(15),
-    borderWidth: 1,
-    borderColor:
-      Colors.borderStrong,
-  },
-
-  countryItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: verticalScale(14),
-    paddingHorizontal: scale(20),
-    borderBottomWidth: 1,
-    borderBottomColor:
-      Colors.borderDefault,
-  },
-
-  itemFlag: {
-    fontSize: moderateScale(20),
-    marginRight: scale(14),
-  },
-
-  itemName: {
-    flex: 1,
-    color: Colors.textPrimary,
-    fontSize: moderateScale(15),
-  },
-
-  itemCallingCode: {
-    color: Colors.lime,
-    fontSize: moderateScale(14),
-    fontWeight: '600',
-  },
-});
 
 export default RegisterScreen;

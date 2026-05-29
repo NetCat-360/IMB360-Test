@@ -4,21 +4,11 @@ import {
     Text,
     TouchableOpacity,
     ScrollView,
-    StyleSheet,
     Image,
 } from 'react-native'
 
-import {
-    scale,
-    verticalScale,
-    moderateScale,
-} from '../../utils/scaling'
-
 import { SafeAreaView }
     from 'react-native-safe-area-context'
-
-import { Colors }
-    from '../../config/theme'
 
 import ScreenHeader
     from '../../components/ScreenHeader'
@@ -31,6 +21,17 @@ import { useAppDispatch }
 
 import { logout }
     from '../../features/auth/store/authSlice'
+
+import { styles } from './styles'
+
+const ICON_MANAGE_ACCOUNT = require('../../assets/images/manageaccount.png')
+const ICON_BIO = require('../../assets/images/bio.png')
+const ICON_SOCIAL_MEDIA = require('../../assets/images/socialmedia.png')
+const ICON_INFO = require('../../assets/images/info.png')
+const ICON_PLANS = require('../../assets/images/plans.png')
+const ICON_SUBSCRIPTION = require('../../assets/images/subscription.png')
+const ICON_PASSWORD = require('../../assets/images/password.png')
+const ICON_ARROW = require('../../assets/images/rightarrow.png')
 
 type Props = {
     navigation:
@@ -66,7 +67,7 @@ function SettingItem({
             </View>
 
             <Image
-                source={require('../../assets/images/rightarrow.png')}
+                source={ICON_ARROW}
                 style={styles.arrowIcon}
             />
         </TouchableOpacity>
@@ -144,7 +145,7 @@ export default function SettingsScreen({
                     title="Personal Info"
                 >
                     <SettingItem
-                        icon={require('../../assets/images/manageaccount.png')}
+                        icon={ICON_MANAGE_ACCOUNT}
                         title="Manage Account"
                         onPress={() =>
                             navigation.navigate(
@@ -154,7 +155,7 @@ export default function SettingsScreen({
                     />
 
                     <SettingItem
-                        icon={require('../../assets/images/bio.png')}
+                        icon={ICON_BIO}
                         title="Bio"
                         onPress={() =>
                             navigation.navigate(
@@ -164,7 +165,7 @@ export default function SettingsScreen({
                     />
 
                     <SettingItem
-                        icon={require('../../assets/images/socialmedia.png')}
+                        icon={ICON_SOCIAL_MEDIA}
                         title="Social Media Profiles"
                         onPress={() =>
                             navigation.navigate(
@@ -174,7 +175,7 @@ export default function SettingsScreen({
                     />
 
                     <SettingItem
-                        icon={require('../../assets/images/info.png')}
+                        icon={ICON_INFO}
                         title="Additional Info"
                         onPress={() =>
                             navigation.navigate(
@@ -189,7 +190,7 @@ export default function SettingsScreen({
                     title="Subscription"
                 >
                     <SettingItem
-                        icon={require('../../assets/images/plans.png')}
+                        icon={ICON_PLANS}
                         title="View Plans"
                         onPress={() =>
                             navigation.navigate(
@@ -199,7 +200,7 @@ export default function SettingsScreen({
                     />
 
                     <SettingItem
-                        icon={require('../../assets/images/subscription.png')}
+                        icon={ICON_SUBSCRIPTION}
                         title="Manage my subscription"
                         onPress={() =>
                             navigation.navigate(
@@ -214,7 +215,7 @@ export default function SettingsScreen({
                     title="Security"
                 >
                     <SettingItem
-                        icon={require('../../assets/images/password.png')}
+                        icon={ICON_PASSWORD}
                         title="Change Password"
                         onPress={() =>
                             navigation.navigate(
@@ -240,143 +241,4 @@ export default function SettingsScreen({
     )
 }
 
-const styles =
-    StyleSheet.create({
-        container: {
-            flex: 1,
-            backgroundColor:
-                Colors.bgBlack,
-        },
 
-        scrollContent: {
-            paddingHorizontal:
-                scale(21),
-            paddingBottom:
-                verticalScale(60),
-            paddingTop:
-                verticalScale(4),
-        },
-
-        profileRow: {
-            flexDirection: 'row',
-            alignItems: 'center',
-            marginTop:
-                verticalScale(10),
-            marginBottom:
-                verticalScale(15),
-        },
-
-        avatar: {
-            width: scale(78),
-            height: scale(78),
-            borderRadius:
-                scale(39),
-            backgroundColor:
-                Colors.teal,
-            marginRight:
-                scale(18),
-        },
-
-        name: {
-            color: '#FFF',
-            fontSize:
-                moderateScale(24),
-            fontWeight:
-                '700',
-        },
-
-        username: {
-            color: '#8E8E93',
-            fontSize:
-                moderateScale(14),
-            marginTop:
-                verticalScale(3),
-        },
-
-        section: {
-            backgroundColor:
-                Colors.bgInputBorder,
-            borderRadius:
-                moderateScale(16),
-            borderWidth: 1,
-            borderColor:
-                Colors.borderCyan,
-            paddingVertical:
-                verticalScale(12),
-            paddingHorizontal:
-                scale(14),
-            marginBottom:
-                verticalScale(16),
-        },
-
-        sectionTitle: {
-            color: '#FFF',
-            fontSize:
-                moderateScale(16),
-            fontWeight:
-                '700',
-            marginBottom:
-                verticalScale(18),
-        },
-
-        settingRow: {
-            flexDirection: 'row',
-            justifyContent:
-                'space-between',
-            alignItems: 'center',
-            marginBottom:
-                verticalScale(8),
-        },
-
-        leftRow: {
-            flexDirection: 'row',
-            alignItems: 'center',
-        },
-
-        settingIcon: {
-            width: scale(18),
-            height: scale(18),
-            resizeMode:
-                'contain',
-        },
-
-        settingText: {
-            color: '#FFF',
-            fontSize:
-                moderateScale(16),
-            marginLeft:
-                scale(12),
-        },
-
-        logoutButton: {
-            height:
-                verticalScale(35),
-            borderRadius:
-                moderateScale(12),
-            backgroundColor:
-                '#E5E5E5',
-            justifyContent:
-                'center',
-            alignItems: 'center',
-            borderWidth: 1,
-            borderColor:
-                '#FF3B30',
-            marginTop:
-                verticalScale(10),
-        },
-
-        logoutText: {
-            color: '#FF3B30',
-            fontSize:
-                moderateScale(18),
-            fontWeight:
-                '700',
-        },
-
-        arrowIcon: {
-            width: scale(12),
-            height: scale(20),
-            resizeMode:
-                'contain',
-        },
-    })

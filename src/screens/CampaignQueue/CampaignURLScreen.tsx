@@ -8,25 +8,15 @@ import {
   TextInput,
   TouchableOpacity,
   StatusBar,
-  StyleSheet,
   Alert,
   ScrollView,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { Colors } from '../../config/theme';
-
-import Typography from '../../styles/typography';
-
-import {
-  scale,
-  verticalScale,
-  moderateScale,
-} from '../../utils/scaling';
-
 import {
   CampaignURLScreenProps,
 } from '../../types/navigation';
+import { urlStyles as styles } from './styles';
 
 type Props = CampaignURLScreenProps;
 
@@ -127,92 +117,3 @@ export default function CampaignURLScreen({
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: Colors.bgBlack,
-  },
-
-  contentContainer: {
-    paddingHorizontal: scale(20),
-    paddingBottom: verticalScale(40),
-  },
-
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginTop: verticalScale(20),
-    marginBottom: verticalScale(30),
-  },
-
-  backButton: {
-    width: scale(42),
-    height: scale(42),
-    borderRadius: scale(21),
-    backgroundColor: '#111',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-
-  backText: {
-    color: '#FFF',
-    fontSize: moderateScale(22),
-    fontWeight: '700',
-  },
-
-  headerTitle: {
-    color: '#FFF',
-    fontSize: moderateScale(20),
-    fontWeight: '700',
-  },
-
-  placeholder: {
-    width: scale(42),
-  },
-
-  card: {
-    backgroundColor: '#111',
-    borderRadius: moderateScale(18),
-    padding: scale(20),
-    borderWidth: 1,
-    borderColor: '#1F1F1F',
-  },
-
-  label: {
-    ...Typography.body,
-    color: Colors.textMuted,
-    marginBottom: verticalScale(8),
-  },
-
-  campaignId: {
-    ...Typography.h3,
-    marginBottom: verticalScale(22),
-  },
-
-  input: {
-    height: verticalScale(55),
-    borderRadius: moderateScale(14),
-    backgroundColor: '#1A1A1A',
-    borderWidth: 1,
-    borderColor: '#2A2A2A',
-    paddingHorizontal: scale(16),
-    color: '#FFF',
-    marginTop: verticalScale(6),
-    marginBottom: verticalScale(28),
-  },
-
-  submitButton: {
-    height: verticalScale(55),
-    borderRadius: moderateScale(14),
-    backgroundColor: Colors.teal,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-
-  submitText: {
-    color: '#000',
-    fontSize: moderateScale(16),
-    fontWeight: '700',
-  },
-});

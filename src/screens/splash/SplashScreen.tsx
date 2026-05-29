@@ -51,7 +51,7 @@ const SplashScreen = () => {
     }, 3000);
 
     return () => clearTimeout(timer);
-  }, []);
+  }, [blob1Value, blob2Value, logoOpacity, logoScale, navigation]);
 
   const animatedBlob1 = useAnimatedStyle(() => ({
     transform: [
