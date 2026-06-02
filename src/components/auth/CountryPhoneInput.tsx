@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { View, Text, Pressable, TextInput, Modal, FlatList, StyleSheet } from 'react-native';
 import { COUNTRIES } from '../../utils/countries';
-import TextField from '../common/TextField';
+import TextField from '../common/TextField/TextField';
 import { scale, verticalScale, moderateScale } from '../../utils/scaling';
 
 interface Country {
@@ -17,6 +17,14 @@ interface CountryPhoneInputProps {
   selectedCountry: Country;
   onCountrySelect: (country: Country) => void;
 }
+
+const CountryListItem = React.memo<{ item: Country; onSelect: (country: Country) => void }>(({ item, onSelect }) => (
+  <Pressable style={localStyles.countryItem} onPress={() => onSelect(item)}>
+    <Text style={localStyles.itemFlag}>{item.flag}</Text>
+    <Text style={localStyles.itemName}>{item.name}</Text>
+    <Text style={localStyles.itemCallingCode}>{item.callingCode}</Text>
+  </Pressable>
+));
 
 export const CountryPhoneInput: React.FC<CountryPhoneInputProps> = ({
   phoneNumber,
@@ -93,14 +101,7 @@ export const CountryPhoneInput: React.FC<CountryPhoneInputProps> = ({
               initialNumToRender={15}
               keyboardShouldPersistTaps="handled"
               renderItem={({ item }) => (
-                <Pressable 
-                  style={localStyles.countryItem} 
-                  onPress={() => handleSelect(item)}
-                >
-                  <Text style={localStyles.itemFlag}>{item.flag}</Text>
-                  <Text style={localStyles.itemName}>{item.name}</Text>
-                  <Text style={localStyles.itemCallingCode}>{item.callingCode}</Text>
-                </Pressable>
+                <CountryListItem item={item} onSelect={handleSelect} />
               )}
             />
           </Pressable>

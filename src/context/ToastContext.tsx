@@ -2,10 +2,11 @@
 
 import React, {
   createContext,
-  useContext,
   useState,
   useRef,
   useCallback,
+  useMemo,
+  use,
   ReactNode,
 } from 'react';
 
@@ -119,9 +120,11 @@ export const ToastProvider = ({
       ? Colors.teal
       : Colors.error;
 
+  const contextValue = useMemo(() => ({ showToast }), [showToast]);
+
   return (
     <ToastContext.Provider
-      value={{ showToast }}
+      value={contextValue}
     >
       {children}
 
@@ -146,7 +149,7 @@ export const ToastProvider = ({
 };
 
 export const useGlobalToast =
-  () => useContext(ToastContext);
+  () => use(ToastContext);
 
 const styles =
   StyleSheet.create({
@@ -169,9 +172,9 @@ const styles =
       borderRadius:
         moderateScale(10),
 
-      zIndex: 9999,
+      zIndex: 999,
 
-      elevation: 10,
+      boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
     },
 
     text: {

@@ -17,7 +17,7 @@ import {
 import ScreenHeader
     from '../../../components/ScreenHeader'
 
-import TextField from '../../../components/common/TextField'
+import TextField from '../../../components/common/TextField/TextField'
 
 
 
@@ -297,9 +297,7 @@ export default function
                                     index,
                                 ) => (
                                     <TextInput
-                                        key={
-                                            index
-                                        }
+                                        key={`otp-${index}`}
                                         ref={ref => {
                                             inputRefs.current[
                                                 index

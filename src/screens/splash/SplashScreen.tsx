@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Image, StatusBar, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -26,6 +26,7 @@ const SplashScreen = () => {
   const blob2Value = useSharedValue(0);
   const logoOpacity = useSharedValue(0);
   const logoScale = useSharedValue(0.8);
+  const navigationTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     // Start Lava Lamp Animations
@@ -61,14 +62,18 @@ const SplashScreen = () => {
         return;
       }
 
-      setTimeout(() => {
+      navigationTimerRef.current = setTimeout(() => {
         navigation.replace('Onboarding');
       }, 3000);
     };
 
     init();
-    return () => {};
-  }, [blob1Value, blob2Value, logoOpacity, logoScale, navigation, dispatch]);
+    return () => {
+      if (navigationTimerRef.current) clearTimeout(navigationTimerRef.current);
+    };
+  // All deps (shared values, navigation, dispatch) are stable refs — this effect runs once on mount
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const animatedBlob1 = useAnimatedStyle(() => ({
     transform: [

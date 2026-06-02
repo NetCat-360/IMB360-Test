@@ -40,7 +40,7 @@ function EarningCard({ status }: { status: 'Paid' | 'Pending' }) {
       <View style={styles.companyRow}>
         <Image source={require('../../assets/images/earningcard.png')} style={styles.companyLogo} />
         <View style={styles.companyInfo}>
-          <Text style={[Typography.h3]}>Softiwo_IT Services</Text>
+          <Text style={Typography.h3}>Softiwo_IT Services</Text>
           <Text style={[Typography.body, { color: Colors.textPrimary }]}>
             Require influencers for product showcase
           </Text>
@@ -109,7 +109,7 @@ const MyEarnings = ({ navigation }: Props) => {
         {isEmpty ? (
           <EmptyState tab={selectedTab} />
         ) : (
-          currentItems.map((_, i) => <EarningCard key={i} status={selectedTab} />)
+          currentItems.map((_, i) => <EarningCard key={`earning-card-${i}`} status={selectedTab} />)
         )}
       </ScrollView>
       </SafeAreaView>

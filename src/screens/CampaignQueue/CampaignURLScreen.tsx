@@ -11,7 +11,7 @@ import {
   ScrollView,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import TextField from '../../components/common/TextField';
+import TextField from '../../components/common/TextField/TextField';
 
 import {
   CampaignURLScreenProps,

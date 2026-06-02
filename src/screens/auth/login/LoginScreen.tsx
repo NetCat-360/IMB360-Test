@@ -22,7 +22,7 @@ import {
 
 import { AuthNavigationProp } from '../../../types/navigation';
 
-import TextField from '../../../components/common/TextField';
+import TextField from '../../../components/common/TextField/TextField';
 import { authInputStyles } from '../inputStyles';
 
 import { useAppDispatch } from '../../../hooks/redux';
@@ -66,6 +66,13 @@ type Props = {
 const ADMIN_EMAIL = Config.ADMIN_EMAIL?.toLowerCase() ?? '';
 const ADMIN_PASSWORD = Config.ADMIN_PASSWORD ?? '';
 
+const isEmailValid = (
+  text: string,
+) =>
+  /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(
+    text,
+  );
+
 const LoginScreen = ({
   navigation,
 }: Props) => {
@@ -91,13 +98,6 @@ const LoginScreen = ({
 
   const { showToast } =
     useGlobalToast();
-
-  const isEmailValid = (
-    text: string,
-  ) =>
-    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(
-      text,
-    );
 
   const isFormComplete =
     isEmailValid(email) &&
@@ -156,9 +156,11 @@ const LoginScreen = ({
             },
           };
           const mockToken = 'mock-admin-token';
-          await saveAccessToken(mockToken);
-          await saveRefreshToken(mockToken);
-          await saveUserToKeychain(adminUser);
+          await Promise.all([
+            saveAccessToken(mockToken),
+            saveRefreshToken(mockToken),
+            saveUserToKeychain(adminUser),
+          ]);
           dispatch(loginSuccess({ user: adminUser, accessToken: mockToken, refreshToken: mockToken }));
           showToast('Admin login successful.', 'success');
         } catch {
@@ -234,34 +236,6 @@ const LoginScreen = ({
   // ─────────────────────────────
   // Password Toggle
   // ─────────────────────────────
-
-  const renderPasswordToggle =
-    () => (
-      <Pressable
-        onPress={() =>
-          setSecurePassword(
-            !securePassword,
-          )
-        }
-        style={
-          styles.inlineActionWrapper
-        }
-      >
-        <Text
-          style={[
-            styles.inlineActionText,
-            {
-              color:
-                Colors.textDim,
-            },
-          ]}
-        >
-          {securePassword
-            ? 'Show'
-            : 'Hide'}
-        </Text>
-      </Pressable>
-    );
 
   // ─────────────────────────────
   // UI
@@ -366,7 +340,7 @@ const LoginScreen = ({
               value={password}
               onChangeText={setPassword}
               secureTextEntry={securePassword}
-              rightComponent={renderPasswordToggle()}
+              rightComponent={<PasswordToggle securePassword={securePassword} setSecurePassword={setSecurePassword} />}
               autoCapitalize="none"
               containerStyle={authInputStyles.inputWrapper}
               outlineStyle={authInputStyles.inputOutline}
@@ -596,5 +570,13 @@ const LoginScreen = ({
 };
 
 
+
+const PasswordToggle = ({ securePassword, setSecurePassword }: { securePassword: boolean; setSecurePassword: (v: boolean) => void }) => (
+  <Pressable onPress={() => setSecurePassword(!securePassword)} style={styles.inlineActionWrapper}>
+    <Text style={[styles.inlineActionText, { color: Colors.textDim }]}>
+      {securePassword ? 'Show' : 'Hide'}
+    </Text>
+  </Pressable>
+);
 
 export default LoginScreen;

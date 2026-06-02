@@ -24,8 +24,8 @@ type HomeNavProp = NativeStackNavigationProp<AppStackParamList, 'Home'>;
 function StatItem({ number, label }: { number: string; label: string }) {
   return (
     <View style={styles.statItem}>
-      <Text style={[Typography.statNumber]}>{number}</Text>
-      <Text style={[Typography.statLabel]}>{label}</Text>
+      <Text style={Typography.statNumber}>{number}</Text>
+      <Text style={Typography.statLabel}>{label}</Text>
     </View>
   );
 }
@@ -104,14 +104,14 @@ export default function HomeScreen() {
         <View style={styles.profileRow}>
           <View style={styles.avatar} />
           <View style={{ flex: 1 }}>
-            <Text style={[Typography.h2]}>{user?.name || 'User'}</Text>
+            <Text style={Typography.h2}>{user?.name || 'User'}</Text>
             <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
               <Text style={[Typography.label, { color: Colors.textMuted }]}>
                 @{user?.username || 'user'}
               </Text>
               {user?.role && (
                 <View style={{ backgroundColor: '#b6d82c', borderRadius: 4, paddingHorizontal: 6, paddingVertical: 2 }}>
-                  <Text style={{ color: '#000', fontSize: 10, fontWeight: 'bold' }}>{user.role}</Text>
+                  <Text style={{ color: '#000', fontSize: 11, fontWeight: 'bold' }}>{user.role}</Text>
                 </View>
               )}
             </View>
@@ -120,8 +120,8 @@ export default function HomeScreen() {
 
         {/* Bio */}
         <View style={styles.bioContainer}>
-          <Text style={[Typography.body]}>Digital creator | Fashion & Lifestyle</Text>
-          <Text style={[Typography.body]}>Helping brands grow 🚀</Text>
+          <Text style={Typography.body}>Digital creator | Fashion & Lifestyle</Text>
+          <Text style={Typography.body}>Helping brands grow 🚀</Text>
           <Pressable>
             <Text style={[Typography.body, { color: Colors.teal, marginTop: verticalScale(4) }]}>
               Add website 🔗
@@ -150,8 +150,8 @@ export default function HomeScreen() {
 
         {/* Info Row */}
         <View style={styles.infoRow}>
-          <Text style={[Typography.caption]}>📅 Joined December 2025</Text>
-          <Text style={[Typography.caption]}>📍 Delhi, India</Text>
+          <Text style={Typography.caption}>📅 Joined December 2025</Text>
+          <Text style={Typography.caption}>📍 Delhi, India</Text>
         </View>
 
         {/* Stats */}

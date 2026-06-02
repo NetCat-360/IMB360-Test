@@ -83,7 +83,7 @@ const OnboardingScreen = ({ navigation }: { navigation: AuthNavigationProp<'Onbo
         ) : <View />}
       </View>
 
-      <View style={styles.content} key={index}>
+      <View style={styles.content} key={data.title}>
         <Animated.View 
           entering={FadeInRight.duration(400).springify().damping(15)}
           exiting={FadeOutLeft.duration(300)}

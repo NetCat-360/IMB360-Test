@@ -10,7 +10,6 @@
     "test": "jest"
   },
   "dependencies": {
-    "@hookform/resolvers": "^5.2.2",
     "@react-native-async-storage/async-storage": "^1.23.1",
     "@react-native/new-app-screen": "0.85.3",
     "@react-navigation/bottom-tabs": "^7.16.1",
@@ -20,7 +19,6 @@
     "axios": "^1.16.1",
     "country-state-city": "^3.2.1",
     "react": "19.2.3",
-    "react-hook-form": "^7.75.0",
     "react-native": "0.85.3",
     "react-native-config": "^1.6.1",
     "react-native-date-picker": "^5.0.13",
@@ -37,8 +35,7 @@
     "react-native-svg": "^15.15.5",
     "react-native-vector-icons": "^10.3.0",
     "react-native-worklets": "^0.8.3",
-    "react-redux": "^9.2.0",
-    "zod": "^4.4.3"
+    "react-redux": "^9.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",

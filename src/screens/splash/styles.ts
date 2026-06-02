@@ -45,11 +45,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     zIndex: 10,
     // Add a subtle shadow to separate logo from blobs
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.1,
-    shadowRadius: 10,
-    elevation: 5,
+    boxShadow: '0 0 0 transparent',
   },
   logo: {
     width: moderateScale(240),

@@ -41,13 +41,13 @@ const TextField: React.FC<TextFieldProps> = ({
     focusAnim.value = value ? withTiming(1, { duration: 180 }) : withTiming(0, { duration: 180 });
   }, [value, focusAnim]);
 
-  const handleFocus = (e: any) => {
+  const onTextFieldFocus = (e: any) => {
     setIsFocused(true);
     if (label) focusAnim.value = withTiming(1, { duration: 180 });
     onFocus?.(e);
   };
 
-  const handleBlur = (e: any) => {
+  const onTextFieldBlur = (e: any) => {
     setIsFocused(false);
     if (label && !value) focusAnim.value = withTiming(0, { duration: 180 });
     onBlur?.(e);
@@ -55,18 +55,26 @@ const TextField: React.FC<TextFieldProps> = ({
 
   const floating = !!label;
 
+  const staticLabelStyle = {
+    position: 'absolute' as const,
+    zIndex: 10,
+    backgroundColor: '#000000',
+    paddingHorizontal: 4,
+    fontWeight: '500' as const,
+    top: -9,
+    left: 12,
+    fontSize: 12,
+  };
+
   const animatedLabelStyle = useAnimatedStyle(() => {
     if (!floating) return {};
     const inactiveLeft = prefixComponent ? 78 : 12;
     return {
-      position: 'absolute',
-      zIndex: 10,
-      backgroundColor: '#000000',
-      paddingHorizontal: 4,
-      fontWeight: '500',
-      top: interpolate(focusAnim.value, [0, 1], [16.5, -9]),
-      left: interpolate(focusAnim.value, [0, 1], [inactiveLeft, 12]),
-      fontSize: interpolate(focusAnim.value, [0, 1], [15, 12]),
+      transform: [
+        { translateY: interpolate(focusAnim.value, [0, 1], [25.5, 0]) },
+        { translateX: interpolate(focusAnim.value, [0, 1], [inactiveLeft - 12, 0]) },
+        { scale: interpolate(focusAnim.value, [0, 1], [1.25, 1]) },
+      ],
       color: isFocused ? '#b6d82c' : '#666666',
     };
   });
@@ -77,7 +85,7 @@ const TextField: React.FC<TextFieldProps> = ({
         <View style={[outlineStyle, isFocused && outlineActiveStyle]} />
       )}
       {floating && (
-        <Animated.Text style={animatedLabelStyle}>
+        <Animated.Text style={[staticLabelStyle, animatedLabelStyle]}>
           {label}
         </Animated.Text>
       )}
@@ -87,8 +95,8 @@ const TextField: React.FC<TextFieldProps> = ({
           style={[{ flex: 1, height: '100%' }, style]}
           value={value}
           onChangeText={onChangeText}
-          onFocus={handleFocus}
-          onBlur={handleBlur}
+          onFocus={onTextFieldFocus}
+          onBlur={onTextFieldBlur}
           placeholder={floating ? undefined : placeholder}
           placeholderTextColor={floating ? 'transparent' : placeholderTextColor}
           {...props}

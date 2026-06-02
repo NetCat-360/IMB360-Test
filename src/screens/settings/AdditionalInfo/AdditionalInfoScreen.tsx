@@ -13,7 +13,7 @@ import {
 import DatePicker
     from 'react-native-date-picker'
 
-import TextField from '../../../components/common/TextField'
+import TextField from '../../../components/common/TextField/TextField'
 
 import {
     Dropdown,

@@ -2,11 +2,11 @@
 import React, { useState } from 'react';
 import {
   View, Text, Pressable, ScrollView,
-  StatusBar,
+  StatusBar, FlatList,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import LinearGradient from 'react-native-linear-gradient';
-import TextField from '../../components/common/TextField';
+import TextField from '../../components/common/TextField/TextField';
 import { Colors } from '../../config/theme';
 import { AppNavigationProp } from '../../types/navigation';
 import { addDropStyles as dropStyles, addPickerStyles as pickerStyles, addContentStyles as styles } from './styles';
@@ -43,17 +43,18 @@ const PickerOverlay = ({
   <View style={pickerStyles.overlay}>
     <Pressable style={pickerStyles.backdrop} onPress={onClose} />
     <View style={pickerStyles.sheet}>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        {options.map(opt => (
+      <FlatList
+        data={options}
+        keyExtractor={opt => opt}
+        renderItem={({ item }) => (
           <Pressable
-            key={opt}
             style={pickerStyles.option}
-            onPress={() => { onSelect(opt); onClose(); }}
+            onPress={() => { onSelect(item); onClose(); }}
           >
-            <Text style={pickerStyles.optionText}>{opt}</Text>
+            <Text style={pickerStyles.optionText}>{item}</Text>
           </Pressable>
-        ))}
-      </ScrollView>
+        )}
+      />
     </View>
   </View>
 );

@@ -12,6 +12,7 @@ export const useToast = () => {
     return () => {
       if (timerRef.current) clearTimeout(timerRef.current);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const showToast = (text: string) => {
@@ -20,6 +21,7 @@ export const useToast = () => {
       'worklet';
       runOnJS(() => {
         // Store the ref so we can cancel it
+        if (timerRef.current) clearTimeout(timerRef.current);
         timerRef.current = setTimeout(() => {
           toastOpacity.value = withTiming(0, { duration: 250 }, () => {
             'worklet';

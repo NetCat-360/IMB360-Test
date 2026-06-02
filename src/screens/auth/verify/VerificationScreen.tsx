@@ -117,7 +117,7 @@ const VerificationScreen = ({ navigation, route }: any) => {
 
             <View style={localStyles.otpInputContainerRow}>
               {code.map((digit, index) => (
-                <View key={index} style={localStyles.otpBoxWrapper}>
+                <View key={`otp-${index}`} style={localStyles.otpBoxWrapper}>
                   <TextInput
                     // FIXED: Wrapped statement in braces to return void, resolving the type overload breakdown
                     ref={(el) => { inputRefs.current[index] = el; }}

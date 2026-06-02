@@ -85,14 +85,19 @@ function base64Encode(str: string): string {
   return result;
 }
 
+const BASE64_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
+const BASE64_LOOKUP: Record<string, number> = {};
+for (let i = 0; i < BASE64_CHARS.length; i++) {
+  BASE64_LOOKUP[BASE64_CHARS[i]] = i;
+}
+
 function base64Decode(str: string): string {
-  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
   let result = '';
   const bytes: number[] = [];
   for (let i = 0; i < str.length; i++) {
     if (str[i] === '=') break;
-    const idx = chars.indexOf(str[i]);
-    if (idx >= 0) bytes.push(idx);
+    const idx = BASE64_LOOKUP[str[i]];
+    if (idx !== undefined) bytes.push(idx);
   }
   for (let i = 0; i < bytes.length; i += 4) {
     const b1 = bytes[i], b2 = bytes[i + 1], b3 = bytes[i + 2], b4 = bytes[i + 3];

@@ -18,7 +18,7 @@ import { OtpModalSheet } from '../../../components/auth/OtpModalSheet';
 import { useGlobalToast } from '../../../context/ToastContext';
 import apiClient from '../../../api/client';
 import { AUTH } from '../../../api/endpoints';
-import TextField from '../../../components/common/TextField';
+import TextField from '../../../components/common/TextField/TextField';
 import styles from '../register/styles';
 import { authInputStyles } from '../inputStyles';
 import { localStyles } from './styles';
@@ -27,13 +27,14 @@ type Props = {
   navigation: AuthNavigationProp<'ForgotPassword'>;
 };
 
+const isEmailValid = (text: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(text);
+
 const ForgotPasswordScreen = ({ navigation }: Props) => {
   const [email, setEmail] = useState('');
   const [otpModalVisible, setOtpModalVisible] = useState(false);
 
   const { showToast } = useGlobalToast();
 
-  const isEmailValid = (text: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(text);
   const isFormComplete = isEmailValid(email);
 
   const handleSendCodeClick = () => {

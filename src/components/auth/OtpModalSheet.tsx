@@ -38,12 +38,19 @@ export const OtpModalSheet: React.FC<OtpModalSheetProps> = ({
 
   const isCodeComplete = code.every((digit) => digit !== '');
 
-  useEffect(() => {
+  const prevVisibleRef = useRef(visible);
+  if (visible !== prevVisibleRef.current) {
+    prevVisibleRef.current = visible;
     if (visible) {
       setCode(['', '', '', '', '', '']);
       setCountdown(30);
-      setTimeout(() => inputRefs.current[0]?.focus(), 300);
     }
+  }
+
+  useEffect(() => {
+    if (!visible) return;
+    const timer = setTimeout(() => inputRefs.current[0]?.focus(), 300);
+    return () => clearTimeout(timer);
   }, [visible]);
 
   useEffect(() => {
@@ -170,7 +177,7 @@ export const OtpModalSheet: React.FC<OtpModalSheetProps> = ({
               <View style={localStyles.otpInputRowGrid}>
                 {code.map((digit, index) => (
                   <View
-                    key={index}
+                    key={`otp-${index}`}
                     style={[
                       localStyles.digitInputBoxFrame,
                       index !== 5 && localStyles.inputBoxSpacingRight,

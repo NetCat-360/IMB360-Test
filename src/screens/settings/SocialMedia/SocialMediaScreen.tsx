@@ -10,7 +10,7 @@ import {
     ScrollView,
 } from 'react-native'
 
-import TextField from '../../../components/common/TextField'
+import TextField from '../../../components/common/TextField/TextField'
 
 import {
     Dropdown,

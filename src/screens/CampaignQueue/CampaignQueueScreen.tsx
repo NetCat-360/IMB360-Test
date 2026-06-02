@@ -52,7 +52,7 @@ const CompanyRow = ({ companyName, description }: { companyName: string; descrip
   <View style={styles.companyRow}>
     <Image source={require('../../assets/images/earningcard.png')} style={styles.companyLogo} />
     <View style={styles.companyInfo}>
-      <Text style={[Typography.h3]}>{companyName}</Text>
+      <Text style={Typography.h3}>{companyName}</Text>
       <Text style={[Typography.bodySmall, { color: Colors.textSecondary }]}>{description}</Text>
     </View>
   </View>
@@ -64,7 +64,7 @@ const PlatformRow = ({ platforms }: { platforms: Platform[] }) => {
   return (
     <View style={styles.platformRow}>
       {visible.map((p, i) => (
-        <View key={i} style={[styles.platformIcon, { backgroundColor: p.color, marginLeft: i === 0 ? 0 : scale(-6) }]}>
+        <View key={`platform-${p.icon}-${i}`} style={[styles.platformIcon, { backgroundColor: p.color, marginLeft: i === 0 ? 0 : scale(-6) }]}>
           <Icon name={p.icon} size={moderateScale(13)} color="#fff" />
         </View>
       ))}
@@ -168,7 +168,7 @@ const BiddingCard = ({ campaign }: { campaign: BidCampaign }) => (
       <View style={styles.biddingLeft}>
         <Image source={require('../../assets/images/earningcard.png')} style={styles.companyLogo} />
         <View style={styles.companyInfo}>
-          <Text style={[Typography.h3]}>{campaign.companyName}</Text>
+          <Text style={Typography.h3}>{campaign.companyName}</Text>
           <Text style={[Typography.bodySmall, { color: Colors.textSecondary }]}>{campaign.description}</Text>
           <Text style={[Typography.caption, { color: Colors.success, marginTop: verticalScale(4) }]}>
             Reward: {CURRENCY}{campaign.reward}

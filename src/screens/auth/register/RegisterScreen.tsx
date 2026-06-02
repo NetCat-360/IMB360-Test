@@ -1,6 +1,6 @@
 // src/screens/auth/register/RegisterScreen.tsx
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 
 import {
   View,
@@ -31,7 +31,7 @@ import {
   AuthRouteProp,
 } from '../../../types/navigation';
 
-import TextField from '../../../components/common/TextField';
+import TextField from '../../../components/common/TextField/TextField';
 import { authInputStyles } from '../inputStyles';
 
 import { useGlobalToast } from '../../../context/ToastContext';
@@ -66,6 +66,19 @@ type Props = {
   navigation: AuthNavigationProp<'Register'>;
   route: AuthRouteProp<'Register'>;
 };
+
+const isEmailValid = (text: string) =>
+  /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(
+    text,
+  );
+
+const CountryListItem = React.memo<{ item: Country; onSelect: (country: Country) => void }>(({ item, onSelect }) => (
+  <Pressable style={styles.countryItem} onPress={() => onSelect(item)}>
+    <Text style={styles.itemFlag}>{item.flag}</Text>
+    <Text style={styles.itemName}>{item.name}</Text>
+    <Text style={styles.itemCallingCode}>{item.callingCode}</Text>
+  </Pressable>
+));
 
 const RegisterScreen = ({
   navigation,
@@ -107,11 +120,6 @@ const RegisterScreen = ({
 
   const { showToast } = useGlobalToast();
 
-  const isEmailValid = (text: string) =>
-    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(
-      text,
-    );
-
   const isFormComplete =
     name.trim() !== '' &&
     isEmailValid(email) &&
@@ -135,13 +143,14 @@ const RegisterScreen = ({
       [searchQuery],
     );
 
-  const handleCountrySelect = (
-    country: Country,
-  ) => {
-    setSelectedCountry(country);
-    setModalVisible(false);
-    setSearchQuery('');
-  };
+  const handleCountrySelect = useCallback(
+    (country: Country) => {
+      setSelectedCountry(country);
+      setModalVisible(false);
+      setSearchQuery('');
+    },
+    [],
+  );
 
   const validateAndSubmit =
     async () => {
@@ -286,89 +295,12 @@ const RegisterScreen = ({
       );
     };
 
-  const renderCountryCodePicker =
-    () => (
-      <Pressable
-        style={
-          styles.codePickerWrapper
-        }
-        onPress={() =>
-          setModalVisible(true)
-        }
-      >
-        <Text
-          style={styles.flagText}
-        >
-          {selectedCountry.flag}
-        </Text>
-
-        <Text
-          style={
-            styles.callingCodeText
-          }
-        >
-          {
-            selectedCountry.callingCode
-          }
-        </Text>
-
-        <Text
-          style={
-            styles.dropdownArrow
-          }
-        >
-          ▼
-        </Text>
-      </Pressable>
-    );
-
-  const renderVerificationButton =
-    () => (
-      <Pressable
-        onPress={
-          handleSendVerificationCode
-        }
-        style={
-          styles.inlineActionWrapper
-        }
-      >
-        <Text
-          style={
-            styles.inlineActionText
-          }
-        >
-          Send Code
-        </Text>
-      </Pressable>
-    );
-
-  const renderPasswordToggle =
-    () => (
-      <Pressable
-        onPress={() =>
-          setSecurePassword(
-            !securePassword,
-          )
-        }
-        style={
-          styles.inlineActionWrapper
-        }
-      >
-        <Text
-          style={[
-            styles.inlineActionText,
-            {
-              color:
-                Colors.textDim,
-            },
-          ]}
-        >
-          {securePassword
-            ? 'Show'
-            : 'Hide'}
-        </Text>
-      </Pressable>
-    );
+  const renderCountryItem = useCallback(
+    ({ item }: { item: Country }) => (
+      <CountryListItem item={item} onSelect={handleCountrySelect} />
+    ),
+    [handleCountrySelect],
+  );
 
   return (
     <SafeAreaView
@@ -450,7 +382,7 @@ const RegisterScreen = ({
               value={email}
               onChangeText={text => setEmail(sanitizeText(text, 320))}
               keyboardType="email-address"
-              rightComponent={renderVerificationButton()}
+              rightComponent={<VerificationButton onPress={handleSendVerificationCode} />}
               containerStyle={authInputStyles.inputWrapper}
               outlineStyle={authInputStyles.inputOutline}
               outlineActiveStyle={authInputStyles.inputOutlineActive}
@@ -462,7 +394,7 @@ const RegisterScreen = ({
               value={phone}
               onChangeText={text => setPhone(sanitizePhone(text))}
               keyboardType="phone-pad"
-              prefixComponent={renderCountryCodePicker()}
+              prefixComponent={<CountryCodePicker selectedCountry={selectedCountry} onPress={() => setModalVisible(true)} />}
               containerStyle={authInputStyles.inputWrapper}
               outlineStyle={authInputStyles.inputOutline}
               outlineActiveStyle={authInputStyles.inputOutlineActive}
@@ -474,7 +406,7 @@ const RegisterScreen = ({
               value={password}
               onChangeText={text => setPassword(sanitizeText(text, 128))}
               secureTextEntry={securePassword}
-              rightComponent={renderPasswordToggle()}
+              rightComponent={<PasswordToggle securePassword={securePassword} setSecurePassword={setSecurePassword} />}
               containerStyle={authInputStyles.inputWrapper}
               outlineStyle={authInputStyles.inputOutline}
               outlineActiveStyle={authInputStyles.inputOutlineActive}
@@ -728,44 +660,7 @@ const RegisterScreen = ({
               }
               initialNumToRender={15}
               keyboardShouldPersistTaps="handled"
-              renderItem={({ item }) => (
-                <Pressable
-                  style={
-                    styles.countryItem
-                  }
-                  onPress={() =>
-                    handleCountrySelect(
-                      item,
-                    )
-                  }
-                >
-                  <Text
-                    style={
-                      styles.itemFlag
-                    }
-                  >
-                    {item.flag}
-                  </Text>
-
-                  <Text
-                    style={
-                      styles.itemName
-                    }
-                  >
-                    {item.name}
-                  </Text>
-
-                  <Text
-                    style={
-                      styles.itemCallingCode
-                    }
-                  >
-                    {
-                      item.callingCode
-                    }
-                  </Text>
-                </Pressable>
-              )}
+              renderItem={renderCountryItem}
             />
           </View>
         </View>
@@ -775,5 +670,27 @@ const RegisterScreen = ({
 };
 
 
+
+const CountryCodePicker = ({ selectedCountry, onPress }: { selectedCountry: Country; onPress: () => void }) => (
+  <Pressable style={styles.codePickerWrapper} onPress={onPress}>
+    <Text style={styles.flagText}>{selectedCountry.flag}</Text>
+    <Text style={styles.callingCodeText}>{selectedCountry.callingCode}</Text>
+    <Text style={styles.dropdownArrow}>▼</Text>
+  </Pressable>
+);
+
+const VerificationButton = ({ onPress }: { onPress: () => void }) => (
+  <Pressable onPress={onPress} style={styles.inlineActionWrapper}>
+    <Text style={styles.inlineActionText}>Send Code</Text>
+  </Pressable>
+);
+
+const PasswordToggle = ({ securePassword, setSecurePassword }: { securePassword: boolean; setSecurePassword: (v: boolean) => void }) => (
+  <Pressable onPress={() => setSecurePassword(!securePassword)} style={styles.inlineActionWrapper}>
+    <Text style={[styles.inlineActionText, { color: Colors.textDim }]}>
+      {securePassword ? 'Show' : 'Hide'}
+    </Text>
+  </Pressable>
+);
 
 export default RegisterScreen;

@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import {
   View, Text, Image, Pressable,
-  ScrollView, StatusBar,
+  ScrollView, StatusBar, FlatList,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import LinearGradient from 'react-native-linear-gradient';
@@ -170,16 +170,19 @@ const PricingScreen = ({ navigation }: Props) => {
             <EmptyState onAdd={() => navigation.navigate('AddPricing')} />
           </View>
         ) : (
-          <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
-            {filtered.map(item => (
+          <FlatList
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={styles.scrollContent}
+            data={filtered}
+            keyExtractor={item => item.id}
+            renderItem={({ item }) => (
               <PricingCard
-                key={item.id}
                 item={item}
                 onEdit={() => navigation.navigate('EditPricing', { pricingId: item.id })}
                 onDelete={() => handleClearCard(item.id)}
               />
-            ))}
-          </ScrollView>
+            )}
+          />
         )}
       </View>
     </>

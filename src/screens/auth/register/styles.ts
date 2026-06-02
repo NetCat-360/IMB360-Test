@@ -176,11 +176,7 @@ export default StyleSheet.create({
     borderRadius: moderateScale(8),
     width: '90%',
     alignSelf: 'center',
-    shadowColor: '#000000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
-    elevation: 5,
+    boxShadow: '0 4px 4px rgba(0,0,0,0.3)',
     zIndex: 999
   },
   toastText: {

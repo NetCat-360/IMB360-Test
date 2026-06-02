@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: scale(15),
-    elevation: 4,
+    boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
   },
   primaryButtonText: {
     color: '#000000',
