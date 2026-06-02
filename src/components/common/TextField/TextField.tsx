@@ -18,6 +18,17 @@ interface TextFieldProps extends Omit<TextInputProps, 'onChangeText'> {
   rightComponent?: React.ReactNode;
 }
 
+const staticLabelStyle = {
+  position: 'absolute' as const,
+  zIndex: 10,
+  backgroundColor: '#000000',
+  paddingHorizontal: 4,
+  fontWeight: '500' as const,
+  top: -9,
+  left: 12,
+  fontSize: 12,
+};
+
 const TextField: React.FC<TextFieldProps> = ({
   label,
   value,
@@ -54,17 +65,6 @@ const TextField: React.FC<TextFieldProps> = ({
   };
 
   const floating = !!label;
-
-  const staticLabelStyle = {
-    position: 'absolute' as const,
-    zIndex: 10,
-    backgroundColor: '#000000',
-    paddingHorizontal: 4,
-    fontWeight: '500' as const,
-    top: -9,
-    left: 12,
-    fontSize: 12,
-  };
 
   const animatedLabelStyle = useAnimatedStyle(() => {
     if (!floating) return {};

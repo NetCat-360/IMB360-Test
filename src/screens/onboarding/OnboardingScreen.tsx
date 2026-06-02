@@ -37,7 +37,7 @@ const OnboardingScreen = ({ navigation }: { navigation: AuthNavigationProp<'Onbo
   useEffect(() => {
     const backAction = () => {
       if (index > 0) {
-        setIndex(index - 1);
+        setIndex(prev => prev - 1);
         return true; 
       }
       return false; 
@@ -48,7 +48,7 @@ const OnboardingScreen = ({ navigation }: { navigation: AuthNavigationProp<'Onbo
 
   const handleNext = () => {
     if (index < ONBOARDING_DATA.length - 1) {
-      setIndex(index + 1);
+      setIndex(prev => prev + 1);
     } else {
       // Takes user to Role Selection from the last slide
       navigation.replace('RoleSelection');
@@ -56,7 +56,7 @@ const OnboardingScreen = ({ navigation }: { navigation: AuthNavigationProp<'Onbo
   };
 
   const handleBack = () => {
-    if (index > 0) setIndex(index - 1);
+    if (index > 0) setIndex(prev => prev - 1);
   };
 
   // 2. Redirect function for the skip button

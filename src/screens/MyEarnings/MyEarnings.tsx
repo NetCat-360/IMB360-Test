@@ -61,12 +61,15 @@ function EarningCard({ status }: { status: 'Paid' | 'Pending' }) {
 
 // ── Screen ────────────────────────────────────────────────────────────────────
 
+const EMPTY_PAID_ITEMS: null[] = [];
+const EMPTY_PENDING_ITEMS: null[] = [];
+
 const MyEarnings = ({ navigation }: Props) => {
   const [selectedTab, setSelectedTab] = useState<'Paid' | 'Pending'>('Paid');
 
   // Empty — real data from API
-  const paidItems: null[] = [];
-  const pendingItems: null[] = [];
+  const paidItems = EMPTY_PAID_ITEMS;
+  const pendingItems = EMPTY_PENDING_ITEMS;
 
   const currentItems = selectedTab === 'Paid' ? paidItems : pendingItems;
   const isEmpty = currentItems.length === 0;

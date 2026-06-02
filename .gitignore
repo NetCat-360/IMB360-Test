@@ -78,3 +78,5 @@ package-lock.json
 .env
 PROJECT_OVERVIEW.md
 .claude
+doctor.md
+doctor.config.json

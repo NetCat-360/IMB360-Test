@@ -27,13 +27,14 @@ type Props = { navigation: AppNavigationProp<'CampaignQueue'> };
 
 // ── Empty state ───────────────────────────────────────────────────────────────
 
+const EMPTY_STATE_CONFIG: Record<Tab, { icon: string; title: string; subtitle: string }> = {
+  Ongoing:  { icon: '📢', title: 'No ongoing campaigns', subtitle: 'Campaigns you\'re currently running will appear here.' },
+  Upcoming: { icon: '📅', title: 'No upcoming campaigns', subtitle: 'Campaigns you\'ve accepted but not yet started will appear here.' },
+  Bidding:  { icon: '🏷️', title: 'No bids placed yet',   subtitle: 'Campaigns you\'ve bid on will appear here once submitted.' },
+};
+
 const EmptyState = ({ tab }: { tab: Tab }) => {
-  const config: Record<Tab, { icon: string; title: string; subtitle: string }> = {
-    Ongoing:  { icon: '📢', title: 'No ongoing campaigns', subtitle: 'Campaigns you\'re currently running will appear here.' },
-    Upcoming: { icon: '📅', title: 'No upcoming campaigns', subtitle: 'Campaigns you\'ve accepted but not yet started will appear here.' },
-    Bidding:  { icon: '🏷️', title: 'No bids placed yet',   subtitle: 'Campaigns you\'ve bid on will appear here once submitted.' },
-  };
-  const { icon, title, subtitle } = config[tab];
+  const { icon, title, subtitle } = EMPTY_STATE_CONFIG[tab];
 
   return (
     <View style={emptyStyles.container}>
@@ -182,15 +183,17 @@ const BiddingCard = ({ campaign }: { campaign: BidCampaign }) => (
 
 // ── Main screen ───────────────────────────────────────────────────────────────
 
+const TABS: Tab[] = ['Ongoing', 'Upcoming', 'Bidding'];
+const EMPTY_ACTIVE: ActiveCampaign[] = [];
+const EMPTY_BIDDING: BidCampaign[] = [];
+
 const CampaignQueueScreen = ({ navigation }: Props) => {
   const [activeTab, setActiveTab] = useState<Tab>('Ongoing');
 
   // Empty arrays — real data from API
-  const ongoing: ActiveCampaign[] = [];
-  const upcoming: ActiveCampaign[] = [];
-  const bidding: BidCampaign[] = [];
-
-  const tabs: Tab[] = ['Ongoing', 'Upcoming', 'Bidding'];
+  const ongoing = EMPTY_ACTIVE;
+  const upcoming = EMPTY_ACTIVE;
+  const bidding = EMPTY_BIDDING;
 
   const currentEmpty =
     (activeTab === 'Ongoing'  && ongoing.length === 0) ||
@@ -207,13 +210,26 @@ const CampaignQueueScreen = ({ navigation }: Props) => {
             <Image source={require('../../assets/images/backbutton.png')} style={styles.backIcon} />
           </Pressable>
           <Text style={styles.headerTitle}>Campaign Queue</Text>
+          <View style={styles.tabRow}>
+            {TABS.map(tab => (
+              <Pressable
+                key={tab}
+                style={[styles.tabBtn, activeTab === tab && styles.activeTabBtn]}
+                onPress={() => setActiveTab(tab)}
+              >
+                <Text style={[styles.tabBtnText, activeTab === tab && styles.activeTabBtnText]}>
+                  {tab}
+                </Text>
+              </Pressable>
+            ))}
+          </View>
         </SafeAreaView>
       </LinearGradient>
 
       <View style={styles.body}>
         {/* Tab switcher */}
         <View style={styles.tabBar}>
-          {tabs.map(tab => (
+          {TABS.map(tab => (
             <Pressable
               key={tab}
               style={[styles.tabItem, activeTab === tab && styles.activeTabItem]}

@@ -147,7 +147,7 @@ export default function SettingsScreen({
 
                         {user?.role && (
                             <View style={{ backgroundColor: '#b6d82c', borderRadius: 4, paddingHorizontal: 6, paddingVertical: 2, alignSelf: 'flex-start', marginTop: 4 }}>
-                                <Text style={{ color: '#000', fontSize: 11, fontWeight: 'bold' }}>{user.role}</Text>
+                                <Text style={{ color: '#000', fontSize: 12, fontWeight: 'bold' }}>{user.role}</Text>
                             </View>
                         )}
                     </View>
