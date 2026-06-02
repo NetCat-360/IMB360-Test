@@ -17,6 +17,8 @@ import {
 import ScreenHeader
     from '../../../components/ScreenHeader'
 
+import TextField from '../../../components/common/TextField'
+
 
 
 import {
@@ -194,49 +196,31 @@ export default function
                     false
                 }
             >
-                <TextInput
+                <TextField
                     placeholder="Old Password"
                     placeholderTextColor="#8E8E93"
                     secureTextEntry
-                    value={
-                        oldPassword
-                    }
-                    onChangeText={
-                        setOldPassword
-                    }
-                    style={
-                        styles.input
-                    }
+                    value={oldPassword}
+                    onChangeText={setOldPassword}
+                    style={styles.input}
                 />
 
-                <TextInput
+                <TextField
                     placeholder="New Password"
                     placeholderTextColor="#8E8E93"
                     secureTextEntry
-                    value={
-                        newPassword
-                    }
-                    onChangeText={
-                        setNewPassword
-                    }
-                    style={
-                        styles.input
-                    }
+                    value={newPassword}
+                    onChangeText={setNewPassword}
+                    style={styles.input}
                 />
 
-                <TextInput
+                <TextField
                     placeholder="Re-enter New Password"
                     placeholderTextColor="#8E8E93"
                     secureTextEntry
-                    value={
-                        confirmPassword
-                    }
-                    onChangeText={
-                        setConfirmPassword
-                    }
-                    style={
-                        styles.input
-                    }
+                    value={confirmPassword}
+                    onChangeText={setConfirmPassword}
+                    style={styles.input}
                 />
 
                 <Pressable

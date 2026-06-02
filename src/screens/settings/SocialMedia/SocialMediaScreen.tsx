@@ -6,10 +6,11 @@ import React, {
 import {
     View,
     Text,
-    TextInput,
     Pressable,
     ScrollView,
 } from 'react-native'
+
+import TextField from '../../../components/common/TextField'
 
 import {
     Dropdown,
@@ -216,16 +217,12 @@ export default function
                     User Handle
                 </Text>
 
-                <TextInput
+                <TextField
                     placeholder="Enter your user handle"
                     placeholderTextColor="#8E8E93"
                     value={handle}
-                    onChangeText={
-                        setHandle
-                    }
-                    style={
-                        styles.input
-                    }
+                    onChangeText={setHandle}
+                    style={styles.input}
                 />
 
                 <Dropdown

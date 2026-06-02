@@ -22,7 +22,8 @@ import {
 
 import { AuthNavigationProp } from '../../../types/navigation';
 
-import FloatingInput from '../../../components/common/FloatingInput';
+import TextField from '../../../components/common/TextField';
+import { authInputStyles } from '../inputStyles';
 
 import { useAppDispatch } from '../../../hooks/redux';
 
@@ -62,8 +63,8 @@ type Props = {
   navigation: AuthNavigationProp<'Login'>;
 };
 
-const ADMIN_EMAIL = (Config.ADMIN_EMAIL || 'admin@imb360.com').toLowerCase();
-const ADMIN_PASSWORD = Config.ADMIN_PASSWORD || '';
+const ADMIN_EMAIL = Config.ADMIN_EMAIL?.toLowerCase() ?? '';
+const ADMIN_PASSWORD = Config.ADMIN_PASSWORD ?? '';
 
 const LoginScreen = ({
   navigation,
@@ -348,29 +349,29 @@ const LoginScreen = ({
               WELCOME BACK!
             </Text>
 
-            {/* Email */}
-            <FloatingInput
+            <TextField
               label="Email address"
               value={email}
-              onChangeText={
-                setEmail
-              }
+              onChangeText={setEmail}
               keyboardType="email-address"
               autoCapitalize="none"
+              containerStyle={authInputStyles.inputWrapper}
+              outlineStyle={authInputStyles.inputOutline}
+              outlineActiveStyle={authInputStyles.inputOutlineActive}
+              style={authInputStyles.textInput}
             />
 
-            {/* Password */}
-            <FloatingInput
+            <TextField
               label="Password"
               value={password}
-              onChangeText={
-                setPassword
-              }
-              secureTextEntry={
-                securePassword
-              }
+              onChangeText={setPassword}
+              secureTextEntry={securePassword}
               rightComponent={renderPasswordToggle()}
               autoCapitalize="none"
+              containerStyle={authInputStyles.inputWrapper}
+              outlineStyle={authInputStyles.inputOutline}
+              outlineActiveStyle={authInputStyles.inputOutlineActive}
+              style={authInputStyles.textInput}
             />
 
             {/* Remember/Forgot */}

@@ -6,13 +6,14 @@ import React, {
 import {
     View,
     Text,
-    TextInput,
     Pressable,
     ScrollView,
 } from 'react-native'
 
 import DatePicker
     from 'react-native-date-picker'
+
+import TextField from '../../../components/common/TextField'
 
 import {
     Dropdown,
@@ -172,16 +173,12 @@ export default function AdditionalInfoScreen({
                     Address
                 </Text>
 
-                <TextInput
+                <TextField
                     value={address}
-                    onChangeText={
-                        setAddress
-                    }
+                    onChangeText={setAddress}
                     placeholder="Enter your Street address"
                     placeholderTextColor="#A1A1A1"
-                    style={
-                        styles.input
-                    }
+                    style={styles.input}
                 />
 
                 {/* Country */}
@@ -288,22 +285,14 @@ export default function AdditionalInfoScreen({
                             Postal Code
                         </Text>
 
-                        <TextInput
-                            value={
-                                pincode
-                            }
-                            onChangeText={
-                                handlePinCode
-                            }
+                        <TextField
+                            value={pincode}
+                            onChangeText={handlePinCode}
                             keyboardType="number-pad"
-                            maxLength={
-                                6
-                            }
+                            maxLength={6}
                             placeholder="PIN Code"
                             placeholderTextColor="#A1A1A1"
-                            style={
-                                styles.smallInput
-                            }
+                            style={styles.smallInput}
                         />
                     </View>
                 </View>
@@ -356,16 +345,12 @@ export default function AdditionalInfoScreen({
                     Website
                 </Text>
 
-                <TextInput
+                <TextField
                     value={website}
-                    onChangeText={
-                        setWebsite
-                    }
+                    onChangeText={setWebsite}
                     placeholder="e.g. https://mysite.com"
                     placeholderTextColor="#A1A1A1"
-                    style={
-                        styles.input
-                    }
+                    style={styles.input}
                 />
 
                 {/* DOB */}

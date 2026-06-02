@@ -5,13 +5,13 @@ import React, { useState } from 'react';
 import {
   View,
   Text,
-  TextInput,
   Pressable,
   StatusBar,
   Alert,
   ScrollView,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import TextField from '../../components/common/TextField';
 
 import {
   CampaignURLScreenProps,
@@ -93,7 +93,7 @@ export default function CampaignURLScreen({
             Campaign URL
           </Text>
 
-          <TextInput
+          <TextField
             value={campaignURL}
             onChangeText={setCampaignURL}
             placeholder="https://example.com"

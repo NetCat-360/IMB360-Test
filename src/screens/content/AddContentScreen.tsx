@@ -2,10 +2,11 @@
 import React, { useState } from 'react';
 import {
   View, Text, Pressable, ScrollView,
-  StatusBar, TextInput,
+  StatusBar,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import LinearGradient from 'react-native-linear-gradient';
+import TextField from '../../components/common/TextField';
 import { Colors } from '../../config/theme';
 import { AppNavigationProp } from '../../types/navigation';
 import { addDropStyles as dropStyles, addPickerStyles as pickerStyles, addContentStyles as styles } from './styles';
@@ -113,7 +114,7 @@ const AddContentScreen = ({ navigation }: Props) => {
           </Pressable>
 
           <Text style={styles.fieldLabel}>Add Content URL</Text>
-          <TextInput
+          <TextField
             style={styles.input}
             placeholder="e.g. https://example.com"
             placeholderTextColor={Colors.textMuted}

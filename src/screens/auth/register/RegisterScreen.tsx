@@ -31,7 +31,8 @@ import {
   AuthRouteProp,
 } from '../../../types/navigation';
 
-import FloatingInput from '../../../components/common/FloatingInput';
+import TextField from '../../../components/common/TextField';
+import { authInputStyles } from '../inputStyles';
 
 import { useGlobalToast } from '../../../context/ToastContext';
 
@@ -433,64 +434,51 @@ const RegisterScreen = ({
               CREATE YOUR ACCOUNT
             </Text>
 
-            <FloatingInput
+            <TextField
               label="Full Name"
               value={name}
-              onChangeText={text =>
-                setName(
-                  sanitizeText(
-                    text,
-                    80,
-                  ),
-                )
-              }
+              onChangeText={text => setName(sanitizeText(text, 80))}
               autoCapitalize="words"
+              containerStyle={authInputStyles.inputWrapper}
+              outlineStyle={authInputStyles.inputOutline}
+              outlineActiveStyle={authInputStyles.inputOutlineActive}
+              style={authInputStyles.textInput}
             />
 
-            <FloatingInput
+            <TextField
               label="Email address"
               value={email}
-              onChangeText={text =>
-                setEmail(
-                  sanitizeText(
-                    text,
-                    320,
-                  ),
-                )
-              }
+              onChangeText={text => setEmail(sanitizeText(text, 320))}
               keyboardType="email-address"
               rightComponent={renderVerificationButton()}
+              containerStyle={authInputStyles.inputWrapper}
+              outlineStyle={authInputStyles.inputOutline}
+              outlineActiveStyle={authInputStyles.inputOutlineActive}
+              style={authInputStyles.textInput}
             />
 
-            <FloatingInput
+            <TextField
               label="Phone"
               value={phone}
-              onChangeText={text =>
-                setPhone(
-                  sanitizePhone(
-                    text,
-                  ),
-                )
-              }
+              onChangeText={text => setPhone(sanitizePhone(text))}
               keyboardType="phone-pad"
               prefixComponent={renderCountryCodePicker()}
+              containerStyle={authInputStyles.inputWrapper}
+              outlineStyle={authInputStyles.inputOutline}
+              outlineActiveStyle={authInputStyles.inputOutlineActive}
+              style={authInputStyles.textInput}
             />
 
-            <FloatingInput
+            <TextField
               label="Create a Password"
               value={password}
-              onChangeText={text =>
-                setPassword(
-                  sanitizeText(
-                    text,
-                    128,
-                  ),
-                )
-              }
-              secureTextEntry={
-                securePassword
-              }
+              onChangeText={text => setPassword(sanitizeText(text, 128))}
+              secureTextEntry={securePassword}
               rightComponent={renderPasswordToggle()}
+              containerStyle={authInputStyles.inputWrapper}
+              outlineStyle={authInputStyles.inputOutline}
+              outlineActiveStyle={authInputStyles.inputOutlineActive}
+              style={authInputStyles.textInput}
             />
 
             <Text

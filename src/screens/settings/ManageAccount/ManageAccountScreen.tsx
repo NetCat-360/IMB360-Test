@@ -16,6 +16,8 @@ import {
 import ScreenHeader
     from '../../../components/ScreenHeader'
 
+import TextField from '../../../components/common/TextField'
+
 
 
 import {
@@ -210,47 +212,29 @@ export default function
                             styles.dropdownBody
                         }
                     >
-                        <TextInput
+                        <TextField
                             placeholder="Full Name"
                             placeholderTextColor="#8E8E93"
-                            value={
-                                fullName
-                            }
-                            onChangeText={
-                                setFullName
-                            }
-                            style={
-                                styles.input
-                            }
+                            value={fullName}
+                            onChangeText={setFullName}
+                            style={styles.input}
                         />
 
-                        <TextInput
+                        <TextField
                             placeholder="Email Address"
                             placeholderTextColor="#8E8E93"
-                            value={
-                                email
-                            }
-                            onChangeText={
-                                setEmail
-                            }
-                            style={
-                                styles.input
-                            }
+                            value={email}
+                            onChangeText={setEmail}
+                            style={styles.input}
                         />
 
-                        <TextInput
+                        <TextField
                             placeholder="Phone Number"
                             placeholderTextColor="#8E8E93"
                             keyboardType="phone-pad"
-                            value={
-                                phone
-                            }
-                            onChangeText={
-                                setPhone
-                            }
-                            style={
-                                styles.input
-                            }
+                            value={phone}
+                            onChangeText={setPhone}
+                            style={styles.input}
                         />
 
                         <Pressable

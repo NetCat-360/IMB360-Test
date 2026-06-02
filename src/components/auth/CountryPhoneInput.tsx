@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { View, Text, Pressable, TextInput, Modal, FlatList, StyleSheet } from 'react-native';
 import { COUNTRIES } from '../../utils/countries';
+import TextField from '../common/TextField';
 import { scale, verticalScale, moderateScale } from '../../utils/scaling';
 
 interface Country {
@@ -56,8 +57,7 @@ export const CountryPhoneInput: React.FC<CountryPhoneInputProps> = ({
           <Text style={localStyles.dropdownArrow}>▾</Text>
         </Pressable>
 
-        {/* Clean, Non-Shifting TextInput Block */}
-        <TextInput
+        <TextField
           style={localStyles.phoneTextInput}
           placeholder="Enter phone number"
           placeholderTextColor="#666666"

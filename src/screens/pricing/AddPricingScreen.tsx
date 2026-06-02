@@ -2,10 +2,11 @@
 import React, { useState } from 'react';
 import {
   View, Text, Pressable, ScrollView,
-  StatusBar, TextInput,
+  StatusBar,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import LinearGradient from 'react-native-linear-gradient';
+import TextField from '../../components/common/TextField';
 import { Colors } from '../../config/theme';
 import { AppNavigationProp } from '../../types/navigation';
 import { addDropStyles as dropStyles, addPickerStyles as pickerStyles, addPiStyles as piStyles, addPriceStyles as styles } from './styles';
@@ -52,7 +53,7 @@ const PriceInput = ({
 }: { label: string; value: string; onChange: (v: string) => void }) => (
   <View style={piStyles.row}>
     <Text style={piStyles.label}>{label}</Text>
-    <TextInput
+    <TextField
       style={piStyles.input}
       placeholder="Set Price"
       placeholderTextColor={Colors.textMuted}

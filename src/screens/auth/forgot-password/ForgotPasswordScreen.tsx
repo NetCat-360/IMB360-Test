@@ -9,10 +9,8 @@ import {
   StatusBar,
   KeyboardAvoidingView,
   Platform,
-  TextInput,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import Animated from 'react-native-reanimated';
 import LinearGradient from 'react-native-linear-gradient';
 import { verticalScale } from '../../../utils/scaling';
 import { AuthNavigationProp } from '../../../types/navigation';
@@ -20,54 +18,10 @@ import { OtpModalSheet } from '../../../components/auth/OtpModalSheet';
 import { useGlobalToast } from '../../../context/ToastContext';
 import apiClient from '../../../api/client';
 import { AUTH } from '../../../api/endpoints';
+import TextField from '../../../components/common/TextField';
 import styles from '../register/styles';
 import { authInputStyles } from '../inputStyles';
 import { localStyles } from './styles';
-
-const OutlinedFloatingInput = ({ label, value, onChangeText, keyboardType }: any) => {
-  const [isFocused, setIsFocused] = useState(false);
-
-  return (
-    <View style={authInputStyles.inputWrapper}>
-      <View
-        style={[
-          authInputStyles.inputOutline,
-          localStyles.customOutline,
-          isFocused && localStyles.customOutlineActive,
-        ]}
-      />
-      <Animated.Text
-        style={[
-          authInputStyles.floatingLabel,
-          localStyles.customFloatingLabel,
-          {
-            top: value || isFocused ? -9 : 16.5,
-            left: 14,
-            fontSize: value || isFocused ? 12 : 15,
-            color: value || isFocused ? '#b6d82c' : '#7f9221',
-          },
-        ]}
-      >
-        {label}
-      </Animated.Text>
-      <View style={{ flexDirection: 'row', flex: 1, alignItems: 'center' }}>
-        <TextInput
-          style={[authInputStyles.textInput, localStyles.customTextInput]}
-          value={value}
-          onChangeText={onChangeText}
-          keyboardType={keyboardType}
-          onFocus={() => setIsFocused(true)}
-          onBlur={() => setIsFocused(false)}
-          autoCapitalize="none"
-          autoCorrect={false}
-          placeholderTextColor="transparent"
-          selectionColor="#b6d82c"
-          cursorColor="#b6d82c"
-        />
-      </View>
-    </View>
-  );
-};
 
 type Props = {
   navigation: AuthNavigationProp<'ForgotPassword'>;
@@ -148,11 +102,15 @@ const ForgotPasswordScreen = ({ navigation }: Props) => {
                 Enter your email and we'll send a 6-digit verification code instantly.
               </Text>
 
-              <OutlinedFloatingInput
+              <TextField
                 label="Email address"
                 value={email}
                 onChangeText={setEmail}
                 keyboardType="email-address"
+                containerStyle={authInputStyles.inputWrapper}
+                outlineStyle={[authInputStyles.inputOutline, localStyles.customOutline]}
+                outlineActiveStyle={localStyles.customOutlineActive}
+                style={authInputStyles.textInput}
               />
 
               <Pressable

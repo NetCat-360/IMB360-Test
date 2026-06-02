@@ -2,13 +2,14 @@ import React, { useState } from 'react'
 import {
     View,
     Text,
-    TextInput,
     Pressable,
     ScrollView,
 } from 'react-native'
 
 import ScreenHeader
     from '../../../components/ScreenHeader'
+
+import TextField from '../../../components/common/TextField'
 
 
 
@@ -65,7 +66,7 @@ export default function BioScreen({
                     Bio
                 </Text>
 
-                <TextInput
+                <TextField
                     placeholder="Tell us about yourself"
                     placeholderTextColor="#8E8E93"
                     multiline
