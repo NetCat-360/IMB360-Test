@@ -1,7 +1,7 @@
 // src/screens/MyEarnings/MyEarnings.tsx
 import React, { useState } from 'react';
 import {
-  View, Text, Image, TouchableOpacity,
+  View, Text, Image, Pressable,
   ScrollView, StatusBar,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -95,13 +95,13 @@ const MyEarnings = ({ navigation }: Props) => {
         {/* Tabs */}
         <View style={styles.tabRow}>
           {(['Paid', 'Pending'] as const).map(tab => (
-            <TouchableOpacity
+            <Pressable
               key={tab}
               style={[styles.tabButton, selectedTab === tab && styles.activeTab]}
               onPress={() => setSelectedTab(tab)}
             >
               <Text style={[Typography.body, { fontFamily: 'Poppins-Medium' }]}>{tab}</Text>
-            </TouchableOpacity>
+            </Pressable>
           ))}
         </View>
 

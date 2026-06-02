@@ -4,13 +4,12 @@ import React, { useState, useRef, useEffect } from 'react';
 import {
   View,
   Text,
-  TouchableOpacity,
+  Pressable,
   TextInput,
   Modal,
   StyleSheet,
   KeyboardAvoidingView,
   Platform,
-  Pressable,
   Keyboard,
   ScrollView,
 } from 'react-native';
@@ -127,11 +126,6 @@ export const OtpModalSheet: React.FC<OtpModalSheetProps> = ({
       animationType="slide"
       transparent={true}
       statusBarTranslucent
-      // This is critical on Android — it ensures the Modal's touch
-      // handling is completely isolated from whatever is behind it.
-      // Without this, Android can route touches through the modal to
-      // the screen underneath in certain situations.
-      hardwareAccelerated={true}
       onRequestClose={onClose}
     >
       {/*
@@ -150,7 +144,7 @@ export const OtpModalSheet: React.FC<OtpModalSheetProps> = ({
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' ? 'padding' : 'position'}
           style={localStyles.sheetKeyboardWrapper}
-          keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : verticalScale(-40)}
+          keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 0}
         >
           <Pressable
             onPress={(e) => e.stopPropagation()}
@@ -197,7 +191,7 @@ export const OtpModalSheet: React.FC<OtpModalSheetProps> = ({
                 ))}
               </View>
 
-              <TouchableOpacity
+              <Pressable
                 style={[localStyles.sheetSubmitButton, { opacity: isCodeComplete ? 1 : 0.4 }]}
                 onPress={() => onVerify(code.join(''))}
                 disabled={!isCodeComplete}
@@ -210,9 +204,9 @@ export const OtpModalSheet: React.FC<OtpModalSheetProps> = ({
                 >
                   <Text style={localStyles.submitButtonTextLabel}>Verify</Text>
                 </LinearGradient>
-              </TouchableOpacity>
+              </Pressable>
 
-              <TouchableOpacity
+              <Pressable
                 onPress={handleResendTrigger}
                 disabled={countdown > 0}
                 style={localStyles.resendAnchorLinkContainer}
@@ -223,7 +217,7 @@ export const OtpModalSheet: React.FC<OtpModalSheetProps> = ({
                 ]}>
                   {countdown > 0 ? `Resend in ${countdown} sec` : 'Resend OTP'}
                 </Text>
-              </TouchableOpacity>
+              </Pressable>
 
             </ScrollView>
           </Pressable>

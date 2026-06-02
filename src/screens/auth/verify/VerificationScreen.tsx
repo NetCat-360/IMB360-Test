@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { View, Text, Image, TouchableOpacity, TextInput, StatusBar, KeyboardAvoidingView, Platform } from 'react-native';
+import { View, Text, Image, Pressable, TextInput, StatusBar, KeyboardAvoidingView, Platform } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Animated, { useSharedValue, withTiming, runOnJS } from 'react-native-reanimated';
 import LinearGradient from 'react-native-linear-gradient';
@@ -100,9 +100,9 @@ const VerificationScreen = ({ navigation, route }: any) => {
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
         <View style={[styles.fixedContentContainer, localStyles.topAlignedContent]}>
           
-          <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+          <Pressable style={styles.backButton} onPress={() => navigation.goBack()}>
             <Text style={styles.backButtonText}>←</Text>
-          </TouchableOpacity>
+          </Pressable>
 
           <View style={localStyles.rigidLogoContainer}>
             <Image source={require('../../../assets/images/IMB360_v2.png')} style={localStyles.adaptedLogoAsset} resizeMode="contain" />
@@ -133,7 +133,7 @@ const VerificationScreen = ({ navigation, route }: any) => {
               ))}
             </View>
 
-            <TouchableOpacity 
+            <Pressable 
               style={[styles.submitButton, { opacity: isCodeComplete ? 1 : 0.4, marginTop: verticalScale(30) }]} 
               onPress={handleVerifyCode}
               disabled={!isCodeComplete}
@@ -141,11 +141,11 @@ const VerificationScreen = ({ navigation, route }: any) => {
               <LinearGradient colors={['#00b9c0', '#00b9c0']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.gradientButtonLayout}>
                 <Text style={styles.submitButtonText}>Verify Code</Text>
               </LinearGradient>
-            </TouchableOpacity>
+            </Pressable>
 
-            <TouchableOpacity onPress={handleResendCode} style={localStyles.resendCodeLink}>
+            <Pressable onPress={handleResendCode} style={localStyles.resendCodeLink}>
               <Text style={localStyles.resendText}>Didn't receive code? <Text style={localStyles.resendActionText}>Resend</Text></Text>
-            </TouchableOpacity>
+            </Pressable>
           </View>
 
           {toastMessage ? (

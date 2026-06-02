@@ -8,10 +8,9 @@ import {
     View,
     Text,
     TextInput,
-    TouchableOpacity,
+    Pressable,
     ScrollView,
     Modal,
-    Pressable,
 } from 'react-native'
 
 import ScreenHeader
@@ -171,7 +170,7 @@ export default function
                     false
                 }
             >
-                <TouchableOpacity
+                <Pressable
                     style={
                         styles.dropdownHeader
                     }
@@ -202,7 +201,7 @@ export default function
                             ? '▲'
                             : '▼'}
                     </Text>
-                </TouchableOpacity>
+                </Pressable>
 
                 {expandedSection ===
                     'profile' && (
@@ -254,7 +253,7 @@ export default function
                             }
                         />
 
-                        <TouchableOpacity
+                        <Pressable
                             style={
                                 styles.saveButton
                             }
@@ -269,11 +268,11 @@ export default function
                             >
                                 Save Changes
                             </Text>
-                        </TouchableOpacity>
+                        </Pressable>
                     </View>
                 )}
 
-                <TouchableOpacity
+                <Pressable
                     style={
                         styles.dropdownHeader
                     }
@@ -304,7 +303,7 @@ export default function
                             ? '▲'
                             : '▼'}
                     </Text>
-                </TouchableOpacity>
+                </Pressable>
 
                 {expandedSection ===
                     'email' && (
@@ -327,7 +326,7 @@ export default function
                             }
                         />
 
-                        <TouchableOpacity
+                        <Pressable
                             style={
                                 styles.saveButton
                             }
@@ -342,7 +341,7 @@ export default function
                             >
                                 Save Changes
                             </Text>
-                        </TouchableOpacity>
+                        </Pressable>
                     </View>
                 )}
             </ScrollView>
@@ -435,7 +434,7 @@ export default function
                             )}
                         </View>
 
-                        <TouchableOpacity
+                        <Pressable
                             style={
                                 styles.verifyButton
                             }
@@ -450,9 +449,9 @@ export default function
                             >
                                 Verify
                             </Text>
-                        </TouchableOpacity>
+                        </Pressable>
 
-                        <TouchableOpacity>
+                        <Pressable>
                             <Text
                                 style={
                                     styles.resendText
@@ -465,7 +464,7 @@ export default function
                                 }{' '}
                                 sec
                             </Text>
-                        </TouchableOpacity>
+                        </Pressable>
                     </Pressable>
                 </Pressable>
             </Modal>

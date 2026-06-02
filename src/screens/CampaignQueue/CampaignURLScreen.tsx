@@ -6,7 +6,7 @@ import {
   View,
   Text,
   TextInput,
-  TouchableOpacity,
+  Pressable,
   StatusBar,
   Alert,
   ScrollView,
@@ -16,6 +16,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import {
   CampaignURLScreenProps,
 } from '../../types/navigation';
+import { Colors } from '../../config/theme';
 import { urlStyles as styles } from './styles';
 
 type Props = CampaignURLScreenProps;
@@ -62,14 +63,14 @@ export default function CampaignURLScreen({
       >
         {/* Header */}
         <View style={styles.header}>
-          <TouchableOpacity
+          <Pressable
             onPress={() => navigation.goBack()}
             style={styles.backButton}
           >
             <Text style={styles.backText}>
               ←
             </Text>
-          </TouchableOpacity>
+          </Pressable>
 
           <Text style={styles.headerTitle}>
             Campaign URL
@@ -101,15 +102,14 @@ export default function CampaignURLScreen({
             autoCapitalize="none"
           />
 
-          <TouchableOpacity
+          <Pressable
             style={styles.submitButton}
-            activeOpacity={0.8}
             onPress={handleSubmit}
           >
             <Text style={styles.submitText}>
               Submit URL
             </Text>
-          </TouchableOpacity>
+          </Pressable>
         </View>
       </ScrollView>
       </SafeAreaView>

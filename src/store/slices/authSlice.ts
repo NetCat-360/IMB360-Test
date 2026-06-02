@@ -3,7 +3,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import type {
   User,
   AuthTokens,
-} from '../../../types/global';
+} from '../../types/global';
 
 export interface AuthState extends AuthTokens {
   isAuthenticated: boolean;

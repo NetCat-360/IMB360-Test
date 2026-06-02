@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Image, TouchableOpacity, StatusBar } from 'react-native';
+import { View, Text, Image, Pressable, StatusBar } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import LinearGradient from 'react-native-linear-gradient';
 import styles from './styles';
@@ -27,9 +27,9 @@ const AuthEntryPointScreen = ({ route, navigation }: Props) => {
       
       {/* Top Utility Header Navigation */}
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+        <Pressable onPress={() => navigation.goBack()} style={styles.backButton}>
           <Text style={styles.backText}>←</Text>
-        </TouchableOpacity>
+        </Pressable>
       </View>
 
       {/* Hero Illustration Block */}
@@ -56,8 +56,7 @@ const AuthEntryPointScreen = ({ route, navigation }: Props) => {
 
       {/* Absolute Call To Action Stack */}
       <View style={styles.footer}>
-        <TouchableOpacity 
-          activeOpacity={0.8}
+        <Pressable 
           onPress={() => navigation.navigate('Register', { role })}
         >
           <LinearGradient
@@ -71,14 +70,14 @@ const AuthEntryPointScreen = ({ route, navigation }: Props) => {
             </Text>
             <Text style={styles.primaryButtonIcon}>›</Text>
           </LinearGradient>
-        </TouchableOpacity>
+        </Pressable>
 
         {/* Existing User Redirection Link */}
         <View style={styles.loginRedirectContainer}>
           <Text style={styles.loginNormalText}>Already have an account? </Text>
-          <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+          <Pressable onPress={() => navigation.navigate('Login')}>
             <Text style={styles.loginLinkText}>Login</Text>
-          </TouchableOpacity>
+          </Pressable>
         </View>
       </View>
 

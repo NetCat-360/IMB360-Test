@@ -3,7 +3,7 @@ import React from 'react';
 import {
   View,
   Text,
-  TouchableOpacity,
+  Pressable,
 } from 'react-native';
 
 import {
@@ -23,12 +23,12 @@ export default function EditPricingScreen({
     <View style={styles.container}>
       <Text style={styles.title}>Edit Pricing Screen</Text>
       <Text style={styles.contentId}>Pricing ID: {pricingId || 'No ID'}</Text>
-      <TouchableOpacity
+      <Pressable
         onPress={() => navigation.goBack()}
         style={styles.backBtn}
       >
         <Text style={styles.backBtnText}>Go Back</Text>
-      </TouchableOpacity>
+      </Pressable>
     </View>
   );
 }

@@ -1,13 +1,13 @@
 // src/screens/CampaignQueue/CampaignQueueScreen.tsx
 import React, { useState } from 'react';
 import {
-  View, Text, Image, TouchableOpacity,
+  View, Text, Image, Pressable,
   ScrollView, StatusBar,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { verticalScale } from '../../utils/scaling';
+import { scale, verticalScale, moderateScale } from '../../utils/scaling';
 import { Colors } from '../../config/theme';
 import Typography from '../../styles/typography';
 import { AppNavigationProp } from '../../types/navigation';
@@ -108,20 +108,20 @@ const OngoingCard = ({
     <View style={styles.platformMetaRow}>
       <Text style={[Typography.caption, { color: Colors.textMuted, marginRight: scale(4) }]}>Platforms:</Text>
       <PlatformRow platforms={campaign.platforms} />
-      <TouchableOpacity style={styles.addContentBtn} onPress={onAddContentUrl}>
+      <Pressable style={styles.addContentBtn} onPress={onAddContentUrl}>
         <Icon name="plus" size={moderateScale(11)} color={Colors.teal} />
         <Text style={styles.addContentText}> Add Content URL</Text>
-      </TouchableOpacity>
+      </Pressable>
     </View>
     <View style={styles.actionRow}>
-      <TouchableOpacity style={styles.viewBtn} onPress={onView}>
+      <Pressable style={styles.viewBtn} onPress={onView}>
         <Text style={styles.viewBtnText}>View</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.markCompletedBtn} onPress={onMarkCompleted}>
+      </Pressable>
+      <Pressable style={styles.markCompletedBtn} onPress={onMarkCompleted}>
         <LinearGradient colors={[Colors.teal, Colors.lime]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.markCompletedGradient}>
           <Text style={styles.markCompletedText}>Mark as completed</Text>
         </LinearGradient>
-      </TouchableOpacity>
+      </Pressable>
     </View>
   </View>
 );
@@ -150,14 +150,14 @@ const UpcomingCard = ({
       <PlatformRow platforms={campaign.platforms} />
     </View>
     <View style={styles.actionRow}>
-      <TouchableOpacity style={styles.viewBtn} onPress={onView}>
+      <Pressable style={styles.viewBtn} onPress={onView}>
         <Text style={styles.viewBtnText}>View</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.startCampaignBtn} onPress={onStartCampaign}>
+      </Pressable>
+      <Pressable style={styles.startCampaignBtn} onPress={onStartCampaign}>
         <LinearGradient colors={[Colors.teal, Colors.lime]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.markCompletedGradient}>
           <Text style={styles.markCompletedText}>Start Campaign</Text>
         </LinearGradient>
-      </TouchableOpacity>
+      </Pressable>
     </View>
   </View>
 );
@@ -203,9 +203,9 @@ const CampaignQueueScreen = ({ navigation }: Props) => {
 
       <LinearGradient colors={[Colors.teal, Colors.lime]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.header}>
         <SafeAreaView edges={['top']} style={styles.headerInner}>
-          <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
+          <Pressable onPress={() => navigation.goBack()} style={styles.backBtn}>
             <Image source={require('../../assets/images/backbutton.png')} style={styles.backIcon} />
-          </TouchableOpacity>
+          </Pressable>
           <Text style={styles.headerTitle}>Campaign Queue</Text>
         </SafeAreaView>
       </LinearGradient>
@@ -214,14 +214,13 @@ const CampaignQueueScreen = ({ navigation }: Props) => {
         {/* Tab switcher */}
         <View style={styles.tabBar}>
           {tabs.map(tab => (
-            <TouchableOpacity
+            <Pressable
               key={tab}
               style={[styles.tabItem, activeTab === tab && styles.activeTabItem]}
               onPress={() => setActiveTab(tab)}
-              activeOpacity={0.7}
             >
               <Text style={[styles.tabLabel, activeTab === tab && styles.activeTabLabel]}>{tab}</Text>
-            </TouchableOpacity>
+            </Pressable>
           ))}
         </View>
 

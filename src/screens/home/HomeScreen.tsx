@@ -4,7 +4,7 @@ import {
   View,
   Text,
   Image,
-  TouchableOpacity,
+  Pressable,
   ScrollView,
   StatusBar,
 } from 'react-native';
@@ -12,6 +12,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { AppStackParamList } from '../../types/navigation';
+import { useAppSelector } from '../../hooks/redux';
 import { verticalScale } from '../../utils/scaling';
 import { Colors } from '../../config/theme';
 import Typography from '../../styles/typography';
@@ -40,10 +41,9 @@ function MenuItem({
   onPress?: () => void;
 }) {
   return (
-    <TouchableOpacity
+    <Pressable
       style={styles.menuCard}
       onPress={onPress}
-      activeOpacity={0.7}
     >
       {icon && (
         <Image
@@ -60,13 +60,14 @@ function MenuItem({
         style={styles.arrowIcon}
         resizeMode="contain"
       />
-    </TouchableOpacity>
+    </Pressable>
   );
 }
 
 // ── Screen ────────────────────────────────────────────────────────────────────
 export default function HomeScreen() {
   const navigation = useNavigation<HomeNavProp>();
+  const user = useAppSelector(state => state.auth.user);
 
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
@@ -80,15 +81,15 @@ export default function HomeScreen() {
           resizeMode="contain"
         />
         <View style={styles.topBarActions}>
-          <TouchableOpacity style={styles.topBarIcon}>
+          <Pressable style={styles.topBarIcon}>
             <Text style={styles.topBarIconText}>💬</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
+          </Pressable>
+          <Pressable
             style={styles.topBarIcon}
             onPress={() => navigation.navigate('Settings')}
           >
             <Text style={styles.topBarIconText}>⚙️</Text>
-          </TouchableOpacity>
+          </Pressable>
         </View>
       </View>
 
@@ -102,11 +103,18 @@ export default function HomeScreen() {
         {/* Profile */}
         <View style={styles.profileRow}>
           <View style={styles.avatar} />
-          <View>
-            <Text style={[Typography.h2]}>Username</Text>
-            <Text style={[Typography.label, { color: Colors.textMuted }]}>
-              @username01
-            </Text>
+          <View style={{ flex: 1 }}>
+            <Text style={[Typography.h2]}>{user?.name || 'User'}</Text>
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+              <Text style={[Typography.label, { color: Colors.textMuted }]}>
+                @{user?.username || 'user'}
+              </Text>
+              {user?.role && (
+                <View style={{ backgroundColor: '#b6d82c', borderRadius: 4, paddingHorizontal: 6, paddingVertical: 2 }}>
+                  <Text style={{ color: '#000', fontSize: 10, fontWeight: 'bold' }}>{user.role}</Text>
+                </View>
+              )}
+            </View>
           </View>
         </View>
 
@@ -114,30 +122,30 @@ export default function HomeScreen() {
         <View style={styles.bioContainer}>
           <Text style={[Typography.body]}>Digital creator | Fashion & Lifestyle</Text>
           <Text style={[Typography.body]}>Helping brands grow 🚀</Text>
-          <TouchableOpacity>
+          <Pressable>
             <Text style={[Typography.body, { color: Colors.teal, marginTop: verticalScale(4) }]}>
               Add website 🔗
             </Text>
-          </TouchableOpacity>
+          </Pressable>
         </View>
 
         {/* Action Buttons */}
         <View style={styles.buttonRow}>
-          <TouchableOpacity style={styles.actionButton}>
+          <Pressable style={styles.actionButton}>
             <Text style={styles.actionText}>Edit Profile</Text>
-          </TouchableOpacity>
+          </Pressable>
 
-          <TouchableOpacity style={styles.actionButton}>
+          <Pressable style={styles.actionButton}>
             <Image
               source={require('../../assets/images/pointslogo.png')}
               style={styles.pointsIcon}
             />
             <Text style={styles.actionText}>Points</Text>
-          </TouchableOpacity>
+          </Pressable>
 
-          <TouchableOpacity style={styles.actionButton}>
+          <Pressable style={styles.actionButton}>
             <Text style={styles.actionText}>Add Assets</Text>
-          </TouchableOpacity>
+          </Pressable>
         </View>
 
         {/* Info Row */}

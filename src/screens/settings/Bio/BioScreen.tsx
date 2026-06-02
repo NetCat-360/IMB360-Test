@@ -3,7 +3,7 @@ import {
     View,
     Text,
     TextInput,
-    TouchableOpacity,
+    Pressable,
     ScrollView,
 } from 'react-native'
 
@@ -75,7 +75,7 @@ export default function BioScreen({
                     style={styles.input}
                 />
 
-                <TouchableOpacity
+                <Pressable
                     style={
                         styles.saveButton
                     }
@@ -90,7 +90,7 @@ export default function BioScreen({
                     >
                         Save Changes
                     </Text>
-                </TouchableOpacity>
+                </Pressable>
             </ScrollView>
         </View>
     )

@@ -1,7 +1,7 @@
 // src/screens/content/ContentScreen.tsx
 import React, { useState } from 'react'; 
 import {
-  View, Text, Image, TouchableOpacity,
+  View, Text, Image, Pressable,
   ScrollView, StatusBar,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -25,17 +25,16 @@ const FILTER_TABS: { key: FilterKey; icon?: any; label?: string }[] = [
 const FilterTab = ({
   label, active, onPress, icon,
 }: { label?: string; active: boolean; onPress: () => void; icon?: any }) => (
-  <TouchableOpacity
+  <Pressable
     onPress={onPress}
     style={[tabStyles.tab, active && tabStyles.activeTab]}
-    activeOpacity={0.8}
   >
     {icon ? (
       <Image source={icon} style={tabStyles.tabIcon} resizeMode="contain" />
     ) : (
       <Text style={[tabStyles.tabLabel, active && tabStyles.activeLabel]}>{label}</Text>
     )}
-  </TouchableOpacity>
+  </Pressable>
 );
 
 type ContentItem = {
@@ -58,15 +57,15 @@ const ContentCard = ({
   <View style={cardStyles.card}>
     <View style={cardStyles.thumbnail}>
       <Text style={cardStyles.thumbnailText}>🎬</Text>
-      <TouchableOpacity style={cardStyles.deleteBtn} onPress={onDelete} activeOpacity={0.7}>
+      <Pressable style={cardStyles.deleteBtn} onPress={onDelete}>
         <Text style={cardStyles.deleteBtnText}>✕</Text>
-      </TouchableOpacity>
+      </Pressable>
     </View>
     <View style={[cardStyles.footer, { borderTopColor: item.color + '55' }]}>
       <Image source={item.platformIcon} style={cardStyles.footerIcon} resizeMode="contain" />
-      <TouchableOpacity style={[cardStyles.viewBtn, { borderColor: item.color }]} onPress={onEdit}>
+      <Pressable style={[cardStyles.viewBtn, { borderColor: item.color }]} onPress={onEdit}>
         <Text style={[cardStyles.viewBtnText, { color: item.color }]}>EDIT</Text>
-      </TouchableOpacity>
+      </Pressable>
     </View>
   </View>
 );
@@ -78,9 +77,9 @@ const EmptyState = ({ onAdd }: { onAdd: () => void }) => (
     <Text style={emptyStyles.subtitle}>
       Add your first piece of content to show brands what you can create.
     </Text>
-    <TouchableOpacity style={emptyStyles.addBtn} onPress={onAdd} activeOpacity={0.8}>
+    <Pressable style={emptyStyles.addBtn} onPress={onAdd}>
       <Text style={emptyStyles.addBtnText}>+ Add Content</Text>
-    </TouchableOpacity>
+    </Pressable>
   </View>
 );
 
@@ -105,17 +104,16 @@ const ContentScreen = ({ navigation }: Props) => {
         style={mainStyles.header}
       >
         <SafeAreaView edges={['top']} style={mainStyles.headerInner}>
-          <TouchableOpacity onPress={() => navigation.goBack()} style={mainStyles.backBtn}>
+          <Pressable onPress={() => navigation.goBack()} style={mainStyles.backBtn}>
             <Text style={mainStyles.backBtnText}>←</Text>
-          </TouchableOpacity>
+          </Pressable>
           <Text style={mainStyles.headerTitle}>Content</Text>
-          <TouchableOpacity
+          <Pressable
             style={mainStyles.headerAddBtn}
             onPress={() => navigation.navigate('AddContent')}
-            activeOpacity={0.8}
           >
             <Text style={mainStyles.headerAddBtnText}>+ Add</Text>
-          </TouchableOpacity>
+          </Pressable>
         </SafeAreaView>
       </LinearGradient>
 

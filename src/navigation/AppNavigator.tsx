@@ -14,6 +14,10 @@ import {
  * TAB SCREENS
  */
 import HomeScreen from '../screens/home/HomeScreen';
+import CampaignScreen from '../screens/campaign/CampaignScreen';
+import ExploreScreen from '../screens/explore/ExploreScreen';
+import AnalyticsScreen from '../screens/analytics/AnalyticsScreen';
+import AssetsScreen from '../screens/assets/AssetsScreen';
 import CampaignQueueScreen from '../screens/CampaignQueue/CampaignQueueScreen';
 import ContentScreen from '../screens/content/ContentScreen';
 import OverviewScreen from '../screens/overview/OverviewScreen';
@@ -121,22 +125,22 @@ function MainTabs() {
 
       <Tab.Screen
         name="Campaign"
-        component={CampaignQueueScreen}
+        component={CampaignScreen}
       />
 
       <Tab.Screen
         name="Explore"
-        component={ContentScreen}
+        component={ExploreScreen}
       />
 
       <Tab.Screen
         name="Analytics"
-        component={OverviewScreen}
+        component={AnalyticsScreen}
       />
 
       <Tab.Screen
         name="Assets"
-        component={MyEarnings}
+        component={AssetsScreen}
       />
     </Tab.Navigator>
   );
@@ -151,6 +155,8 @@ export default function AppNavigator() {
       initialRouteName="MainTabs"
       screenOptions={{
         headerShown: false,
+        animation: 'fade',
+        animationDuration: 300,
       }}
     >
       <Stack.Screen

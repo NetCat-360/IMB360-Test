@@ -1,7 +1,7 @@
 // src/screens/pricing/AddPricingScreen.tsx
 import React, { useState } from 'react';
 import {
-  View, Text, TouchableOpacity, ScrollView,
+  View, Text, Pressable, ScrollView,
   StatusBar, TextInput,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -20,10 +20,10 @@ const PLATFORMS = [
 const Dropdown = ({
   label, value, onPress,
 }: { label: string; value: string; onPress: () => void }) => (
-  <TouchableOpacity style={dropStyles.container} onPress={onPress} activeOpacity={0.8}>
+  <Pressable style={dropStyles.container} onPress={onPress}>
     <Text style={[dropStyles.text, !value && dropStyles.placeholder]}>{value || label}</Text>
     <Text style={dropStyles.arrow}>▾</Text>
-  </TouchableOpacity>
+  </Pressable>
 );
 
 
@@ -32,13 +32,13 @@ const PickerOverlay = ({
   options, onSelect, onClose,
 }: { options: string[]; onSelect: (v: string) => void; onClose: () => void }) => (
   <View style={pickerStyles.overlay}>
-    <TouchableOpacity style={pickerStyles.backdrop} onPress={onClose} />
+    <Pressable style={pickerStyles.backdrop} onPress={onClose} />
     <View style={pickerStyles.sheet}>
       <ScrollView showsVerticalScrollIndicator={false}>
         {options.map(opt => (
-          <TouchableOpacity key={opt} style={pickerStyles.option} onPress={() => { onSelect(opt); onClose(); }}>
+          <Pressable key={opt} style={pickerStyles.option} onPress={() => { onSelect(opt); onClose(); }}>
             <Text style={pickerStyles.optionText}>{opt}</Text>
-          </TouchableOpacity>
+          </Pressable>
         ))}
       </ScrollView>
     </View>
@@ -88,9 +88,9 @@ const AddPricingScreen = ({ navigation }: Props) => {
         style={styles.header}
       >
         <SafeAreaView edges={['top']} style={styles.headerInner}>
-          <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
+          <Pressable onPress={() => navigation.goBack()} style={styles.backBtn}>
             <Text style={styles.backBtnText}>←</Text>
-          </TouchableOpacity>
+          </Pressable>
           <Text style={styles.headerTitle}>Add Pricing</Text>
         </SafeAreaView>
       </LinearGradient>
@@ -114,14 +114,13 @@ const AddPricingScreen = ({ navigation }: Props) => {
         </ScrollView>
 
         <View style={styles.footer}>
-          <TouchableOpacity
+          <Pressable
             style={[styles.saveBtn, !canSave && styles.saveBtnDisabled]}
             disabled={!canSave}
             onPress={() => {
               // TODO: Replace with real API POST
               navigation.goBack();
             }}
-            activeOpacity={0.85}
           >
             <LinearGradient
               colors={canSave ? [Colors.teal, Colors.lime] : ['#333', '#333']}
@@ -131,7 +130,7 @@ const AddPricingScreen = ({ navigation }: Props) => {
             >
               <Text style={styles.saveBtnText}>Save Changes</Text>
             </LinearGradient>
-          </TouchableOpacity>
+          </Pressable>
         </View>
       </View>
 

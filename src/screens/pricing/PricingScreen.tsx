@@ -1,7 +1,7 @@
 // src/screens/pricing/PricingScreen.tsx
 import React, { useState } from 'react';
 import {
-  View, Text, Image, TouchableOpacity,
+  View, Text, Image, Pressable,
   ScrollView, StatusBar,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -25,17 +25,16 @@ const FILTER_TABS: { key: FilterKey; icon?: any; label?: string }[] = [
 const FilterTab = ({
   label, active, onPress, icon,
 }: { label?: string; active: boolean; onPress: () => void; icon?: any }) => (
-  <TouchableOpacity
+  <Pressable
     onPress={onPress}
     style={[tabStyles.tab, active && tabStyles.activeTab]}
-    activeOpacity={0.8}
   >
     {icon ? (
       <Image source={icon} style={tabStyles.tabIcon} resizeMode="contain" />
     ) : (
       <Text style={[tabStyles.label, active && tabStyles.activeLabel]}>{label}</Text>
     )}
-  </TouchableOpacity>
+  </Pressable>
 );
 
 // ── Pricing card ──────────────────────────────────────────────────────────────
@@ -77,12 +76,12 @@ const PricingCard = ({
         {icon && <Image source={icon} style={pcStyles.platformIcon} resizeMode="contain" />}
         <Text style={pcStyles.platformName}>{item.platform.toUpperCase()}</Text>
         <View style={pcStyles.cardActions}>
-          <TouchableOpacity style={pcStyles.editBtn} onPress={onEdit}>
+          <Pressable style={pcStyles.editBtn} onPress={onEdit}>
             <Text style={pcStyles.editBtnText}>Edit</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={pcStyles.deleteBtn} onPress={onDelete}>
+          </Pressable>
+          <Pressable style={pcStyles.deleteBtn} onPress={onDelete}>
             <Text style={pcStyles.deleteBtnText}>✕</Text>
-          </TouchableOpacity>
+          </Pressable>
         </View>
       </View>
       {rows.map(r => (
@@ -104,9 +103,9 @@ const EmptyState = ({ onAdd }: { onAdd: () => void }) => (
     <Text style={emptyStyles.subtitle}>
       Set your collaboration rates so brands know what to expect.
     </Text>
-    <TouchableOpacity style={emptyStyles.addBtn} onPress={onAdd} activeOpacity={0.8}>
+    <Pressable style={emptyStyles.addBtn} onPress={onAdd}>
       <Text style={emptyStyles.addBtnText}>+ Add Pricing</Text>
-    </TouchableOpacity>
+    </Pressable>
   </View>
 );
 
@@ -139,9 +138,9 @@ const PricingScreen = ({ navigation }: Props) => {
         style={styles.header}
       >
         <SafeAreaView edges={['top']} style={styles.headerInner}>
-          <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
+          <Pressable onPress={() => navigation.goBack()} style={styles.backBtn}>
             <Text style={styles.backBtnText}>←</Text>
-          </TouchableOpacity>
+          </Pressable>
           <Text style={styles.headerTitle}>Pricing</Text>
         </SafeAreaView>
       </LinearGradient>

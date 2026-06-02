@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, Image, TouchableOpacity, StatusBar } from 'react-native';
+import { View, Text, Image, Pressable, StatusBar } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Animated, { useAnimatedStyle, withTiming } from 'react-native-reanimated';
 import LinearGradient from 'react-native-linear-gradient';
@@ -8,7 +8,7 @@ import styles from './styles';
 
 export type RoleType = 'BRAND' | 'CREATOR' | null;
 
-const AnimatedTouchableOpacity = Animated.createAnimatedComponent(TouchableOpacity);
+const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
 const RoleSelectionScreen = ({ navigation }: { navigation: AuthNavigationProp<'RoleSelection'> }) => {
   const [selectedRole, setSelectedRole] = useState<RoleType>(null);
@@ -57,8 +57,7 @@ const RoleSelectionScreen = ({ navigation }: { navigation: AuthNavigationProp<'R
       <View style={styles.cardsContainer}>
         
         {/* BRAND CARD */}
-        <AnimatedTouchableOpacity
-          activeOpacity={0.9}
+        <AnimatedPressable
           onPress={() => setSelectedRole('BRAND')}
           style={[styles.card, brandAnimatedStyle]}
         >
@@ -75,11 +74,10 @@ const RoleSelectionScreen = ({ navigation }: { navigation: AuthNavigationProp<'R
               Scale your campaigns and find the perfect creators for your products.
             </Text>
           </View>
-        </AnimatedTouchableOpacity>
+        </AnimatedPressable>
 
         {/* CREATOR CARD */}
-        <AnimatedTouchableOpacity
-          activeOpacity={0.9}
+        <AnimatedPressable
           onPress={() => setSelectedRole('CREATOR')}
           style={[styles.card, creatorAnimatedStyle]}
         >
@@ -96,13 +94,12 @@ const RoleSelectionScreen = ({ navigation }: { navigation: AuthNavigationProp<'R
               Partner with top brands, monetize your content, and grow your digital footprint.
             </Text>
           </View>
-        </AnimatedTouchableOpacity>
+        </AnimatedPressable>
 
       </View>
 
       <View style={styles.footer}>
-        <TouchableOpacity 
-          activeOpacity={0.8} 
+        <Pressable 
           onPress={handleContinue}
           disabled={selectedRole === null}
           style={styles.buttonTouchArea}
@@ -122,7 +119,7 @@ const RoleSelectionScreen = ({ navigation }: { navigation: AuthNavigationProp<'R
               <Text style={styles.buttonTextDisabled}>Select a Profile</Text>
             </View>
           )}
-        </TouchableOpacity>
+        </Pressable>
       </View>
     </SafeAreaView>
   );

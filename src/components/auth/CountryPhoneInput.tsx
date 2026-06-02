@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { View, Text, TouchableOpacity, TextInput, Modal, FlatList, StyleSheet } from 'react-native';
+import { View, Text, Pressable, TextInput, Modal, FlatList, StyleSheet } from 'react-native';
 import { COUNTRIES } from '../../utils/countries';
 import { scale, verticalScale, moderateScale } from '../../utils/scaling';
 
@@ -47,15 +47,14 @@ export const CountryPhoneInput: React.FC<CountryPhoneInputProps> = ({
       
       <View style={localStyles.inputContentRow}>
         {/* Country Code Selection Dropdown Trigger */}
-        <TouchableOpacity 
+        <Pressable 
           style={localStyles.countryPickerTrigger} 
           onPress={() => setModalVisible(true)}
-          activeOpacity={0.7}
         >
           <Text style={localStyles.flagText}>{selectedCountry.flag}</Text>
           <Text style={localStyles.callingCodeText}>{selectedCountry.callingCode}</Text>
           <Text style={localStyles.dropdownArrow}>▾</Text>
-        </TouchableOpacity>
+        </Pressable>
 
         {/* Clean, Non-Shifting TextInput Block */}
         <TextInput
@@ -70,13 +69,13 @@ export const CountryPhoneInput: React.FC<CountryPhoneInputProps> = ({
 
       {/* High-Performance Selector Bottom-Sheet Modal */}
       <Modal visible={modalVisible} animationType="slide" transparent={true}>
-        <TouchableOpacity style={localStyles.modalOverlay} activeOpacity={1} onPress={() => setModalVisible(false)}>
-          <TouchableOpacity activeOpacity={1} onPress={(e) => e.stopPropagation()} style={localStyles.modalContent}>
+        <Pressable style={localStyles.modalOverlay} onPress={() => setModalVisible(false)}>
+          <Pressable onPress={(e) => e.stopPropagation()} style={localStyles.modalContent}>
             <View style={localStyles.modalHeader}>
               <Text style={localStyles.modalTitle}>Select Country</Text>
-              <TouchableOpacity onPress={() => setModalVisible(false)}>
+              <Pressable onPress={() => setModalVisible(false)}>
                 <Text style={localStyles.closeButton}>✕</Text>
-              </TouchableOpacity>
+              </Pressable>
             </View>
 
             <TextInput
@@ -94,18 +93,18 @@ export const CountryPhoneInput: React.FC<CountryPhoneInputProps> = ({
               initialNumToRender={15}
               keyboardShouldPersistTaps="handled"
               renderItem={({ item }) => (
-                <TouchableOpacity 
+                <Pressable 
                   style={localStyles.countryItem} 
                   onPress={() => handleSelect(item)}
                 >
                   <Text style={localStyles.itemFlag}>{item.flag}</Text>
                   <Text style={localStyles.itemName}>{item.name}</Text>
                   <Text style={localStyles.itemCallingCode}>{item.callingCode}</Text>
-                </TouchableOpacity>
+                </Pressable>
               )}
             />
-          </TouchableOpacity>
-        </TouchableOpacity>
+          </Pressable>
+        </Pressable>
       </Modal>
     </View>
   );

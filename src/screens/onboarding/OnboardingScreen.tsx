@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Image, TouchableOpacity, StatusBar, BackHandler } from 'react-native';
+import { View, Text, Image, Pressable, StatusBar, BackHandler } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Animated, { FadeInRight, FadeOutLeft } from 'react-native-reanimated';
 import LinearGradient from 'react-native-linear-gradient';
@@ -70,16 +70,16 @@ const OnboardingScreen = ({ navigation }: { navigation: AuthNavigationProp<'Onbo
       
       <View style={styles.header}>
         {index > 0 ? (
-          <TouchableOpacity onPress={handleBack} style={styles.backButton}>
+          <Pressable onPress={handleBack} style={styles.backButton}>
             <Text style={styles.backText}>←</Text>
-          </TouchableOpacity>
+          </Pressable>
         ) : <View />}
         
         {index === 0 ? (
           // 3. Wired up the onPress event here
-          <TouchableOpacity onPress={handleSkip}>
+          <Pressable onPress={handleSkip}>
             <Text style={styles.skipText}>Skip</Text>
-          </TouchableOpacity>
+          </Pressable>
         ) : <View />}
       </View>
 
@@ -107,7 +107,7 @@ const OnboardingScreen = ({ navigation }: { navigation: AuthNavigationProp<'Onbo
       </View>
 
       <View style={styles.footer}>
-        <TouchableOpacity activeOpacity={0.8} onPress={handleNext}>
+        <Pressable onPress={handleNext}>
           <LinearGradient
             colors={['#00b9c0', '#b6d82c']}
             start={{ x: 0, y: 0.5 }}
@@ -119,7 +119,7 @@ const OnboardingScreen = ({ navigation }: { navigation: AuthNavigationProp<'Onbo
             </Text>
             <Text style={styles.buttonIcon}>›</Text>
           </LinearGradient>
-        </TouchableOpacity>
+        </Pressable>
       </View>
     </SafeAreaView>
   );

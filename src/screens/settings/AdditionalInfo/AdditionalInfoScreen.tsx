@@ -7,7 +7,7 @@ import {
     View,
     Text,
     TextInput,
-    TouchableOpacity,
+    Pressable,
     ScrollView,
 } from 'react-native'
 
@@ -377,7 +377,7 @@ export default function AdditionalInfoScreen({
                     Date of Birth
                 </Text>
 
-                <TouchableOpacity
+                <Pressable
                     style={
                         styles.dropdown
                     }
@@ -394,7 +394,7 @@ export default function AdditionalInfoScreen({
                     >
                         {dob.toLocaleDateString()}
                     </Text>
-                </TouchableOpacity>
+                </Pressable>
 
                 <DatePicker
                     modal
@@ -418,7 +418,7 @@ export default function AdditionalInfoScreen({
                     }
                 />
 
-                <TouchableOpacity
+                <Pressable
                     style={
                         styles.saveButton
                     }
@@ -433,7 +433,7 @@ export default function AdditionalInfoScreen({
                     >
                         Save Info
                     </Text>
-                </TouchableOpacity>
+                </Pressable>
             </ScrollView>
         </View>
     )

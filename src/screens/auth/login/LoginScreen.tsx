@@ -6,7 +6,7 @@ import {
   View,
   Text,
   Image,
-  TouchableOpacity,
+  Pressable,
   StatusBar,
   KeyboardAvoidingView,
   Platform,
@@ -28,7 +28,7 @@ import { useAppDispatch } from '../../../hooks/redux';
 
 import {
   loginSuccess,
-} from '../../../features/auth/store/authSlice';
+} from '../../../store/slices/authSlice';
 
 import { useGlobalToast } from '../../../context/ToastContext';
 
@@ -48,6 +48,13 @@ import {
   sanitizeText,
   isStrongPassword,
 } from '../../../security/sanitize';
+import {
+  hashPassword,
+  saveUserToKeychain,
+  saveAccessToken,
+  saveRefreshToken,
+  decryptAsyncData,
+} from '../../../security/encryption';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -131,28 +138,71 @@ const LoginScreen = ({
         cleanPassword === ADMIN_PASSWORD &&
         ADMIN_PASSWORD
       ) {
-        const adminUser = {
-          id: 'admin-id',
-          email: cleanEmail,
-          role: 'ADMIN' as const,
-          permissions: {
-            canViewDashboard: true,
-            canManageCampaigns: true,
-            canManageContent: true,
-            canManagePricing: true,
-            canManageSettings: true,
-            canViewEarnings: true,
-          },
-        };
-        const mockToken = 'mock-admin-token';
-        await AsyncStorage.setItem('accessToken', mockToken);
-        await AsyncStorage.setItem('refreshToken', mockToken);
-        dispatch(loginSuccess({ user: adminUser, accessToken: mockToken, refreshToken: mockToken }));
-        showToast('Admin login successful.', 'success');
+        try {
+          const adminUser = {
+            id: 'admin-id',
+            email: cleanEmail,
+            name: 'Admin',
+            username: 'admin',
+            role: 'ADMIN' as const,
+            permissions: {
+              canViewDashboard: true,
+              canManageCampaigns: true,
+              canManageContent: true,
+              canManagePricing: true,
+              canManageSettings: true,
+              canViewEarnings: true,
+            },
+          };
+          const mockToken = 'mock-admin-token';
+          await saveAccessToken(mockToken);
+          await saveRefreshToken(mockToken);
+          await saveUserToKeychain(adminUser);
+          dispatch(loginSuccess({ user: adminUser, accessToken: mockToken, refreshToken: mockToken }));
+          showToast('Admin login successful.', 'success');
+        } catch {
+          showToast('Login failed. Please try again.', 'error');
+        }
         setLoading(false);
         return;
       }
 
+      // Check AsyncStorage for a locally registered user first (instant, no network)
+      try {
+        const raw = await AsyncStorage.getItem('registered_users');
+        let stored: any = {};
+        if (raw) {
+          stored = await decryptAsyncData<any>(raw) || {};
+        }
+        const localUser = stored[cleanEmail];
+
+        if (localUser && (localUser.password === hashPassword(cleanPassword) || localUser.password === cleanPassword)) {
+          const user = {
+            id: `local-${cleanEmail}`,
+            email: cleanEmail,
+            name: localUser.name,
+            username: localUser.username || cleanEmail.split('@')[0],
+            role: localUser.role || 'CREATOR',
+            permissions: {
+              canViewDashboard: true,
+              canManageCampaigns: true,
+              canManageContent: true,
+              canManagePricing: true,
+              canManageSettings: true,
+              canViewEarnings: true,
+            },
+          };
+          const mockToken = `local-token-${Date.now()}`;
+          await saveAccessToken(mockToken);
+          await saveUserToKeychain(user);
+          dispatch(loginSuccess({ user, accessToken: mockToken, refreshToken: mockToken }));
+          showToast('Login successful (offline).', 'success');
+          setLoading(false);
+          return;
+        }
+      } catch {}
+
+      // No local match — try the backend API
       try {
         const response = await apiClient.post(AUTH.LOGIN, {
           email: cleanEmail,
@@ -161,10 +211,11 @@ const LoginScreen = ({
 
         const { user, accessToken, refreshToken } = response.data;
 
-        await AsyncStorage.setItem('accessToken', accessToken);
+        await saveAccessToken(accessToken);
         if (refreshToken) {
-          await AsyncStorage.setItem('refreshToken', refreshToken);
+          await saveRefreshToken(refreshToken);
         }
+        await saveUserToKeychain(user);
 
         dispatch(loginSuccess({ user, accessToken, refreshToken }));
         showToast('Login successful.', 'success');
@@ -185,7 +236,7 @@ const LoginScreen = ({
 
   const renderPasswordToggle =
     () => (
-      <TouchableOpacity
+      <Pressable
         onPress={() =>
           setSecurePassword(
             !securePassword,
@@ -208,7 +259,7 @@ const LoginScreen = ({
             ? 'Show'
             : 'Hide'}
         </Text>
-      </TouchableOpacity>
+      </Pressable>
     );
 
   // ─────────────────────────────
@@ -244,7 +295,7 @@ const LoginScreen = ({
           }
         >
           {/* Back Button */}
-          <TouchableOpacity
+          <Pressable
             style={
               styles.backButton
             }
@@ -259,7 +310,7 @@ const LoginScreen = ({
             >
               ←
             </Text>
-          </TouchableOpacity>
+          </Pressable>
 
           {/* Logo */}
           <View
@@ -343,7 +394,7 @@ const LoginScreen = ({
                     'center',
                 }}
               >
-                <TouchableOpacity
+                <Pressable
                   style={[
                     styles.customCheckbox,
 
@@ -365,7 +416,7 @@ const LoginScreen = ({
                       ✓
                     </Text>
                   )}
-                </TouchableOpacity>
+                </Pressable>
 
                 <Text
                   style={
@@ -376,7 +427,7 @@ const LoginScreen = ({
                 </Text>
               </View>
 
-              <TouchableOpacity
+              <Pressable
                 onPress={() =>
                   navigation.navigate(
                     'ForgotPassword',
@@ -394,11 +445,11 @@ const LoginScreen = ({
                 >
                   Forgot Password?
                 </Text>
-              </TouchableOpacity>
+              </Pressable>
             </View>
 
             {/* Submit */}
-            <TouchableOpacity
+            <Pressable
               style={[
                 styles.submitButton,
                 {
@@ -444,7 +495,7 @@ const LoginScreen = ({
                     : 'Sign in'}
                 </Text>
               </LinearGradient>
-            </TouchableOpacity>
+            </Pressable>
 
             {/* Divider */}
             <Text
@@ -461,7 +512,7 @@ const LoginScreen = ({
                 styles.socialRow
               }
             >
-              <TouchableOpacity
+              <Pressable
                 style={
                   styles.socialButton
                 }
@@ -480,9 +531,9 @@ const LoginScreen = ({
                 >
                   Google
                 </Text>
-              </TouchableOpacity>
+              </Pressable>
 
-              <TouchableOpacity
+              <Pressable
                 style={
                   styles.socialButton
                 }
@@ -505,15 +556,16 @@ const LoginScreen = ({
                 >
                   Apple
                 </Text>
-              </TouchableOpacity>
+              </Pressable>
             </View>
           </View>
 
           {/* Redirect */}
-          <TouchableOpacity
+          <Pressable
             onPress={() =>
               navigation.navigate(
-                'RoleSelection',
+                'Register',
+                { role: 'CREATOR' },
               )
             }
             style={
@@ -535,7 +587,7 @@ const LoginScreen = ({
                 Sign up
               </Text>
             </Text>
-          </TouchableOpacity>
+          </Pressable>
         </View>
       </KeyboardAvoidingView>
     </SafeAreaView>

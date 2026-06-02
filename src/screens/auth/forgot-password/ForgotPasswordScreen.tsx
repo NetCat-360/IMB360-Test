@@ -5,7 +5,7 @@ import {
   View,
   Text,
   Image,
-  TouchableOpacity,
+  Pressable,
   StatusBar,
   KeyboardAvoidingView,
   Platform,
@@ -17,7 +17,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import { verticalScale } from '../../../utils/scaling';
 import { AuthNavigationProp } from '../../../types/navigation';
 import { OtpModalSheet } from '../../../components/auth/OtpModalSheet';
-import { useToast } from '../../../hooks/useToast';
+import { useGlobalToast } from '../../../context/ToastContext';
 import apiClient from '../../../api/client';
 import { AUTH } from '../../../api/endpoints';
 import styles from '../register/styles';
@@ -77,7 +77,7 @@ const ForgotPasswordScreen = ({ navigation }: Props) => {
   const [email, setEmail] = useState('');
   const [otpModalVisible, setOtpModalVisible] = useState(false);
 
-  const { message: toastMessage, toastOpacity, showToast } = useToast();
+  const { showToast } = useGlobalToast();
 
   const isEmailValid = (text: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(text);
   const isFormComplete = isEmailValid(email);
@@ -92,13 +92,15 @@ const ForgotPasswordScreen = ({ navigation }: Props) => {
     try {
       await apiClient.post(AUTH.VERIFY_OTP, { otp: compiledOtpCode });
       setOtpModalVisible(false);
-      navigation.reset({
-        index: 0,
-        routes: [{
-          name: 'ResetPassword',
-          params: { verifiedEmail: email.toLowerCase().trim() },
-        }],
-      });
+      setTimeout(() => {
+        navigation.reset({
+          index: 0,
+          routes: [{
+            name: 'ResetPassword',
+            params: { verifiedEmail: email.toLowerCase().trim() },
+          }],
+        });
+      }, 300);
     } catch {
       showToast('Invalid confirmation OTP entered.');
     }
@@ -125,9 +127,9 @@ const ForgotPasswordScreen = ({ navigation }: Props) => {
         >
           <View style={[styles.fixedContentContainer, localStyles.topAlignedContent]}>
 
-            <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+            <Pressable style={styles.backButton} onPress={() => navigation.goBack()}>
               <Text style={styles.backButtonText}>←</Text>
-            </TouchableOpacity>
+            </Pressable>
 
             <View style={localStyles.logoTopContainer}>
               <Image
@@ -153,7 +155,7 @@ const ForgotPasswordScreen = ({ navigation }: Props) => {
                 keyboardType="email-address"
               />
 
-              <TouchableOpacity
+              <Pressable
                 style={[styles.submitButton, { opacity: isFormComplete ? 1 : 0.4, marginTop: verticalScale(24) }]}
                 onPress={handleSendCodeClick}
                 disabled={!isFormComplete}
@@ -166,14 +168,8 @@ const ForgotPasswordScreen = ({ navigation }: Props) => {
                 >
                   <Text style={styles.submitButtonText}>Send Code</Text>
                 </LinearGradient>
-              </TouchableOpacity>
+              </Pressable>
             </View>
-
-            {toastMessage ? (
-              <Animated.View style={[styles.toastContainer, { opacity: toastOpacity }]}>
-                <Text style={styles.toastText}>{toastMessage}</Text>
-              </Animated.View>
-            ) : null}
 
           </View>
         </KeyboardAvoidingView>

@@ -2,7 +2,7 @@ import React from 'react'
 import {
     View,
     Text,
-    TouchableOpacity,
+    Pressable,
     ScrollView,
     Image,
 } from 'react-native'
@@ -16,11 +16,14 @@ import ScreenHeader
 import { AppNavigationProp }
     from '../../types/navigation'
 
-import { useAppDispatch }
+import { removeUserFromKeychain, removeTokensFromKeychain }
+    from '../../security/encryption'
+
+import { useAppDispatch, useAppSelector }
     from '../../hooks/redux'
 
 import { logout }
-    from '../../features/auth/store/authSlice'
+    from '../../store/slices/authSlice'
 
 import { styles } from './styles'
 
@@ -48,10 +51,9 @@ function SettingItem({
     onPress?: () => void
 }) {
     return (
-        <TouchableOpacity
+        <Pressable
             style={styles.settingRow}
             onPress={onPress}
-            activeOpacity={0.7}
         >
             <View style={styles.leftRow}>
                 <Image
@@ -70,7 +72,7 @@ function SettingItem({
                 source={ICON_ARROW}
                 style={styles.arrowIcon}
             />
-        </TouchableOpacity>
+        </Pressable>
     )
 }
 
@@ -95,8 +97,13 @@ export default function SettingsScreen({
     navigation,
 }: Props) {
     const dispatch = useAppDispatch()
+    const user = useAppSelector(state => state.auth.user)
 
-    const handleLogout = () => {
+    const handleLogout = async () => {
+        await Promise.all([
+            removeUserFromKeychain(),
+            removeTokensFromKeychain(),
+        ])
         dispatch(logout())
     }
 
@@ -129,14 +136,20 @@ export default function SettingsScreen({
                         <Text
                             style={styles.name}
                         >
-                            Username
+                            {user?.name || 'User'}
                         </Text>
 
                         <Text
                             style={styles.username}
                         >
-                            @username01
+                            @{user?.username || 'user'}
                         </Text>
+
+                        {user?.role && (
+                            <View style={{ backgroundColor: '#b6d82c', borderRadius: 4, paddingHorizontal: 6, paddingVertical: 2, alignSelf: 'flex-start', marginTop: 4 }}>
+                                <Text style={{ color: '#000', fontSize: 10, fontWeight: 'bold' }}>{user.role}</Text>
+                            </View>
+                        )}
                     </View>
                 </View>
 
@@ -226,7 +239,7 @@ export default function SettingsScreen({
                 </Section>
 
                 {/* Logout */}
-                <TouchableOpacity
+                <Pressable
                     style={styles.logoutButton}
                     onPress={handleLogout}
                 >
@@ -235,7 +248,7 @@ export default function SettingsScreen({
                     >
                         Log out
                     </Text>
-                </TouchableOpacity>
+                </Pressable>
             </ScrollView>
         </SafeAreaView>
     )

@@ -8,10 +8,9 @@ import {
     View,
     Text,
     TextInput,
-    TouchableOpacity,
+    Pressable,
     ScrollView,
     Modal,
-    Pressable,
     Alert,
 } from 'react-native'
 
@@ -240,7 +239,7 @@ export default function
                     }
                 />
 
-                <TouchableOpacity
+                <Pressable
                     style={
                         styles.saveButton
                     }
@@ -255,7 +254,7 @@ export default function
                     >
                         Save Changes
                     </Text>
-                </TouchableOpacity>
+                </Pressable>
             </ScrollView>
 
             <Modal
@@ -343,7 +342,7 @@ export default function
                             )}
                         </View>
 
-                        <TouchableOpacity
+                        <Pressable
                             style={
                                 styles.verifyButton
                             }
@@ -358,9 +357,9 @@ export default function
                             >
                                 Verify
                             </Text>
-                        </TouchableOpacity>
+                        </Pressable>
 
-                        <TouchableOpacity>
+                        <Pressable>
                             <Text
                                 style={
                                     styles.resendText
@@ -373,7 +372,7 @@ export default function
                                 }{' '}
                                 sec
                             </Text>
-                        </TouchableOpacity>
+                        </Pressable>
                     </Pressable>
                 </Pressable>
             </Modal>

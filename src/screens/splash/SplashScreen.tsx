@@ -3,6 +3,9 @@ import { Image, StatusBar, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { AuthStackParamList } from '../../types/navigation';
+import { useAppDispatch } from '../../hooks/redux';
+import { loginSuccess } from '../../store/slices/authSlice';
+import { getUserFromKeychain, getAccessToken } from '../../security/encryption';
 import Animated, { 
   useSharedValue, 
   useAnimatedStyle, 
@@ -17,6 +20,7 @@ import styles from './styles';
 
 const SplashScreen = () => {
   const navigation = useNavigation<NativeStackNavigationProp<AuthStackParamList>>();
+  const dispatch = useAppDispatch();
 
   const blob1Value = useSharedValue(0);
   const blob2Value = useSharedValue(0);
@@ -45,13 +49,26 @@ const SplashScreen = () => {
     logoOpacity.value = withTiming(1, { duration: 1200 });
     logoScale.value = withSpring(1, { damping: 12, stiffness: 90 });
 
-    // Transition to Onboarding after 3 seconds
-    const timer = setTimeout(() => {
-      navigation.replace('Onboarding');
-    }, 3000);
+    // Check for existing session, then transition
+    const init = async () => {
+      const [token, user] = await Promise.all([
+        getAccessToken(),
+        getUserFromKeychain<any>(),
+      ]);
 
-    return () => clearTimeout(timer);
-  }, [blob1Value, blob2Value, logoOpacity, logoScale, navigation]);
+      if (token && user) {
+        dispatch(loginSuccess({ user, accessToken: token, refreshToken: token }));
+        return;
+      }
+
+      setTimeout(() => {
+        navigation.replace('Onboarding');
+      }, 3000);
+    };
+
+    init();
+    return () => {};
+  }, [blob1Value, blob2Value, logoOpacity, logoScale, navigation, dispatch]);
 
   const animatedBlob1 = useAnimatedStyle(() => ({
     transform: [

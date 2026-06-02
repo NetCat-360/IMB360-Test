@@ -6,7 +6,7 @@ import {
   View,
   Text,
   Image,
-  TouchableOpacity,
+  Pressable,
   ScrollView,
   StatusBar,
 } from 'react-native';
@@ -88,12 +88,12 @@ const OverviewScreen = ({ navigation }: Props) => {
         style={styles.header}
       >
         <SafeAreaView edges={['top']} style={styles.headerInner}>
-          <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
+          <Pressable onPress={() => navigation.goBack()} style={styles.backBtn}>
             <Image
               source={require('../../assets/images/backbutton.png')}
               style={styles.backIcon}
             />
-          </TouchableOpacity>
+          </Pressable>
           <Text style={styles.headerTitle}>Profile Overview</Text>
         </SafeAreaView>
       </LinearGradient>
@@ -102,9 +102,9 @@ const OverviewScreen = ({ navigation }: Props) => {
 
         <View style={styles.sectionHeader}>
           <Text style={Typography.h3}>Connected Platforms</Text>
-          <TouchableOpacity>
+          <Pressable>
             <Text style={[Typography.label, { color: Colors.teal }]}>+ Add More</Text>
-          </TouchableOpacity>
+          </Pressable>
         </View>
 
         <View style={styles.cardsGrid}>
@@ -150,9 +150,9 @@ const OverviewScreen = ({ navigation }: Props) => {
         <View style={styles.card}>
           <View style={styles.chartHeader}>
             <Text style={Typography.h3}>Follower Growth</Text>
-            <TouchableOpacity style={styles.dateChip}>
+            <Pressable style={styles.dateChip}>
               <Text style={[Typography.caption, { color: Colors.teal }]}>June 2024 ▾</Text>
-            </TouchableOpacity>
+            </Pressable>
           </View>
           <View style={styles.chartArea}>
             <Text style={[Typography.caption, { color: '#444444' }]}>📈  Chart coming soon</Text>

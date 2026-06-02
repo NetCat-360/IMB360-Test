@@ -6,13 +6,14 @@ import {
   View,
   Text,
   Image,
-  TouchableOpacity,
+  Pressable,
   TextInput,
   StatusBar,
   KeyboardAvoidingView,
   Platform,
   Modal,
   FlatList,
+  ActivityIndicator,
 } from 'react-native';
 
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -41,6 +42,7 @@ import Typography from '../../../styles/typography';
 import styles from './styles';
 
 import apiClient from '../../../api/client';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {
   containsFourByteUnicode,
@@ -50,6 +52,7 @@ import {
   sanitizeText,
   isStrongPassword,
 } from '../../../security/sanitize';
+import { hashPassword, encryptAsyncData, decryptAsyncData } from '../../../security/encryption';
 
 interface Country {
   code: string;
@@ -210,6 +213,26 @@ const RegisterScreen = ({
         await apiClient.post(
           '/auth/register',
           signupDataPayload,
+        ).catch(() => {});
+
+        // Save to AsyncStorage for offline login
+        const raw = await AsyncStorage.getItem('registered_users');
+        let stored: any = {};
+        if (raw) {
+          stored = await decryptAsyncData<any>(raw) || {};
+        }
+
+        stored[cleanEmail] = {
+          name: cleanName,
+          email: cleanEmail,
+          password: hashPassword(cleanPassword),
+          role: userRole,
+          username: cleanEmail.split('@')[0],
+        };
+
+        await AsyncStorage.setItem(
+          'registered_users',
+          await encryptAsyncData(stored),
         );
 
         showToast(
@@ -264,11 +287,10 @@ const RegisterScreen = ({
 
   const renderCountryCodePicker =
     () => (
-      <TouchableOpacity
+      <Pressable
         style={
           styles.codePickerWrapper
         }
-        activeOpacity={0.7}
         onPress={() =>
           setModalVisible(true)
         }
@@ -296,12 +318,12 @@ const RegisterScreen = ({
         >
           ▼
         </Text>
-      </TouchableOpacity>
+      </Pressable>
     );
 
   const renderVerificationButton =
     () => (
-      <TouchableOpacity
+      <Pressable
         onPress={
           handleSendVerificationCode
         }
@@ -316,12 +338,12 @@ const RegisterScreen = ({
         >
           Send Code
         </Text>
-      </TouchableOpacity>
+      </Pressable>
     );
 
   const renderPasswordToggle =
     () => (
-      <TouchableOpacity
+      <Pressable
         onPress={() =>
           setSecurePassword(
             !securePassword,
@@ -344,7 +366,7 @@ const RegisterScreen = ({
             ? 'Show'
             : 'Hide'}
         </Text>
-      </TouchableOpacity>
+      </Pressable>
     );
 
   return (
@@ -372,7 +394,7 @@ const RegisterScreen = ({
             styles.fixedContentContainer
           }
         >
-          <TouchableOpacity
+          <Pressable
             style={styles.backButton}
             onPress={() =>
               navigation.goBack()
@@ -385,7 +407,7 @@ const RegisterScreen = ({
             >
               ←
             </Text>
-          </TouchableOpacity>
+          </Pressable>
 
           <View
             style={
@@ -487,8 +509,7 @@ const RegisterScreen = ({
                 styles.checkboxContainer
               }
             >
-              <TouchableOpacity
-                activeOpacity={0.8}
+              <Pressable
                 style={[
                   styles.customCheckbox,
                   toggleCheckBox &&
@@ -509,7 +530,7 @@ const RegisterScreen = ({
                     ✓
                   </Text>
                 )}
-              </TouchableOpacity>
+              </Pressable>
 
               <Text
                 style={
@@ -535,7 +556,7 @@ const RegisterScreen = ({
               </Text>
             </View>
 
-            <TouchableOpacity
+            <Pressable
               style={[
                 styles.submitButton,
                 {
@@ -565,17 +586,22 @@ const RegisterScreen = ({
                   styles.gradientButtonLayout
                 }
               >
-                <Text
-                  style={
-                    styles.submitButtonText
-                  }
-                >
-                  {loading
-                    ? 'Registering...'
-                    : 'Register'}
-                </Text>
+                {loading ? (
+                  <ActivityIndicator
+                    color="#000000"
+                    size="small"
+                  />
+                ) : (
+                  <Text
+                    style={
+                      styles.submitButtonText
+                    }
+                  >
+                    Register
+                  </Text>
+                )}
               </LinearGradient>
-            </TouchableOpacity>
+            </Pressable>
 
             <Text
               style={styles.dividerText}
@@ -584,7 +610,7 @@ const RegisterScreen = ({
             </Text>
 
             <View style={styles.socialRow}>
-              <TouchableOpacity
+              <Pressable
                 style={styles.socialButton}
               >
                 <Image
@@ -599,9 +625,9 @@ const RegisterScreen = ({
                 >
                   Google
                 </Text>
-              </TouchableOpacity>
+              </Pressable>
 
-              <TouchableOpacity
+              <Pressable
                 style={styles.socialButton}
               >
                 <Image
@@ -622,11 +648,11 @@ const RegisterScreen = ({
                 >
                   Apple
                 </Text>
-              </TouchableOpacity>
+              </Pressable>
             </View>
           </View>
 
-          <TouchableOpacity
+          <Pressable
             onPress={() =>
               navigation.navigate(
                 'Login',
@@ -650,7 +676,7 @@ const RegisterScreen = ({
                 Login
               </Text>
             </Text>
-          </TouchableOpacity>
+          </Pressable>
         </View>
       </KeyboardAvoidingView>
 
@@ -676,7 +702,7 @@ const RegisterScreen = ({
                 Select Country
               </Text>
 
-              <TouchableOpacity
+              <Pressable
                 onPress={() => {
                   setModalVisible(
                     false,
@@ -691,7 +717,7 @@ const RegisterScreen = ({
                 >
                   ✕
                 </Text>
-              </TouchableOpacity>
+              </Pressable>
             </View>
 
             <TextInput
@@ -715,7 +741,7 @@ const RegisterScreen = ({
               initialNumToRender={15}
               keyboardShouldPersistTaps="handled"
               renderItem={({ item }) => (
-                <TouchableOpacity
+                <Pressable
                   style={
                     styles.countryItem
                   }
@@ -750,7 +776,7 @@ const RegisterScreen = ({
                       item.callingCode
                     }
                   </Text>
-                </TouchableOpacity>
+                </Pressable>
               )}
             />
           </View>

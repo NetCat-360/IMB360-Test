@@ -7,7 +7,7 @@ import {
     View,
     Text,
     TextInput,
-    TouchableOpacity,
+    Pressable,
     ScrollView,
 } from 'react-native'
 
@@ -261,7 +261,7 @@ export default function
                     }
                 />
 
-                <TouchableOpacity
+                <Pressable
                     style={
                         styles.addButton
                     }
@@ -276,7 +276,7 @@ export default function
                     >
                         Add Profile
                     </Text>
-                </TouchableOpacity>
+                </Pressable>
             </ScrollView>
         </View>
     )

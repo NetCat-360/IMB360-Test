@@ -2,7 +2,7 @@ import React from 'react'
 import {
     Text,
     Image,
-    TouchableOpacity,
+    Pressable,
     StyleSheet,
 } from 'react-native'
 
@@ -52,14 +52,14 @@ export default function ScreenHeader({
                 style={styles.headerInner}
             >
                 {onBack && (
-                    <TouchableOpacity
+                    <Pressable
                         onPress={onBack}
                     >
                         <Image
                             source={require('../assets/images/backbutton.png')}
                             style={styles.backIcon}
                         />
-                    </TouchableOpacity>
+                    </Pressable>
                 )}
 
                 <Text style={styles.title}>

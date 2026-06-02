@@ -5,7 +5,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 import React from 'react';
 import {
-  TouchableOpacity,
+  Pressable,
   Text,
   ActivityIndicator,
   StyleSheet,
@@ -39,11 +39,10 @@ const Button: React.FC<ButtonProps> = ({
 
   if (variant === 'primary') {
     return (
-      <TouchableOpacity
+      <Pressable
         style={[styles.base, { opacity: isDisabled ? 0.4 : 1 }, style]}
         onPress={onPress}
         disabled={isDisabled}
-        activeOpacity={0.8}
       >
         <LinearGradient
           colors={[Colors.teal, Colors.lime]}
@@ -57,13 +56,13 @@ const Button: React.FC<ButtonProps> = ({
             <Text style={Typography.buttonPrimary}>{label}</Text>
           )}
         </LinearGradient>
-      </TouchableOpacity>
+      </Pressable>
     );
   }
 
   if (variant === 'secondary') {
     return (
-      <TouchableOpacity
+      <Pressable
         style={[
           styles.base,
           styles.secondary,
@@ -72,7 +71,6 @@ const Button: React.FC<ButtonProps> = ({
         ]}
         onPress={onPress}
         disabled={isDisabled}
-        activeOpacity={0.8}
       >
         {loading ? (
           <ActivityIndicator color={Colors.teal} size="small" />
@@ -81,13 +79,13 @@ const Button: React.FC<ButtonProps> = ({
             {label}
           </Text>
         )}
-      </TouchableOpacity>
+      </Pressable>
     );
   }
 
   // outline variant
   return (
-    <TouchableOpacity
+    <Pressable
       style={[
         styles.base,
         styles.outline,
@@ -96,7 +94,6 @@ const Button: React.FC<ButtonProps> = ({
       ]}
       onPress={onPress}
       disabled={isDisabled}
-      activeOpacity={0.8}
     >
       {loading ? (
         <ActivityIndicator color={Colors.teal} size="small" />
@@ -105,7 +102,7 @@ const Button: React.FC<ButtonProps> = ({
           {label}
         </Text>
       )}
-    </TouchableOpacity>
+    </Pressable>
   );
 };
 
