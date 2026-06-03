@@ -53,6 +53,7 @@ export type AppStackParamList = {
   };
 
   CampaignQueue: undefined;
+  ApplyCampaign: { campaignId?: string };
 
   CampaignURL: {
     campaignId?: string;

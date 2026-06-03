@@ -34,6 +34,7 @@ import AddPricingScreen from '../screens/pricing/AddPricingScreen';
 import EditPricingScreen from '../screens/pricing/EditPricingScreen';
 
 import CampaignURLScreen from '../screens/CampaignQueue/CampaignURLScreen';
+import ApplyCampaignScreen from '../screens/campaign/ApplyCampaignScreen';
 
 import SettingsScreen from '../screens/settings/SettingsScreen';
 import ManageAccountScreen from '../screens/settings/ManageAccount/ManageAccountScreen';
@@ -212,6 +213,11 @@ export default function AppNavigator() {
       <Stack.Screen
         name="CampaignURL"
         component={CampaignURLScreen}
+      />
+
+      <Stack.Screen
+        name="ApplyCampaign"
+        component={ApplyCampaignScreen}
       />
 
       <Stack.Screen

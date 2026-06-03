@@ -10,14 +10,24 @@ export default StyleSheet.create({
   headerBarContainer: {
     height: verticalScale(50),
     backgroundColor: Colors.bgBlack,
-    justifyContent: 'center',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     paddingHorizontal: scale(16),
     borderBottomWidth: 1,
     borderBottomColor: Colors.borderDefault,
   },
+  backButtonTouchArea: {
+    padding: scale(4),
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   appLogoImage: {
     width: scale(100),
     height: verticalScale(30),
+  },
+  headerRightPlaceholder: {
+    width: scale(32),
   },
   scrollLayoutContent: {
     paddingHorizontal: scale(16),
@@ -394,6 +404,326 @@ export default StyleSheet.create({
     justifyContent: 'center',
   },
   applyButtonText: {
+    color: Colors.bgBlack,
+  },
+  emptyStateContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: verticalScale(40),
+  },
+  emptyStateText: {
+    color: Colors.textMuted,
+    marginTop: verticalScale(8),
+  },
+  applyPageTitleText: {
+    color: Colors.textPrimary,
+    marginBottom: verticalScale(16),
+    textTransform: 'uppercase',
+  },
+  
+  // ── Meta Ribbon Box (image_f67584.png Structural Updates) ──
+  metaHeaderCardRibbon: {
+    backgroundColor: Colors.bgBlack,
+    borderWidth: 1,
+    borderColor: '#00ACB3', 
+    borderRadius: moderateScale(8),
+    paddingVertical: verticalScale(12),
+    paddingHorizontal: scale(14),
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: verticalScale(20),
+  },
+  metaRibbonItemColumn: {
+    flex: 1,
+    alignItems: 'center',
+  },
+  metaRibbonLabelText: {
+    color: Colors.textPrimary, 
+    fontFamily: 'Poppins-Bold',
+    fontSize: moderateScale(11),
+    marginBottom: verticalScale(4),
+    textTransform: 'uppercase',
+  },
+  metaRibbonValueText: {
+    color: Colors.textSecondary, 
+    fontSize: moderateScale(14),
+  },
+  metaRibbonBudgetHighlight: {
+    color: '#00FF00', 
+    fontSize: moderateScale(14),
+    fontWeight: 'bold',
+  },
+
+  inputPairRowFlexLayout: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: verticalScale(16),
+  },
+  halfWidthInputBoxControl: {
+    width: '48%',
+  },
+  inputRequiredLabelRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: verticalScale(6),
+  },
+  inputConfigLabelText: {
+    color: Colors.textPrimary,
+  },
+  inputRequiredIndicatorAsterisk: {
+    color: Colors.error,
+    marginLeft: scale(2),
+  },
+  fieldInnerBoxContainerLayout: {
+    backgroundColor: '#302e2e',
+    borderWidth: 1,
+    borderColor: Colors.borderDefault,
+    borderRadius: moderateScale(8),
+    paddingHorizontal: scale(12),
+    height: verticalScale(44),
+    justifyContent: 'center',
+  },
+  fieldInnerBoxMultilineHeight: {
+    backgroundColor: '#302e2e',
+    borderWidth: 1,
+    borderColor: Colors.borderDefault,
+    borderRadius: moderateScale(8),
+    paddingHorizontal: scale(12),
+    paddingVertical: verticalScale(10),
+    height: verticalScale(100),
+  },
+  fieldTextInputNativePrimitive: {
+    color: Colors.textPrimary,
+    padding: 0,
+  },
+  fullWidthFormSectionBlock: {
+    marginBottom: verticalScale(16),
+  },
+  portfolioInnerBoxCanvas: {
+    backgroundColor: '#302e2e',
+    borderWidth: 1,
+    borderColor: Colors.borderDefault,
+    borderRadius: moderateScale(8),
+    paddingHorizontal: scale(12),
+    height: verticalScale(74),
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  portfolioPlaceholderContainer: {
+    flex: 1,
+    marginRight: scale(12),
+  },
+  portfolioPlaceholderInlineText: {
+    color: Colors.textMuted,
+    lineHeight: verticalScale(14),
+  },
+  chooseFilesTouchButtonAnchor: {
+    borderRadius: moderateScale(6),
+    overflow: 'hidden',
+  },
+  chooseFilesGradientLayout: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: scale(12),
+    paddingVertical: verticalScale(8),
+  },
+  chooseFilesIconSpacing: {
+    marginRight: scale(4),
+  },
+  chooseFilesLabelText: {
+    color: Colors.bgBlack,
+  },
+  legalTncValidationRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    marginBottom: verticalScale(20),
+  },
+  checkboxTickBoxShell: {
+    width: scale(16),
+    height: scale(16),
+    borderWidth: 1,
+    borderColor: Colors.textSecondary,
+    borderRadius: moderateScale(2),
+    marginRight: scale(8),
+    marginTop: verticalScale(2),
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  checkboxTickBoxActive: {
+    backgroundColor: Colors.teal,
+    borderColor: Colors.teal,
+  },
+  legalParagraphWrapText: {
+    flex: 1,
+    color: Colors.textSecondary,
+    lineHeight: verticalScale(16),
+  },
+  legalParagraphDeductionHighlight: {
+    color: Colors.error,
+  },
+  tipsCanvasContainerPanel: {
+    backgroundColor: Colors.cyan,
+    borderRadius: moderateScale(12),
+    padding: scale(16),
+    marginBottom: verticalScale(24),
+  },
+  tipsPanelHeadlineText: {
+    color: Colors.bgBlack,
+    marginBottom: verticalScale(12),
+  },
+  tipsItemRowNode: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    marginBottom: verticalScale(12),
+  },
+  tipsItemRowNodeLast: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    marginBottom: 0,
+  },
+  tipsCheckIconPlacement: {
+    marginRight: scale(8),
+    marginTop: verticalScale(1),
+  },
+  tipsBodyMessageInlineText: {
+    flex: 1,
+    color: Colors.bgBlack,
+    lineHeight: verticalScale(16),
+  },
+  bottomActionSplitControlRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingBottom: verticalScale(20),
+  },
+  splitFooterActionButtonShell: {
+    width: '48%',
+    borderRadius: moderateScale(8),
+    height: verticalScale(44),
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  cancelButtonThemeBg: {
+    backgroundColor: Colors.bgCard,
+    borderWidth: 1,
+    borderColor: Colors.borderStrong,
+  },
+  cancelButtonTextLabel: {
+    color: Colors.textSecondary,
+  },
+  submitButtonThemeBg: {
+    backgroundColor: Colors.lime,
+  },
+  submitButtonTextLabel: {
+    color: Colors.bgBlack,
+  },
+
+  // ── Apply Campaign screen context parameters ──
+  applyContainer: {
+    flex: 1,
+    backgroundColor: Colors.bgSurface,
+  },
+  applyHeaderBarContainer: {
+    height: verticalScale(50),
+    backgroundColor: Colors.bgBlack,
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: scale(16),
+    borderBottomWidth: 1,
+    borderBottomColor: '#00ACB3',
+  },
+  applyBackButtonTouchArea: {
+    padding: scale(4),
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  applyAppLogoImage: {
+    width: scale(100),
+    height: verticalScale(30),
+  },
+  applyHeaderRightPlaceholder: {
+    width: scale(32),
+  },
+  applyScrollLayoutContent: {
+    paddingHorizontal: scale(16),
+    paddingTop: verticalScale(12),
+    paddingBottom: verticalScale(40),
+  },
+  campaignMetaInfoBlock: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: Colors.bgCard,
+    borderRadius: moderateScale(16),
+    padding: scale(16),
+    borderWidth: 1,
+    borderColor: '#00ACB3',
+    marginBottom: verticalScale(24),
+  },
+  brandLogoImage: {
+    width: scale(50),
+    height: scale(50),
+    borderRadius: moderateScale(10),
+    marginRight: scale(16),
+  },
+  brandMetaDetailsColumn: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  campaignTitleText: {
+    color: Colors.textPrimary,
+    marginBottom: verticalScale(4),
+  },
+  campaignDurationText: {
+    color: Colors.textSecondary,
+  },
+  formInputSectionBlock: {
+    marginBottom: verticalScale(20),
+  },
+  inputFieldLabelText: {
+    color: Colors.textPrimary,
+    marginBottom: verticalScale(8),
+  },
+  textAreaContainerFrame: {
+    backgroundColor: Colors.bgInput,
+    borderRadius: moderateScale(12),
+    borderWidth: 1,
+    borderColor: Colors.borderDefault,
+    paddingHorizontal: scale(12),
+    paddingVertical: verticalScale(8),
+  },
+  multilineTextInputField: {
+    color: Colors.textPrimary,
+    height: verticalScale(120),
+  },
+  rateInputRowContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: Colors.bgInput,
+    borderRadius: moderateScale(12),
+    borderWidth: 1,
+    borderColor: Colors.borderDefault,
+    paddingHorizontal: scale(16),
+    height: verticalScale(50),
+  },
+  currencySymbolStaticText: {
+    color: Colors.textPrimary,
+    marginRight: scale(8),
+  },
+  rateNumericTextInputField: {
+    flex: 1,
+    color: Colors.textPrimary,
+  },
+  submitActionExecutionAnchorButton: {
+    marginTop: verticalScale(12),
+    borderRadius: moderateScale(12),
+    overflow: 'hidden',
+  },
+  gradientSubmitButtonContainer: {
+    paddingVertical: verticalScale(14),
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  submitButtonText: {
     color: Colors.bgBlack,
   },
 });

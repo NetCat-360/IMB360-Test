@@ -9,6 +9,8 @@ import {
   FlatList,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { scale, verticalScale, moderateScale } from '../../utils/scaling';
@@ -16,6 +18,7 @@ import { Colors } from '../../config/theme';
 import Typography from '../../styles/typography';
 import { CURRENCY } from '../../config/constants';
 import TextField from '../../components/common/TextField/TextField';
+import { AppStackParamList } from '../../types/navigation';
 import styles from './styles';
 
 interface CampaignItem {
@@ -91,6 +94,7 @@ const FilterDropdown = ({ label, iconName, onPress, isOpen = false }: FilterDrop
 );
 
 export default function CampaignScreen() {
+  const navigation = useNavigation<NativeStackNavigationProp<AppStackParamList>>();
   const [isFilterVisible, setIsFilterVisible] = useState<boolean>(false);
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [expandedCampaignId, setExpandedCampaignId] = useState<string | null>(null);
@@ -276,7 +280,10 @@ export default function CampaignScreen() {
                 <Text style={[Typography.bodySmall, styles.collapseLabelActionText]}>Hide details</Text>
               </Pressable>
 
-              <Pressable style={styles.fullWidthApplyButtonAnchor}>
+              <Pressable
+                style={styles.fullWidthApplyButtonAnchor}
+                onPress={() => navigation.navigate('ApplyCampaign', { campaignId: item.id })}
+              >
                 <LinearGradient
                   colors={[Colors.teal, Colors.lime]}
                   start={{ x: 0, y: 0 }}
