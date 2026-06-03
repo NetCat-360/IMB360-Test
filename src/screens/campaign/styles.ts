@@ -1,16 +1,399 @@
 import { StyleSheet } from 'react-native';
-import { scale, verticalScale } from '../../utils/scaling';
+import { scale, verticalScale, moderateScale } from '../../utils/scaling';
 import { Colors } from '../../config/theme';
 
 export default StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.bgBlack,
+    backgroundColor: Colors.bgSurface,
   },
-  content: {
-    flex: 1,
+  headerBarContainer: {
+    height: verticalScale(50),
+    backgroundColor: Colors.bgBlack,
     justifyContent: 'center',
+    paddingHorizontal: scale(16),
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.borderDefault,
+  },
+  appLogoImage: {
+    width: scale(100),
+    height: verticalScale(30),
+  },
+  scrollLayoutContent: {
+    paddingHorizontal: scale(16),
+    paddingTop: verticalScale(16),
+    paddingBottom: verticalScale(80),
+  },
+  browseCampaignsOuterBlockContainer: {
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    marginBottom: verticalScale(16),
+  },
+  browseCampaignsTitleMainText: {
+    color: Colors.textPrimary,
+  },
+  browseCampaignsTitleHighlightText: {
+    color: Colors.lime,
+  },
+  aiBadgeFloatingContainer: {
+    flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: scale(24),
+    backgroundColor: Colors.bgInput,
+    paddingHorizontal: scale(8),
+    paddingVertical: verticalScale(4),
+    borderRadius: moderateScale(8),
+    borderWidth: 1,
+    borderColor: Colors.borderStrong,
+    marginTop: verticalScale(6),
+  },
+  aiBadgeSparkleIcon: {
+    marginRight: scale(4),
+  },
+  aiBadgeLabelText: {
+    color: Colors.teal,
+  },
+  filterControlActionRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: verticalScale(16),
+    marginTop: verticalScale(8),
+  },
+  filterResultStaticLabelText: {
+    color: Colors.textPrimary,
+  },
+  funnelTouchAreaBox: {
+    padding: scale(4),
+  },
+  filterDrawerStackInlineBlock: {
+    backgroundColor: Colors.bgCard,
+    borderRadius: moderateScale(12),
+    padding: scale(12),
+    marginBottom: verticalScale(16),
+    borderWidth: 1,
+    borderColor: Colors.borderDefault,
+  },
+  searchTextInputElement: {
+    color: Colors.textPrimary,
+  },
+  dropdownRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: Colors.bgInput,
+    borderRadius: moderateScale(8),
+    paddingHorizontal: scale(12),
+    paddingVertical: verticalScale(12),
+    marginTop: verticalScale(8),
+    borderWidth: 1,
+    borderColor: Colors.borderDefault,
+  },
+  dropdownLeftContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  dropdownIcon: {
+    marginRight: scale(8),
+  },
+  dropdownLabelText: {
+    color: Colors.textSecondary,
+  },
+  dropdownExpandedListContent: {
+    backgroundColor: Colors.bgBlack,
+    borderColor: Colors.borderStrong,
+    borderWidth: 1,
+    borderRadius: moderateScale(8),
+    marginTop: verticalScale(4),
+    maxHeight: verticalScale(220),
+    paddingVertical: verticalScale(4),
+  },
+  dropdownScrollContainer: {
+    paddingHorizontal: scale(12),
+  },
+  dropdownListItemTouchArea: {
+    paddingVertical: verticalScale(10),
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.borderDefault,
+  },
+  dropdownListItemTouchAreaLast: {
+    paddingVertical: verticalScale(10),
+    borderBottomWidth: 0,
+  },
+  dropdownListItemText: {
+    color: Colors.textSecondary,
+  },
+  dropdownListItemTextActive: {
+    color: Colors.teal,
+  },
+  searchSubmitButtonExecutionContainer: {
+    marginTop: verticalScale(12),
+    borderRadius: moderateScale(8),
+    overflow: 'hidden',
+  },
+  searchSubmitButtonGradientLayout: {
+    paddingVertical: verticalScale(12),
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  searchSubmitButtonLabelText: {
+    color: Colors.bgBlack,
+  },
+  campaignFlatListContainerPadding: {
+    paddingBottom: verticalScale(16),
+  },
+  campaignCardWrapper: {
+    backgroundColor: Colors.bgCard,
+    borderRadius: moderateScale(16),
+    padding: scale(16),
+    borderWidth: 1,
+    borderColor: '#00ACB3',
+    marginBottom: verticalScale(16),
+  },
+  cardHeaderRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    marginBottom: verticalScale(12),
+  },
+  brandContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  brandLogo: {
+    width: scale(40),
+    height: scale(40),
+    borderRadius: moderateScale(8),
+    marginRight: scale(12),
+  },
+  brandMeta: {
+    justifyContent: 'center',
+  },
+  brandNameText: {
+    color: Colors.textPrimary,
+  },
+  socialPlatformRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: verticalScale(4),
+    backgroundColor: Colors.bgInput,
+    paddingHorizontal: scale(6),
+    paddingVertical: verticalScale(2),
+    borderRadius: moderateScale(6),
+  },
+  socialIcon: {
+    width: scale(14),
+    height: scale(14),
+    marginRight: scale(6),
+    resizeMode: 'contain',
+  },
+  durationText: {
+    color: Colors.textMuted,
+    marginTop: verticalScale(4),
+  },
+  descriptionText: {
+    color: Colors.textSecondary,
+    lineHeight: verticalScale(18),
+    marginBottom: verticalScale(12),
+  },
+  appliedRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: verticalScale(16),
+  },
+  avatarStack: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginRight: scale(8),
+  },
+  avatarCircle: {
+    width: scale(22),
+    height: scale(22),
+    borderRadius: moderateScale(11),
+    borderWidth: 1.5,
+    borderColor: Colors.bgCard,
+  },
+  avatar1: {
+    backgroundColor: Colors.teal,
+    zIndex: 4,
+  },
+  avatar2: {
+    backgroundColor: Colors.lime,
+    marginLeft: scale(-6),
+    zIndex: 3,
+  },
+  avatar3: {
+    backgroundColor: Colors.cyan,
+    marginLeft: scale(-6),
+    zIndex: 2,
+  },
+  avatarCountContainer: {
+    backgroundColor: Colors.bgInput,
+    marginLeft: scale(-6),
+    zIndex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  avatarCountText: {
+    fontFamily: 'Poppins-Regular',
+    fontSize: moderateScale(8),
+    color: Colors.cyan,
+  },
+  appliedCounterText: {
+    color: Colors.textMuted,
+  },
+  metricsSplitRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.borderDefault,
+    paddingBottom: verticalScale(12),
+    marginBottom: verticalScale(12),
+  },
+  metricColumn: {
+    flex: 1,
+  },
+  metricLabel: {
+    color: Colors.textMuted,
+    marginBottom: verticalScale(4),
+  },
+  budgetRangeValue: {
+    color: Colors.success,
+  },
+  deadlineValue: {
+    color: Colors.textPrimary,
+  },
+  requirementsContainer: {
+    backgroundColor: Colors.bgBlack,
+    borderRadius: moderateScale(12),
+    padding: scale(12),
+    borderWidth: 1,
+    borderColor: Colors.borderStrong,
+  },
+  requirementsHeaderRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: verticalScale(10),
+  },
+  shieldIcon: {
+    marginRight: scale(6),
+  },
+  requirementsTitleText: {
+    color: Colors.textPrimary,
+  },
+  requirementsSplitRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  requirementBlock: {
+    flex: 1,
+    alignItems: 'center',
+  },
+  requirementBlockLabel: {
+    color: Colors.textMuted,
+    marginBottom: verticalScale(2),
+  },
+  requirementBlockValue: {
+    color: Colors.lime,
+  },
+  expandedContentContainer: {
+    marginTop: verticalScale(16),
+  },
+  expandedSectionTitle: {
+    color: Colors.textPrimary,
+    marginBottom: verticalScale(8),
+    marginTop: verticalScale(12),
+  },
+  audienceBodyText: {
+    color: Colors.textSecondary,
+    lineHeight: verticalScale(18),
+    marginBottom: verticalScale(12),
+  },
+  readMoreAccent: {
+    color: Colors.cyan,
+  },
+  categoryGridContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginBottom: verticalScale(16),
+  },
+  categoryTagBubble: {
+    backgroundColor: Colors.bgBlack,
+    borderWidth: 1,
+    borderColor: Colors.borderStrong,
+    borderRadius: moderateScale(8),
+    paddingHorizontal: scale(10),
+    paddingVertical: verticalScale(6),
+    marginRight: scale(8),
+    marginBottom: verticalScale(8),
+  },
+  categoryTagText: {
+    color: Colors.textSecondary,
+  },
+  deliverablesCanvasBlock: {
+    backgroundColor: '#00ACB3',
+    borderRadius: moderateScale(12),
+    padding: scale(14),
+    marginBottom: verticalScale(16),
+  },
+  deliverablesCanvasTitle: {
+    color: Colors.bgBlack,
+    marginBottom: verticalScale(12),
+  },
+  deliverableItemRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    marginBottom: verticalScale(10),
+  },
+  deliverableCheckIcon: {
+    marginRight: scale(8),
+    marginTop: verticalScale(2),
+  },
+  deliverableMessageText: {
+    flex: 1,
+    color: Colors.bgBlack,
+    lineHeight: verticalScale(16),
+  },
+  cardActionAnchorRow: {
+    marginTop: verticalScale(16),
+    alignItems: 'flex-end',
+  },
+  alignedRightViewButtonAnchor: {
+    borderRadius: moderateScale(8),
+    overflow: 'hidden',
+    width: scale(100),
+  },
+  gradientViewButtonContainer: {
+    paddingVertical: verticalScale(8),
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  viewButtonText: {
+    color: Colors.bgBlack,
+  },
+  expandedActionControlsSplitRow: {
+    flexDirection: 'column',
+    alignItems: 'center',
+    marginTop: verticalScale(8),
+  },
+  expandedCollapseTriggerTextAnchor: {
+    paddingVertical: verticalScale(8),
+    marginBottom: verticalScale(4),
+  },
+  collapseLabelActionText: {
+    color: Colors.textMuted,
+    textDecorationLine: 'underline',
+  },
+  fullWidthApplyButtonAnchor: {
+    borderRadius: moderateScale(8),
+    overflow: 'hidden',
+    width: '100%',
+  },
+  gradientApplyButtonContainer: {
+    paddingVertical: verticalScale(12),
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  applyButtonText: {
+    color: Colors.bgBlack,
   },
 });
