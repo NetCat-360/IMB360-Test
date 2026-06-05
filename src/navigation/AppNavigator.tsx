@@ -1,9 +1,12 @@
 import React from 'react';
+import { View } from 'react-native';
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import { SvgXml } from 'react-native-svg';
+
+import { NB_PROFILE_SVG, NB_PROFILE_ACTIVE_SVG, NB_CAMPAIGN_SVG, NB_CAMPAIGN_ACTIVE_SVG, NB_EXPLORE_SVG, NB_EXPLORE_ACTIVE_SVG, NB_ANALYTICS_SVG, NB_ANALYTICS_ACTIVE_SVG, NB_ASSETS_SVG, NB_ASSETS_ACTIVE_SVG, navbarIconContainerStyle } from './navbarIcons';
 
 import {
   BottomTabParamList,
@@ -22,6 +25,8 @@ import CampaignQueueScreen from '../screens/CampaignQueue/CampaignQueueScreen';
 import ContentScreen from '../screens/content/ContentScreen';
 import OverviewScreen from '../screens/overview/OverviewScreen';
 import MyEarnings from '../screens/MyEarnings/MyEarnings';
+import InfluencerProfileScreen from '../screens/explore/InfluencerProfileScreen';
+import RequestQuoteScreen from '../screens/explore/RequestQuoteScreen';
 
 /**
  * STACK SCREENS
@@ -59,10 +64,16 @@ function MainTabs() {
 
         tabBarStyle: {
           backgroundColor: '#000',
-          borderTopWidth: 0,
-          height: 70,
-          paddingBottom: 10,
-          paddingTop: 10,
+          borderTopWidth: 1,
+          borderTopColor: '#00ACB3',
+          height: 80,
+          paddingBottom: 8,
+          paddingTop: 8,
+        },
+
+        tabBarItemStyle: {
+          paddingHorizontal: 0,
+          marginHorizontal: -4,
         },
 
         tabBarActiveTintColor: '#00D2FF',
@@ -71,51 +82,73 @@ function MainTabs() {
         tabBarLabelStyle: {
           fontSize: 11,
           fontWeight: '600',
-          marginTop: 4,
+          marginTop: 8,
         },
 
         tabBarIcon: ({ color, focused }) => { // eslint-disable-line react/no-unstable-nested-components
-          let iconName = '';
-
           switch (route.name) {
             case 'Profile':
-              iconName = focused
-                ? 'person'
-                : 'person-outline';
-              break;
+              return (
+                <View style={[navbarIconContainerStyle, focused && { top: -12 }]}>
+                  <SvgXml
+                    xml={focused ? NB_PROFILE_ACTIVE_SVG : NB_PROFILE_SVG}
+                    width={focused ? 50 : 32}
+                    height={focused ? 50 : 32}
+                    color={color}
+                  />
+                </View>
+              );
 
             case 'Campaign':
-              iconName = focused
-                ? 'megaphone'
-                : 'megaphone-outline';
-              break;
+              return (
+                <View style={[navbarIconContainerStyle, focused && { top: -12 }]}>
+                  <SvgXml
+                    xml={focused ? NB_CAMPAIGN_ACTIVE_SVG : NB_CAMPAIGN_SVG}
+                    width={focused ? 50 : 32}
+                    height={focused ? 50 : 32}
+                    color={color}
+                  />
+                </View>
+              );
 
             case 'Explore':
-              iconName = focused
-                ? 'compass'
-                : 'compass-outline';
-              break;
+              return (
+                <View style={[navbarIconContainerStyle, focused && { top: -12 }]}>
+                  <SvgXml
+                    xml={focused ? NB_EXPLORE_ACTIVE_SVG : NB_EXPLORE_SVG}
+                    width={focused ? 50 : 32}
+                    height={focused ? 50 : 32}
+                    color={color}
+                  />
+                </View>
+              );
 
             case 'Analytics':
-              iconName = focused
-                ? 'stats-chart'
-                : 'stats-chart-outline';
-              break;
+              return (
+                <View style={[navbarIconContainerStyle, focused && { top: -12 }]}>
+                  <SvgXml
+                    xml={focused ? NB_ANALYTICS_ACTIVE_SVG : NB_ANALYTICS_SVG}
+                    width={focused ? 50 : 32}
+                    height={focused ? 50 : 32}
+                    color={color}
+                  />
+                </View>
+              );
 
             case 'Assets':
-              iconName = focused
-                ? 'folder'
-                : 'folder-outline';
-              break;
+              return (
+                <View style={[navbarIconContainerStyle, focused && { top: -12 }]}>
+                  <SvgXml
+                    xml={focused ? NB_ASSETS_ACTIVE_SVG : NB_ASSETS_SVG}
+                    width={focused ? 50 : 32}
+                    height={focused ? 50 : 32}
+                    color={color}
+                  />
+                </View>
+              );
           }
 
-          return (
-            <Ionicons
-              name={iconName}
-              size={24}
-              color={color}
-            />
-          );
+          return null;
         },
       })}
     >
@@ -223,6 +256,16 @@ export default function AppNavigator() {
       <Stack.Screen
         name="MyEarnings"
         component={MyEarnings}
+      />
+
+      <Stack.Screen
+        name="InfluencerProfile"
+        component={InfluencerProfileScreen}
+      />
+
+      <Stack.Screen
+        name="RequestQuote"
+        component={RequestQuoteScreen}
       />
 
       <Stack.Screen

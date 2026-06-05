@@ -21,7 +21,6 @@ interface TextFieldProps extends Omit<TextInputProps, 'onChangeText'> {
 const staticLabelStyle = {
   position: 'absolute' as const,
   zIndex: 10,
-  backgroundColor: '#000000',
   paddingHorizontal: 4,
   fontWeight: '500' as const,
   top: -9,

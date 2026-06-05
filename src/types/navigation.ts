@@ -62,6 +62,13 @@ export type AppStackParamList = {
 
   MyEarnings: undefined;
 
+  InfluencerProfile: undefined;
+
+  RequestQuote: {
+    platformId: string;
+    influencerName: string;
+  };
+
   Settings: undefined;
   ManageAccount: undefined;
   Bio: undefined;
