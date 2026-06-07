@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, TextInput, TextInputProps } from 'react-native';
+import { Colors } from '../../../config/theme';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -26,6 +27,7 @@ const staticLabelStyle = {
   top: -9,
   left: 12,
   fontSize: 12,
+  backgroundColor: Colors.bgBlack,
 };
 
 const TextField: React.FC<TextFieldProps> = ({
