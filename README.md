@@ -23,7 +23,7 @@ React Native app connecting content creators with brands. Manages onboarding, au
 | **UI** | linear-gradient, SVG, vector-icons, element-dropdown, date-picker |
 | **Responsive** | react-native-size-matters |
 | **Config** | react-native-config (env vars) |
-| **Storage** | AsyncStorage |
+| **Storage** | AsyncStorage, react-native-keychain |
 | **Testing** | Jest + Testing Library RN |
 | **Lint** | ESLint, Prettier, Husky |
 
@@ -46,16 +46,17 @@ React Native app connecting content creators with brands. Manages onboarding, au
 
 ```bash
 git clone <repo>
-cd IMB360-Test
-npm install
-```
+cd IMB360
 
-**iOS only:**
-```bash
+# Install dependencies
+pnpm install
+
+# iOS only
 cd ios && pod install && cd ..
 ```
 
 **Environment:**
+
 ```bash
 # .env
 API_BASE_URL=http://10.0.2.2:5000
@@ -66,11 +67,11 @@ API_BASE_URL=http://10.0.2.2:5000
 ## Run
 
 ```bash
-npm start        # Metro
-npm run android  # Android
-npm run ios      # iOS
-npm test         # Tests
-npm run lint     # Lint
+pnpm start        # Metro
+pnpm android      # Android
+pnpm ios          # iOS
+pnpm test         # Tests
+pnpm lint         # Lint
 ```
 
 ---
