@@ -452,17 +452,6 @@ export default StyleSheet.create({
     padding: scale(14),
     marginTop: verticalScale(8),
   },
-  pricingHeaderLine: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  pricingDescriptionText: {
-    color: Colors.textSecondary,
-    fontSize: moderateScale(11),
-    lineHeight: moderateScale(15),
-    marginTop: verticalScale(6),
-  },
   sectionTitleQuote: {
     color: Colors.textPrimary,
     marginTop: verticalScale(20),

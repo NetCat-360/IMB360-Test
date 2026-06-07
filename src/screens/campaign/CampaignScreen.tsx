@@ -13,7 +13,7 @@ import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { scale, verticalScale, moderateScale } from '../../utils/scaling';
+import { moderateScale } from '../../utils/scaling';
 import { Colors } from '../../config/theme';
 import Typography from '../../styles/typography';
 import { CURRENCY } from '../../config/constants';

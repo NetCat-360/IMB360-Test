@@ -210,19 +210,6 @@ const CampaignQueueScreen = ({ navigation }: Props) => {
             <Image source={require('../../assets/images/backbutton.png')} style={styles.backIcon} />
           </Pressable>
           <Text style={styles.headerTitle}>Campaign Queue</Text>
-          <View style={styles.tabRow}>
-            {TABS.map(tab => (
-              <Pressable
-                key={tab}
-                style={[styles.tabBtn, activeTab === tab && styles.activeTabBtn]}
-                onPress={() => setActiveTab(tab)}
-              >
-                <Text style={[styles.tabBtnText, activeTab === tab && styles.activeTabBtnText]}>
-                  {tab}
-                </Text>
-              </Pressable>
-            ))}
-          </View>
         </SafeAreaView>
       </LinearGradient>
 

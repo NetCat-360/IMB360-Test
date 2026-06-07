@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react'
-import { View, Text, Pressable, ScrollView, StatusBar, Image, ImageBackground } from 'react-native'
+import { View, Text, Pressable, ScrollView, StatusBar, ImageBackground } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Animated, { SlideInRight, SlideOutLeft, SlideInLeft, SlideOutRight } from 'react-native-reanimated'
 import LinearGradient from 'react-native-linear-gradient'

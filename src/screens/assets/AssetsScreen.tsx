@@ -5,7 +5,7 @@ import LinearGradient from 'react-native-linear-gradient'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import { Colors } from '../../config/theme'
 import Typography from '../../styles/typography'
-import { scale, verticalScale, moderateScale } from '../../utils/scaling'
+import { moderateScale } from '../../utils/scaling'
 import TextField from '../../components/common/TextField/TextField'
 import styles from './styles'
 
