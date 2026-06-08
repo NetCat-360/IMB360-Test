@@ -12,20 +12,11 @@ export default StyleSheet.create({
     paddingTop: verticalScale(8),
     paddingBottom: verticalScale(12),
     borderBottomWidth: 1,
-    borderBottomColor: '#00ACB399',
+    borderBottomColor: '#00ACB34D',
   },
-  logoRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: verticalScale(12),
-  },
-  logoTextMain: {
-    color: Colors.teal,
-    marginLeft: scale(6),
-    fontWeight: 'bold',
-  },
-  logoTextSub: {
-    color: Colors.lime,
+  logoImage: {
+    width: scale(100),
+    height: verticalScale(28),
   },
   screenHeaderRow: {
     paddingHorizontal: scale(16),

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View, Text, Pressable, ScrollView, StatusBar, FlatList } from 'react-native'
+import { View, Text, Image, Pressable, ScrollView, StatusBar, FlatList } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import LinearGradient from 'react-native-linear-gradient'
 import Ionicons from 'react-native-vector-icons/Ionicons'
@@ -129,12 +129,11 @@ export default function AssetsScreen() {
       <StatusBar barStyle="light-content" backgroundColor={Colors.bgBlack} />
 
       <View style={styles.headerImageContainer}>
-        <View style={styles.logoRow}>
-          <Ionicons name="people" size={moderateScale(24)} color={Colors.lime} />
-          <Text style={[Typography.h1, styles.logoTextMain]}>
-            IMB<Text style={styles.logoTextSub}>360</Text>
-          </Text>
-        </View>
+        <Image
+          source={require('../../assets/images/IMB360_v2.png')}
+          style={styles.logoImage}
+          resizeMode="contain"
+        />
       </View>
 
       <View style={styles.screenHeaderRow}>

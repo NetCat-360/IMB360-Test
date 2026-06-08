@@ -15,7 +15,7 @@ export default StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: scale(16),
     borderBottomWidth: 1,
-    borderBottomColor: Colors.borderDefault,
+    borderBottomColor: '#00ACB34D',
   },
   backButtonTouchArea: {
     padding: scale(4),
@@ -24,7 +24,7 @@ export default StyleSheet.create({
   },
   appLogoImage: {
     width: scale(100),
-    height: verticalScale(30),
+    height: verticalScale(28),
   },
   headerRightPlaceholder: {
     width: scale(32),

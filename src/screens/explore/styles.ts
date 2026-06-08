@@ -16,8 +16,8 @@ export default StyleSheet.create({
     alignItems: 'flex-start',
   },
   logoImage: {
-    width: scale(120),
-    height: verticalScale(35),
+    width: scale(100),
+    height: verticalScale(28),
   },
   contentHeader: {
     paddingLeft: scale(22),

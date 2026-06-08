@@ -20,7 +20,7 @@ export default StyleSheet.create({
     paddingHorizontal: scale(16),
     paddingVertical: verticalScale(10),
     borderBottomWidth: 1,
-    borderBottomColor: Colors.borderDefault,
+    borderBottomColor: '#00ACB34D',
   },
   topBarLogo: {
     width: scale(100),
