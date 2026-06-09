@@ -11,6 +11,8 @@ import { NB_PROFILE_SVG, NB_PROFILE_ACTIVE_SVG, NB_CAMPAIGN_SVG, NB_CAMPAIGN_ACT
 import {
   BottomTabParamList,
   AppStackParamList,
+  CampaignStackParamList,
+  ExploreStackParamList,
 } from '../types/navigation';
 
 /**
@@ -56,6 +58,43 @@ const Stack = createNativeStackNavigator<AppStackParamList>();
 /**
  * TABS
  */
+const CampaignStack = createNativeStackNavigator<CampaignStackParamList>();
+const ExploreStack = createNativeStackNavigator<ExploreStackParamList>();
+
+function CampaignStackNavigator() {
+  return (
+    <CampaignStack.Navigator screenOptions={{ headerShown: false }}>
+      <CampaignStack.Screen
+        name="CampaignList"
+        component={CampaignScreen}
+      />
+      <CampaignStack.Screen
+        name="ApplyCampaign"
+        component={ApplyCampaignScreen}
+      />
+    </CampaignStack.Navigator>
+  );
+}
+
+function ExploreStackNavigator() {
+  return (
+    <ExploreStack.Navigator screenOptions={{ headerShown: false }}>
+      <ExploreStack.Screen
+        name="ExploreList"
+        component={ExploreScreen}
+      />
+      <ExploreStack.Screen
+        name="InfluencerProfile"
+        component={InfluencerProfileScreen}
+      />
+      <ExploreStack.Screen
+        name="RequestQuote"
+        component={RequestQuoteScreen}
+      />
+    </ExploreStack.Navigator>
+  );
+}
+
 function MainTabs() {
   return (
     <Tab.Navigator
@@ -159,12 +198,12 @@ function MainTabs() {
 
       <Tab.Screen
         name="Campaign"
-        component={CampaignScreen}
+        component={CampaignStackNavigator}
       />
 
       <Tab.Screen
         name="Explore"
-        component={ExploreScreen}
+        component={ExploreStackNavigator}
       />
 
       <Tab.Screen
@@ -249,23 +288,8 @@ export default function AppNavigator() {
       />
 
       <Stack.Screen
-        name="ApplyCampaign"
-        component={ApplyCampaignScreen}
-      />
-
-      <Stack.Screen
         name="MyEarnings"
         component={MyEarnings}
-      />
-
-      <Stack.Screen
-        name="InfluencerProfile"
-        component={InfluencerProfileScreen}
-      />
-
-      <Stack.Screen
-        name="RequestQuote"
-        component={RequestQuoteScreen}
       />
 
       <Stack.Screen

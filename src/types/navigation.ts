@@ -15,6 +15,20 @@ export type BottomTabParamList = {
   Assets: undefined;
 };
 
+export type CampaignStackParamList = {
+  CampaignList: undefined;
+  ApplyCampaign: { campaignId?: string };
+};
+
+export type ExploreStackParamList = {
+  ExploreList: undefined;
+  InfluencerProfile: undefined;
+  RequestQuote: {
+    platformId: string;
+    influencerName: string;
+  };
+};
+
 /**
  * AUTH STACK TYPES
  */
@@ -29,6 +43,42 @@ export type AuthStackParamList = {
   Verification: { destination?: string; flow?: string };
   ResetPassword: { verifiedOtp?: string; verifiedEmail?: string };
   HomeDashboard: undefined;
+};
+
+/**
+ * BRAND BOTTOM TAB TYPES
+ */
+export type BrandBottomTabParamList = {
+  BrandDashboard: undefined;
+  BrandCampaign: undefined;
+  BrandExplore: undefined;
+  BrandSettings: undefined;
+};
+
+/**
+ * BRAND STACK TYPES
+ */
+export type BrandStackParamList = {
+  BrandMainTabs: undefined;
+
+  Campaign: undefined;
+  ApplyCampaign: { campaignId?: string };
+
+  Explore: undefined;
+  InfluencerProfile: undefined;
+  RequestQuote: {
+    platformId: string;
+    influencerName: string;
+  };
+
+  Settings: undefined;
+  ManageAccount: undefined;
+  Bio: undefined;
+  SocialMedia: undefined;
+  AdditionalInfo: undefined;
+  ViewPlans: undefined;
+  Subscription: undefined;
+  ChangePassword: undefined;
 };
 
 /**

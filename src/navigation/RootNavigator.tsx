@@ -3,11 +3,15 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useAppSelector } from '../hooks/redux';
 import AuthNavigator from './AuthNavigator';
 import AppNavigator from './AppNavigator';
+import BrandAppNavigator from './BrandAppNavigator';
 
 const Root = createNativeStackNavigator();
 
 const RootNavigator = () => {
   const isAuthenticated = useAppSelector(state => state.auth.isAuthenticated);
+  const user = useAppSelector(state => state.auth.user);
+
+  const isBrand = user?.role === 'BRAND';
 
   return (
     <Root.Navigator
@@ -19,7 +23,10 @@ const RootNavigator = () => {
       }}
     >
       {isAuthenticated ? (
-        <Root.Screen name="App" component={AppNavigator} />
+        <Root.Screen
+          name={isBrand ? 'BrandApp' : 'App'}
+          component={isBrand ? BrandAppNavigator : AppNavigator}
+        />
       ) : (
         <Root.Screen name="Auth" component={AuthNavigator} />
       )}
