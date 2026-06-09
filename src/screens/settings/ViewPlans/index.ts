@@ -1,1 +1,1 @@
-export { default } from './ViewPlansScreen';
+export { default } from './ViewPlansScreen'
