@@ -29,7 +29,8 @@ import OverviewScreen from '../screens/overview/OverviewScreen';
 import MyEarnings from '../screens/MyEarnings/MyEarnings';
 import InfluencerProfileScreen from '../screens/explore/InfluencerProfileScreen';
 import RequestQuoteScreen from '../screens/explore/RequestQuoteScreen';
-
+import AddAssetsScreen
+from '../screens/assets/addAssets/AddAssetsScreen';
 /**
  * STACK SCREENS
  */
@@ -330,6 +331,12 @@ export default function AppNavigator() {
       <Stack.Screen
         name="ChangePassword"
         component={ChangePasswordScreen}
+      />
+      <Stack.Screen
+        name="AddAssets"
+        component={
+          AddAssetsScreen
+        }
       />
     </Stack.Navigator>
   );

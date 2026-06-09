@@ -131,7 +131,8 @@ export default function HomeScreen() {
 
         {/* Action Buttons */}
         <View style={styles.buttonRow}>
-          <Pressable style={styles.actionButton}>
+          <Pressable style={styles.actionButton}
+          onPress={() => navigation.navigate('Settings')}>
             <Text style={styles.actionText}>Edit Profile</Text>
           </Pressable>
 
@@ -143,7 +144,8 @@ export default function HomeScreen() {
             <Text style={styles.actionText}>Points</Text>
           </Pressable>
 
-          <Pressable style={styles.actionButton}>
+          <Pressable style={styles.actionButton}
+          onPress={() => navigation.navigate('AddAssets')}>
             <Text style={styles.actionText}>Add Assets</Text>
           </Pressable>
         </View>
@@ -180,6 +182,7 @@ export default function HomeScreen() {
         />
         <MenuItem
           title="Campaign Queue"
+          icon={require('../../assets/images/campaignqueue.png')}
           onPress={() => navigation.navigate('CampaignQueue')}
         />
         <MenuItem

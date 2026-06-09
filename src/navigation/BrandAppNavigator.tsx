@@ -1,29 +1,60 @@
 import React from 'react';
-import { View } from 'react-native';
-
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-
-import { SvgXml } from 'react-native-svg';
+import {
+  View,
+  Image,
+} from 'react-native';
 
 import {
-  NB_DASHBOARD_SVG, NB_DASHBOARD_ACTIVE_SVG,
-  NB_CAMPAIGN_SVG, NB_CAMPAIGN_ACTIVE_SVG,
-  NB_EXPLORE_SVG, NB_EXPLORE_ACTIVE_SVG,
-  NB_SETTINGS_SVG, NB_SETTINGS_ACTIVE_SVG,
-  navbarIconContainerStyle,
-} from './navbarIcons';
+  createBottomTabNavigator,
+} from '@react-navigation/bottom-tabs';
 
 import {
-  BrandBottomTabParamList,
-  BrandStackParamList,
-} from '../types/navigation';
+  createNativeStackNavigator,
+} from '@react-navigation/native-stack';
 
-import BrandDashboardScreen from '../screens/brand-dashboard/BrandDashboardScreen';
-import CampaignScreen from '../screens/campaign/CampaignScreen';
-import ExploreScreen from '../screens/explore/ExploreScreen';
+import {
+  moderateScale,
+  verticalScale,
+} from '../utils/scaling';
+
+import { Colors }
+from '../config/theme';
+
+/* -------------------------------------------------------------------------- */
+/*                                   SCREENS                                  */
+/* -------------------------------------------------------------------------- */
+
+import BrandProfileScreen
+from '../screens/brand/profile/BrandPorfileScreen';
+
+import AddAssetsScreen
+from '../screens/assets/addAssets/AddAssetsScreen';
+
+import BrandOverviewScreen
+from '../screens/brand/Overview/BrandOverviewScreen';
+
+import BrandCampaignsScreen
+from '../screens/brand/campaigns/BrandCampaignsScreen';
+
+import CampaignBidsScreen
+from '../screens/brand/campaignBids/BrandCampaignBidsScreen';
+
+import PortfolioScreen
+from '../screens/brand/campaignBids/PortfolioScreen';
+
+import TotalSpendScreen
+from '../screens/brand/totalspend/TotalSpendScreen';
+
+import CreateCampaignScreen
+from '../screens/brand/createCampaign/CreateCampaignScreen';
+
+import AssetsScreen
+from '../screens/assets/AssetsScreen';
+
+import Campaigns
+from '../screens/campaign/Campaigns';
+
 import SettingsScreen from '../screens/settings/SettingsScreen';
-import InfluencerProfileScreen from '../screens/explore/InfluencerProfileScreen';
 import ManageAccountScreen from '../screens/settings/ManageAccount/ManageAccountScreen';
 import BioScreen from '../screens/settings/Bio/BioScreen';
 import SocialMediaScreen from '../screens/settings/SocialMedia/SocialMediaScreen';
@@ -32,131 +63,368 @@ import ViewPlansScreen from '../screens/settings/ViewPlans/ViewPlansScreen';
 import SubscriptionScreen from '../screens/settings/Subscription/SubscriptionScreen';
 import ChangePasswordScreen from '../screens/settings/ChangePassword/ChangePasswordScreen';
 
-const Tab = createBottomTabNavigator<BrandBottomTabParamList>();
-const Stack = createNativeStackNavigator<BrandStackParamList>();
+/* -------------------------------------------------------------------------- */
+/*                                NAVIGATORS                                  */
+/* -------------------------------------------------------------------------- */
 
-function BrandTabs() {
+const Tab =
+  createBottomTabNavigator();
+
+const Stack =
+  createNativeStackNavigator();
+
+/* -------------------------------------------------------------------------- */
+/*                               TEMP SCREEN                                  */
+/* -------------------------------------------------------------------------- */
+
+const ExploreScreen =
+  () => null;
+
+/* -------------------------------------------------------------------------- */
+/*                            PROFILE STACK                                   */
+/* -------------------------------------------------------------------------- */
+
+function BrandProfileStack() {
   return (
-    <Tab.Navigator
-      screenOptions={({ route }) => ({
-        headerShown: false,
+    <Stack.Navigator
+      screenOptions={{
+        headerShown:
+          false,
 
-        tabBarStyle: {
-          backgroundColor: '#000',
-          borderTopWidth: 1,
-          borderTopColor: '#00ACB3',
-          height: 80,
-          paddingBottom: 8,
-          paddingTop: 8,
+        contentStyle: {
+          backgroundColor:
+            Colors.bgBlack,
         },
-
-        tabBarItemStyle: {
-          paddingHorizontal: 0,
-          marginHorizontal: -4,
-        },
-
-        tabBarActiveTintColor: '#00D2FF',
-        tabBarInactiveTintColor: '#7A7A7A',
-
-        tabBarLabelStyle: {
-          fontSize: 11,
-          fontWeight: '600',
-          marginTop: 8,
-        },
-
-        tabBarIcon: ({ focused }) => {
-          switch (route.name) {
-            case 'BrandDashboard':
-              return (
-                <View style={[navbarIconContainerStyle, focused && { top: -12 }]}>
-                  <SvgXml
-                    xml={focused ? NB_DASHBOARD_ACTIVE_SVG : NB_DASHBOARD_SVG}
-                    width={focused ? 50 : 32}
-                    height={focused ? 50 : 32}
-                  />
-                </View>
-              );
-
-            case 'BrandCampaign':
-              return (
-                <View style={[navbarIconContainerStyle, focused && { top: -12 }]}>
-                  <SvgXml
-                    xml={focused ? NB_CAMPAIGN_ACTIVE_SVG : NB_CAMPAIGN_SVG}
-                    width={focused ? 50 : 32}
-                    height={focused ? 50 : 32}
-                  />
-                </View>
-              );
-
-            case 'BrandExplore':
-              return (
-                <View style={[navbarIconContainerStyle, focused && { top: -12 }]}>
-                  <SvgXml
-                    xml={focused ? NB_EXPLORE_ACTIVE_SVG : NB_EXPLORE_SVG}
-                    width={focused ? 50 : 32}
-                    height={focused ? 50 : 32}
-                  />
-                </View>
-              );
-
-            case 'BrandSettings':
-              return (
-                <View style={[navbarIconContainerStyle, focused && { top: -12 }]}>
-                  <SvgXml
-                    xml={focused ? NB_SETTINGS_ACTIVE_SVG : NB_SETTINGS_SVG}
-                    width={focused ? 50 : 32}
-                    height={focused ? 50 : 32}
-                  />
-                </View>
-              );
-          }
-
-          return null;
-        },
-      })}
+      }}
     >
-      <Tab.Screen
-        name="BrandDashboard"
-        component={BrandDashboardScreen}
+      <Stack.Screen
+        name="BrandProfile"
+        component={
+          BrandProfileScreen
+        }
       />
-      <Tab.Screen
-        name="BrandCampaign"
-        component={CampaignScreen}
+
+      <Stack.Screen
+        name="AddAssets"
+        component={
+          AddAssetsScreen
+        }
       />
-      <Tab.Screen
-        name="BrandExplore"
-        component={ExploreScreen}
+
+      <Stack.Screen
+        name="BrandOverview"
+        component={
+          BrandOverviewScreen
+        }
       />
-      <Tab.Screen
-        name="BrandSettings"
+
+      <Stack.Screen
+        name="BrandCampaigns"
+        component={
+          BrandCampaignsScreen
+        }
+      />
+
+      <Stack.Screen
+        name="CampaignBids"
+        component={
+          CampaignBidsScreen
+        }
+      />
+
+      <Stack.Screen
+        name="PortfolioScreen"
+        component={
+          PortfolioScreen
+        }
+      />
+
+      <Stack.Screen
+        name="TotalSpend"
+        component={
+          TotalSpendScreen
+        }
+      />
+
+      <Stack.Screen
+        name="CreateCampaign"
+        component={
+          CreateCampaignScreen
+        }
+      />
+      <Stack.Screen
+        name="Settings"
         component={SettingsScreen}
       />
-    </Tab.Navigator>
+
+      <Stack.Screen
+        name="ManageAccount"
+        component={ManageAccountScreen}
+      />
+
+      <Stack.Screen
+        name="Bio"
+        component={BioScreen}
+      />
+
+      <Stack.Screen
+        name="SocialMedia"
+        component={SocialMediaScreen}
+      />
+
+      <Stack.Screen
+        name="AdditionalInfo"
+        component={AdditionalInfoScreen}
+      />
+
+      <Stack.Screen
+        name="ViewPlans"
+        component={ViewPlansScreen}
+      />
+
+      <Stack.Screen
+        name="Subscription"
+        component={SubscriptionScreen}
+      />
+
+      <Stack.Screen
+        name="ChangePassword"
+        component={ChangePasswordScreen}
+      />
+    </Stack.Navigator>
   );
 }
 
-export default function BrandAppNavigator() {
+/* -------------------------------------------------------------------------- */
+/*                                BRAND TABS                                  */
+/* -------------------------------------------------------------------------- */
+
+export default function
+BrandNavigator() {
   return (
-    <Stack.Navigator
-      initialRouteName="BrandMainTabs"
-      screenOptions={{
-        headerShown: false,
-        animation: 'fade',
-        animationDuration: 300,
-      }}
+    <Tab.Navigator
+      screenOptions={({
+        route,
+      }) => ({
+        headerShown:
+          false,
+
+        tabBarStyle: {
+          backgroundColor:
+            Colors.bgSurface,
+
+          borderTopWidth:
+            1,
+
+          borderTopColor:
+            Colors.teal,
+
+          height:
+            verticalScale(
+              60
+            ),
+
+          paddingBottom:
+            verticalScale(
+              4
+            ),
+
+          paddingTop:
+            verticalScale(
+              4
+            ),
+        },
+
+        tabBarItemStyle:
+          {
+            paddingHorizontal:
+              0,
+
+            marginHorizontal:
+              -4,
+          },
+
+        tabBarActiveTintColor:
+          Colors.teal,
+
+        tabBarInactiveTintColor:
+          '#7A7A7A',
+
+        tabBarLabelStyle:
+          {
+            fontSize:
+              moderateScale(
+                12
+              ),
+
+            fontWeight:
+              '600',
+
+            marginTop:
+              verticalScale(
+                2
+              ),
+          },
+
+        tabBarIcon:
+          ({ focused }) => {
+            let icon;
+
+            switch (
+              route.name
+            ) {
+              case 'Profile':
+                icon =
+                  require(
+                    '../assets/images/profilelogo.png'
+                  );
+                break;
+
+              case 'Campaigns':
+                icon =
+                  require(
+                    '../assets/images/campaignlogo.png'
+                  );
+                break;
+
+              case 'Explore':
+                icon =
+                  require(
+                    '../assets/images/explorelogo.png'
+                  );
+                break;
+
+              case 'Assets':
+                icon =
+                  require(
+                    '../assets/images/assetslogo.png'
+                  );
+                break;
+
+              default:
+                return null;
+            }
+
+            return (
+              <View
+                style={{
+                  justifyContent:
+                    'center',
+
+                  alignItems:
+                    'center',
+
+                  top:
+                    focused
+                      ? -8
+                      : 0,
+                }}
+              >
+                <View
+                  style={{
+                    width:
+                    
+                    focused
+                      ? 52
+                      : 20,
+                  
+                  height:
+                    focused
+                      ? 52
+                      : 20,
+
+                    borderRadius:
+                      24,
+
+                    justifyContent:
+                      'center',
+
+                    alignItems:
+                      'center',
+
+                    backgroundColor:
+                      focused
+                        ? Colors.teal
+                        : 'transparent',
+                  }}
+                >
+                  <Image
+                    source={
+                      icon
+                    }
+                    style={{
+                      width:
+  focused
+    ? 40
+    : 32,
+
+height:
+  focused
+    ? 40
+    : 32,
+
+                      resizeMode:
+                        'contain',
+
+                      tintColor:
+                        focused
+                          ? '#000'
+                          : '#7A7A7A',
+                    }}
+                  />
+                </View>
+              </View>
+            );
+          },
+      })}
     >
-      <Stack.Screen name="BrandMainTabs" component={BrandTabs} />
-      <Stack.Screen name="Campaign" component={CampaignScreen} />
-      <Stack.Screen name="Explore" component={ExploreScreen} />
-      <Stack.Screen name="Settings" component={SettingsScreen} />
-      <Stack.Screen name="InfluencerProfile" component={InfluencerProfileScreen} />
-      <Stack.Screen name="ManageAccount" component={ManageAccountScreen} />
-      <Stack.Screen name="Bio" component={BioScreen} />
-      <Stack.Screen name="SocialMedia" component={SocialMediaScreen} />
-      <Stack.Screen name="AdditionalInfo" component={AdditionalInfoScreen} />
-      <Stack.Screen name="ViewPlans" component={ViewPlansScreen} />
-      <Stack.Screen name="Subscription" component={SubscriptionScreen} />
-      <Stack.Screen name="ChangePassword" component={ChangePasswordScreen} />
-    </Stack.Navigator>
+      {/* PROFILE */}
+      <Tab.Screen
+        name="Profile"
+        component={
+          BrandProfileStack
+        }
+        options={{
+          tabBarLabel:
+            'Profile',
+        }}
+      />
+
+      {/* EXPLORE */}
+      <Tab.Screen
+        name="Explore"
+        component={
+          ExploreScreen
+        }
+        options={{
+          tabBarLabel:
+            'Explore',
+        }}
+      />
+
+      {/* ASSETS */}
+      <Tab.Screen
+        name="Assets"
+        component={
+          AssetsScreen
+        }
+        options={{
+          tabBarLabel:
+            'Assets',
+        }}
+      />
+
+      {/* CAMPAIGNS */}
+      <Tab.Screen
+        name="Campaigns"
+        component={
+          Campaigns
+        }
+        options={{
+          tabBarLabel:
+            'Campaigns',
+        }}
+      />
+    </Tab.Navigator>
   );
 }
