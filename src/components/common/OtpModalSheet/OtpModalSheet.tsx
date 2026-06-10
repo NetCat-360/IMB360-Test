@@ -1,5 +1,3 @@
-// src/components/auth/OtpModalSheet.tsx
-
 import React, { useState, useRef, useEffect } from 'react';
 import {
   View,
@@ -14,7 +12,7 @@ import {
   ScrollView,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import { scale, verticalScale, moderateScale } from '../../utils/scaling';
+import { scale, verticalScale, moderateScale } from '../../../utils/scaling';
 
 interface OtpModalSheetProps {
   visible: boolean;
@@ -68,7 +66,6 @@ export const OtpModalSheet: React.FC<OtpModalSheetProps> = ({
     };
   }, []);
 
-  // Fixed: interval only created once per modal open, not every countdown tick
   useEffect(() => {
     if (!visible) return;
     const interval = setInterval(() => {
@@ -135,12 +132,6 @@ export const OtpModalSheet: React.FC<OtpModalSheetProps> = ({
       statusBarTranslucent
       onRequestClose={onClose}
     >
-      {/*
-        The outer Pressable covers the full screen (the dim overlay).
-        Tapping it closes the modal. The inner Pressable wraps the
-        card and calls e.stopPropagation() so taps on the card
-        never reach the outer Pressable.
-      */}
       <Pressable
         style={[
           localStyles.dimmedOverlay,

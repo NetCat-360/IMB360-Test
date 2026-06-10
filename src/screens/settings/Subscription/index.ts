@@ -1,1 +1,1 @@
-export { default } from './SubscriptionScreen';
+export { default } from './SubscriptionScreen'

@@ -1,1 +1,1 @@
-export { default } from './MyEarnings';
+export { default } from './MyEarnings'

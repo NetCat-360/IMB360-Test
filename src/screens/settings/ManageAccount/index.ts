@@ -1,1 +1,1 @@
-export { default } from './ManageAccountScreen';
+export { default } from './ManageAccountScreen'

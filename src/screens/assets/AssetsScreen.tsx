@@ -45,7 +45,7 @@ export default function AssetsScreen() {
         }
       />
 
-      <AppHeader />
+      <AppHeader showSettings={false} showChat={false} />
 
       <ScrollView
         showsVerticalScrollIndicator={
