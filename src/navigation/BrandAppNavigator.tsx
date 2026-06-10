@@ -51,17 +51,35 @@ from '../screens/brand/createCampaign/CreateCampaignScreen';
 import AssetsScreen
 from '../screens/assets/AssetsScreen';
 
+import AssetDetailsScreen
+from '../screens/assets/AssetDetailsScreen';
+
 import Campaigns
 from '../screens/campaign/Campaigns';
 
-import SettingsScreen from '../screens/settings/SettingsScreen';
-import ManageAccountScreen from '../screens/settings/ManageAccount/ManageAccountScreen';
-import BioScreen from '../screens/settings/Bio/BioScreen';
-import SocialMediaScreen from '../screens/settings/SocialMedia/SocialMediaScreen';
-import AdditionalInfoScreen from '../screens/settings/AdditionalInfo/AdditionalInfoScreen';
-import ViewPlansScreen from '../screens/settings/ViewPlans/ViewPlansScreen';
-import SubscriptionScreen from '../screens/settings/Subscription/SubscriptionScreen';
-import ChangePasswordScreen from '../screens/settings/ChangePassword/ChangePasswordScreen';
+import SettingsScreen
+from '../screens/settings/SettingsScreen';
+
+import ManageAccountScreen
+from '../screens/settings/ManageAccount/ManageAccountScreen';
+
+import BioScreen
+from '../screens/settings/Bio/BioScreen';
+
+import SocialMediaScreen
+from '../screens/settings/SocialMedia/SocialMediaScreen';
+
+import AdditionalInfoScreen
+from '../screens/settings/AdditionalInfo/AdditionalInfoScreen';
+
+import ViewPlansScreen
+from '../screens/settings/ViewPlans/ViewPlansScreen';
+
+import SubscriptionScreen
+from '../screens/settings/Subscription/SubscriptionScreen';
+
+import ChangePasswordScreen
+from '../screens/settings/ChangePassword/ChangePasswordScreen';
 
 /* -------------------------------------------------------------------------- */
 /*                                NAVIGATORS                                  */
@@ -152,51 +170,102 @@ function BrandProfileStack() {
           CreateCampaignScreen
         }
       />
+
       <Stack.Screen
         name="Settings"
-        component={SettingsScreen}
+        component={
+          SettingsScreen
+        }
       />
 
       <Stack.Screen
         name="ManageAccount"
-        component={ManageAccountScreen}
+        component={
+          ManageAccountScreen
+        }
       />
 
       <Stack.Screen
         name="Bio"
-        component={BioScreen}
+        component={
+          BioScreen
+        }
       />
 
       <Stack.Screen
         name="SocialMedia"
-        component={SocialMediaScreen}
+        component={
+          SocialMediaScreen
+        }
       />
 
       <Stack.Screen
         name="AdditionalInfo"
-        component={AdditionalInfoScreen}
+        component={
+          AdditionalInfoScreen
+        }
       />
 
       <Stack.Screen
         name="ViewPlans"
-        component={ViewPlansScreen}
+        component={
+          ViewPlansScreen
+        }
       />
 
       <Stack.Screen
         name="Subscription"
-        component={SubscriptionScreen}
+        component={
+          SubscriptionScreen
+        }
       />
 
       <Stack.Screen
         name="ChangePassword"
-        component={ChangePasswordScreen}
+        component={
+          ChangePasswordScreen
+        }
       />
     </Stack.Navigator>
   );
 }
 
 /* -------------------------------------------------------------------------- */
-/*                                BRAND TABS                                  */
+/*                              ASSETS STACK                                  */
+/* -------------------------------------------------------------------------- */
+
+function AssetsStack() {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerShown:
+          false,
+
+        contentStyle: {
+          backgroundColor:
+            Colors.bgBlack,
+        },
+      }}
+    >
+      <Stack.Screen
+        name="AssetsHome"
+        component={
+          AssetsScreen
+        }
+      />
+
+      <Stack.Screen
+        name="AssetDetails"
+        component={
+          AssetDetailsScreen
+        }
+      />
+    </Stack.Navigator>
+  );
+}
+
+/* -------------------------------------------------------------------------- */
+/*                              BRAND NAVIGATOR                               */
 /* -------------------------------------------------------------------------- */
 
 export default function
@@ -323,15 +392,14 @@ BrandNavigator() {
                 <View
                   style={{
                     width:
-                    
-                    focused
-                      ? 52
-                      : 20,
-                  
-                  height:
-                    focused
-                      ? 52
-                      : 20,
+                      focused
+                        ? 52
+                        : 20,
+
+                    height:
+                      focused
+                        ? 52
+                        : 20,
 
                     borderRadius:
                       24,
@@ -354,14 +422,14 @@ BrandNavigator() {
                     }
                     style={{
                       width:
-  focused
-    ? 40
-    : 32,
+                        focused
+                          ? 40
+                          : 32,
 
-height:
-  focused
-    ? 40
-    : 32,
+                      height:
+                        focused
+                          ? 40
+                          : 32,
 
                       resizeMode:
                         'contain',
@@ -378,52 +446,32 @@ height:
           },
       })}
     >
-      {/* PROFILE */}
       <Tab.Screen
         name="Profile"
         component={
           BrandProfileStack
         }
-        options={{
-          tabBarLabel:
-            'Profile',
-        }}
       />
 
-      {/* EXPLORE */}
       <Tab.Screen
         name="Explore"
         component={
           ExploreScreen
         }
-        options={{
-          tabBarLabel:
-            'Explore',
-        }}
       />
 
-      {/* ASSETS */}
       <Tab.Screen
         name="Assets"
         component={
-          AssetsScreen
+          AssetsStack
         }
-        options={{
-          tabBarLabel:
-            'Assets',
-        }}
       />
 
-      {/* CAMPAIGNS */}
       <Tab.Screen
         name="Campaigns"
         component={
           Campaigns
         }
-        options={{
-          tabBarLabel:
-            'Campaigns',
-        }}
       />
     </Tab.Navigator>
   );

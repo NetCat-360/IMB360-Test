@@ -52,6 +52,7 @@ import AdditionalInfoScreen from '../screens/settings/AdditionalInfo/AdditionalI
 import ViewPlansScreen from '../screens/settings/ViewPlans/ViewPlansScreen';
 import SubscriptionScreen from '../screens/settings/Subscription/SubscriptionScreen';
 import ChangePasswordScreen from '../screens/settings/ChangePassword/ChangePasswordScreen';
+import AssetDetailsScreen from '../screens/assets/AssetDetailsScreen';
 
 const Tab = createBottomTabNavigator<BottomTabParamList>();
 const Stack = createNativeStackNavigator<AppStackParamList>();
@@ -338,6 +339,10 @@ export default function AppNavigator() {
           AddAssetsScreen
         }
       />
+      <Stack.Screen
+  name="AssetDetails"
+  component={AssetDetailsScreen}
+/>
     </Stack.Navigator>
   );
 }

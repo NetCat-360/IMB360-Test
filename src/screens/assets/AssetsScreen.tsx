@@ -17,10 +17,24 @@ import GradientButton from "../../components/GradientButton";
 
 import { RootState } from "../../store/store";
 import { Colors } from "../../config/theme";
+import {
+  AppNavigationProp,
+} from '../../types/navigation';
+import {
+  useNavigation,
+} from '@react-navigation/native';
 
 import styles from "./AssetsStyles";
+import {
+  useDispatch,
+} from 'react-redux';
+
+import {
+  setSelectedAsset,
+} from '../../store/slices/assetSlice';
 
 export default function AssetsScreen() {
+  
   const [showFilters,
     setShowFilters] =
     useState(false);
@@ -30,6 +44,13 @@ export default function AssetsScreen() {
       (state: RootState) =>
         state.asset.assets
     );
+    const dispatch =
+    useDispatch();
+
+    const navigation =
+  useNavigation<
+    AppNavigationProp<'AssetDetails'>
+  >();
 
   return (
     <SafeAreaView
@@ -297,7 +318,19 @@ export default function AssetsScreen() {
     styles.rentButton
   }
   textStyle={{
-    fontWeight: 'bold',
+    fontWeight:
+      'bold',
+  }}
+  onPress={() => {
+    dispatch(
+      setSelectedAsset(
+        item
+      )
+    );
+
+    navigation.navigate(
+      'AssetDetails'
+    );
   }}
 />
               </View>
