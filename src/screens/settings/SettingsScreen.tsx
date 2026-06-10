@@ -108,11 +108,13 @@ export default function SettingsScreen({
     }
 
     return (
-        <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
+        <SafeAreaView style={styles.container} edges={[]}>
             <ScreenHeader
                 title="Settings"
+                
                 onBack={() =>
                     navigation.goBack()
+                    
                 }
             />
 

@@ -1,12 +1,14 @@
 import { RouteProp } from '@react-navigation/native';
+
 import {
   NativeStackNavigationProp,
   NativeStackScreenProps,
 } from '@react-navigation/native-stack';
 
-/**
- * BOTTOM TAB TYPES
- */
+/* -------------------------------------------------------------------------- */
+/*                            BOTTOM TAB TYPES                                */
+/* -------------------------------------------------------------------------- */
+
 export type BottomTabParamList = {
   Profile: undefined;
   Campaign: undefined;
@@ -17,145 +19,315 @@ export type BottomTabParamList = {
 
 export type CampaignStackParamList = {
   CampaignList: undefined;
-  ApplyCampaign: { campaignId?: string };
+
+  ApplyCampaign: {
+    campaignId?: string;
+  };
 };
 
 export type ExploreStackParamList = {
   ExploreList: undefined;
-  InfluencerProfile: undefined;
+
+  InfluencerProfile:
+    undefined;
+
   RequestQuote: {
     platformId: string;
     influencerName: string;
   };
 };
 
-/**
- * AUTH STACK TYPES
- */
+/* -------------------------------------------------------------------------- */
+/*                              AUTH STACK TYPES                              */
+/* -------------------------------------------------------------------------- */
+
 export type AuthStackParamList = {
   Splash: undefined;
-  Onboarding: undefined;
-  RoleSelection: undefined;
-  AuthEntryPoint: { role?: string };
-  Login: undefined;
-  Register: { role?: string };
-  ForgotPassword: undefined;
-  Verification: { destination?: string; flow?: string };
-  ResetPassword: { verifiedOtp?: string; verifiedEmail?: string };
-  HomeDashboard: undefined;
+
+  Onboarding:
+    undefined;
+
+  RoleSelection:
+    undefined;
+
+  AuthEntryPoint: {
+    role?:
+      | 'BRAND'
+      | 'CREATOR';
+  };
+
+  Login:
+    undefined;
+
+  Register: {
+    role?:
+      | 'BRAND'
+      | 'CREATOR';
+  };
+
+  ForgotPassword:
+    undefined;
+
+  Verification: {
+    destination?: string;
+
+    flow?:
+      | 'password_reset'
+      | 'registration';
+  };
+
+  ResetPassword: {
+    verifiedOtp?:
+      string;
+
+    verifiedEmail?:
+      string;
+  };
+
+  HomeDashboard:
+    undefined;
 };
 
-/**
- * BRAND BOTTOM TAB TYPES
- */
-export type BrandBottomTabParamList = {
-  BrandDashboard: undefined;
-  BrandCampaign: undefined;
-  BrandExplore: undefined;
-  BrandSettings: undefined;
-};
+/* -------------------------------------------------------------------------- */
+/*                        BRAND BOTTOM TAB TYPES                              */
+/* -------------------------------------------------------------------------- */
 
-/**
- * BRAND STACK TYPES
- */
-export type BrandStackParamList = {
-  BrandMainTabs: undefined;
+export type BrandBottomTabParamList =
+  {
+    Profile:
+      undefined;
 
-  Campaign: undefined;
-  ApplyCampaign: { campaignId?: string };
+    Campaigns:
+      undefined;
 
-  Explore: undefined;
-  InfluencerProfile: undefined;
-  RequestQuote: {
-    platformId: string;
-    influencerName: string;
+    Explore:
+      undefined;
+
+    Assets:
+      undefined;
   };
 
-  Settings: undefined;
-  ManageAccount: undefined;
-  Bio: undefined;
-  SocialMedia: undefined;
-  AdditionalInfo: undefined;
-  ViewPlans: undefined;
-  Subscription: undefined;
-  ChangePassword: undefined;
-};
+/* -------------------------------------------------------------------------- */
+/*                           BRAND STACK TYPES                                */
+/* -------------------------------------------------------------------------- */
 
-/**
- * ROOT STACK TYPES
- */
-export type AppStackParamList = {
-  MainTabs: undefined;
+export type BrandStackParamList =
+  {
+    /* Main */
+    BrandMainTabs:
+      undefined;
 
-  Home: undefined;
-  Overview: undefined;
+    /* Profile Flow */
+    BrandProfile:
+      undefined;
 
-  Content: undefined;
-  AddContent: undefined;
-  EditContent: {
-    contentId?: string;
+    AddAssets:
+      undefined;
+
+    BrandOverview:
+      undefined;
+
+    BrandCampaigns:
+      undefined;
+
+    CampaignBids:
+      undefined;
+
+    PortfolioScreen: {
+      bid?: any;
+    };
+
+    TotalSpend:
+      undefined;
+
+    CreateCampaign:
+      undefined;
+
+    /* Campaign Flow */
+    Campaigns:
+      undefined;
+
+    ApplyCampaign: {
+      campaignId?: string;
+    };
+
+    /* Explore Flow */
+    Explore:
+      undefined;
+
+    InfluencerProfile:
+      undefined;
+
+    RequestQuote: {
+      platformId: string;
+      influencerName: string;
+    };
+
+    /* Settings / Assets */
+    Assets:
+      undefined;
+
+    Settings:
+      undefined;
+
+    ManageAccount:
+      undefined;
+
+    Bio:
+      undefined;
+
+    SocialMedia:
+      undefined;
+
+    AdditionalInfo:
+      undefined;
+
+    ViewPlans:
+      undefined;
+
+    Subscription:
+      undefined;
+
+    ChangePassword:
+      undefined;
   };
 
-  Pricing: undefined;
-  AddPricing: undefined;
-  EditPricing: {
-    pricingId?: string;
+/* -------------------------------------------------------------------------- */
+/*                            ROOT STACK TYPES                                */
+/* -------------------------------------------------------------------------- */
+
+export type AppStackParamList =
+  {
+    MainTabs:
+      undefined;
+
+    Home:
+      undefined;
+
+    Overview:
+      undefined;
+
+    Content:
+      undefined;
+
+    AddContent:
+      undefined;
+
+    EditContent: {
+      contentId?: string;
+    };
+
+    Pricing:
+      undefined;
+
+    AddPricing:
+      undefined;
+
+    EditPricing: {
+      pricingId?: string;
+    };
+
+    CampaignQueue:
+      undefined;
+      AddAssets:
+      undefined;
+
+    ApplyCampaign: {
+      campaignId?: string;
+    };
+
+    CampaignURL: {
+      campaignId?: string;
+      url?: string;
+    };
+
+    MyEarnings:
+      undefined;
+
+    InfluencerProfile:
+      undefined;
+
+    RequestQuote: {
+      platformId: string;
+      influencerName: string;
+    };
+
+    Settings:
+      undefined;
+
+    ManageAccount:
+      undefined;
+
+    Bio:
+      undefined;
+
+    SocialMedia:
+      undefined;
+
+    AdditionalInfo:
+      undefined;
+
+    ViewPlans:
+      undefined;
+
+    Subscription:
+      undefined;
+
+    ChangePassword:
+      undefined;
+
+    AnalyticsScreen:
+      undefined;
   };
 
-  CampaignQueue: undefined;
-  ApplyCampaign: { campaignId?: string };
+/* -------------------------------------------------------------------------- */
+/*                            NAVIGATION PROP TYPES                           */
+/* -------------------------------------------------------------------------- */
 
-  CampaignURL: {
-    campaignId?: string;
-    url?: string;
-  };
-
-  MyEarnings: undefined;
-
-  InfluencerProfile: undefined;
-
-  RequestQuote: {
-    platformId: string;
-    influencerName: string;
-  };
-
-  Settings: undefined;
-  ManageAccount: undefined;
-  Bio: undefined;
-  SocialMedia: undefined;
-  AdditionalInfo: undefined;
-  ViewPlans: undefined;
-  Subscription: undefined;
-  ChangePassword: undefined;
-};
-
-/**
- * NAVIGATION PROP
- */
 export type AuthNavigationProp<
   T extends keyof AuthStackParamList,
-> = NativeStackNavigationProp<
-  AuthStackParamList,
-  T
->;
+> =
+  NativeStackNavigationProp<
+    AuthStackParamList,
+    T
+  >;
 
 export type AuthRouteProp<
   T extends keyof AuthStackParamList,
-> = RouteProp<
-  AuthStackParamList,
-  T
->;
+> =
+  RouteProp<
+    AuthStackParamList,
+    T
+  >;
 
 export type AppNavigationProp<
   T extends keyof AppStackParamList,
-> = NativeStackNavigationProp<
-  AppStackParamList,
-  T
->;
+> =
+  NativeStackNavigationProp<
+    AppStackParamList,
+    T
+  >;
 
-/**
- * SCREEN PROP TYPES
- */
+export type BrandNavigationProp<
+  T extends keyof BrandStackParamList,
+> =
+  NativeStackNavigationProp<
+    BrandStackParamList,
+    T
+  >;
+
+export type AppRouteProp<
+  T extends keyof AppStackParamList,
+> =
+  RouteProp<
+    AppStackParamList,
+    T
+  >;
+
+/* -------------------------------------------------------------------------- */
+/*                            SCREEN PROP TYPES                               */
+/* -------------------------------------------------------------------------- */
+
 export type HomeScreenProps =
   NativeStackScreenProps<
     AppStackParamList,

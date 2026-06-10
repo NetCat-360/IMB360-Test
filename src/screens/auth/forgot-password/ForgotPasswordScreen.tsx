@@ -14,7 +14,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import LinearGradient from 'react-native-linear-gradient';
 import { verticalScale } from '../../../utils/scaling';
 import { AuthNavigationProp } from '../../../types/navigation';
-import { OtpModalSheet } from '../../../components/auth/OtpModalSheet';
+import { OtpModalSheet } from '../../../components/common/OtpModalSheet';
 import { useGlobalToast } from '../../../context/ToastContext';
 import apiClient from '../../../api/client';
 import { AUTH } from '../../../api/endpoints';

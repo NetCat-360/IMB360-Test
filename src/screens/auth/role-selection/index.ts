@@ -1,1 +1,1 @@
-export { default } from './RoleSelectionScreen';
+export { default } from './RoleSelectionScreen'

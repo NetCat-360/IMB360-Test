@@ -1,1 +1,1 @@
-export { default } from './ChangePasswordScreen';
+export { default } from './ChangePasswordScreen'
