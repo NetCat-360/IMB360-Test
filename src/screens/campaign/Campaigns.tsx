@@ -86,17 +86,125 @@ export default function Campaigns() {
 
         {/* FILTERS */}
         {showFilters && (
-          <View style={styles.filterBox}>
-            <View style={styles.searchBox}>
-              <Image
-                source={require("../../assets/images/search.png")}
-                style={styles.dropdownIcon}
-              />
-
-              <Text style={styles.placeholderText}>Search campaign</Text>
-            </View>
-          </View>
+  <View style={styles.filterBox}>
+    {/* SEARCH */}
+    <View style={styles.searchBox}>
+      <Image
+        source={require(
+          "../../assets/images/search.png"
         )}
+        style={styles.searchIcon}
+      />
+
+      <Text style={styles.placeholderText}>
+        Search campaign
+      </Text>
+    </View>
+
+    {/* CATEGORY */}
+    <TouchableOpacity
+      style={styles.filterDropdown}
+    >
+      <View style={styles.dropdownLeft}>
+        <Image
+          source={require(
+            "../../assets/images/categories.png"
+          )}
+          style={styles.dropdownIcon}
+        />
+
+        <Text
+          style={
+            styles.dropdownText
+          }
+        >
+          All Categories
+        </Text>
+      </View>
+
+      <Image
+        source={require(
+          "../../assets/images/downarrow.png"
+        )}
+        style={styles.arrowIcon}
+      />
+    </TouchableOpacity>
+
+    {/* BUDGET */}
+    <TouchableOpacity
+      style={styles.filterDropdown}
+    >
+      <View style={styles.dropdownLeft}>
+        <Image
+          source={require(
+            "../../assets/images/points.png"
+          )}
+          style={styles.dropdownIcon}
+        />
+
+        <Text
+          style={
+            styles.dropdownText
+          }
+        >
+          All Budgets
+        </Text>
+      </View>
+
+      <Image
+        source={require(
+          "../../assets/images/downarrow.png"
+        )}
+        style={styles.arrowIcon}
+      />
+    </TouchableOpacity>
+
+    {/* PLATFORM */}
+    <TouchableOpacity
+      style={styles.filterDropdown}
+    >
+      <View style={styles.dropdownLeft}>
+        <Image
+          source={require(
+            "../../assets/images/platforms.png"
+          )}
+          style={styles.dropdownIcon}
+        />
+
+        <Text
+          style={
+            styles.dropdownText
+          }
+        >
+          All Platforms
+        </Text>
+      </View>
+
+      <Image
+        source={require(
+          "../../assets/images/downarrow.png"
+        )}
+        style={styles.arrowIcon}
+      />
+    </TouchableOpacity>
+
+    {/* SEARCH BUTTON */}
+    <GradientButton
+      title="Search"
+      style={
+        styles.searchButton
+      }
+      textStyle={{
+        color: "#000",
+        fontWeight:
+          "700",
+        fontSize:
+          moderateScale(18),
+      }}
+      onPress={() => {}}
+    />
+  </View>
+)}
 
         {/* CARD */}
         {campaigns?.map((campaign, campaignIndex) => (

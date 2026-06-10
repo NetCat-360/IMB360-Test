@@ -3,16 +3,16 @@
 import React from "react";
 
 import {
-    View,
-    Text,
-    Image,
-    TouchableOpacity,
-    ScrollView,
-    StatusBar,
-    StyleSheet,
-    TextInput,
-    Modal,
-  } from "react-native";
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  ScrollView,
+  StatusBar,
+  StyleSheet,
+  TextInput,
+  Modal,
+} from "react-native";
 
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -29,89 +29,39 @@ import { scale, verticalScale, moderateScale } from "../../utils/scaling";
 import { Colors } from "../../config/theme";
 
 import { RootState } from "../../store/store";
-import {
-    setActiveTab,
-    toggleTerms,
-  } from "../../store/slices/assetSlice";
+import { setActiveTab, toggleTerms } from "../../store/slices/assetSlice";
 
 export default function AssetDetailsScreen() {
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
-  const {
-    selectedAsset,
-    activeTab,
-    showFullTerms,
-  } = useSelector(
-    (
-      state:
-        RootState
-    ) =>
-      state.asset
+  const { selectedAsset, activeTab, showFullTerms } = useSelector(
+    (state: RootState) => state.asset
   );
 
   const asset = selectedAsset;
-  const [
-    showRentModal,
-    setShowRentModal,
-  ] = React.useState(
-    false
-  );
-  const [
-    startDate,
-    setStartDate,
-  ] = React.useState("");
-  
-  const [
-    endDate,
-    setEndDate,
-  ] = React.useState("");
+  const [showRentModal, setShowRentModal] = React.useState(false);
+  const [startDate, setStartDate] = React.useState("");
+
+  const [endDate, setEndDate] = React.useState("");
 
   if (!asset) {
     return null;
   }
-  const formatDate =
-  (
-    text: string
-  ) => {
-    const cleaned =
-      text.replace(
-        /\D/g,
-        ""
-      );
+  const formatDate = (text: string) => {
+    const cleaned = text.replace(/\D/g, "");
 
-    let formatted =
-      cleaned;
+    let formatted = cleaned;
 
-    if (
-      cleaned.length >
-      2
-    ) {
-      formatted =
-        `${cleaned.slice(
-          0,
-          2
-        )}/${cleaned.slice(
-          2,
-          4
-        )}`;
+    if (cleaned.length > 2) {
+      formatted = `${cleaned.slice(0, 2)}/${cleaned.slice(2, 4)}`;
     }
 
-    if (
-      cleaned.length >
-      4
-    ) {
-      formatted =
-        `${cleaned.slice(
-          0,
-          2
-        )}/${cleaned.slice(
-          2,
-          4
-        )}/${cleaned.slice(
-          4,
-          8
-        )}`;
+    if (cleaned.length > 4) {
+      formatted = `${cleaned.slice(0, 2)}/${cleaned.slice(
+        2,
+        4
+      )}/${cleaned.slice(4, 8)}`;
     }
 
     return formatted;
@@ -171,31 +121,17 @@ export default function AssetDetailsScreen() {
             </Text>
           </Text>
 
-         {/* LOCATION */}
-<View
-  style={
-    styles.locationRow
-  }
->
-  <Image
-    source={require(
-      "../../assets/images/location.png"
-    )}
-    style={
-      styles.locationImage
-    }
-  />
+          {/* LOCATION */}
+          <View style={styles.locationRow}>
+            <Image
+              source={require("../../assets/images/location.png")}
+              style={styles.locationImage}
+            />
 
-  <Text
-    style={
-      styles.locationText
-    }
-  >
-    {asset.city},
-    {" "}
-    {asset.state}
-  </Text>
-</View>
+            <Text style={styles.locationText}>
+              {asset.city}, {asset.state}
+            </Text>
+          </View>
 
           {/* SOCIALS */}
           <View style={styles.socialRow}>
@@ -212,15 +148,11 @@ export default function AssetDetailsScreen() {
             </View>
 
             <TouchableOpacity>
-  <Image
-    source={require(
-      "../../assets/images/share.png"
-    )}
-    style={
-      styles.shareIcon
-    }
-  />
-</TouchableOpacity>
+              <Image
+                source={require("../../assets/images/share.png")}
+                style={styles.shareIcon}
+              />
+            </TouchableOpacity>
           </View>
 
           {/* PRICE */}
@@ -239,586 +171,271 @@ export default function AssetDetailsScreen() {
               colors={["#00C6FF", "#7BFF5B"]}
               style={styles.requestButton}
             >
-              <TouchableOpacity
-  onPress={() =>
-    setShowRentModal(
-      true
-    )
-  }
->
-  <Text
-    style={
-      styles.requestText
-    }
-  >
-    Send Request to Rent
-  </Text>
-</TouchableOpacity>
+              <TouchableOpacity onPress={() => setShowRentModal(true)}>
+                <Text style={styles.requestText}>Send Request to Rent</Text>
+              </TouchableOpacity>
             </LinearGradient>
           </View>
         </View>
         {/* SINGLE HORIZONTAL TAB BAR */}
-<ScrollView
-  horizontal
-  nestedScrollEnabled
-  showsHorizontalScrollIndicator={
-    false
-  }
-  contentContainerStyle={
-    styles.tabScroll
-  }
->
-  {[
-    "Asset Details",
-    "What's Provided",
-    "Price Details",
-    "Terms & Conditions",
-    "Comments & Reviews",
-    "Gallery",
-  ].map(tab => {
-    const isActive =
-      activeTab === tab;
-
-    return (
-      <TouchableOpacity
-        key={tab}
-        style={[
-          styles.tabButton,
-          isActive &&
-            styles.activeTab,
-        ]}
-        onPress={() =>
-          dispatch(
-            setActiveTab(
-              tab as any
-            )
-          )
-        }
-      >
-        <Text
-          style={[
-            styles.tabText,
-            isActive && {
-              color:
-                "#000",
-            },
-          ]}
+        <ScrollView
+          horizontal
+          nestedScrollEnabled
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.tabScroll}
         >
-          {tab}
-        </Text>
-      </TouchableOpacity>
-    );
-  })}
-</ScrollView>
+          {[
+            "Asset Details",
+            "What's Provided",
+            "Price Details",
+            "Terms & Conditions",
+            "Comments & Reviews",
+            "Gallery",
+          ].map((tab) => {
+            const isActive = activeTab === tab;
 
-{/* DYNAMIC CONTENT CARD */}
-<View
-  style={
-    styles.detailsCard
-  }
->
-  {/* ASSET DETAILS */}
-  {activeTab ===
-    "Asset Details" && (
-    <>
-      <Text
-        style={
-          styles.sectionHeading
-        }
-      >
-        Asset Details
-      </Text>
+            return (
+              <TouchableOpacity
+                key={tab}
+                style={[styles.tabButton, isActive && styles.activeTab]}
+                onPress={() => dispatch(setActiveTab(tab as any))}
+              >
+                <Text
+                  style={[
+                    styles.tabText,
+                    isActive && {
+                      color: "#000",
+                    },
+                  ]}
+                >
+                  {tab}
+                </Text>
+              </TouchableOpacity>
+            );
+          })}
+        </ScrollView>
 
-      <Text
-        style={
-          styles.sectionLabel
-        }
-      >
-        AVAILABLE:
-        <Text
-          style={
-            styles.sectionText
-          }
-        >
-          {" "}
-          {
-            asset.availableFrom
-          }{" "}
-          TO{" "}
-          {
-            asset.availableTo
-          }
-        </Text>
-      </Text>
+        {/* DYNAMIC CONTENT CARD */}
+        <View style={styles.detailsCard}>
+          {/* ASSET DETAILS */}
+          {activeTab === "Asset Details" && (
+            <>
+              <Text style={styles.sectionHeading}>Asset Details</Text>
 
-      <Text
-        style={
-          styles.sectionLabel
-        }
-      >
-        AMENITIES:
-      </Text>
+              <Text style={styles.sectionLabel}>
+                AVAILABLE:
+                <Text style={styles.sectionText}>
+                  {" "}
+                  {asset.availableFrom} TO {asset.availableTo}
+                </Text>
+              </Text>
 
-      <Text
-        style={
-          styles.paragraph
-        }
-      >
-        {asset.amenities.join(
-          ", "
-        )}
-      </Text>
+              <Text style={styles.sectionLabel}>AMENITIES:</Text>
 
-      <Text
-        style={
-          styles.sectionLabel
-        }
-      >
-        DESCRIPTION:
-      </Text>
+              <Text style={styles.paragraph}>{asset.amenities.join(", ")}</Text>
 
-      <Text
-        style={
-          styles.paragraph
-        }
-      >
-        {
-          asset.description
-        }
-      </Text>
-    </>
-  )}
+              <Text style={styles.sectionLabel}>DESCRIPTION:</Text>
 
-  {/* PROVIDED */}
-  {activeTab ===
-    "What's Provided" && (
-    <>
-      <Text
-        style={
-          styles.sectionHeading
-        }
-      >
-        What's Provided
-        with This
-        Facility
-      </Text>
+              <Text style={styles.paragraph}>{asset.description}</Text>
+            </>
+          )}
 
-      <Text
-        style={
-          styles.paragraph
-        }
-      >
-        {asset.providedFeatures.join(
-          ". "
-        )}
-      </Text>
-    </>
-  )}
+          {/* PROVIDED */}
+          {activeTab === "What's Provided" && (
+            <>
+              <Text style={styles.sectionHeading}>
+                What's Provided with This Facility
+              </Text>
 
-  {/* PRICE */}
-  {activeTab ===
-    "Price Details" && (
-    <>
-      <Text
-        style={
-          styles.sectionHeading
-        }
-      >
-        Price Details
-      </Text>
+              <Text style={styles.paragraph}>
+                {asset.providedFeatures.join(". ")}
+              </Text>
+            </>
+          )}
 
-      <Text
-        style={
-          styles.priceText
-        }
-      >
-        {
-          asset.priceDetails
-        }
-      </Text>
-    </>
-  )}
+          {/* PRICE */}
+          {activeTab === "Price Details" && (
+            <>
+              <Text style={styles.sectionHeading}>Price Details</Text>
 
-  {/* TERMS */}
-  {activeTab ===
-    "Terms & Conditions" && (
-    <>
-      <Text
-        style={
-          styles.sectionHeading
-        }
-      >
-        Terms &
-        Conditions /
-        Rules
-      </Text>
+              <Text style={styles.priceText}>{asset.priceDetails}</Text>
+            </>
+          )}
 
-      <Text
-        style={
-          styles.paragraph
-        }
-        numberOfLines={
-          showFullTerms
-            ? undefined
-            : 5
-        }
-      >
-        {
-          asset.termsAndConditions
-        }
-      </Text>
+          {/* TERMS */}
+          {activeTab === "Terms & Conditions" && (
+            <>
+              <Text style={styles.sectionHeading}>
+                Terms & Conditions / Rules
+              </Text>
 
-      <TouchableOpacity
-        onPress={() =>
-          dispatch(
-            toggleTerms()
-          )
-        }
-      >
-        <Text
-          style={
-            styles.showMore
-          }
-        >
-          {showFullTerms
-            ? "Show less"
-            : "Show more"}
-        </Text>
-      </TouchableOpacity>
-    </>
-  )}
+              <Text
+                style={styles.paragraph}
+                numberOfLines={showFullTerms ? undefined : 5}
+              >
+                {asset.termsAndConditions}
+              </Text>
 
-  {/* COMMENTS */}
-  {activeTab ===
-    "Comments & Reviews" && (
-    <>
-      <Text
-        style={
-          styles.sectionHeading
-        }
-      >
-        Comments &
-        Reviews
-      </Text>
+              <TouchableOpacity onPress={() => dispatch(toggleTerms())}>
+                <Text style={styles.showMore}>
+                  {showFullTerms ? "Show less" : "Show more"}
+                </Text>
+              </TouchableOpacity>
+            </>
+          )}
 
-      <Text
-        style={
-          styles.paragraph
-        }
-      >
-        Rating:
-        {" "}
-        {"⭐".repeat(
-          asset.rating
-        )}
-        {" "}
-        Reviews (
-        {
-          asset.reviewsCount
-        }
-        )
-      </Text>
+          {/* COMMENTS */}
+          {activeTab === "Comments & Reviews" && (
+            <>
+              <Text style={styles.sectionHeading}>Comments & Reviews</Text>
 
-      <TextInput
-        placeholder="Add Your Comment..."
-        placeholderTextColor="#8A8A8A"
-        style={
-          styles.commentInput
-        }
-      />
+              <Text style={styles.paragraph}>
+                Rating: {"⭐".repeat(asset.rating)} Reviews (
+                {asset.reviewsCount})
+              </Text>
 
-      <LinearGradient
-        colors={[
-          "#00C6FF",
-          "#7BFF5B",
-        ]}
-        style={
-          styles.commentButton
-        }
-      >
-        <Text
-          style={
-            styles.commentButtonText
-          }
-        >
-          Add Comment
-        </Text>
-      </LinearGradient>
-    </>
-  )}
+              <TextInput
+                placeholder="Add Your Comment..."
+                placeholderTextColor="#8A8A8A"
+                style={styles.commentInput}
+              />
 
-  {/* GALLERY */}
-  {activeTab ===
-    "Gallery" && (
-    <View
-      style={
-        styles.galleryGrid
-      }
-    >
-      {asset.gallery.map(
-        (
-          image,
-          index
-        ) => (
-          <Image
-            key={index}
-            source={require(
-              "../../assets/images/asusbanner.png"
-            )}
-            style={
-              styles.galleryImage
-            }
-          />
-        )
-      )}
-    </View>
-  )}
-</View>
+              <LinearGradient
+                colors={["#00C6FF", "#7BFF5B"]}
+                style={styles.commentButton}
+              >
+                <Text style={styles.commentButtonText}>Add Comment</Text>
+              </LinearGradient>
+            </>
+          )}
+
+          {/* GALLERY */}
+          {activeTab === "Gallery" && (
+            <View style={styles.galleryGrid}>
+              {asset.gallery.map((image, index) => (
+                <Image
+                  key={index}
+                  source={require("../../assets/images/asusbanner.png")}
+                  style={styles.galleryImage}
+                />
+              ))}
+            </View>
+          )}
+        </View>
       </ScrollView>
-      <Modal
-  visible={
-    showRentModal
-  }
-  transparent
-  animationType="fade"
->
-  <View
-    style={
-      styles.modalOverlay
-    }
-  >
-    <View
-      style={
-        styles.modalCard
-      }
-    >
-      <Text
-        style={
-          styles.modalTitle
-        }
-      >
-        Book{" "}
-        {
-          asset.companyName
-        }
-      </Text>
+      <Modal visible={showRentModal} transparent animationType="fade">
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalCard}>
+            <Text style={styles.modalTitle}>Book {asset.companyName}</Text>
 
-      {/* DATE ROW */}
-<View
-  style={
-    styles.dateRow
-  }
->
-  {/* START DATE */}
-  <View
-    style={
-      styles.dateBox
-    }
-  >
-    <Text
-      style={
-        styles.label
-      }
-    >
-      Start Date
-      <Text
-        style={{
-          color:
-            "red",
-        }}
-      >
-        {" "}
-        *
-      </Text>
-    </Text>
+            {/* DATE ROW */}
+            <View style={styles.dateRow}>
+              {/* START DATE */}
+              <View style={styles.dateBox}>
+                <Text style={styles.label}>
+                  Start Date
+                  <Text
+                    style={{
+                      color: "red",
+                    }}
+                  >
+                    {" "}
+                    *
+                  </Text>
+                </Text>
 
-    <TextInput
-      value={
-        startDate
-      }
-      onChangeText={text =>
-        setStartDate(
-          formatDate(
-            text
-          )
-        )
-      }
-      placeholder="DD/MM/YYYY"
-      placeholderTextColor="#8A8A8A"
-      keyboardType="numeric"
-      maxLength={10}
-      style={
-        styles.modalInput
-      }
-    />
-  </View>
+                <TextInput
+                  value={startDate}
+                  onChangeText={(text) => setStartDate(formatDate(text))}
+                  placeholder="DD/MM/YYYY"
+                  placeholderTextColor="#8A8A8A"
+                  keyboardType="numeric"
+                  maxLength={10}
+                  style={styles.modalInput}
+                />
+              </View>
 
-  {/* END DATE */}
-  <View
-    style={
-      styles.dateBox
-    }
-  >
-    <Text
-      style={
-        styles.label
-      }
-    >
-      End Date
-      <Text
-        style={{
-          color:
-            "red",
-        }}
-      >
-        {" "}
-        *
-      </Text>
-    </Text>
+              {/* END DATE */}
+              <View style={styles.dateBox}>
+                <Text style={styles.label}>
+                  End Date
+                  <Text
+                    style={{
+                      color: "red",
+                    }}
+                  >
+                    {" "}
+                    *
+                  </Text>
+                </Text>
 
-    <TextInput
-      value={
-        endDate
-      }
-      onChangeText={text =>
-        setEndDate(
-          formatDate(
-            text
-          )
-        )
-      }
-      placeholder="DD/MM/YYYY"
-      placeholderTextColor="#8A8A8A"
-      keyboardType="numeric"
-      maxLength={10}
-      style={
-        styles.modalInput
-      }
-    />
-  </View>
-</View>
+                <TextInput
+                  value={endDate}
+                  onChangeText={(text) => setEndDate(formatDate(text))}
+                  placeholder="DD/MM/YYYY"
+                  placeholderTextColor="#8A8A8A"
+                  keyboardType="numeric"
+                  maxLength={10}
+                  style={styles.modalInput}
+                />
+              </View>
+            </View>
 
-      {/* FORM */}
-      <Text
-        style={
-          styles.label
-        }
-      >
-        Full Name
-      </Text>
+            {/* FORM */}
+            <Text style={styles.label}>Full Name</Text>
 
-      <TextInput
-        placeholder="Enter your full name"
-        placeholderTextColor="#A3A3A3"
-        style={
-          styles.modalInput
-        }
-      />
+            <TextInput
+              placeholder="Enter your full name"
+              placeholderTextColor="#A3A3A3"
+              style={styles.modalInput}
+            />
 
-      <Text
-        style={
-          styles.label
-        }
-      >
-        Email Address
-      </Text>
+            <Text style={styles.label}>Email Address</Text>
 
-      <TextInput
-        placeholder="Enter your email"
-        placeholderTextColor="#A3A3A3"
-        style={
-          styles.modalInput
-        }
-      />
+            <TextInput
+              placeholder="Enter your email"
+              placeholderTextColor="#A3A3A3"
+              style={styles.modalInput}
+            />
 
-      <Text
-        style={
-          styles.label
-        }
-      >
-        Phone
-      </Text>
+            <Text style={styles.label}>Phone</Text>
 
-      <TextInput
-        placeholder="Enter your phone number"
-        placeholderTextColor="#A3A3A3"
-        style={
-          styles.modalInput
-        }
-      />
+            <TextInput
+              placeholder="Enter your phone number"
+              placeholderTextColor="#A3A3A3"
+              style={styles.modalInput}
+            />
 
-      <Text
-        style={
-          styles.label
-        }
-      >
-        Additional Request
-      </Text>
+            <Text style={styles.label}>Additional Request</Text>
 
-      <TextInput
-        multiline
-        placeholder="Any special requirements or message"
-        placeholderTextColor="#A3A3A3"
-        style={
-          styles.requestInput
-        }
-      />
+            <TextInput
+              multiline
+              placeholder="Any special requirements or message"
+              placeholderTextColor="#A3A3A3"
+              style={styles.requestInput}
+            />
 
-      <Text
-        style={
-          styles.noteText
-        }
-      >
-        * To send a
-        quote for
-        asset rental,
-        a fee of 5
-        points will
-        be applied.
-      </Text>
+            <Text style={styles.noteText}>
+              * To send a quote for asset rental, a fee of 5 points will be
+              applied.
+            </Text>
 
-      {/* BUTTONS */}
-      <View
-        style={
-          styles.modalButtonRow
-        }
-      >
-        <TouchableOpacity
-          style={
-            styles.cancelButton
-          }
-          onPress={() =>
-            setShowRentModal(
-              false
-            )
-          }
-        >
-          <Text
-            style={
-              styles.cancelText
-            }
-          >
-            Cancel
-          </Text>
-        </TouchableOpacity>
+            {/* BUTTONS */}
+            <View style={styles.modalButtonRow}>
+              <TouchableOpacity
+                style={styles.cancelButton}
+                onPress={() => setShowRentModal(false)}
+              >
+                <Text style={styles.cancelText}>Cancel</Text>
+              </TouchableOpacity>
 
-        <TouchableOpacity
-          style={
-            styles.sendButton
-          }
-        >
-          <Text
-            style={
-              styles.sendText
-            }
-          >
-            Send Request
-          </Text>
-        </TouchableOpacity>
-      </View>
-    </View>
-  </View>
-</Modal>
+              <TouchableOpacity style={styles.sendButton}>
+                <Text style={styles.sendText}>Send Request</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 }
@@ -908,22 +525,19 @@ const styles = StyleSheet.create({
   },
   locationImage: {
     width: scale(18),
-  
+
     height: scale(18),
-  
-    resizeMode:
-      "contain",
-  
-    marginRight:
-      scale(6),
+
+    resizeMode: "contain",
+
+    marginRight: scale(6),
   },
   shareIcon: {
     width: scale(20),
-  
+
     height: scale(20),
-  
-    resizeMode:
-      "contain",
+
+    resizeMode: "contain",
   },
 
   dateText: {
@@ -1186,222 +800,170 @@ const styles = StyleSheet.create({
   },
   modalOverlay: {
     flex: 1,
-    backgroundColor:
-      "rgba(0,0,0,0.75)",
-    justifyContent:
-      "center",
-    alignItems:
-      "center",
+    backgroundColor: "rgba(0,0,0,0.75)",
+    justifyContent: "center",
+    alignItems: "center",
   },
-  
+
   modalCard: {
     width: "92%",
-  
-    maxHeight:
-      verticalScale(520),
-  
-    backgroundColor:
-      "#000",
-  
+
+    maxHeight: verticalScale(520),
+
+    backgroundColor: "#000",
+
     borderWidth: 1,
-  
-    borderColor:
-      Colors.teal,
-  
-    borderRadius:
-      moderateScale(18),
-  
-    padding:
-      scale(14),
+
+    borderColor: Colors.teal,
+
+    borderRadius: moderateScale(18),
+
+    padding: scale(14),
   },
-  
+
   modalTitle: {
     color: "#FFF",
-  
-    fontSize:
-      moderateScale(20),
-  
-    fontWeight:
-      "700",
-  
-    marginBottom:
-      verticalScale(10),
+
+    fontSize: moderateScale(20),
+
+    fontWeight: "700",
+
+    marginBottom: verticalScale(10),
   },
-  
+
   dateRow: {
-    flexDirection:
-      "row",
-  
-    justifyContent:
-      "space-between",
+    flexDirection: "row",
+
+    justifyContent: "space-between",
   },
-  
+
   dateBox: {
     width: "48%",
   },
-  
+
   label: {
     color: "#FFF",
-  
-    fontSize:
-      moderateScale(14),
-  
-    fontWeight:
-      "600",
-  
-    marginBottom:
-      verticalScale(4),
-  
-    marginTop:
-      verticalScale(8),
+
+    fontSize: moderateScale(14),
+
+    fontWeight: "600",
+
+    marginBottom: verticalScale(4),
+
+    marginTop: verticalScale(8),
   },
-  
+
   inputBox: {
     borderWidth: 1,
-  
-    borderColor:
-      Colors.teal,
-  
-    borderRadius:
-      moderateScale(10),
-  
-    backgroundColor:
-      "#2A272B",
-  
-    paddingVertical:
-      verticalScale(10),
-  
-    paddingHorizontal:
-      scale(12),
+
+    borderColor: Colors.teal,
+
+    borderRadius: moderateScale(10),
+
+    backgroundColor: "#2A272B",
+
+    paddingVertical: verticalScale(10),
+
+    paddingHorizontal: scale(12),
   },
-  
+
   inputText: {
     color: "#FFF",
-  
-    fontSize:
-      moderateScale(14),
+
+    fontSize: moderateScale(14),
   },
-  
+
   modalInput: {
     borderWidth: 1,
-  
-    borderColor:
-      Colors.teal,
-  
-    borderRadius:
-      moderateScale(10),
-  
-    backgroundColor:
-      "#2A272B",
-  
+
+    borderColor: Colors.teal,
+
+    borderRadius: moderateScale(10),
+
+    backgroundColor: "#2A272B",
+
     color: "#FFF",
-  
-    paddingVertical:
-      verticalScale(10),
-  
-    paddingHorizontal:
-      scale(12),
-  
-    fontSize:
-      moderateScale(14),
+
+    paddingVertical: verticalScale(10),
+
+    paddingHorizontal: scale(12),
+
+    fontSize: moderateScale(14),
   },
-  
+
   requestInput: {
-    minHeight:
-      verticalScale(65),
-  
+    minHeight: verticalScale(65),
+
     borderWidth: 1,
-  
-    borderColor:
-      Colors.teal,
-  
-    borderRadius:
-      moderateScale(10),
-  
-    backgroundColor:
-      "#2A272B",
-  
+
+    borderColor: Colors.teal,
+
+    borderRadius: moderateScale(10),
+
+    backgroundColor: "#2A272B",
+
     color: "#FFF",
-  
-    padding:
-      scale(12),
-  
-    textAlignVertical:
-      "top",
+
+    padding: scale(12),
+
+    textAlignVertical: "top",
   },
-  
+
   noteText: {
     color: "#A3A3A3",
-  
-    fontSize:
-      moderateScale(12),
-  
-    marginTop:
-      verticalScale(8),
+
+    fontSize: moderateScale(12),
+
+    marginTop: verticalScale(8),
   },
-  
+
   modalButtonRow: {
-    flexDirection:
-      "row",
-  
-    justifyContent:
-      "space-between",
-  
-    marginTop:
-      verticalScale(14),
+    flexDirection: "row",
+
+    justifyContent: "space-between",
+
+    marginTop: verticalScale(14),
   },
-  
+
   cancelButton: {
     width: "46%",
-  
+
     borderWidth: 1,
-  
-    borderColor:
-      "#FF3B30",
-  
-    borderRadius:
-      moderateScale(10),
-  
-    alignItems:
-      "center",
-  
-    paddingVertical:
-      verticalScale(10),
+
+    borderColor: "#FF3B30",
+
+    borderRadius: moderateScale(10),
+
+    alignItems: "center",
+
+    paddingVertical: verticalScale(10),
   },
-  
+
   cancelText: {
     color: "#FFF",
-  
-    fontWeight:
-      "600",
-  
-    fontSize:
-      moderateScale(14),
+
+    fontWeight: "600",
+
+    fontSize: moderateScale(14),
   },
-  
+
   sendButton: {
     width: "46%",
-  
-    backgroundColor:
-      Colors.teal,
-  
-    borderRadius:
-      moderateScale(10),
-  
-    alignItems:
-      "center",
-  
-    paddingVertical:
-      verticalScale(10),
+
+    backgroundColor: Colors.teal,
+
+    borderRadius: moderateScale(10),
+
+    alignItems: "center",
+
+    paddingVertical: verticalScale(10),
   },
-  
+
   sendText: {
     color: "#000",
-  
-    fontWeight:
-      "700",
-  
-    fontSize:
-      moderateScale(14),
+
+    fontWeight: "700",
+
+    fontSize: moderateScale(14),
   },
 });

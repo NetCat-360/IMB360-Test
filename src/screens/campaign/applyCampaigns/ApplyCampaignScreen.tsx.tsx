@@ -37,10 +37,14 @@ export default function ApplyCampaignScreen() {
     const [agreed,
         setAgreed] =
         useState(false);
-  const campaign = useSelector(
-    (state: RootState) =>
-      state.campaign.campaign
-  );
+        const campaign =
+        useSelector(
+          (state: RootState) =>
+            state.campaign
+              .campaigns?.[0]
+        ) as
+          | RootState["campaign"]["campaigns"][0]
+          | undefined;
   const [uploadedFiles,
     setUploadedFiles] =
     useState<any[]>([]);

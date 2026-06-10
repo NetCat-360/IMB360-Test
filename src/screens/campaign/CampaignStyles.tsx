@@ -13,6 +13,150 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: Colors.bgBlack,
   },
+  filterBox: {
+    paddingHorizontal:
+      scale(20),
+  
+    marginTop:
+      verticalScale(8),
+  },
+  
+  searchBox: {
+    height:
+      verticalScale(52),
+  
+    borderWidth: 1,
+  
+    borderColor:
+      Colors.borderCyan,
+  
+    borderRadius:
+      moderateScale(18),
+  
+    backgroundColor:
+      "#1B1B1B",
+  
+    flexDirection:
+      "row",
+  
+    alignItems:
+      "center",
+  
+    paddingHorizontal:
+      scale(16),
+  
+    marginBottom:
+      verticalScale(14),
+  },
+  
+  placeholderText: {
+    color: "#888",
+  
+    fontFamily:
+      "Poppins-Regular",
+  
+    fontSize:
+      moderateScale(16),
+  
+    marginLeft:
+      scale(12),
+  
+    flex: 1,
+  
+    textAlign:
+      "center",
+  },
+  
+  dropdownItem: {
+    backgroundColor:
+      "#1B1B1B",
+  
+    height:
+      verticalScale(40),
+  
+    borderWidth: 1,
+  
+    borderColor:
+      Colors.borderCyan,
+  
+    borderRadius:
+      moderateScale(18),
+  
+    flexDirection:
+      "row",
+  
+    alignItems:
+      "center",
+  
+    justifyContent:
+      "space-between",
+  
+    paddingHorizontal:
+      scale(16),
+  
+    marginBottom:
+      verticalScale(12),
+  },
+  
+  dropdownLeft: {
+    flexDirection:
+      "row",
+  
+    alignItems:
+      "center",
+  
+    flex: 1,
+  },
+  
+  dropdownText: {
+    color:
+      Colors.textPrimary,
+  
+    fontFamily:
+      "Poppins-Regular",
+  
+    fontSize:
+      moderateScale(16),
+  
+    marginLeft:
+      scale(14),
+  },
+  
+  dropdownIcon: {
+    width:
+      scale(20),
+  
+    height:
+      scale(20),
+  
+    resizeMode:
+      "contain",
+  },
+  
+  downArrow: {
+    width:
+      scale(16),
+  
+    height:
+      scale(16),
+  
+    resizeMode:
+      "contain",
+  },
+  
+  searchButton: {
+    height:
+      verticalScale(52),
+  
+    borderRadius:
+      moderateScale(18),
+  
+    marginTop:
+      verticalScale(4),
+  
+    overflow:
+      "hidden",
+  },
 
   scrollContent: {
     flexGrow: 1,
@@ -113,69 +257,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
 
-  filterBox: {
-    paddingHorizontal: scale(20),
-    marginTop: verticalScale(8),
-  },
-
-  searchBox: {
-    height: verticalScale(32),
-    borderWidth: 1,
-    borderColor: Colors.borderCyan,
-    borderRadius: moderateScale(14),
-    backgroundColor: "#1B1B1B",
-    justifyContent: "center",
-    marginBottom: verticalScale(14),
-    position: "relative",
-    paddingLeft: scale(42),
-  },
-
-  placeholderText: {
-    color: "#888",
-    fontFamily: "Poppins-Regular",
-    textAlign: "center",
-    marginLeft: verticalScale(-40),
-  },
-
-  dropdownItem: {
-    backgroundColor: "#1B1B1B",
-    height: verticalScale(32),
-    borderWidth: 1,
-    borderColor: Colors.borderCyan,
-    borderRadius: moderateScale(14),
-    justifyContent: "center",
-    marginBottom: verticalScale(10),
-    position: "relative",
-    paddingLeft: scale(42),
-  },
-
-  dropdownText: {
-    color: Colors.textPrimary,
-    textAlign: "center",
-    marginLeft: verticalScale(-40),
-    fontFamily: "Poppins-Regular",
-  },
-
-  dropdownIcon: {
-    width: scale(18),
-    height: scale(18),
-    position: "absolute",
-    left: scale(14),
-  },
-
-  downArrow: {
-    width: scale(12),
-    height: scale(12),
-    position: "absolute",
-    right: scale(16),
-  },
-
-  searchButton: {
-    height: verticalScale(34),
-    borderRadius: moderateScale(14),
-    marginTop: verticalScale(2),
-    overflow: "hidden",
-  },
 
   // CARD
   card: {
@@ -485,6 +566,71 @@ const styles = StyleSheet.create({
     height: verticalScale(52),
     marginBottom: verticalScale(4),
   },
+ 
+  
+ 
+  
+  searchIcon: {
+    width:
+      moderateScale(22),
+  
+    height:
+      moderateScale(22),
+  
+    resizeMode:
+      "contain",
+  
+    tintColor:
+      "#B3B3B3",
+  },
+  
+  
+  filterDropdown: {
+    height:
+      verticalScale(52),
+  
+    borderWidth: 1,
+  
+    borderColor:
+      Colors.teal,
+  
+    borderRadius:
+      moderateScale(14),
+  
+    backgroundColor:
+      "#151515",
+  
+    paddingHorizontal:
+      moderateScale(16),
+  
+    flexDirection:
+      "row",
+  
+    alignItems:
+      "center",
+  
+    justifyContent:
+      "space-between",
+  },
+  
+ 
+ 
+  
+  arrowIcon: {
+    width:
+      moderateScale(18),
+  
+    height:
+      moderateScale(18),
+  
+    resizeMode:
+      "contain",
+  
+    tintColor:
+      "#FFF",
+  },
+  
+  
 });
 
 export default styles;

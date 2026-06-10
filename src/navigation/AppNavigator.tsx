@@ -18,8 +18,9 @@ import {
 /**
  * TAB SCREENS
  */
+import { Colors } from '../config/theme';
 import HomeScreen from '../screens/home/HomeScreen';
-import CampaignScreen from '../screens/campaign/CampaignScreen';
+import CampaignScreen from '../screens/campaign/CampaignScreen'
 import ExploreScreen from '../screens/explore/ExploreScreen';
 import AnalyticsScreen from '../screens/analytics/AnalyticsScreen';
 import AssetsScreen from '../screens/assets/AssetsScreen';
@@ -65,7 +66,14 @@ const ExploreStack = createNativeStackNavigator<ExploreStackParamList>();
 
 function CampaignStackNavigator() {
   return (
-    <CampaignStack.Navigator screenOptions={{ headerShown: false }}>
+    <CampaignStack.Navigator
+      screenOptions={{
+        headerShown: false,
+        contentStyle: {
+          backgroundColor: Colors.bgBlack,
+        },
+      }}
+    >
       <CampaignStack.Screen
         name="CampaignList"
         component={CampaignScreen}
@@ -198,10 +206,10 @@ function MainTabs() {
         component={HomeScreen}
       />
 
-      <Tab.Screen
-        name="Campaign"
-        component={CampaignStackNavigator}
-      />
+<Tab.Screen
+  name="Campaign"
+  component={CampaignScreen}
+/>
 
       <Tab.Screen
         name="Explore"
