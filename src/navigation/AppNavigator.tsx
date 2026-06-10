@@ -18,8 +18,9 @@ import {
 /**
  * TAB SCREENS
  */
+import { Colors } from '../config/theme';
 import HomeScreen from '../screens/home/HomeScreen';
-import CampaignScreen from '../screens/campaign/CampaignScreen';
+import CampaignScreen from '../screens/campaign/CampaignScreen'
 import ExploreScreen from '../screens/explore/ExploreScreen';
 import AnalyticsScreen from '../screens/analytics/AnalyticsScreen';
 import AssetsScreen from '../screens/assets/AssetsScreen';
@@ -52,6 +53,7 @@ import AdditionalInfoScreen from '../screens/settings/AdditionalInfo/AdditionalI
 import ViewPlansScreen from '../screens/settings/ViewPlans/ViewPlansScreen';
 import SubscriptionScreen from '../screens/settings/Subscription/SubscriptionScreen';
 import ChangePasswordScreen from '../screens/settings/ChangePassword/ChangePasswordScreen';
+import AssetDetailsScreen from '../screens/assets/AssetDetailsScreen';
 
 const Tab = createBottomTabNavigator<BottomTabParamList>();
 const Stack = createNativeStackNavigator<AppStackParamList>();
@@ -64,7 +66,14 @@ const ExploreStack = createNativeStackNavigator<ExploreStackParamList>();
 
 function CampaignStackNavigator() {
   return (
-    <CampaignStack.Navigator screenOptions={{ headerShown: false }}>
+    <CampaignStack.Navigator
+      screenOptions={{
+        headerShown: false,
+        contentStyle: {
+          backgroundColor: Colors.bgBlack,
+        },
+      }}
+    >
       <CampaignStack.Screen
         name="CampaignList"
         component={CampaignScreen}
@@ -197,10 +206,10 @@ function MainTabs() {
         component={HomeScreen}
       />
 
-      <Tab.Screen
-        name="Campaign"
-        component={CampaignStackNavigator}
-      />
+<Tab.Screen
+  name="Campaign"
+  component={CampaignScreen}
+/>
 
       <Tab.Screen
         name="Explore"
@@ -338,6 +347,10 @@ export default function AppNavigator() {
           AddAssetsScreen
         }
       />
+      <Stack.Screen
+  name="AssetDetails"
+  component={AssetDetailsScreen}
+/>
     </Stack.Navigator>
   );
 }

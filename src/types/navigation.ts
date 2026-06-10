@@ -278,6 +278,7 @@ export type AppStackParamList =
 
     AnalyticsScreen:
       undefined;
+    AssetDetails: undefined;
   };
 
 /* -------------------------------------------------------------------------- */

@@ -726,4 +726,133 @@ export default StyleSheet.create({
   submitButtonText: {
     color: Colors.bgBlack,
   },
+  filterBox: {
+    marginTop:
+      verticalScale(18),
+  
+    gap:
+      verticalScale(14),
+  },
+  
+  searchBox: {
+    height:
+      verticalScale(52),
+  
+    borderWidth: 1,
+  
+    borderColor:
+      Colors.teal,
+  
+    borderRadius:
+      moderateScale(14),
+  
+    backgroundColor:
+      "#2A272B",
+  
+    flexDirection:
+      "row",
+  
+    alignItems:
+      "center",
+  
+    paddingHorizontal:
+      moderateScale(16),
+  },
+  
+  searchIcon: {
+    width:
+      moderateScale(22),
+  
+    height:
+      moderateScale(22),
+  
+    resizeMode:
+      "contain",
+  
+    tintColor:
+      "#B3B3B3",
+  },
+  
+  placeholderText: {
+    color:
+      "#9E9E9E",
+  
+    fontSize:
+      moderateScale(16),
+  
+    marginLeft:
+      moderateScale(12),
+  },
+  
+  filterDropdown: {
+    height:
+      verticalScale(52),
+  
+    borderWidth: 1,
+  
+    borderColor:
+      Colors.teal,
+  
+    borderRadius:
+      moderateScale(14),
+  
+    backgroundColor:
+      "#151515",
+  
+    paddingHorizontal:
+      moderateScale(16),
+  
+    flexDirection:
+      "row",
+  
+    alignItems:
+      "center",
+  
+    justifyContent:
+      "space-between",
+  },
+  
+  dropdownLeft: {
+    flexDirection:
+      "row",
+  
+    alignItems:
+      "center",
+  },
+  
+  dropdownText: {
+    color:
+      "#FFF",
+  
+    fontSize:
+      moderateScale(16),
+  
+    marginLeft:
+      moderateScale(14),
+  },
+  
+  arrowIcon: {
+    width:
+      moderateScale(18),
+  
+    height:
+      moderateScale(18),
+  
+    resizeMode:
+      "contain",
+  
+    tintColor:
+      "#FFF",
+  },
+  
+  searchButton: {
+    marginTop:
+      verticalScale(8),
+  
+    borderRadius:
+      moderateScale(14),
+  
+    height:
+      verticalScale(52),
+  },
 });
