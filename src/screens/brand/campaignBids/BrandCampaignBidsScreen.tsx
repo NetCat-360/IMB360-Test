@@ -74,6 +74,10 @@ const CampaignBidsScreen = () => {
     (state: any) =>
       state.brandCampaignBids
   );
+  console.log(
+    "modalType:",
+    modalType
+  );
 
   const renderBidCard = ({
     item,
@@ -571,30 +575,28 @@ const CampaignBidsScreen = () => {
   )
 }
 <Modal
-  visible={
-    modalType !==
-    null
-  }
+  visible={modalType !== null}
   transparent
   animationType="fade"
+  statusBarTranslucent
+  onRequestClose={() =>
+    setModalType(null)
+  }
 >
-  <View
-    style={
-      styles.modalOverlay
+  <TouchableOpacity
+    activeOpacity={1}
+    style={styles.modalOverlay}
+    onPress={() =>
+      setModalType(null)
     }
   >
-    <View
-      style={
-        styles.modalCard
-      }
+    <TouchableOpacity
+      activeOpacity={1}
+      style={styles.modalCard}
+      onPress={() => {}}
     >
-      <Text
-        style={
-          styles.modalTitle
-        }
-      >
-        {modalType ===
-        "accept"
+      <Text style={styles.modalTitle}>
+        {modalType === "accept"
           ? "Accept Bid"
           : modalType ===
             "reject"
@@ -605,21 +607,17 @@ const CampaignBidsScreen = () => {
           : "Release Payment"}
       </Text>
 
-      <Text
-        style={
-          styles.modalText
-        }
-      >
+      <Text style={styles.modalText}>
         {modalType ===
         "accept"
-          ? "Are you sure you want to accept this bid for this campaign ?"
+          ? "Are you sure you want to accept this bid for this campaign?"
           : modalType ===
             "reject"
-          ? "Are you sure you want to reject this bid for this campaign ?"
+          ? "Are you sure you want to reject this bid for this campaign?"
           : modalType ===
             "report"
-          ? "We’re sorry you’re not satisfied with the agent’s service. Please share your feedback"
-          : "Are you sure, you want to release the Payment?"}
+          ? "We're sorry you're not satisfied with the agent's service."
+          : "Are you sure you want to release the payment?"}
       </Text>
 
       <View
@@ -655,48 +653,40 @@ const CampaignBidsScreen = () => {
               selectedId !==
               null
             ) {
-              if (
-                modalType ===
-                "accept"
+              switch (
+                modalType
               ) {
-                dispatch(
-                  acceptBid(
-                    selectedId
-                  )
-                );
-              }
+                case "accept":
+                  dispatch(
+                    acceptBid(
+                      selectedId
+                    )
+                  );
+                  break;
 
-              if (
-                modalType ===
-                "reject"
-              ) {
-                dispatch(
-                  rejectBid(
-                    selectedId
-                  )
-                );
-              }
+                case "reject":
+                  dispatch(
+                    rejectBid(
+                      selectedId
+                    )
+                  );
+                  break;
 
-              if (
-                modalType ===
-                "release"
-              ) {
-                dispatch(
-                  releasePayment(
-                    selectedId
-                  )
-                );
-              }
+                case "release":
+                  dispatch(
+                    releasePayment(
+                      selectedId
+                    )
+                  );
+                  break;
 
-              if (
-                modalType ===
-                "report"
-              ) {
-                dispatch(
-                  reportIssue(
-                    selectedId
-                  )
-                );
+                case "report":
+                  dispatch(
+                    reportIssue(
+                      selectedId
+                    )
+                  );
+                  break;
               }
             }
 
@@ -723,8 +713,8 @@ const CampaignBidsScreen = () => {
           </Text>
         </TouchableOpacity>
       </View>
-    </View>
-  </View>
+    </TouchableOpacity>
+  </TouchableOpacity>
 </Modal>
     </SafeAreaView>
   );

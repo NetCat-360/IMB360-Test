@@ -6,7 +6,10 @@ import {
   TouchableOpacity,
 } from "react-native";
 
-import { useNavigation } from "@react-navigation/native";
+import {
+  useNavigation,
+  CommonActions,
+} from "@react-navigation/native";
 
 import styles from "../screens/campaign/CampaignStyles";
 
@@ -19,7 +22,8 @@ export default function AppHeader({
   showSettings = true,
   showChat = true,
 }: AppHeaderProps) {
-  const navigation = useNavigation();
+  const navigation =
+  useNavigation<any>();
 
   return (
     <View style={styles.topBar}>
@@ -44,24 +48,33 @@ export default function AppHeader({
           </TouchableOpacity>
         )}
 
-        {showSettings && (
-          <TouchableOpacity
-            style={styles.topBarIcon}
-            onPress={() =>
-              navigation.navigate(
-                "Settings" as never
-              )
-            }
-          >
-            <Text
-              style={
-                styles.topBarIconText
-              }
-            >
-              ⚙️
-            </Text>
-          </TouchableOpacity>
-        )}
+{showSettings && (
+  <TouchableOpacity
+    style={
+      styles.topBarIcon
+    }
+    onPress={() => {
+      const parent =
+        navigation.getParent();
+
+      parent?.navigate(
+        "Profile",
+        {
+          screen:
+            "Settings",
+        }
+      );
+    }}
+  >
+    <Text
+      style={
+        styles.topBarIconText
+      }
+    >
+      ⚙️
+    </Text>
+  </TouchableOpacity>
+)}
       </View>
     </View>
   );

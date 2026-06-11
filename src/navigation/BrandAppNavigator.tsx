@@ -53,9 +53,11 @@ from '../screens/assets/AssetsScreen';
 
 import AssetDetailsScreen
 from '../screens/assets/AssetDetailsScreen';
+import BrandCampaignDetailsScreen
+from "../screens/brand/CampaignTabs/BrandCampaignDetailsScreen";
 
 import Campaigns
-from '../screens/campaign/Campaigns';
+from '../screens/brand/CampaignTabs/BrandCampaignTabScreen';
 
 import SettingsScreen
 from '../screens/settings/SettingsScreen';
@@ -258,6 +260,102 @@ function AssetsStack() {
         name="AssetDetails"
         component={
           AssetDetailsScreen
+        }
+      />
+
+      <Stack.Screen
+        name="Settings"
+        component={
+          SettingsScreen
+        }
+      />
+    </Stack.Navigator>
+  );
+}
+
+/* -------------------------------------------------------------------------- */
+/*                            CAMPAIGNS STACK                                 */
+/* -------------------------------------------------------------------------- */
+
+function CampaignsStack() {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerShown:
+          false,
+
+        contentStyle: {
+          backgroundColor:
+            Colors.bgBlack,
+        },
+      }}
+    >
+      <Stack.Screen
+        name="BrandCampaignTab"
+        component={
+          Campaigns
+        }
+      />
+      <Stack.Screen
+  name="BrandCampaignDetails"
+  component={
+    BrandCampaignDetailsScreen
+  }
+/>
+
+      <Stack.Screen
+        name="Settings"
+        component={
+          SettingsScreen
+        }
+      />
+
+      <Stack.Screen
+        name="ManageAccount"
+        component={
+          ManageAccountScreen
+        }
+      />
+
+      <Stack.Screen
+        name="Bio"
+        component={
+          BioScreen
+        }
+      />
+
+      <Stack.Screen
+        name="SocialMedia"
+        component={
+          SocialMediaScreen
+        }
+      />
+
+      <Stack.Screen
+        name="AdditionalInfo"
+        component={
+          AdditionalInfoScreen
+        }
+      />
+
+      <Stack.Screen
+        name="ViewPlans"
+        component={
+          ViewPlansScreen
+        }
+      />
+
+      <Stack.Screen
+        name="Subscription"
+        component={
+          SubscriptionScreen
+        }
+      />
+
+      <Stack.Screen
+        name="ChangePassword"
+        component={
+          ChangePasswordScreen
         }
       />
     </Stack.Navigator>
@@ -470,7 +568,7 @@ BrandNavigator() {
       <Tab.Screen
         name="Campaigns"
         component={
-          Campaigns
+          CampaignsStack
         }
       />
     </Tab.Navigator>

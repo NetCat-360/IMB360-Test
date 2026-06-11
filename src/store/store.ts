@@ -28,7 +28,8 @@ import totalSpendReducer
 from "./slices/Brand/totalSpendSlice";
 import createCampaignReducer
 from "./slices/Brand/createCampaignSlice";
-
+import brandCampaignTabReducer
+from "./slices/Brand/brandCampaignTabSlice";
   export const store =
     configureStore({
       reducer: {
@@ -46,6 +47,7 @@ from "./slices/Brand/createCampaignSlice";
         brandCampaign: brandCampaignReducer,
         brandCampaignBids: brandCampaignBidsReducer,
         totalSpend: totalSpendReducer,
+        brandCampaignTab: brandCampaignTabReducer,
         createCampaign: createCampaignReducer,
       },
     })

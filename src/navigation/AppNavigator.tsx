@@ -208,7 +208,9 @@ function MainTabs() {
 
 <Tab.Screen
   name="Campaign"
-  component={CampaignScreen}
+  component={
+    CampaignStackNavigator
+  }
 />
 
       <Tab.Screen
