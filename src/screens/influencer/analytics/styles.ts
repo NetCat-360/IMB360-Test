@@ -1,0 +1,255 @@
+import { StyleSheet } from 'react-native';
+import { Colors } from '../../../config/theme';
+import { scale, verticalScale, moderateScale } from '../../../utils/scaling';
+
+export default StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: Colors.bgBlack,
+  },
+  headerBarContainer: {
+    height: verticalScale(50),
+    backgroundColor: Colors.bgBlack,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: scale(16),
+    borderBottomWidth: 1,
+    borderBottomColor: '#00ACB34D',
+  },
+  appLogoImage: {
+    width: scale(100),
+    height: verticalScale(28),
+  },
+  dropdownSelectorButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: Colors.bgInput,
+    paddingHorizontal: scale(12),
+    paddingVertical: verticalScale(6),
+    borderRadius: moderateScale(8),
+  },
+  dropdownArrowIcon: {
+    width: 0,
+    height: 0,
+    borderLeftWidth: scale(4),
+    borderRightWidth: scale(4),
+    borderTopWidth: verticalScale(5),
+    borderLeftColor: 'transparent',
+    borderRightColor: 'transparent',
+    borderTopColor: Colors.textSecondary,
+    marginLeft: scale(6),
+    marginTop: verticalScale(2),
+  },
+  loadingWrapper: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: Colors.bgBlack,
+  },
+  scrollContent: {
+    paddingHorizontal: scale(16),
+    paddingTop: verticalScale(18),
+  },
+  textWhite: {
+    color: Colors.textPrimary,
+  },
+  textSecondary: {
+    color: Colors.textSecondary,
+  },
+  textMuted: {
+    color: Colors.textMuted,
+  },
+  cardLabelColor: {
+    color: Colors.textPrimary,
+    fontFamily: 'Poppins-Medium',
+  },
+  statValueText: {
+    color: Colors.success,
+    marginVertical: verticalScale(4),
+  },
+  statsGridContainer: {
+    width: '100%',
+    marginBottom: verticalScale(10),
+  },
+  gridRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: verticalScale(12),
+  },
+  statCard: {
+    width: '48.5%',
+    backgroundColor: '#302e2e',
+    borderWidth: 1,
+    borderColor: '#00ACB399',
+    borderRadius: moderateScale(14),
+    paddingHorizontal: scale(14),
+    paddingVertical: verticalScale(12),
+  },
+  largeCard: {
+    backgroundColor: '#302e2e',
+    borderWidth: 1,
+    borderColor: '#00ACB399',
+    borderRadius: moderateScale(16),
+    padding: scale(16),
+    marginTop: verticalScale(15),
+  },
+  cardHeaderRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: verticalScale(20),
+  },
+  legendRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  legendDot: {
+    width: scale(8),
+    height: scale(8),
+    borderRadius: moderateScale(4),
+  },
+  chartContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-end',
+    height: verticalScale(120),
+    paddingHorizontal: scale(4),
+  },
+  chartColumn: {
+    alignItems: 'center',
+    flex: 1,
+  },
+  barTrack: {
+    height: verticalScale(100),
+    justifyContent: 'flex-end',
+    width: scale(12),
+    backgroundColor: '#1C1C1E',
+    borderRadius: moderateScale(6),
+  },
+  barFill: {
+    width: '100%',
+    backgroundColor: Colors.teal,
+    borderRadius: moderateScale(6),
+  },
+  chartAxisLabel: {
+    color: Colors.textDim,
+    marginTop: verticalScale(8),
+    fontSize: moderateScale(9),
+  },
+  distributionContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  donutWrapper: {
+    position: 'relative',
+    width: scale(90),
+    height: scale(90),
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  donutCenterTextContainer: {
+    position: 'absolute',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  legendBlock: {
+    flex: 1,
+    marginLeft: scale(24),
+  },
+  platformLegendItem: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: verticalScale(10),
+  },
+  platformLabelGroup: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  platformPercentage: {
+    fontFamily: 'Poppins-SemiBold',
+  },
+  subSectionTitle: {
+    color: Colors.textPrimary,
+    fontFamily: 'Poppins-SemiBold',
+    letterSpacing: 0.5,
+    marginBottom: verticalScale(10),
+  },
+  genderBarTrack: {
+    flexDirection: 'row',
+    height: verticalScale(24),
+    width: '100%',
+    borderRadius: moderateScale(6),
+    overflow: 'hidden',
+  },
+  genderBarFill: {
+    height: '100%',
+    justifyContent: 'center',
+    paddingHorizontal: scale(10),
+  },
+  genderBarText: {
+    fontSize: moderateScale(10),
+    fontFamily: 'Poppins-Medium',
+    color: Colors.textPrimary,
+  },
+  ageDemographicRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: verticalScale(12),
+  },
+  ageProgressTrack: {
+    flex: 1,
+    height: verticalScale(8),
+    backgroundColor: Colors.bgInput,
+    borderRadius: moderateScale(4),
+    marginHorizontal: scale(12),
+    overflow: 'hidden',
+  },
+  ageProgressBarFill: {
+    height: '100%',
+    backgroundColor: Colors.teal,
+    borderRadius: moderateScale(4),
+  },
+  insightRowCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#302e2e',
+    borderWidth: 1,
+    borderColor: '#00ACB399',
+    borderRadius: moderateScale(14),
+    padding: scale(14),
+    marginBottom: verticalScale(10),
+  },
+  insightIconBadge: {
+    width: scale(36),
+    height: scale(36),
+    borderRadius: moderateScale(18),
+    backgroundColor: '#00D5FF1A',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  innerBadgeDot: {
+    width: scale(10),
+    height: scale(10),
+    borderRadius: moderateScale(5),
+  },
+  insightTextContainer: {
+    marginLeft: scale(14),
+    flex: 1,
+  },
+  recommendationCard: {
+    backgroundColor: '#302e2e',
+    borderWidth: 1,
+    borderColor: '#00ACB399',
+    borderRadius: moderateScale(14),
+    padding: scale(14),
+    marginBottom: verticalScale(12),
+  },
+  recHeaderRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+  },
+});

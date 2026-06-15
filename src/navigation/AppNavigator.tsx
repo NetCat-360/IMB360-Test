@@ -19,15 +19,7 @@ import {
  * TAB SCREENS
  */
 import { Colors } from '../config/theme';
-import HomeScreen from '../screens/home/HomeScreen';
-import CampaignScreen from '../screens/campaign/CampaignScreen'
-import ExploreScreen from '../screens/explore/ExploreScreen';
-import AnalyticsScreen from '../screens/analytics/AnalyticsScreen';
 import AssetsScreen from '../screens/assets/AssetsScreen';
-import CampaignQueueScreen from '../screens/CampaignQueue/CampaignQueueScreen';
-import ContentScreen from '../screens/content/ContentScreen';
-import OverviewScreen from '../screens/overview/OverviewScreen';
-import MyEarnings from '../screens/MyEarnings/MyEarnings';
 import InfluencerProfileScreen from '../screens/explore/InfluencerProfileScreen';
 import RequestQuoteScreen from '../screens/explore/RequestQuoteScreen';
 import AddAssetsScreen
@@ -35,15 +27,23 @@ from '../screens/assets/addAssets/AddAssetsScreen';
 /**
  * STACK SCREENS
  */
-import AddContentScreen from '../screens/content/AddContentScreen';
-import EditContentScreen from '../screens/content/EditContentScreen';
+import HomeScreen from '../screens/influencer/home/HomeScreen';
+import CampaignScreen from '../screens/influencer/campaign/CampaignScreen'
+import ExploreScreen from '../screens/influencer/explore/ExploreScreen';
+import AnalyticsScreen from '../screens/influencer/analytics/AnalyticsScreen';
+import CampaignQueueScreen from '../screens/influencer/CampaignQueue/CampaignQueueScreen';
+import ContentScreen from '../screens/influencer/content/ContentScreen';
+import OverviewScreen from '../screens/influencer/overview/OverviewScreen';
+import MyEarnings from '../screens/influencer/MyEarnings/MyEarnings';
+import AddContentScreen from '../screens/influencer/content/AddContentScreen';
+import EditContentScreen from '../screens/influencer/content/EditContentScreen';
 
-import PricingScreen from '../screens/pricing/PricingScreen';
-import AddPricingScreen from '../screens/pricing/AddPricingScreen';
-import EditPricingScreen from '../screens/pricing/EditPricingScreen';
+import PricingScreen from '../screens/influencer/pricing/PricingScreen';
+import AddPricingScreen from '../screens/influencer/pricing/AddPricingScreen';
+import EditPricingScreen from '../screens/influencer/pricing/EditPricingScreen';
 
-import CampaignURLScreen from '../screens/CampaignQueue/CampaignURLScreen';
-import ApplyCampaignScreen from '../screens/campaign/ApplyCampaignScreen';
+import CampaignURLScreen from '../screens/influencer/CampaignQueue/CampaignURLScreen';
+import ApplyCampaignScreen from '../screens/influencer/campaign/ApplyCampaignScreen';
 
 import SettingsScreen from '../screens/settings/SettingsScreen';
 import ManageAccountScreen from '../screens/settings/ManageAccount/ManageAccountScreen';

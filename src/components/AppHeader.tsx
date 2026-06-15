@@ -11,7 +11,7 @@ import {
   CommonActions,
 } from "@react-navigation/native";
 
-import styles from "../screens/campaign/CampaignStyles";
+import styles from "../screens/influencer/campaign/CampaignStyles";
 
 type AppHeaderProps = {
   showSettings?: boolean;
