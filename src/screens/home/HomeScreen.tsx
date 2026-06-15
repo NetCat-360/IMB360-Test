@@ -17,6 +17,7 @@ import { verticalScale } from '../../utils/scaling';
 import { Colors } from '../../config/theme';
 import Typography from '../../styles/typography';
 import styles from './styles';
+import AppHeader from '../../components/AppHeader';
 
 type HomeNavProp = NativeStackNavigationProp<AppStackParamList, 'Home'>;
 
@@ -74,24 +75,7 @@ export default function HomeScreen() {
       <StatusBar barStyle="light-content" backgroundColor={Colors.bgBlack} />
 
       {/* Top Bar */}
-      <View style={styles.topBar}>
-        <Image
-          source={require('../../assets/images/IMB360_v2.png')}
-          style={styles.topBarLogo}
-          resizeMode="contain"
-        />
-        <View style={styles.topBarActions}>
-          <Pressable style={styles.topBarIcon}>
-            <Text style={styles.topBarIconText}>💬</Text>
-          </Pressable>
-          <Pressable
-            style={styles.topBarIcon}
-            onPress={() => navigation.navigate('Settings')}
-          >
-            <Text style={styles.topBarIconText}>⚙️</Text>
-          </Pressable>
-        </View>
-      </View>
+      <AppHeader />
 
       <ScrollView
         showsVerticalScrollIndicator={false}

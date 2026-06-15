@@ -1,4 +1,5 @@
 import React from "react";
+
 import {
   View,
   Text,
@@ -8,35 +9,53 @@ import {
 
 import {
   useNavigation,
-  CommonActions,
 } from "@react-navigation/native";
 
-import styles from "../screens/campaign/CampaignStyles";
+import styles
+from "../screens/campaign/CampaignStyles";
 
 type AppHeaderProps = {
   showSettings?: boolean;
   showChat?: boolean;
 };
 
-export default function AppHeader({
+export default function
+AppHeader({
   showSettings = true,
   showChat = true,
 }: AppHeaderProps) {
+
   const navigation =
-  useNavigation<any>();
+    useNavigation<any>();
 
   return (
     <View style={styles.topBar}>
       <Image
-        source={require("../assets/images/IMB360_v2.png")}
-        style={styles.topBarLogo}
+        source={require(
+          "../assets/images/IMB360_v2.png"
+        )}
+        style={
+          styles.topBarLogo
+        }
         resizeMode="contain"
       />
 
-      <View style={styles.topBarActions}>
+      <View
+        style={
+          styles.topBarActions
+        }
+      >
+        {/* CHAT */}
         {showChat && (
           <TouchableOpacity
-            style={styles.topBarIcon}
+            style={
+              styles.topBarIcon
+            }
+            onPress={() => {
+              navigation.navigate(
+                "Chat"
+              );
+            }}
           >
             <Text
               style={
@@ -48,33 +67,27 @@ export default function AppHeader({
           </TouchableOpacity>
         )}
 
-{showSettings && (
-  <TouchableOpacity
-    style={
-      styles.topBarIcon
-    }
-    onPress={() => {
-      const parent =
-        navigation.getParent();
-
-      parent?.navigate(
-        "Profile",
-        {
-          screen:
-            "Settings",
-        }
-      );
-    }}
-  >
-    <Text
-      style={
-        styles.topBarIconText
-      }
-    >
-      ⚙️
-    </Text>
-  </TouchableOpacity>
-)}
+        {/* SETTINGS */}
+        {showSettings && (
+          <TouchableOpacity
+            style={
+              styles.topBarIcon
+            }
+            onPress={() => {
+              navigation.navigate(
+                "Settings"
+              );
+            }}
+          >
+            <Text
+              style={
+                styles.topBarIconText
+              }
+            >
+              ⚙️
+            </Text>
+          </TouchableOpacity>
+        )}
       </View>
     </View>
   );

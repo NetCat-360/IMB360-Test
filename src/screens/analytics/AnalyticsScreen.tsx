@@ -15,6 +15,7 @@ import { scale, verticalScale, moderateScale } from '../../utils/scaling';
 import { Colors } from '../../config/theme';
 import Typography from '../../styles/typography';
 import styles from './styles';
+import AppHeader from '../../components/AppHeader';
 
 // ==========================================
 // Static Mock Data Matrix
@@ -310,13 +311,7 @@ export default function AnalyticsScreen() {
       <StatusBar barStyle="light-content" backgroundColor={Colors.bgBlack} />
 
       {/* Structured Corporate Logo Header Bar */}
-      <View style={styles.headerBarContainer}>
-        <Image
-          source={require('../../assets/images/IMB360_v2.png')}
-          style={styles.appLogoImage}
-          resizeMode="contain"
-        />
-      </View>
+      <AppHeader></AppHeader>
 
       {loading ? (
         <View style={styles.loadingWrapper}>

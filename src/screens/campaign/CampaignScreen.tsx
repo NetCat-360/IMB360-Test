@@ -20,6 +20,7 @@ import { CURRENCY } from '../../config/constants';
 import TextField from '../../components/common/TextField/TextField';
 import { AppStackParamList } from '../../types/navigation';
 import styles from './styles';
+import AppHeader from '../../components/AppHeader';
 
 interface CampaignItem {
   id: string;
@@ -304,13 +305,7 @@ export default function CampaignScreen() {
     <SafeAreaView style={styles.container} edges={['top']}>
       <StatusBar barStyle="light-content" backgroundColor={Colors.bgBlack} />
       
-      <View style={styles.headerBarContainer}>
-        <Image
-          source={require('../../assets/images/IMB360_v2.png')}
-          style={styles.appLogoImage}
-          resizeMode="contain"
-        />
-      </View>
+      <AppHeader></AppHeader>
 
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollLayoutContent}>
         <View style={styles.browseCampaignsOuterBlockContainer}>

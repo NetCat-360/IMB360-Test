@@ -1,12 +1,31 @@
 import React from 'react';
 import { View } from 'react-native';
 
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import {
+  createBottomTabNavigator,
+} from '@react-navigation/bottom-tabs';
 
-import { SvgXml } from 'react-native-svg';
+import {
+  createNativeStackNavigator,
+} from '@react-navigation/native-stack';
 
-import { NB_PROFILE_SVG, NB_PROFILE_ACTIVE_SVG, NB_CAMPAIGN_SVG, NB_CAMPAIGN_ACTIVE_SVG, NB_EXPLORE_SVG, NB_EXPLORE_ACTIVE_SVG, NB_ANALYTICS_SVG, NB_ANALYTICS_ACTIVE_SVG, NB_ASSETS_SVG, NB_ASSETS_ACTIVE_SVG, navbarIconContainerStyle } from './navbarIcons';
+import {
+  SvgXml,
+} from 'react-native-svg';
+
+import {
+  NB_PROFILE_SVG,
+  NB_PROFILE_ACTIVE_SVG,
+  NB_CAMPAIGN_SVG,
+  NB_CAMPAIGN_ACTIVE_SVG,
+  NB_EXPLORE_SVG,
+  NB_EXPLORE_ACTIVE_SVG,
+  NB_ANALYTICS_SVG,
+  NB_ANALYTICS_ACTIVE_SVG,
+  NB_ASSETS_SVG,
+  NB_ASSETS_ACTIVE_SVG,
+  navbarIconContainerStyle,
+} from './navbarIcons';
 
 import {
   BottomTabParamList,
@@ -15,344 +34,647 @@ import {
   ExploreStackParamList,
 } from '../types/navigation';
 
-/**
- * TAB SCREENS
- */
-import { Colors } from '../config/theme';
-import HomeScreen from '../screens/home/HomeScreen';
-import CampaignScreen from '../screens/campaign/CampaignScreen'
-import ExploreScreen from '../screens/explore/ExploreScreen';
-import AnalyticsScreen from '../screens/analytics/AnalyticsScreen';
-import AssetsScreen from '../screens/assets/AssetsScreen';
-import CampaignQueueScreen from '../screens/CampaignQueue/CampaignQueueScreen';
-import ContentScreen from '../screens/content/ContentScreen';
-import OverviewScreen from '../screens/overview/OverviewScreen';
-import MyEarnings from '../screens/MyEarnings/MyEarnings';
-import InfluencerProfileScreen from '../screens/explore/InfluencerProfileScreen';
-import RequestQuoteScreen from '../screens/explore/RequestQuoteScreen';
+import {
+  Colors,
+} from '../config/theme';
+
+/* -------------------------------------------------------------------------- */
+/*                                   SCREENS                                  */
+/* -------------------------------------------------------------------------- */
+
+import HomeScreen
+from '../screens/home/HomeScreen';
+
+import CampaignScreen
+from '../screens/campaign/CampaignScreen';
+
+import ExploreScreen
+from '../screens/explore/ExploreScreen';
+
+import AnalyticsScreen
+from '../screens/analytics/AnalyticsScreen';
+
+import AssetsScreen
+from '../screens/assets/AssetsScreen';
+
+import AssetDetailsScreen
+from '../screens/assets/AssetDetailsScreen';
+
 import AddAssetsScreen
 from '../screens/assets/addAssets/AddAssetsScreen';
-/**
- * STACK SCREENS
- */
-import AddContentScreen from '../screens/content/AddContentScreen';
-import EditContentScreen from '../screens/content/EditContentScreen';
 
-import PricingScreen from '../screens/pricing/PricingScreen';
-import AddPricingScreen from '../screens/pricing/AddPricingScreen';
-import EditPricingScreen from '../screens/pricing/EditPricingScreen';
+import CampaignQueueScreen
+from '../screens/CampaignQueue/CampaignQueueScreen';
 
-import CampaignURLScreen from '../screens/CampaignQueue/CampaignURLScreen';
-import ApplyCampaignScreen from '../screens/campaign/ApplyCampaignScreen';
+import ContentScreen
+from '../screens/content/ContentScreen';
 
-import SettingsScreen from '../screens/settings/SettingsScreen';
-import ManageAccountScreen from '../screens/settings/ManageAccount/ManageAccountScreen';
-import BioScreen from '../screens/settings/Bio/BioScreen';
-import SocialMediaScreen from '../screens/settings/SocialMedia/SocialMediaScreen';
-import AdditionalInfoScreen from '../screens/settings/AdditionalInfo/AdditionalInfoScreen';
-import ViewPlansScreen from '../screens/settings/ViewPlans/ViewPlansScreen';
-import SubscriptionScreen from '../screens/settings/Subscription/SubscriptionScreen';
-import ChangePasswordScreen from '../screens/settings/ChangePassword/ChangePasswordScreen';
-import AssetDetailsScreen from '../screens/assets/AssetDetailsScreen';
+import OverviewScreen
+from '../screens/overview/OverviewScreen';
 
-const Tab = createBottomTabNavigator<BottomTabParamList>();
-const Stack = createNativeStackNavigator<AppStackParamList>();
+import MyEarnings
+from '../screens/MyEarnings/MyEarnings';
 
-/**
- * TABS
- */
-const CampaignStack = createNativeStackNavigator<CampaignStackParamList>();
-const ExploreStack = createNativeStackNavigator<ExploreStackParamList>();
+import InfluencerProfileScreen
+from '../screens/explore/InfluencerProfileScreen';
+
+import RequestQuoteScreen
+from '../screens/explore/RequestQuoteScreen';
+
+import AddContentScreen
+from '../screens/content/AddContentScreen';
+
+import EditContentScreen
+from '../screens/content/EditContentScreen';
+
+import PricingScreen
+from '../screens/pricing/PricingScreen';
+
+import AddPricingScreen
+from '../screens/pricing/AddPricingScreen';
+
+import EditPricingScreen
+from '../screens/pricing/EditPricingScreen';
+
+import CampaignURLScreen
+from '../screens/CampaignQueue/CampaignURLScreen';
+
+import ApplyCampaignScreen
+from '../screens/campaign/ApplyCampaignScreen';
+
+import SettingsScreen
+from '../screens/settings/SettingsScreen';
+
+import ManageAccountScreen
+from '../screens/settings/ManageAccount/ManageAccountScreen';
+
+import BioScreen
+from '../screens/settings/Bio/BioScreen';
+
+import SocialMediaScreen
+from '../screens/settings/SocialMedia/SocialMediaScreen';
+
+import AdditionalInfoScreen
+from '../screens/settings/AdditionalInfo/AdditionalInfoScreen';
+
+import ViewPlansScreen
+from '../screens/settings/ViewPlans/ViewPlansScreen';
+
+import SubscriptionScreen
+from '../screens/settings/Subscription/SubscriptionScreen';
+
+import ChangePasswordScreen
+from '../screens/settings/ChangePassword/ChangePasswordScreen';
+
+import ChatScreen
+from '../screens/chat/ChatScreen';
+
+import ChatRoomScreen
+from '../screens/chat/ChatRoomScreen';
+
+/* -------------------------------------------------------------------------- */
+/*                                NAVIGATORS                                  */
+/* -------------------------------------------------------------------------- */
+
+const Tab =
+  createBottomTabNavigator<BottomTabParamList>();
+
+const Stack =
+  createNativeStackNavigator<AppStackParamList>();
+
+const CampaignStack =
+  createNativeStackNavigator<CampaignStackParamList>();
+
+const ExploreStack =
+  createNativeStackNavigator<ExploreStackParamList>();
+
+const AssetsStack =
+  createNativeStackNavigator();
+
+/* -------------------------------------------------------------------------- */
+/*                            CAMPAIGN STACK                                  */
+/* -------------------------------------------------------------------------- */
 
 function CampaignStackNavigator() {
   return (
     <CampaignStack.Navigator
       screenOptions={{
         headerShown: false,
+
         contentStyle: {
-          backgroundColor: Colors.bgBlack,
+          backgroundColor:
+            Colors.bgBlack,
         },
       }}
     >
       <CampaignStack.Screen
         name="CampaignList"
-        component={CampaignScreen}
+        component={
+          CampaignScreen
+        }
       />
+
       <CampaignStack.Screen
         name="ApplyCampaign"
-        component={ApplyCampaignScreen}
+        component={
+          ApplyCampaignScreen
+        }
       />
     </CampaignStack.Navigator>
   );
 }
 
+/* -------------------------------------------------------------------------- */
+/*                            EXPLORE STACK                                   */
+/* -------------------------------------------------------------------------- */
+
 function ExploreStackNavigator() {
   return (
-    <ExploreStack.Navigator screenOptions={{ headerShown: false }}>
+    <ExploreStack.Navigator
+      screenOptions={{
+        headerShown:
+          false,
+      }}
+    >
       <ExploreStack.Screen
         name="ExploreList"
-        component={ExploreScreen}
+        component={
+          ExploreScreen
+        }
       />
+
       <ExploreStack.Screen
         name="InfluencerProfile"
-        component={InfluencerProfileScreen}
+        component={
+          InfluencerProfileScreen
+        }
       />
+
       <ExploreStack.Screen
         name="RequestQuote"
-        component={RequestQuoteScreen}
+        component={
+          RequestQuoteScreen
+        }
       />
     </ExploreStack.Navigator>
   );
 }
 
+/* -------------------------------------------------------------------------- */
+/*                             ASSETS STACK                                   */
+/* -------------------------------------------------------------------------- */
+
+function AssetsStackNavigator() {
+  return (
+    <AssetsStack.Navigator
+      screenOptions={{
+        headerShown:
+          false,
+
+        contentStyle: {
+          backgroundColor:
+            Colors.bgBlack,
+        },
+      }}
+    >
+      <AssetsStack.Screen
+        name="AssetsHome"
+        component={
+          AssetsScreen
+        }
+      />
+
+      <AssetsStack.Screen
+        name="AssetDetails"
+        component={
+          AssetDetailsScreen
+        }
+      />
+
+      <AssetsStack.Screen
+        name="Chat"
+        component={
+          ChatScreen
+        }
+      />
+
+      <AssetsStack.Screen
+        name="ChatRoom"
+        component={
+          ChatRoomScreen
+        }
+      />
+    </AssetsStack.Navigator>
+  );
+}
+
+/* -------------------------------------------------------------------------- */
+/*                                 MAIN TABS                                  */
+/* -------------------------------------------------------------------------- */
+
 function MainTabs() {
   return (
     <Tab.Navigator
-      screenOptions={({ route }) => ({
-        headerShown: false,
+      screenOptions={({
+        route,
+      }) => ({
+        headerShown:
+          false,
 
         tabBarStyle: {
-          backgroundColor: '#000',
-          borderTopWidth: 1,
-          borderTopColor: '#00ACB3',
-          height: 80,
-          paddingBottom: 8,
-          paddingTop: 8,
+          backgroundColor:
+            '#000',
+
+          borderTopWidth:
+            1,
+
+          borderTopColor:
+            '#00ACB3',
+
+          height:
+            80,
+
+          paddingBottom:
+            8,
+
+          paddingTop:
+            8,
         },
 
-        tabBarItemStyle: {
-          paddingHorizontal: 0,
-          marginHorizontal: -4,
-        },
+        tabBarItemStyle:
+          {
+            paddingHorizontal:
+              0,
 
-        tabBarActiveTintColor: '#00D2FF',
-        tabBarInactiveTintColor: '#7A7A7A',
+            marginHorizontal:
+              -4,
+          },
 
-        tabBarLabelStyle: {
-          fontSize: 11,
-          fontWeight: '600',
-          marginTop: 8,
-        },
+        tabBarActiveTintColor:
+          '#00D2FF',
 
-        tabBarIcon: ({ color, focused }) => { // eslint-disable-line react/no-unstable-nested-components
-          switch (route.name) {
-            case 'Profile':
-              return (
-                <View style={[navbarIconContainerStyle, focused && { top: -12 }]}>
-                  <SvgXml
-                    xml={focused ? NB_PROFILE_ACTIVE_SVG : NB_PROFILE_SVG}
-                    width={focused ? 50 : 32}
-                    height={focused ? 50 : 32}
-                    color={color}
-                  />
-                </View>
-              );
+        tabBarInactiveTintColor:
+          '#7A7A7A',
 
-            case 'Campaign':
-              return (
-                <View style={[navbarIconContainerStyle, focused && { top: -12 }]}>
-                  <SvgXml
-                    xml={focused ? NB_CAMPAIGN_ACTIVE_SVG : NB_CAMPAIGN_SVG}
-                    width={focused ? 50 : 32}
-                    height={focused ? 50 : 32}
-                    color={color}
-                  />
-                </View>
-              );
+        tabBarLabelStyle:
+          {
+            fontSize:
+              11,
 
-            case 'Explore':
-              return (
-                <View style={[navbarIconContainerStyle, focused && { top: -12 }]}>
-                  <SvgXml
-                    xml={focused ? NB_EXPLORE_ACTIVE_SVG : NB_EXPLORE_SVG}
-                    width={focused ? 50 : 32}
-                    height={focused ? 50 : 32}
-                    color={color}
-                  />
-                </View>
-              );
+            fontWeight:
+              '600',
 
-            case 'Analytics':
-              return (
-                <View style={[navbarIconContainerStyle, focused && { top: -12 }]}>
-                  <SvgXml
-                    xml={focused ? NB_ANALYTICS_ACTIVE_SVG : NB_ANALYTICS_SVG}
-                    width={focused ? 50 : 32}
-                    height={focused ? 50 : 32}
-                    color={color}
-                  />
-                </View>
-              );
+            marginTop:
+              8,
+          },
 
-            case 'Assets':
-              return (
-                <View style={[navbarIconContainerStyle, focused && { top: -12 }]}>
-                  <SvgXml
-                    xml={focused ? NB_ASSETS_ACTIVE_SVG : NB_ASSETS_SVG}
-                    width={focused ? 50 : 32}
-                    height={focused ? 50 : 32}
-                    color={color}
-                  />
-                </View>
-              );
-          }
+        tabBarIcon:
+          ({ color, focused }) => {
+            switch (
+              route.name
+            ) {
+              case 'Profile':
+                return (
+                  <View style={[
+                    navbarIconContainerStyle,
+                    focused && {
+                      top: -12,
+                    },
+                  ]}>
+                    <SvgXml
+                      xml={
+                        focused
+                          ? NB_PROFILE_ACTIVE_SVG
+                          : NB_PROFILE_SVG
+                      }
+                      width={
+                        focused
+                          ? 50
+                          : 32
+                      }
+                      height={
+                        focused
+                          ? 50
+                          : 32
+                      }
+                      color={color}
+                    />
+                  </View>
+                );
 
-          return null;
-        },
+              case 'Campaign':
+                return (
+                  <View style={[
+                    navbarIconContainerStyle,
+                    focused && {
+                      top: -12,
+                    },
+                  ]}>
+                    <SvgXml
+                      xml={
+                        focused
+                          ? NB_CAMPAIGN_ACTIVE_SVG
+                          : NB_CAMPAIGN_SVG
+                      }
+                      width={focused ? 50 : 32}
+                      height={focused ? 50 : 32}
+                      color={color}
+                    />
+                  </View>
+                );
+
+              case 'Explore':
+                return (
+                  <View style={[
+                    navbarIconContainerStyle,
+                    focused && {
+                      top: -12,
+                    },
+                  ]}>
+                    <SvgXml
+                      xml={
+                        focused
+                          ? NB_EXPLORE_ACTIVE_SVG
+                          : NB_EXPLORE_SVG
+                      }
+                      width={focused ? 50 : 32}
+                      height={focused ? 50 : 32}
+                      color={color}
+                    />
+                  </View>
+                );
+
+              case 'Analytics':
+                return (
+                  <View style={[
+                    navbarIconContainerStyle,
+                    focused && {
+                      top: -12,
+                    },
+                  ]}>
+                    <SvgXml
+                      xml={
+                        focused
+                          ? NB_ANALYTICS_ACTIVE_SVG
+                          : NB_ANALYTICS_SVG
+                      }
+                      width={focused ? 50 : 32}
+                      height={focused ? 50 : 32}
+                      color={color}
+                    />
+                  </View>
+                );
+
+              case 'Assets':
+                return (
+                  <View style={[
+                    navbarIconContainerStyle,
+                    focused && {
+                      top: -12,
+                    },
+                  ]}>
+                    <SvgXml
+                      xml={
+                        focused
+                          ? NB_ASSETS_ACTIVE_SVG
+                          : NB_ASSETS_SVG
+                      }
+                      width={focused ? 50 : 32}
+                      height={focused ? 50 : 32}
+                      color={color}
+                    />
+                  </View>
+                );
+            }
+
+            return null;
+          },
       })}
     >
       <Tab.Screen
         name="Profile"
-        component={HomeScreen}
+        component={
+          HomeScreen
+        }
       />
 
-<Tab.Screen
-  name="Campaign"
-  component={
-    CampaignStackNavigator
-  }
-/>
+      <Tab.Screen
+        name="Campaign"
+        component={
+          CampaignStackNavigator
+        }
+      />
 
       <Tab.Screen
         name="Explore"
-        component={ExploreStackNavigator}
+        component={
+          ExploreStackNavigator
+        }
       />
 
       <Tab.Screen
         name="Analytics"
-        component={AnalyticsScreen}
+        component={
+          AnalyticsScreen
+        }
       />
 
       <Tab.Screen
         name="Assets"
-        component={AssetsScreen}
+        component={
+          AssetsStackNavigator
+        }
       />
     </Tab.Navigator>
   );
 }
 
-/**
- * ROOT NAVIGATOR
- */
+/* -------------------------------------------------------------------------- */
+/*                             ROOT NAVIGATOR                                 */
+/* -------------------------------------------------------------------------- */
+
 export default function AppNavigator() {
   return (
     <Stack.Navigator
       initialRouteName="MainTabs"
       screenOptions={{
-        headerShown: false,
-        animation: 'fade',
-        animationDuration: 300,
+        headerShown:
+          false,
+
+        animation:
+          'fade',
+
+        animationDuration:
+          300,
       }}
     >
       <Stack.Screen
         name="MainTabs"
-        component={MainTabs}
+        component={
+          MainTabs
+        }
       />
 
       <Stack.Screen
         name="Home"
-        component={HomeScreen}
+        component={
+          HomeScreen
+        }
       />
 
       <Stack.Screen
         name="Overview"
-        component={OverviewScreen}
+        component={
+          OverviewScreen
+        }
       />
 
       <Stack.Screen
         name="Content"
-        component={ContentScreen}
+        component={
+          ContentScreen
+        }
       />
 
       <Stack.Screen
         name="AddContent"
-        component={AddContentScreen}
+        component={
+          AddContentScreen
+        }
       />
 
       <Stack.Screen
         name="EditContent"
-        component={EditContentScreen}
+        component={
+          EditContentScreen
+        }
       />
 
       <Stack.Screen
         name="Pricing"
-        component={PricingScreen}
+        component={
+          PricingScreen
+        }
       />
 
       <Stack.Screen
         name="AddPricing"
-        component={AddPricingScreen}
+        component={
+          AddPricingScreen
+        }
       />
 
       <Stack.Screen
         name="EditPricing"
-        component={EditPricingScreen}
+        component={
+          EditPricingScreen
+        }
       />
 
       <Stack.Screen
         name="CampaignQueue"
-        component={CampaignQueueScreen}
+        component={
+          CampaignQueueScreen
+        }
       />
 
       <Stack.Screen
         name="CampaignURL"
-        component={CampaignURLScreen}
+        component={
+          CampaignURLScreen
+        }
       />
 
       <Stack.Screen
         name="MyEarnings"
-        component={MyEarnings}
+        component={
+          MyEarnings
+        }
       />
 
       <Stack.Screen
         name="Settings"
-        component={SettingsScreen}
+        component={
+          SettingsScreen
+        }
       />
+     <Stack.Screen
+  name="Chat"
+  component={
+    ChatScreen
+  }
+  options={{
+    presentation:
+      "modal",
+  }}
+/>
+
+<Stack.Screen
+  name="ChatRoom"
+  component={
+    ChatRoomScreen
+  }
+  options={{
+    presentation:
+      "modal",
+  }}
+/>
 
       <Stack.Screen
         name="ManageAccount"
-        component={ManageAccountScreen}
+        component={
+          ManageAccountScreen
+        }
       />
 
       <Stack.Screen
         name="Bio"
-        component={BioScreen}
+        component={
+          BioScreen
+        }
       />
 
       <Stack.Screen
         name="SocialMedia"
-        component={SocialMediaScreen}
+        component={
+          SocialMediaScreen
+        }
       />
 
       <Stack.Screen
         name="AdditionalInfo"
-        component={AdditionalInfoScreen}
+        component={
+          AdditionalInfoScreen
+        }
       />
 
       <Stack.Screen
         name="ViewPlans"
-        component={ViewPlansScreen}
+        component={
+          ViewPlansScreen
+        }
       />
 
       <Stack.Screen
         name="Subscription"
-        component={SubscriptionScreen}
+        component={
+          SubscriptionScreen
+        }
       />
 
       <Stack.Screen
         name="ChangePassword"
-        component={ChangePasswordScreen}
+        component={
+          ChangePasswordScreen
+        }
       />
+
       <Stack.Screen
         name="AddAssets"
         component={
           AddAssetsScreen
         }
       />
-      <Stack.Screen
-  name="AssetDetails"
-  component={AssetDetailsScreen}
-/>
     </Stack.Navigator>
   );
 }
