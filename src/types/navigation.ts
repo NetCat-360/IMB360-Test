@@ -157,6 +157,19 @@ export type BrandStackParamList =
 
   InfluencerProfile:
     undefined;
+    BrandExploreList:
+      undefined;
+
+    BrandInfluencerProfile:
+      undefined;
+
+    BrandRequestQuote: {
+      platformId: string;
+      influencerName: string;
+    };
+
+    InfluencerProfile:
+      undefined;
 
   RequestQuote: {
     platformId: string;

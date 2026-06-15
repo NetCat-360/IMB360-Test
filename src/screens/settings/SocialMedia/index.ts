@@ -1,1 +1,1 @@
-export { default } from './SocialMediaScreen';
+export { default } from './SocialMediaScreen'

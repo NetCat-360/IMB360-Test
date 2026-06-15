@@ -1,1 +1,1 @@
-export { default } from './AnalyticsScreen';
+export { default } from './AnalyticsScreen'

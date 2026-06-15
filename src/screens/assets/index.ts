@@ -1,1 +1,1 @@
-export { default } from './AssetsScreen';
+export { default } from './AssetsScreen'

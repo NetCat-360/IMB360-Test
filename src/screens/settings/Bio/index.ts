@@ -1,1 +1,1 @@
-export { default } from './BioScreen';
+export { default } from './BioScreen'

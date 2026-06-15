@@ -1,1 +1,1 @@
-export { default } from './AdditionalInfoScreen';
+export { default } from './AdditionalInfoScreen'

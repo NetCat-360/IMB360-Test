@@ -1,1 +1,1 @@
-export { default } from './AuthEntryPointScreen';
+export { default } from './AuthEntryPointScreen'
