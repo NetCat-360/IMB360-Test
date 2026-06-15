@@ -62,6 +62,15 @@ from '../screens/brand/CampaignTabs/BrandCampaignTabScreen';
 import SettingsScreen
 from '../screens/settings/SettingsScreen';
 
+import BrandExploreScreen
+from '../screens/brand/explore/BrandExploreScreen';
+
+import InfluencerProfileScreen
+from '../screens/explore/InfluencerProfileScreen';
+
+import RequestQuoteScreen
+from '../screens/explore/RequestQuoteScreen';
+
 import ManageAccountScreen
 from '../screens/settings/ManageAccount/ManageAccountScreen';
 
@@ -94,11 +103,41 @@ const Stack =
   createNativeStackNavigator();
 
 /* -------------------------------------------------------------------------- */
-/*                               TEMP SCREEN                                  */
+/*                            EXPLORE STACK                                   */
 /* -------------------------------------------------------------------------- */
 
-const ExploreScreen =
-  () => null;
+function ExploreStack() {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerShown: false,
+        contentStyle: {
+          backgroundColor:
+            Colors.bgBlack,
+        },
+      }}
+    >
+      <Stack.Screen
+        name="BrandExploreList"
+        component={
+          BrandExploreScreen
+        }
+      />
+      <Stack.Screen
+        name="BrandInfluencerProfile"
+        component={
+          InfluencerProfileScreen
+        }
+      />
+      <Stack.Screen
+        name="BrandRequestQuote"
+        component={
+          RequestQuoteScreen
+        }
+      />
+    </Stack.Navigator>
+  );
+}
 
 /* -------------------------------------------------------------------------- */
 /*                            PROFILE STACK                                   */
@@ -554,7 +593,7 @@ BrandNavigator() {
       <Tab.Screen
         name="Explore"
         component={
-          ExploreScreen
+          ExploreStack
         }
       />
 
