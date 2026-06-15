@@ -91,7 +91,9 @@ from '../screens/settings/Subscription/SubscriptionScreen';
 
 import ChangePasswordScreen
 from '../screens/settings/ChangePassword/ChangePasswordScreen';
-
+import ChatScreen
+from "../screens/chat/ChatScreen";
+import ChatRoomScreen from '../screens/chat/ChatRoomScreen';
 /* -------------------------------------------------------------------------- */
 /*                                NAVIGATORS                                  */
 /* -------------------------------------------------------------------------- */
@@ -218,6 +220,27 @@ function BrandProfileStack() {
           SettingsScreen
         }
       />
+      <Stack.Screen
+  name="Chat"
+  component={
+    ChatScreen
+  }
+  options={{
+    presentation:
+      "transparentModal",
+  }}
+/>
+
+<Stack.Screen
+  name="ChatRoom"
+  component={
+    ChatRoomScreen
+  }
+  options={{
+    presentation:
+      "card",
+  }}
+/>
 
       <Stack.Screen
         name="ManageAccount"
@@ -288,6 +311,7 @@ function AssetsStack() {
         },
       }}
     >
+      
       <Stack.Screen
         name="AssetsHome"
         component={
@@ -308,6 +332,15 @@ function AssetsStack() {
           SettingsScreen
         }
       />
+      <Stack.Screen
+  name="Chat"
+  component={ChatScreen}
+/>
+
+<Stack.Screen
+  name="ChatRoom"
+  component={ChatRoomScreen}
+/>
     </Stack.Navigator>
   );
 }
@@ -339,6 +372,18 @@ function CampaignsStack() {
   name="BrandCampaignDetails"
   component={
     BrandCampaignDetailsScreen
+  }
+/>
+<Stack.Screen
+  name="Chat"
+  component={
+    ChatScreen
+  }
+/>
+<Stack.Screen
+  name="ChatRoom"
+  component={
+    ChatRoomScreen
   }
 />
 
@@ -397,6 +442,7 @@ function CampaignsStack() {
           ChangePasswordScreen
         }
       />
+      
     </Stack.Navigator>
   );
 }

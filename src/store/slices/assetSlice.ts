@@ -7,7 +7,7 @@ export type AssetTab =
   | "Asset Details"
   | "What's Provided"
   | "Price Details"
-  | "Terms & Conditions"
+  | "T&C"
   | "Comments & Reviews"
   | "Gallery";
 
