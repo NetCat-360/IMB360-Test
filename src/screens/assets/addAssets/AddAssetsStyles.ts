@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
   sectionHeading: {
     color: "#fff",
     fontSize:
-      moderateScale(20),
+      moderateScale(24),
     fontFamily:
       "Poppins",
     fontWeight: "bold",
@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
     fontFamily:
       "Poppins-Regular",
     marginBottom:
-      verticalScale(22),
+      verticalScale(10),
   },
 
   dropdown: {
@@ -415,6 +415,88 @@ const styles = StyleSheet.create({
     fontFamily:
       "Poppins",
     fontWeight: "bold",
+  },
+  stepperContainer: {
+    flexDirection:
+      "row",
+  
+    justifyContent:
+      "center",
+  
+    alignItems:
+      "center",
+  
+    marginTop:
+      verticalScale(
+        18
+      ),
+  
+    marginBottom:
+      verticalScale(
+        18
+      ),
+  },
+  
+  stepRow: {
+    flexDirection:
+      "row",
+  
+    alignItems:
+      "center",
+  },
+  
+  stepCircle: {
+    width: scale(42),
+  
+    height: scale(42),
+  
+    borderRadius:
+      scale(21),
+  
+    borderWidth: 1,
+  
+    borderColor:
+      Colors.teal,
+  
+    backgroundColor:
+      "#111",
+  
+    justifyContent:
+      "center",
+  
+    alignItems:
+      "center",
+  },
+  
+  activeStep: {
+    backgroundColor:
+      Colors.teal,
+  },
+  
+  stepText: {
+    color: "#FFF",
+  
+    fontWeight:
+      "700",
+  
+    fontSize:
+      moderateScale(
+        15
+      ),
+  },
+  
+  stepLine: {
+    width: scale(60),
+  
+    height: 1,
+  
+    backgroundColor:
+      "#444",
+  },
+  
+  activeLine: {
+    backgroundColor:
+      Colors.teal,
   },
 });
 

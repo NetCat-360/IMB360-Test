@@ -112,49 +112,51 @@ export type BrandBottomTabParamList =
 /* -------------------------------------------------------------------------- */
 
 export type BrandStackParamList =
-  {
-    /* Main */
-    BrandMainTabs:
-      undefined;
+{
+  /* Main */
+  BrandMainTabs:
+    undefined;
 
-    /* Profile Flow */
-    BrandProfile:
-      undefined;
+  /* Profile Flow */
+  BrandProfile:
+    undefined;
 
-    AddAssets:
-      undefined;
+  AddAssets:
+    undefined;
 
-    BrandOverview:
-      undefined;
+  BrandOverview:
+    undefined;
 
-    BrandCampaigns:
-      undefined;
+  BrandCampaigns:
+    undefined;
 
-    CampaignBids:
-      undefined;
+  CampaignBids:
+    undefined;
 
-    PortfolioScreen: {
-      bid?: any;
-    };
+  PortfolioScreen: {
+    bid?: any;
+  };
 
-    TotalSpend:
-      undefined;
+  TotalSpend:
+    undefined;
 
-    CreateCampaign:
-      undefined;
+  CreateCampaign:
+    undefined;
 
-    /* Campaign Flow */
-    Campaigns:
-      undefined;
+  /* Campaign Flow */
+  Campaigns:
+    undefined;
 
-    ApplyCampaign: {
-      campaignId?: string;
-    };
+  ApplyCampaign: {
+    campaignId?: string;
+  };
 
-    /* Explore Flow */
-    Explore:
-      undefined;
+  /* Explore Flow */
+  Explore:
+    undefined;
 
+  InfluencerProfile:
+    undefined;
     BrandExploreList:
       undefined;
 
@@ -169,132 +171,147 @@ export type BrandStackParamList =
     InfluencerProfile:
       undefined;
 
-    RequestQuote: {
-      platformId: string;
-      influencerName: string;
-    };
-
-    /* Settings / Assets */
-    Assets:
-      undefined;
-
-    Settings:
-      undefined;
-
-    ManageAccount:
-      undefined;
-
-    Bio:
-      undefined;
-
-    SocialMedia:
-      undefined;
-
-    AdditionalInfo:
-      undefined;
-
-    ViewPlans:
-      undefined;
-
-    Subscription:
-      undefined;
-
-    ChangePassword:
-      undefined;
+  RequestQuote: {
+    platformId: string;
+    influencerName: string;
   };
 
-/* -------------------------------------------------------------------------- */
-/*                            ROOT STACK TYPES                                */
-/* -------------------------------------------------------------------------- */
+  /* Settings / Assets */
+  Assets:
+    undefined;
+
+  Settings:
+    undefined;
+
+  Chat:
+    undefined;
+
+ChatRoom: {
+  chatId: string;
+};
+
+  ManageAccount:
+    undefined;
+
+  Bio:
+    undefined;
+
+  SocialMedia:
+    undefined;
+
+  AdditionalInfo:
+    undefined;
+
+  ViewPlans:
+    undefined;
+
+  Subscription:
+    undefined;
+
+  ChangePassword:
+    undefined;
+};
 
 export type AppStackParamList =
-  {
-    MainTabs:
-      undefined;
+{
+  MainTabs:
+    undefined;
 
-    Home:
-      undefined;
+  Home:
+    undefined;
 
-    Overview:
-      undefined;
+  Overview:
+    undefined;
 
-    Content:
-      undefined;
+  Content:
+    undefined;
 
-    AddContent:
-      undefined;
+  AddContent:
+    undefined;
 
-    EditContent: {
-      contentId?: string;
+  Chat:
+    undefined;
+    ChatRoom: {
+
+      chatId: string;
+    
     };
 
-    Pricing:
-      undefined;
-
-    AddPricing:
-      undefined;
-
-    EditPricing: {
-      pricingId?: string;
-    };
-
-    CampaignQueue:
-      undefined;
-      AddAssets:
-      undefined;
-
-    ApplyCampaign: {
-      campaignId?: string;
-    };
-
-    CampaignURL: {
-      campaignId?: string;
-      url?: string;
-    };
-
-    MyEarnings:
-      undefined;
-
-    InfluencerProfile:
-      undefined;
-
-    RequestQuote: {
-      platformId: string;
-      influencerName: string;
-    };
-
-    Settings:
-      undefined;
-
-    ManageAccount:
-      undefined;
-
-    Bio:
-      undefined;
-
-    SocialMedia:
-      undefined;
-
-    AdditionalInfo:
-      undefined;
-
-    ViewPlans:
-      undefined;
-
-    Subscription:
-      undefined;
-
-    ChangePassword:
-      undefined;
-
-    AnalyticsScreen:
-      undefined;
-    AssetDetails: undefined;
-    PortfolioScreen: {
-      bid: any;
-    };
+  EditContent: {
+    contentId?: string;
   };
 
+  Pricing:
+    undefined;
+
+  AddPricing:
+    undefined;
+
+  EditPricing: {
+    pricingId?: string;
+  };
+
+  CampaignQueue:
+    undefined;
+
+  AddAssets:
+    undefined;
+
+  ApplyCampaign: {
+    campaignId?: string;
+  };
+
+  CampaignURL: {
+    campaignId?: string;
+    url?: string;
+  };
+
+  MyEarnings:
+    undefined;
+
+  InfluencerProfile:
+    undefined;
+
+  RequestQuote: {
+    platformId: string;
+    influencerName: string;
+  };
+
+  Settings:
+    undefined;
+
+  ManageAccount:
+    undefined;
+
+  Bio:
+    undefined;
+
+  SocialMedia:
+    undefined;
+
+  AdditionalInfo:
+    undefined;
+
+  ViewPlans:
+    undefined;
+
+  Subscription:
+    undefined;
+
+  ChangePassword:
+    undefined;
+
+  AnalyticsScreen:
+    undefined;
+
+  AssetDetails:
+    undefined;
+
+  PortfolioScreen: {
+    bid: any;
+  };
+  
+};
 /* -------------------------------------------------------------------------- */
 /*                            NAVIGATION PROP TYPES                           */
 /* -------------------------------------------------------------------------- */

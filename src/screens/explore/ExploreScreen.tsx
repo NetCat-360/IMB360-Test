@@ -8,6 +8,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { Colors } from '../../config/theme'
 import Typography from '../../styles/typography'
 import styles from './styles'
+import AppHeader from '../../components/AppHeader'
 
 interface CreatorItem {
   id: string
@@ -119,13 +120,7 @@ export default function ExploreScreen() {
     <SafeAreaView edges={['top']} style={styles.rootContainer}>
       <StatusBar barStyle="light-content" backgroundColor={Colors.bgBlack} />
       
-      <View style={styles.headerContainer}>
-        <Image 
-          source={require('../../assets/images/IMB360_v2.png')} 
-          style={styles.logoImage}
-          resizeMode="contain"
-        />
-      </View>
+     <AppHeader></AppHeader>
 
       <View style={styles.contentHeader}>
         <Text style={[Typography.displayLarge, styles.screenTitle]}>Explore</Text>

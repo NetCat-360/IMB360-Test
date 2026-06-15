@@ -1,5 +1,6 @@
-import React from "react";
-import {
+import React, {
+  useRef,
+} from "react";import {
   View,
   Text,
   StatusBar,
@@ -60,7 +61,26 @@ export default function AddAssetsScreen({ navigation }: Props) {
   const [showFromDate, setShowFromDate] = React.useState(false);
 
   const [showToDate, setShowToDate] = React.useState(false);
-
+  const [step,
+    setStep] =
+    React.useState(1);
+  
+  const scrollRef =
+    useRef<ScrollView>(
+      null
+    );
+  
+  React.useEffect(
+    () => {
+      scrollRef.current
+        ?.scrollTo({
+          y: 0,
+          animated:
+            false,
+        });
+    },
+    [step]
+  );
   const handleChange = (key: keyof typeof asset, value: any) => {
     dispatch(
       updateField({
@@ -98,10 +118,60 @@ export default function AddAssetsScreen({ navigation }: Props) {
         }}
       />
       <SafeAreaView style={styles.container} edges={["bottom"]}>
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={styles.scrollContent}
+      <View
+  style={
+    styles.stepperContainer
+  }
+>
+  {[1, 2, 3].map(
+    item => (
+      <View
+        key={item}
+        style={
+          styles.stepRow
+        }
+      >
+        <View
+          style={[
+            styles.stepCircle,
+
+            step >= item &&
+              styles.activeStep,
+          ]}
         >
+          <Text
+            style={
+              styles.stepText
+            }
+          >
+            {item}
+          </Text>
+        </View>
+
+        {item !== 3 && (
+          <View
+            style={[
+              styles.stepLine,
+
+              step > item &&
+                styles.activeLine,
+            ]}
+          />
+        )}
+      </View>
+    )
+  )}
+</View>
+<ScrollView
+  ref={scrollRef}
+  showsVerticalScrollIndicator={false}
+  contentContainerStyle={
+    styles.scrollContent
+  }
+>
+          {step === 1 && (
+
+<>
           {/* BASIC INFO */}
           <Text style={styles.sectionHeading}>Basic Information</Text>
 
@@ -339,7 +409,42 @@ export default function AddAssetsScreen({ navigation }: Props) {
               />
             </View>
           </View>
+          </>
 
+)}
+{step === 1 && (
+  <View
+    style={{
+      flexDirection:
+        "row",
+      justifyContent:
+        "flex-end",
+      marginTop:
+        verticalScale(5),
+    }}
+  >
+    <TouchableOpacity
+      style={
+        styles.createButton
+      }
+      onPress={() => {
+        setStep(2);
+      
+        
+      }}
+    >
+      <Text
+        style={
+          styles.createText
+        }
+      >
+        Next
+      </Text>
+    </TouchableOpacity>
+  </View>
+)}
+          {step === 2 && (
+  <>
           {/* PRICING */}
           <Text style={styles.sectionHeading}>Pricing</Text>
 
@@ -444,7 +549,56 @@ export default function AddAssetsScreen({ navigation }: Props) {
           <Text style={styles.uploadInfo}>
             Max. 6 images or videos can be uploaded up to 50MB each
           </Text>
+          </>
 
+)}
+{step === 2 && (
+  <View
+    style={
+      styles.buttonRow
+    }
+  >
+    <TouchableOpacity
+      style={
+        styles.cancelButton
+      }
+      onPress={() => {
+        setStep(1);
+      
+        
+      }}
+    >
+      <Text
+        style={
+          styles.cancelText
+        }
+      >
+        Previous
+      </Text>
+    </TouchableOpacity>
+
+    <TouchableOpacity
+      style={
+        styles.createButton
+      }
+      onPress={() => {
+        setStep(3);
+      
+        
+      }}
+    >
+      <Text
+        style={
+          styles.createText
+        }
+      >
+        Next
+      </Text>
+    </TouchableOpacity>
+  </View>
+)}
+{step === 3 && (
+  <>
           {/* AVAILABILITY */}
           <Text style={styles.sectionHeading}>Availability</Text>
 
@@ -610,22 +764,50 @@ export default function AddAssetsScreen({ navigation }: Props) {
             * A fee of 10 points will be automatically deducted from your
             balance for asset creation.
           </Text>
+          <View
+  style={
+    styles.buttonRow
+  }
+>
+  <TouchableOpacity
+    style={
+      styles.cancelButton
+    }
+    onPress={() => {
+      setStep(2);
+    
+      
+    }}
+  >
+    <Text
+      style={
+        styles.cancelText
+      }
+    >
+      Previous
+    </Text>
+  </TouchableOpacity>
 
-          <View style={styles.buttonRow}>
-            <TouchableOpacity
-              style={styles.cancelButton}
-              onPress={handleCancel}
-            >
-              <Text style={styles.cancelText}>Cancel</Text>
-            </TouchableOpacity>
+  <TouchableOpacity
+    style={
+      styles.createButton
+    }
+    onPress={
+      handleCreateAsset
+    }
+  >
+    <Text
+      style={
+        styles.createText
+      }
+    >
+      Create Asset
+    </Text>
+  </TouchableOpacity>
+</View>
+          </>
 
-            <TouchableOpacity
-              style={styles.createButton}
-              onPress={handleCreateAsset}
-            >
-              <Text style={styles.createText}>Create Asset</Text>
-            </TouchableOpacity>
-          </View>
+)}
         </ScrollView>
       </SafeAreaView>
     </>

@@ -1,6 +1,4 @@
-// src/screens/assets/AssetDetailsScreen.tsx
-
-import React from "react";
+import React, { useEffect } from "react";
 
 import {
   View,
@@ -44,6 +42,9 @@ export default function AssetDetailsScreen() {
   const [startDate, setStartDate] = React.useState("");
 
   const [endDate, setEndDate] = React.useState("");
+  useEffect(() => {
+    dispatch(setActiveTab("Gallery" as any));
+  }, []);
 
   if (!asset) {
     return null;
@@ -178,42 +179,30 @@ export default function AssetDetailsScreen() {
           </View>
         </View>
         {/* SINGLE HORIZONTAL TAB BAR */}
-        <ScrollView
-          horizontal
-          nestedScrollEnabled
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.tabScroll}
-        >
-          {[
-            "Asset Details",
-            "What's Provided",
-            "Price Details",
-            "Terms & Conditions",
-            "Comments & Reviews",
-            "Gallery",
-          ].map((tab) => {
-            const isActive = activeTab === tab;
+        <View style={styles.tabContainer}>
+          {["Gallery", "What's Provided", "T&C", "Comments & Reviews"].map(
+            (tab) => {
+              const isActive = activeTab === tab;
 
-            return (
-              <TouchableOpacity
-                key={tab}
-                style={[styles.tabButton, isActive && styles.activeTab]}
-                onPress={() => dispatch(setActiveTab(tab as any))}
-              >
-                <Text
-                  style={[
-                    styles.tabText,
-                    isActive && {
-                      color: "#000",
-                    },
-                  ]}
+              const label = tab === "Comments & Reviews" ? "Comments" : tab;
+
+              return (
+                <TouchableOpacity
+                  key={tab}
+                  activeOpacity={0.85}
+                  style={[styles.tabItem, isActive && styles.activeTab]}
+                  onPress={() => dispatch(setActiveTab(tab as any))}
                 >
-                  {tab}
-                </Text>
-              </TouchableOpacity>
-            );
-          })}
-        </ScrollView>
+                  <Text
+                    style={[styles.tabText, isActive && styles.activeTabText]}
+                  >
+                    {label}
+                  </Text>
+                </TouchableOpacity>
+              );
+            }
+          )}
+        </View>
 
         {/* DYNAMIC CONTENT CARD */}
         <View style={styles.detailsCard}>
@@ -263,7 +252,7 @@ export default function AssetDetailsScreen() {
           )}
 
           {/* TERMS */}
-          {activeTab === "Terms & Conditions" && (
+          {activeTab === "T&C" && (
             <>
               <Text style={styles.sectionHeading}>
                 Terms & Conditions / Rules
@@ -636,13 +625,13 @@ const styles = StyleSheet.create({
 
     marginTop: verticalScale(20),
 
-    paddingRight: scale(40),
+    paddingRight: scale(20),
 
     flexGrow: 1,
   },
 
   tabButton: {
-    height: verticalScale(44),
+    height: verticalScale(30),
 
     borderWidth: 1,
 
@@ -652,25 +641,13 @@ const styles = StyleSheet.create({
 
     alignItems: "center",
 
-    paddingHorizontal: scale(22),
+    paddingHorizontal: scale(20),
 
     borderRadius: moderateScale(12),
 
-    marginRight: scale(12),
+    marginRight: scale(5),
 
     backgroundColor: "#000",
-  },
-
-  activeTab: {
-    backgroundColor: Colors.teal,
-  },
-
-  tabText: {
-    color: "#FFF",
-
-    fontSize: moderateScale(16),
-
-    fontWeight: "500",
   },
 
   detailsCard: {
@@ -761,22 +738,37 @@ const styles = StyleSheet.create({
 
   commentButton: {
     alignSelf: "flex-end",
-
-    borderRadius: moderateScale(14),
-
-    paddingHorizontal: scale(24),
-
-    paddingVertical: verticalScale(12),
-
-    marginTop: verticalScale(18),
+  
+    height:
+      moderateScale(50),
+  
+    width:
+      scale(140),
+  
+    borderRadius:
+      moderateScale(14),
+  
+    justifyContent:
+      "center",
+  
+    alignItems:
+      "center",
+  
+    marginTop:
+      verticalScale(18),
   },
-
+  
   commentButtonText: {
     color: "#000",
-
-    fontWeight: "700",
-
-    fontSize: moderateScale(18),
+  
+    fontWeight:
+      "700",
+  
+    fontSize:
+      moderateScale(18),
+  
+    textAlign:
+      "center",
   },
 
   galleryGrid: {
@@ -965,5 +957,56 @@ const styles = StyleSheet.create({
     fontWeight: "700",
 
     fontSize: moderateScale(14),
+  },
+  tabContainer: {
+    width: "90%",
+
+    alignSelf: "center",
+
+    marginTop: verticalScale(20),
+
+    borderWidth: 1.5,
+
+    borderColor: Colors.teal,
+
+    borderRadius: moderateScale(10),
+
+    flexDirection: "row",
+
+    overflow: "hidden",
+
+    backgroundColor: "#000",
+  },
+
+  tabItem: {
+    flex: 1,
+
+    height: verticalScale(30),
+
+    justifyContent: "center",
+
+    alignItems: "center",
+  },
+
+  activeTab: {
+    backgroundColor: Colors.teal,
+
+    borderRadius: moderateScale(0),
+  },
+
+  tabText: {
+    color: "#FFF",
+
+    fontSize: moderateScale(14),
+
+    fontWeight: "500",
+
+    textAlign: "center",
+  },
+
+  activeTabText: {
+    color: "#000",
+
+    fontWeight: "700",
   },
 });
