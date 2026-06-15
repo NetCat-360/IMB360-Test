@@ -34,56 +34,54 @@ import {
   ExploreStackParamList,
 } from '../types/navigation';
 
-<<<<<<< HEAD
-/**
- * TAB SCREENS
- */
-import { Colors } from '../config/theme';
-import AssetsScreen from '../screens/assets/AssetsScreen';
-import InfluencerProfileScreen from '../screens/explore/InfluencerProfileScreen';
-import RequestQuoteScreen from '../screens/explore/RequestQuoteScreen';
-import AddAssetsScreen
-from '../screens/assets/addAssets/AddAssetsScreen';
-/**
- * STACK SCREENS
- */
-import HomeScreen from '../screens/influencer/home/HomeScreen';
-import CampaignScreen from '../screens/influencer/campaign/CampaignScreen'
-import ExploreScreen from '../screens/influencer/explore/ExploreScreen';
-import AnalyticsScreen from '../screens/influencer/analytics/AnalyticsScreen';
-import CampaignQueueScreen from '../screens/influencer/CampaignQueue/CampaignQueueScreen';
-import ContentScreen from '../screens/influencer/content/ContentScreen';
-import OverviewScreen from '../screens/influencer/overview/OverviewScreen';
-import MyEarnings from '../screens/influencer/MyEarnings/MyEarnings';
-import AddContentScreen from '../screens/influencer/content/AddContentScreen';
-import EditContentScreen from '../screens/influencer/content/EditContentScreen';
-
-import PricingScreen from '../screens/influencer/pricing/PricingScreen';
-import AddPricingScreen from '../screens/influencer/pricing/AddPricingScreen';
-import EditPricingScreen from '../screens/influencer/pricing/EditPricingScreen';
-
-import CampaignURLScreen from '../screens/influencer/CampaignQueue/CampaignURLScreen';
-import ApplyCampaignScreen from '../screens/influencer/campaign/ApplyCampaignScreen';
-=======
 import {
   Colors,
 } from '../config/theme';
 
-/* -------------------------------------------------------------------------- */
-/*                                   SCREENS                                  */
-/* -------------------------------------------------------------------------- */
-
 import HomeScreen
-from '../screens/home/HomeScreen';
+from '../screens/influencer/home/HomeScreen';
 
 import CampaignScreen
-from '../screens/campaign/CampaignScreen';
+from '../screens/influencer/campaign/CampaignScreen';
 
 import ExploreScreen
-from '../screens/explore/ExploreScreen';
+from '../screens/influencer/explore/ExploreScreen';
 
 import AnalyticsScreen
-from '../screens/analytics/AnalyticsScreen';
+from '../screens/influencer/analytics/AnalyticsScreen';
+
+import CampaignQueueScreen
+from '../screens/influencer/CampaignQueue/CampaignQueueScreen';
+
+import ContentScreen
+from '../screens/influencer/content/ContentScreen';
+
+import OverviewScreen
+from '../screens/influencer/overview/OverviewScreen';
+
+import MyEarnings
+from '../screens/influencer/MyEarnings/MyEarnings';
+
+import AddContentScreen
+from '../screens/influencer/content/AddContentScreen';
+
+import EditContentScreen
+from '../screens/influencer/content/EditContentScreen';
+
+import PricingScreen
+from '../screens/influencer/pricing/PricingScreen';
+
+import AddPricingScreen
+from '../screens/influencer/pricing/AddPricingScreen';
+
+import EditPricingScreen
+from '../screens/influencer/pricing/EditPricingScreen';
+
+import CampaignURLScreen
+from '../screens/influencer/CampaignQueue/CampaignURLScreen';
+
+import ApplyCampaignScreen
+from '../screens/influencer/campaign/ApplyCampaignScreen';
 
 import AssetsScreen
 from '../screens/assets/AssetsScreen';
@@ -94,45 +92,11 @@ from '../screens/assets/AssetDetailsScreen';
 import AddAssetsScreen
 from '../screens/assets/addAssets/AddAssetsScreen';
 
-import CampaignQueueScreen
-from '../screens/CampaignQueue/CampaignQueueScreen';
-
-import ContentScreen
-from '../screens/content/ContentScreen';
->>>>>>> 6473a80eb8d377fc7e4be1d554cbe733f98a9372
-
-import OverviewScreen
-from '../screens/overview/OverviewScreen';
-
-import MyEarnings
-from '../screens/MyEarnings/MyEarnings';
-
 import InfluencerProfileScreen
 from '../screens/explore/InfluencerProfileScreen';
 
 import RequestQuoteScreen
 from '../screens/explore/RequestQuoteScreen';
-
-import AddContentScreen
-from '../screens/content/AddContentScreen';
-
-import EditContentScreen
-from '../screens/content/EditContentScreen';
-
-import PricingScreen
-from '../screens/pricing/PricingScreen';
-
-import AddPricingScreen
-from '../screens/pricing/AddPricingScreen';
-
-import EditPricingScreen
-from '../screens/pricing/EditPricingScreen';
-
-import CampaignURLScreen
-from '../screens/CampaignQueue/CampaignURLScreen';
-
-import ApplyCampaignScreen
-from '../screens/campaign/ApplyCampaignScreen';
 
 import SettingsScreen
 from '../screens/settings/SettingsScreen';

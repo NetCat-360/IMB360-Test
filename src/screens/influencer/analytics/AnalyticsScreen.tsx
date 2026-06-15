@@ -311,7 +311,6 @@ export default function AnalyticsScreen() {
       <StatusBar barStyle="light-content" backgroundColor={Colors.bgBlack} />
 
       {/* Structured Corporate Logo Header Bar */}
-<<<<<<< HEAD:src/screens/influencer/analytics/AnalyticsScreen.tsx
       <View style={styles.headerBarContainer}>
         <Image
           source={require('../../../assets/images/IMB360_v2.png')}
@@ -319,9 +318,6 @@ export default function AnalyticsScreen() {
           resizeMode="contain"
         />
       </View>
-=======
-      <AppHeader></AppHeader>
->>>>>>> 6473a80eb8d377fc7e4be1d554cbe733f98a9372:src/screens/analytics/AnalyticsScreen.tsx
 
       {loading ? (
         <View style={styles.loadingWrapper}>

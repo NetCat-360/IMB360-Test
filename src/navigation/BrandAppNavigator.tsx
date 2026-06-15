@@ -126,13 +126,13 @@ function ExploreStack() {
         }
       />
       <Stack.Screen
-        name="BrandInfluencerProfile"
+        name="InfluencerProfile"
         component={
           InfluencerProfileScreen
         }
       />
       <Stack.Screen
-        name="BrandRequestQuote"
+        name="RequestQuote"
         component={
           RequestQuoteScreen
         }

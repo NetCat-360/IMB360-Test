@@ -305,7 +305,6 @@ export default function CampaignScreen() {
     <SafeAreaView style={styles.container} edges={['top']}>
       <StatusBar barStyle="light-content" backgroundColor={Colors.bgBlack} />
       
-<<<<<<< HEAD:src/screens/influencer/campaign/CampaignScreen.tsx
       <View style={styles.headerBarContainer}>
         <Image
           source={require('../../../assets/images/IMB360_v2.png')}
@@ -313,9 +312,6 @@ export default function CampaignScreen() {
           resizeMode="contain"
         />
       </View>
-=======
-      <AppHeader></AppHeader>
->>>>>>> 6473a80eb8d377fc7e4be1d554cbe733f98a9372:src/screens/campaign/CampaignScreen.tsx
 
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollLayoutContent}>
         <View style={styles.browseCampaignsOuterBlockContainer}>

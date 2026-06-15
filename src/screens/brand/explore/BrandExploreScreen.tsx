@@ -98,7 +98,7 @@ export default function BrandExploreScreen() {
         </Pressable>
         <Pressable 
           style={styles.actionButton}
-          onPress={() => navigation.navigate('BrandInfluencerProfile')}
+          onPress={() => navigation.navigate('InfluencerProfile')}
         >
           <Text style={[Typography.buttonSecondary, { color: Colors.textPrimary }]}>View Profile</Text>
         </Pressable>

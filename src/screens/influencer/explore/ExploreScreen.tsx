@@ -5,16 +5,9 @@ import LinearGradient from 'react-native-linear-gradient'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import { useNavigation } from '@react-navigation/native'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
-<<<<<<< HEAD:src/screens/influencer/explore/ExploreScreen.tsx
 import { Colors } from '../../../config/theme'
 import Typography from '../../../styles/typography'
 import styles from '../../explore/styles'
-=======
-import { Colors } from '../../config/theme'
-import Typography from '../../styles/typography'
-import styles from './styles'
-import AppHeader from '../../components/AppHeader'
->>>>>>> 6473a80eb8d377fc7e4be1d554cbe733f98a9372:src/screens/explore/ExploreScreen.tsx
 
 interface CreatorItem {
   id: string
@@ -126,7 +119,6 @@ export default function ExploreScreen() {
     <SafeAreaView edges={['top']} style={styles.rootContainer}>
       <StatusBar barStyle="light-content" backgroundColor={Colors.bgBlack} />
       
-<<<<<<< HEAD:src/screens/influencer/explore/ExploreScreen.tsx
       <View style={styles.headerContainer}>
         <Image 
           source={require('../../../assets/images/IMB360_v2.png')} 
@@ -134,9 +126,6 @@ export default function ExploreScreen() {
           resizeMode="contain"
         />
       </View>
-=======
-     <AppHeader></AppHeader>
->>>>>>> 6473a80eb8d377fc7e4be1d554cbe733f98a9372:src/screens/explore/ExploreScreen.tsx
 
       <View style={styles.contentHeader}>
         <Text style={[Typography.displayLarge, styles.screenTitle]}>Explore</Text>

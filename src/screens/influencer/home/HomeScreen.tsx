@@ -75,7 +75,6 @@ export default function HomeScreen() {
       <StatusBar barStyle="light-content" backgroundColor={Colors.bgBlack} />
 
       {/* Top Bar */}
-<<<<<<< HEAD:src/screens/influencer/home/HomeScreen.tsx
       <View style={styles.topBar}>
         <Image
           source={require('../../../assets/images/IMB360_v2.png')}
@@ -94,9 +93,6 @@ export default function HomeScreen() {
           </Pressable>
         </View>
       </View>
-=======
-      <AppHeader />
->>>>>>> 6473a80eb8d377fc7e4be1d554cbe733f98a9372:src/screens/home/HomeScreen.tsx
 
       <ScrollView
         showsVerticalScrollIndicator={false}
