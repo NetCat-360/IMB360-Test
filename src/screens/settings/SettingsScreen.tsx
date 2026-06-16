@@ -214,15 +214,15 @@ export default function SettingsScreen({
                         }
                     />
 
-                    <SettingItem
-                        icon={ICON_SUBSCRIPTION}
-                        title="Manage my subscription"
-                        onPress={() =>
-                            navigation.navigate(
-                                'Subscription'
-                            )
-                        }
-                    />
+<SettingItem
+    icon={ICON_SUBSCRIPTION}
+    title="Manage my subscription"
+    onPress={() =>
+        navigation.navigate(
+            'PaymentCenter'
+        )
+    }
+/>
                 </Section>
 
                 {/* Security */}

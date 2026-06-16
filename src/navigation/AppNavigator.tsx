@@ -127,6 +127,11 @@ from '../screens/chat/ChatScreen';
 
 import ChatRoomScreen
 from '../screens/chat/ChatRoomScreen';
+import PaymentCenterScreen
+from '../screens/paymentCenter/PaymentCenterScreen';
+
+import PaymentStatementScreen
+from '../screens/paymentCenter/PaymentStatementScreen';
 
 /* -------------------------------------------------------------------------- */
 /*                                NAVIGATORS                                  */
@@ -664,6 +669,19 @@ export default function AppNavigator() {
           ChangePasswordScreen
         }
       />
+      <Stack.Screen
+  name="PaymentCenter"
+  component={
+    PaymentCenterScreen
+  }
+/>
+
+<Stack.Screen
+  name="PaymentStatement"
+  component={
+    PaymentStatementScreen
+  }
+/>
 
       <Stack.Screen
         name="AddAssets"

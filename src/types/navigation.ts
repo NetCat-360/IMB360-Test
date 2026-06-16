@@ -197,6 +197,8 @@ ChatRoom: {
 
   Subscription:
     undefined;
+    PaymentCenter:
+    undefined;
 
   ChangePassword:
     undefined;
@@ -286,6 +288,9 @@ export type AppStackParamList =
     undefined;
 
   Subscription:
+    undefined;
+    PaymentCenter: undefined;
+    PaymentStatement:
     undefined;
 
   ChangePassword:
