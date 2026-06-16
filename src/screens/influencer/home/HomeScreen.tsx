@@ -17,7 +17,7 @@ import { verticalScale } from '../../../utils/scaling';
 import { Colors } from '../../../config/theme';
 import Typography from '../../../styles/typography';
 import styles from './styles';
-import AppHeader from '../../components/AppHeader';
+import AppHeader from '../../../components/AppHeader';
 
 type HomeNavProp = NativeStackNavigationProp<AppStackParamList, 'Home'>;
 

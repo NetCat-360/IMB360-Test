@@ -32,6 +32,8 @@ import brandCampaignTabReducer
 from "./slices/Brand/brandCampaignTabSlice";
 import chatReducer
 from "./slices/chatSlice";
+import paymentReducer
+from "./slices/paymentSlice";
   export const store =
     configureStore({
       reducer: {
@@ -52,6 +54,7 @@ from "./slices/chatSlice";
         brandCampaignTab: brandCampaignTabReducer,
         createCampaign: createCampaignReducer,
         chat: chatReducer,
+        payment: paymentReducer,
       },
     })
   
