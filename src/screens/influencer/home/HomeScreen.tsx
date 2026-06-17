@@ -82,7 +82,7 @@ export default function HomeScreen() {
           resizeMode="contain"
         />
         <View style={styles.topBarActions}>
-          <Pressable style={styles.topBarIcon}>
+          <Pressable style={styles.topBarIcon} onPress={() => navigation.navigate('Chat')}>
             <Text style={styles.topBarIconText}>💬</Text>
           </Pressable>
           <Pressable

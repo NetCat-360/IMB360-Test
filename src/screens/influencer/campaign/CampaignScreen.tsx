@@ -20,7 +20,7 @@ import { CURRENCY } from '../../../config/constants';
 import TextField from '../../../components/common/TextField/TextField';
 import { AppStackParamList } from '../../../types/navigation';
 import styles from './styles';
-import AppHeader from '../../components/AppHeader';
+import AppHeader from '../../../components/AppHeader';
 
 interface CampaignItem {
   id: string;
