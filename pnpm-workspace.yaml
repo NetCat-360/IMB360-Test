@@ -9,5 +9,4 @@ onlyBuiltDependencies:
   - msgpackr-extract
   - lmdb
 minimumReleaseAge: 10080
-trustPolicy: no-downgrade
 
