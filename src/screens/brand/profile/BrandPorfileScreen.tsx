@@ -117,6 +117,81 @@ function MenuItem({
   );
 }
 
+function ProfileHeader() {
+  return (
+    <>
+      <View style={styles.banner} />
+      <View style={styles.profileSection}>
+        <View style={styles.profileRow}>
+          <View style={styles.avatar} />
+          <View style={styles.profileInfo}>
+            <Text style={styles.name}>Username</Text>
+            <Text style={styles.username}>@username1212</Text>
+          </View>
+          <Pressable>
+            <Image source={require('../../../assets/images/editprofile.png')} style={styles.editIcon} />
+          </Pressable>
+        </View>
+        <View style={styles.bioContainer}>
+          <Text style={Typography.body}>Digital creator | Fashion & Lifestyle</Text>
+          <Text style={Typography.body}>Helping brands grow 🚀</Text>
+          <Pressable><Text style={styles.website}>Add website 🔗</Text></Pressable>
+        </View>
+      </View>
+    </>
+  );
+}
+
+function ActionButtons({ navigation }: { navigation: any }) {
+  return (
+    <View style={styles.buttonRow}>
+      <Pressable style={styles.actionButton} onPress={() => navigation.navigate('AddAssets')}>
+        <Text style={styles.actionText}>Add Assets</Text>
+      </Pressable>
+      <Pressable style={styles.actionButton} onPress={() => navigation.navigate('CreateCampaign')}>
+        <Text style={styles.actionText}>Create Campaigns</Text>
+      </Pressable>
+    </View>
+  );
+}
+
+function InfoRow() {
+  return (
+    <View style={styles.infoRow}>
+      <View style={styles.infoItem}>
+        <Image source={require('../../../assets/images/calendar.png')} style={styles.infoIcon} resizeMode="contain" />
+        <Text style={styles.infoText}>Joined December 2025</Text>
+      </View>
+      <View style={styles.infoItem}>
+        <Image source={require('../../../assets/images/location.png')} style={styles.infoIcon} resizeMode="contain" />
+        <Text style={styles.infoText}>Delhi, India</Text>
+      </View>
+    </View>
+  );
+}
+
+function StatsDashboard() {
+  return (
+    <View style={styles.statsContainer}>
+      <StatItem number="₹53350" label="Total Expense" />
+      <StatItem number="₹0" label="Current Balance" />
+      <StatItem number="4.1%" label="Engagement" />
+      <StatItem number="12" label="Campaign" />
+    </View>
+  );
+}
+
+function MenuSection({ navigation }: { navigation: any }) {
+  return (
+    <>
+      <MenuItem title="Overview" icon={require('../../../assets/images/overviewlogo.png')} onPress={() => navigation.navigate('BrandOverview')} />
+      <MenuItem title="Campaigns" icon={require('../../../assets/images/campaign.png')} onPress={() => navigation.navigate('BrandCampaigns')} />
+      <MenuItem title="Campaign Bids" icon={require('../../../assets/images/earninglogo.png')} onPress={() => navigation.navigate('CampaignBids')} />
+      <MenuItem title="Total Spend" icon={require('../../../assets/images/earninglogo.png')} onPress={() => navigation.navigate('TotalSpend')} />
+    </>
+  );
+}
+
 export default function
 BrandProfileScreen() {
   const navigation =
@@ -140,282 +215,12 @@ BrandProfileScreen() {
 
       <AppHeader />
 
-      <ScrollView
-        showsVerticalScrollIndicator={
-          false
-        }
-        contentContainerStyle={
-          styles.scrollContent
-        }
-      >
-        {/* Banner */}
-        <View
-          style={
-            styles.banner
-          }
-        />
-
-        {/* Profile */}
-        <View
-          style={
-            styles.profileSection
-          }
-        >
-          <View
-            style={
-              styles.profileRow
-            }
-          >
-            <View
-              style={
-                styles.avatar
-              }
-            />
-
-            <View
-              style={
-                styles.profileInfo
-              }
-            >
-              <Text
-                style={
-                  styles.name
-                }
-              >
-                Username
-              </Text>
-
-              <Text
-                style={
-                  styles.username
-                }
-              >
-                @username1212
-              </Text>
-            </View>
-
-            <Pressable>
-              <Image
-                source={require(
-                  '../../../assets/images/editprofile.png'
-                )}
-                style={
-                  styles.editIcon
-                }
-              />
-            </Pressable>
-          </View>
-
-          {/* Bio */}
-          <View
-            style={
-              styles.bioContainer
-            }
-          >
-            <Text
-              style={Typography.body}
-            >
-              Digital creator |
-              Fashion &
-              Lifestyle
-            </Text>
-
-            <Text
-              style={Typography.body}
-            >
-              Helping brands
-              grow 🚀
-            </Text>
-
-            <Pressable>
-              <Text
-                style={
-                  styles.website
-                }
-              >
-                Add website 🔗
-              </Text>
-            </Pressable>
-          </View>
-        </View>
-
-        {/* Buttons */}
-        <View
-          style={
-            styles.buttonRow
-          }
-        >
-          <Pressable
-            style={
-              styles.actionButton
-            }
-            onPress={() =>
-              navigation.navigate(
-                'AddAssets'
-              )
-            }
-          >
-            <Text
-              style={
-                styles.actionText
-              }
-            >
-              Add Assets
-            </Text>
-          </Pressable>
-
-          <Pressable
-            style={
-              styles.actionButton
-            }
-            onPress={() =>
-              navigation.navigate(
-                'CreateCampaign'
-              )
-            }
-          >
-            <Text
-              style={
-                styles.actionText
-              }
-            >
-              Create Campaigns
-            </Text>
-          </Pressable>
-        </View>
-
-        {/* Info Row */}
-        <View
-          style={
-            styles.infoRow
-          }
-        >
-          <View
-            style={
-              styles.infoItem
-            }
-          >
-            <Image
-              source={require(
-                '../../../assets/images/calendar.png'
-              )}
-              style={
-                styles.infoIcon
-              }
-              resizeMode="contain"
-            />
-
-            <Text
-              style={
-                styles.infoText
-              }
-            >
-              Joined
-              December
-              2025
-            </Text>
-          </View>
-
-          <View
-            style={
-              styles.infoItem
-            }
-          >
-            <Image
-              source={require(
-                '../../../assets/images/location.png'
-              )}
-              style={
-                styles.infoIcon
-              }
-              resizeMode="contain"
-            />
-
-            <Text
-              style={
-                styles.infoText
-              }
-            >
-              Delhi, India
-            </Text>
-          </View>
-        </View>
-
-        {/* Stats */}
-        <View
-          style={
-            styles.statsContainer
-          }
-        >
-          <StatItem
-            number="₹53350"
-            label="Total Expense"
-          />
-
-          <StatItem
-            number="₹0"
-            label="Current Balance"
-          />
-
-          <StatItem
-            number="4.1%"
-            label="Engagement"
-          />
-
-          <StatItem
-            number="12"
-            label="Campaign"
-          />
-        </View>
-
-        {/* Menu */}
-        <MenuItem
-          title="Overview"
-          icon={require(
-            '../../../assets/images/overviewlogo.png'
-          )}
-          onPress={() =>
-            navigation.navigate(
-              'BrandOverview'
-            )
-          }
-        />
-
-        <MenuItem
-          title="Campaigns"
-          icon={require(
-            '../../../assets/images/campaign.png'
-          )}
-          onPress={() =>
-            navigation.navigate(
-              'BrandCampaigns'
-            )
-          }
-        />
-
-        <MenuItem
-          title="Campaign Bids"
-          icon={require(
-            '../../../assets/images/earninglogo.png'
-          )}
-          onPress={() =>
-            navigation.navigate(
-              'CampaignBids'
-            )
-          }
-        />
-
-        <MenuItem
-          title="Total Spend"
-          icon={require(
-            '../../../assets/images/earninglogo.png'
-          )}
-          onPress={() =>
-            navigation.navigate(
-              'TotalSpend'
-            )
-          }
-        />
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
+        <ProfileHeader />
+        <ActionButtons navigation={navigation} />
+        <InfoRow />
+        <StatsDashboard />
+        <MenuSection navigation={navigation} />
       </ScrollView>
     </SafeAreaView>
   );

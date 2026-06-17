@@ -1,6 +1,7 @@
 import React, {
     useMemo,
     useState,
+    useReducer,
 } from 'react'
 
 import {
@@ -54,33 +55,104 @@ type Props = {
     AppNavigationProp<'AdditionalInfo'>
 }
 
+function CountryDropdownField({ label, data, value, onChange, placeholder }: { label: string; data: any[]; value: any; onChange: (v: any) => void; placeholder: string }) {
+  return (
+    <>
+      <Text style={styles.label}>{label}</Text>
+      <Dropdown style={styles.dropdown} placeholderStyle={styles.placeholder} selectedTextStyle={styles.selectedText} containerStyle={styles.dropdownContainer} data={data} labelField="label" valueField="value" placeholder={placeholder} value={value} onChange={onChange} />
+    </>
+  );
+}
+
+function StatePincodeRow({ states, state, setState, pincode, handlePinCode }: { states: any[]; state: any; setState: (v: any) => void; pincode: string; handlePinCode: (text: string) => void }) {
+  return (
+    <View style={styles.row}>
+      <View style={styles.half}>
+        <CountryDropdownField label="State" data={states} value={state} onChange={item => setState(item.value)} placeholder="Select State" />
+      </View>
+      <View style={styles.half}>
+        <Text style={styles.label}>Postal Code</Text>
+        <TextField value={pincode} onChangeText={handlePinCode} keyboardType="number-pad" maxLength={6} placeholder="PIN Code" placeholderTextColor="#A1A1A1" style={styles.smallInput} />
+      </View>
+    </View>
+  );
+}
+
+function DobPicker({ dob, openDate, setOpenDate, setDob }: { dob: Date; openDate: boolean; setOpenDate: (v: boolean) => void; setDob: (v: Date) => void }) {
+  return (
+    <>
+      <Text style={styles.label}>Date of Birth</Text>
+      <Pressable style={styles.dropdown} onPress={() => setOpenDate(true)}>
+        <Text style={styles.selectedText}>{dob.toLocaleDateString()}</Text>
+      </Pressable>
+      <DatePicker modal open={openDate} date={dob} mode="date" onConfirm={date => { setOpenDate(false); setDob(date); }} onCancel={() => setOpenDate(false)} />
+    </>
+  );
+}
+
+function SaveButton() {
+  return (
+    <Pressable style={styles.saveButton} onPress={() => {}}>
+      <Text style={styles.saveText}>Save Info</Text>
+    </Pressable>
+  );
+}
+
+type FormAction =
+    | { type: 'SET_ADDRESS'; payload: string }
+    | { type: 'SET_COUNTRY'; payload: any }
+    | { type: 'SET_STATE'; payload: any }
+    | { type: 'SET_PINCODE'; payload: string }
+    | { type: 'SET_GENDER'; payload: any }
+    | { type: 'SET_WEBSITE'; payload: string }
+    | { type: 'SET_DOB'; payload: Date };
+
+interface FormState {
+    address: string;
+    country: any;
+    state: any;
+    pincode: string;
+    gender: any;
+    website: string;
+    dob: Date;
+}
+
+const initialFormState: FormState = {
+    address: '',
+    country: null,
+    state: null,
+    pincode: '',
+    gender: null,
+    website: '',
+    dob: new Date(),
+};
+
+function formReducer(state: FormState, action: FormAction): FormState {
+    switch (action.type) {
+        case 'SET_ADDRESS':
+            return { ...state, address: action.payload };
+        case 'SET_COUNTRY':
+            return { ...state, country: action.payload, state: null };
+        case 'SET_STATE':
+            return { ...state, state: action.payload };
+        case 'SET_PINCODE':
+            return { ...state, pincode: action.payload };
+        case 'SET_GENDER':
+            return { ...state, gender: action.payload };
+        case 'SET_WEBSITE':
+            return { ...state, website: action.payload };
+        case 'SET_DOB':
+            return { ...state, dob: action.payload };
+        default:
+            return state;
+    }
+}
+
 export default function AdditionalInfoScreen({
     navigation,
 }: Props) {
-    const [address, setAddress] =
-        useState('')
-
-    const [country, setCountry] =
-        useState<any>(null)
-
-    const [state, setState] =
-        useState<any>(null)
-
-    const [pincode, setPincode] =
-        useState('')
-
-    const [gender, setGender] =
-        useState<any>(null)
-
-    const [website, setWebsite] =
-        useState('')
-
-    const [dob, setDob] =
-        useState(new Date())
-
-    const [openDate,
-        setOpenDate] =
-        useState(false)
+    const [formState, dispatchForm] = useReducer(formReducer, initialFormState);
+    const [openDate, setOpenDate] = useState(false)
 
     const countries =
         useMemo(() =>
@@ -96,12 +168,12 @@ export default function AdditionalInfoScreen({
 
     const states =
         useMemo(() => {
-            if (!country)
+            if (!formState.country)
                 return []
 
             return State
                 .getStatesOfCountry(
-                    country
+                    formState.country
                 )
                 ?.map(item => ({
                     label:
@@ -109,7 +181,7 @@ export default function AdditionalInfoScreen({
                     value:
                         item.isoCode,
                 })) || []
-        }, [country])
+        }, [formState.country])
 
     const handlePinCode =
         (text: string) => {
@@ -123,9 +195,7 @@ export default function AdditionalInfoScreen({
                 onlyNums.length <=
                 6
             ) {
-                setPincode(
-                    onlyNums
-                )
+                dispatchForm({ type: 'SET_PINCODE', payload: onlyNums })
             }
         }
 
@@ -142,283 +212,26 @@ export default function AdditionalInfoScreen({
                 }
             />
 
-            <ScrollView
-                showsVerticalScrollIndicator={
-                    false
-                }
-                contentContainerStyle={
-                    styles.scrollContent
-                }
-            >
-                <Text
-                    style={
-                        styles.description
-                    }
-                >
-                    This makes it
-                    easier for you
-                    to recover your
-                    account.{'\n'}
-                    Verified Emails
-                    make your account
-                    more secure
+            <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
+                <Text style={styles.description}>
+                    This makes it easier for you to recover your account.{'\n'}
+                    Verified Emails make your account more secure
                 </Text>
 
-                {/* Address */}
-                <Text
-                    style={
-                        styles.label
-                    }
-                >
-                    Address
-                </Text>
+                <Text style={styles.label}>Address</Text>
+                <TextField value={formState.address} onChangeText={(text) => dispatchForm({ type: 'SET_ADDRESS', payload: text })} placeholder="Enter your Street address" placeholderTextColor="#A1A1A1" style={styles.input} />
 
-                <TextField
-                    value={address}
-                    onChangeText={setAddress}
-                    placeholder="Enter your Street address"
-                    placeholderTextColor="#A1A1A1"
-                    style={styles.input}
-                />
+                <CountryDropdownField label="Country" data={countries} value={formState.country} onChange={item => dispatchForm({ type: 'SET_COUNTRY', payload: item.value })} placeholder="Select Country" />
 
-                {/* Country */}
-                <Text
-                    style={
-                        styles.label
-                    }
-                >
-                    Country
-                </Text>
+                <StatePincodeRow states={states} state={formState.state} setState={(v) => dispatchForm({ type: 'SET_STATE', payload: v })} pincode={formState.pincode} handlePinCode={handlePinCode} />
 
-                <Dropdown
-                    style={
-                        styles.dropdown
-                    }
-                    placeholderStyle={
-                        styles.placeholder
-                    }
-                    selectedTextStyle={
-                        styles.selectedText
-                    }
-                    containerStyle={
-                        styles.dropdownContainer
-                    }
-                    data={
-                        countries
-                    }
-                    labelField="label"
-                    valueField="value"
-                    placeholder="Select Country"
-                    value={country}
-                    onChange={
-                        item => {
-                            setCountry(
-                                item.value
-                            )
-                            setState(
-                                null
-                            )
-                        }
-                    }
-                />
+                <CountryDropdownField label="Gender" data={GENDER_OPTIONS} value={formState.gender} onChange={item => dispatchForm({ type: 'SET_GENDER', payload: item.value })} placeholder="Select Gender" />
 
-                {/* State + Pincode */}
-                <View
-                    style={
-                        styles.row
-                    }
-                >
-                    <View
-                        style={
-                            styles.half
-                        }
-                    >
-                        <Text
-                            style={
-                                styles.label
-                            }
-                        >
-                            State
-                        </Text>
+                <Text style={styles.label}>Website</Text>
+                <TextField value={formState.website} onChangeText={(text) => dispatchForm({ type: 'SET_WEBSITE', payload: text })} placeholder="e.g. https://mysite.com" placeholderTextColor="#A1A1A1" style={styles.input} />
 
-                        <Dropdown
-                            style={
-                                styles.smallDropdown
-                            }
-                            placeholderStyle={
-                                styles.placeholder
-                            }
-                            selectedTextStyle={
-                                styles.selectedText
-                            }
-                            containerStyle={
-                                styles.dropdownContainer
-                            }
-                            data={
-                                states
-                            }
-                            labelField="label"
-                            valueField="value"
-                            placeholder="Select State"
-                            value={
-                                state
-                            }
-                            onChange={
-                                item =>
-                                    setState(
-                                        item.value
-                                    )
-                            }
-                        />
-                    </View>
-
-                    <View
-                        style={
-                            styles.half
-                        }
-                    >
-                        <Text
-                            style={
-                                styles.label
-                            }
-                        >
-                            Postal Code
-                        </Text>
-
-                        <TextField
-                            value={pincode}
-                            onChangeText={handlePinCode}
-                            keyboardType="number-pad"
-                            maxLength={6}
-                            placeholder="PIN Code"
-                            placeholderTextColor="#A1A1A1"
-                            style={styles.smallInput}
-                        />
-                    </View>
-                </View>
-
-                {/* Gender */}
-                <Text
-                    style={
-                        styles.label
-                    }
-                >
-                    Gender
-                </Text>
-
-                <Dropdown
-                    style={
-                        styles.dropdown
-                    }
-                    placeholderStyle={
-                        styles.placeholder
-                    }
-                    selectedTextStyle={
-                        styles.selectedText
-                    }
-                    containerStyle={
-                        styles.dropdownContainer
-                    }
-                    data={
-                        GENDER_OPTIONS
-                    }
-                    labelField="label"
-                    valueField="value"
-                    placeholder="Select Gender"
-                    value={
-                        gender
-                    }
-                    onChange={
-                        item =>
-                            setGender(
-                                item.value
-                            )
-                    }
-                />
-
-                {/* Website */}
-                <Text
-                    style={
-                        styles.label
-                    }
-                >
-                    Website
-                </Text>
-
-                <TextField
-                    value={website}
-                    onChangeText={setWebsite}
-                    placeholder="e.g. https://mysite.com"
-                    placeholderTextColor="#A1A1A1"
-                    style={styles.input}
-                />
-
-                {/* DOB */}
-                <Text
-                    style={
-                        styles.label
-                    }
-                >
-                    Date of Birth
-                </Text>
-
-                <Pressable
-                    style={
-                        styles.dropdown
-                    }
-                    onPress={() =>
-                        setOpenDate(
-                            true
-                        )
-                    }
-                >
-                    <Text
-                        style={
-                            styles.selectedText
-                        }
-                    >
-                        {dob.toLocaleDateString()}
-                    </Text>
-                </Pressable>
-
-                <DatePicker
-                    modal
-                    open={openDate}
-                    date={dob}
-                    mode="date"
-                    onConfirm={
-                        date => {
-                            setOpenDate(
-                                false
-                            )
-                            setDob(
-                                date
-                            )
-                        }
-                    }
-                    onCancel={() =>
-                        setOpenDate(
-                            false
-                        )
-                    }
-                />
-
-                <Pressable
-                    style={
-                        styles.saveButton
-                    }
-                    onPress={() => {
-                        // TODO: Replace with real API POST
-                    }}
-                >
-                    <Text
-                        style={
-                            styles.saveText
-                        }
-                    >
-                        Save Info
-                    </Text>
-                </Pressable>
+                <DobPicker dob={formState.dob} openDate={openDate} setOpenDate={setOpenDate} setDob={(d) => dispatchForm({ type: 'SET_DOB', payload: d })} />
+                <SaveButton />
             </ScrollView>
         </View>
     )

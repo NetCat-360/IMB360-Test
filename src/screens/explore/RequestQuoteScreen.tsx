@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useReducer } from 'react'
 import { View, Text, Pressable, ScrollView, StatusBar, TextInput, Image } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import LinearGradient from 'react-native-linear-gradient'
@@ -30,33 +30,81 @@ const services = [
   { type: 'Meetup', value: 6000 },
 ]
 
+type ServicesAction =
+  | { type: 'TOGGLE_SERVICE'; payload: string }
+  | { type: 'SET_SERVICES_NEEDED'; payload: string };
+
+interface ServicesState {
+  servicesNeeded: string;
+  selectedServices: string[];
+}
+
+const initialServicesState: ServicesState = {
+  servicesNeeded: '',
+  selectedServices: ['Story'],
+};
+
+function servicesReducer(state: ServicesState, action: ServicesAction): ServicesState {
+  switch (action.type) {
+    case 'TOGGLE_SERVICE': {
+      const updated = state.selectedServices.includes(action.payload)
+        ? state.selectedServices.filter((s) => s !== action.payload)
+        : [...state.selectedServices, action.payload];
+      return {
+        servicesNeeded: updated.join(', '),
+        selectedServices: updated,
+      };
+    }
+    case 'SET_SERVICES_NEEDED':
+      return { ...state, servicesNeeded: action.payload };
+    default:
+      return state;
+  }
+}
+
+type FormAction =
+  | { type: 'SET_BUDGET'; payload: string }
+  | { type: 'SET_ADDITIONAL_GUIDELINES'; payload: string };
+
+interface FormState {
+  budget: string;
+  additionalGuidelines: string;
+}
+
+const initialFormState: FormState = {
+  budget: '',
+  additionalGuidelines: '',
+};
+
+function formReducer(state: FormState, action: FormAction): FormState {
+  switch (action.type) {
+    case 'SET_BUDGET':
+      return { ...state, budget: action.payload };
+    case 'SET_ADDITIONAL_GUIDELINES':
+      return { ...state, additionalGuidelines: action.payload };
+    default:
+      return state;
+  }
+}
+
 export default function RequestQuoteScreen() {
   const navigation = useNavigation<NativeStackNavigationProp<AppStackParamList>>()
   const route = useRoute<RequestQuoteRouteProp>()
   const { platformId, influencerName } = route.params
 
-  const [servicesNeeded, setServicesNeeded] = useState('')
-  const [budget, setBudget] = useState('')
-  const [additionalGuidelines, setAdditionalGuidelines] = useState('')
+  const [servicesState, dispatchServices] = useReducer(servicesReducer, initialServicesState)
+  const [formState, dispatchForm] = useReducer(formReducer, initialFormState)
   const [isPlatformDropdownOpen, setIsPlatformDropdownOpen] = useState(false)
-  const [selectedServices, setSelectedServices] = useState<string[]>(['Story'])
   const [showPaymentModal, setShowPaymentModal] = useState(false)
 
   const selectedPlatform = platformMap[platformId]
 
   const totalEstimatedCost = services
-    .filter((service) => selectedServices.includes(service.type))
+    .filter((service) => servicesState.selectedServices.includes(service.type))
     .reduce((sum, service) => sum + service.value, 0)
 
   const toggleService = (serviceType: string) => {
-    setSelectedServices((prev) => {
-      const updated = prev.includes(serviceType)
-        ? prev.filter((s) => s !== serviceType)
-        : [...prev, serviceType]
-      
-      setServicesNeeded(updated.join(', '))
-      return updated
-    })
+    dispatchServices({ type: 'TOGGLE_SERVICE', payload: serviceType })
   }
 
   return (
@@ -100,7 +148,7 @@ export default function RequestQuoteScreen() {
               <Text style={[Typography.label, { color: Colors.textMuted }]}>Select Services</Text>
             </View>
             {services.map((service) => {
-              const isSelected = selectedServices.includes(service.type)
+              const isSelected = servicesState.selectedServices.includes(service.type)
               return (
                 <Pressable
                   key={service.type}
@@ -128,8 +176,8 @@ export default function RequestQuoteScreen() {
           style={styles.quoteInput}
           placeholder="Please select platforms to see available services"
           placeholderTextColor={Colors.textMuted}
-          value={servicesNeeded}
-          onChangeText={setServicesNeeded}
+          value={servicesState.servicesNeeded}
+          onChangeText={(text) => dispatchServices({ type: 'SET_SERVICES_NEEDED', payload: text })}
         />
 
         {/* 3. Estimated Cost */}
@@ -152,8 +200,8 @@ export default function RequestQuoteScreen() {
           placeholder="Enter your budget"
           placeholderTextColor={Colors.textMuted}
           keyboardType="numeric"
-          value={budget}
-          onChangeText={setBudget}
+          value={formState.budget}
+          onChangeText={(text) => dispatchForm({ type: 'SET_BUDGET', payload: text })}
         />
 
         {/* 5. Project Timeline */}
@@ -171,8 +219,8 @@ export default function RequestQuoteScreen() {
           placeholderTextColor={Colors.textMuted}
           multiline
           numberOfLines={4}
-          value={additionalGuidelines}
-          onChangeText={setAdditionalGuidelines}
+          value={formState.additionalGuidelines}
+          onChangeText={(text) => dispatchForm({ type: 'SET_ADDITIONAL_GUIDELINES', payload: text })}
         />
 
         {/* Informational Workflow Block */}

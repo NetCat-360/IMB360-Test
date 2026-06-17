@@ -69,7 +69,7 @@ const SplashScreen = () => {
     return () => {
       clearTimeout(navigationTimer);
     };
-  }, [blob1Value, blob2Value, dispatch, Easing, getAccessToken, getUserFromKeychain, logoOpacity, logoScale, loginSuccess, navigation]);
+  }, [blob1Value, blob2Value, dispatch, logoOpacity, logoScale, navigation]);
 
   const animatedBlob1 = useAnimatedStyle(() => ({
     transform: [

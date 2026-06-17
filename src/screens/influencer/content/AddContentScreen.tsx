@@ -1,5 +1,5 @@
 // src/screens/content/AddContentScreen.tsx
-import React, { useState, useCallback } from 'react';
+import React, { useState, useReducer, useCallback } from 'react';
 import {
   View, Text, Pressable, ScrollView,
   StatusBar, FlatList,
@@ -70,14 +70,66 @@ const PickerOverlay = ({
 
 
 
-const AddContentScreen = ({ navigation }: Props) => {
-  const [platform, setPlatform] = useState('');
-  const [contentType, setContentType] = useState('');
-  const [contentUrl, setContentUrl] = useState('');
-  const [showPlatformPicker, setShowPlatformPicker] = useState(false);
-  const [showTypePicker, setShowTypePicker] = useState(false);
+type FormAction =
+  | { type: 'SET_PLATFORM'; payload: string }
+  | { type: 'SET_CONTENT_TYPE'; payload: string }
+  | { type: 'SET_CONTENT_URL'; payload: string };
 
-  const canSave = platform && contentType;
+interface FormState {
+  platform: string;
+  contentType: string;
+  contentUrl: string;
+}
+
+const initialFormState: FormState = {
+  platform: '',
+  contentType: '',
+  contentUrl: '',
+};
+
+function formReducer(state: FormState, action: FormAction): FormState {
+  switch (action.type) {
+    case 'SET_PLATFORM':
+      return { ...state, platform: action.payload };
+    case 'SET_CONTENT_TYPE':
+      return { ...state, contentType: action.payload };
+    case 'SET_CONTENT_URL':
+      return { ...state, contentUrl: action.payload };
+    default:
+      return state;
+  }
+}
+
+type PickerAction =
+  | { type: 'SET_SHOW_PLATFORM_PICKER'; payload: boolean }
+  | { type: 'SET_SHOW_TYPE_PICKER'; payload: boolean };
+
+interface PickerState {
+  showPlatformPicker: boolean;
+  showTypePicker: boolean;
+}
+
+const initialPickerState: PickerState = {
+  showPlatformPicker: false,
+  showTypePicker: false,
+};
+
+function pickerReducer(state: PickerState, action: PickerAction): PickerState {
+  switch (action.type) {
+    case 'SET_SHOW_PLATFORM_PICKER':
+      return { ...state, showPlatformPicker: action.payload };
+    case 'SET_SHOW_TYPE_PICKER':
+      return { ...state, showTypePicker: action.payload };
+    default:
+      return state;
+  }
+}
+
+const AddContentScreen = ({ navigation }: Props) => {
+  const [formState, dispatchForm] = useReducer(formReducer, initialFormState);
+  const [pickerState, dispatchPicker] = useReducer(pickerReducer, initialPickerState);
+
+  const canSave = formState.platform && formState.contentType;
 
   return (
     <>
@@ -106,15 +158,15 @@ const AddContentScreen = ({ navigation }: Props) => {
           <Text style={styles.fieldLabel}>Select Platform</Text>
           <Dropdown
             label="Select Platform"
-            value={platform}
-            onPress={() => setShowPlatformPicker(true)}
+            value={formState.platform}
+            onPress={() => dispatchPicker({ type: 'SET_SHOW_PLATFORM_PICKER', payload: true })}
           />
 
           <Text style={styles.fieldLabel}>Type</Text>
           <Dropdown
             label="Select Content Type"
-            value={contentType}
-            onPress={() => setShowTypePicker(true)}
+            value={formState.contentType}
+            onPress={() => dispatchPicker({ type: 'SET_SHOW_TYPE_PICKER', payload: true })}
           />
 
           <Text style={styles.fieldLabel}>Upload Media</Text>
@@ -128,8 +180,8 @@ const AddContentScreen = ({ navigation }: Props) => {
             style={styles.input}
             placeholder="e.g. https://example.com"
             placeholderTextColor={Colors.textMuted}
-            value={contentUrl}
-            onChangeText={setContentUrl}
+            value={formState.contentUrl}
+            onChangeText={(text) => dispatchForm({ type: 'SET_CONTENT_URL', payload: text })}
             keyboardType="url"
             autoCapitalize="none"
           />
@@ -157,18 +209,18 @@ const AddContentScreen = ({ navigation }: Props) => {
         </View>
       </View>
 
-      {showPlatformPicker && (
+      {pickerState.showPlatformPicker && (
         <PickerOverlay
           options={PLATFORMS}
-          onSelect={setPlatform}
-          onClose={() => setShowPlatformPicker(false)}
+          onSelect={(v) => dispatchForm({ type: 'SET_PLATFORM', payload: v })}
+          onClose={() => dispatchPicker({ type: 'SET_SHOW_PLATFORM_PICKER', payload: false })}
         />
       )}
-      {showTypePicker && (
+      {pickerState.showTypePicker && (
         <PickerOverlay
           options={CONTENT_TYPES}
-          onSelect={setContentType}
-          onClose={() => setShowTypePicker(false)}
+          onSelect={(v) => dispatchForm({ type: 'SET_CONTENT_TYPE', payload: v })}
+          onClose={() => dispatchPicker({ type: 'SET_SHOW_TYPE_PICKER', payload: false })}
         />
       )}
     </>

@@ -48,6 +48,148 @@ const formatDate = (text: string) => {
   return formatted;
 };
 
+function AssetInfoCard({ asset }: { asset: any }) {
+  return (
+    <View style={styles.card}>
+      <LinearGradient colors={["#00D2FF", "#7BFF5B"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.availableBadge}>
+        <View style={styles.greenDot} />
+        <Text style={styles.availableText}>Available</Text>
+      </LinearGradient>
+      <Text style={styles.assetTitle}>{asset.companyName}</Text>
+      <Text style={styles.description}>{asset.description}</Text>
+      <Text style={styles.availableLabel}>AVAILABLE: <Text style={styles.dateText}> {asset.startDate} TO {asset.endDate}</Text></Text>
+      <View style={styles.locationRow}>
+        <Image source={require("../../assets/images/location.png")} style={styles.locationImage} />
+        <Text style={styles.locationText}>{asset.city}, {asset.state}</Text>
+      </View>
+      <View style={styles.socialRow}>
+        <View style={styles.socialItem}><Text style={styles.heart}>❤️</Text><Text style={styles.socialText}>{asset.likes}</Text></View>
+        <View style={styles.socialItem}><Text style={styles.comment}>💬</Text><Text style={styles.socialText}>{asset.comments}</Text></View>
+        <Pressable>
+          <Image source={require("../../assets/images/share.png")} style={styles.shareIcon} />
+        </Pressable>
+      </View>
+      <Text style={styles.price}>{asset.rentPerDay}</Text>
+      <View style={styles.buttonRow}>
+        <Pressable style={styles.chatButton}>
+          <Image source={require("../../assets/images/chat.png")} style={styles.chatIcon} />
+        </Pressable>
+        <LinearGradient colors={["#00C6FF", "#7BFF5B"]} style={styles.requestButton}>
+          <Pressable onPress={() => {}}>
+            <Text style={styles.requestText}>Send Request to Rent</Text>
+          </Pressable>
+        </LinearGradient>
+      </View>
+    </View>
+  );
+}
+
+const TABS = ["Gallery", "What's Provided", "T&C", "Comments & Reviews"];
+
+function DetailsTabs({ activeTab, onTabChange }: { activeTab: string; onTabChange: (tab: string) => void }) {
+  return (
+    <View style={styles.tabContainer}>
+      {TABS.map((tab) => {
+        const isActive = activeTab === tab;
+        const label = tab === "Comments & Reviews" ? "Comments" : tab;
+        return (
+          <Pressable key={tab} style={[styles.tabItem, isActive && styles.activeTab]} onPress={() => onTabChange(tab)}>
+            <Text style={[styles.tabText, isActive && styles.activeTabText]}>{label}</Text>
+          </Pressable>
+        );
+      })}
+    </View>
+  );
+}
+
+function TabContent({ activeTab, asset, showFullTerms, onToggleTerms }: { activeTab: string; asset: any; showFullTerms: boolean; onToggleTerms: () => void }) {
+  return (
+    <View style={styles.detailsCard}>
+      {activeTab === "Asset Details" && (
+        <>
+          <Text style={styles.sectionHeading}>Asset Details</Text>
+          <Text style={styles.sectionLabel}>AVAILABLE: <Text style={styles.sectionText}> {asset.availableFrom} TO {asset.availableTo}</Text></Text>
+          <Text style={styles.sectionLabel}>AMENITIES:</Text>
+          <Text style={styles.paragraph}>{asset.amenities.join(", ")}</Text>
+          <Text style={styles.sectionLabel}>DESCRIPTION:</Text>
+          <Text style={styles.paragraph}>{asset.description}</Text>
+        </>
+      )}
+      {activeTab === "What's Provided" && (
+        <>
+          <Text style={styles.sectionHeading}>What's Provided with This Facility</Text>
+          <Text style={styles.paragraph}>{asset.providedFeatures.join(". ")}</Text>
+        </>
+      )}
+      {activeTab === "Price Details" && (
+        <>
+          <Text style={styles.sectionHeading}>Price Details</Text>
+          <Text style={styles.priceText}>{asset.priceDetails}</Text>
+        </>
+      )}
+      {activeTab === "T&C" && (
+        <>
+          <Text style={styles.sectionHeading}>Terms & Conditions / Rules</Text>
+          <Text style={styles.paragraph} numberOfLines={showFullTerms ? undefined : 5}>{asset.termsAndConditions}</Text>
+          <Pressable onPress={onToggleTerms}><Text style={styles.showMore}>{showFullTerms ? "Show less" : "Show more"}</Text></Pressable>
+        </>
+      )}
+      {activeTab === "Comments & Reviews" && (
+        <>
+          <Text style={styles.sectionHeading}>Comments & Reviews</Text>
+          <Text style={styles.paragraph}>Rating: {"⭐".repeat(asset.rating)} Reviews ({asset.reviewsCount})</Text>
+          <TextInput placeholder="Add Your Comment..." placeholderTextColor="#8A8A8A" style={styles.commentInput} />
+          <LinearGradient colors={["#00C6FF", "#7BFF5B"]} style={styles.commentButton}>
+            <Text style={styles.commentButtonText}>Add Comment</Text>
+          </LinearGradient>
+        </>
+      )}
+      {activeTab === "Gallery" && (
+        <View style={styles.galleryGrid}>
+          {asset.gallery.map((image: string, index: number) => (
+            <Image key={image + '-' + index} source={require("../../assets/images/asusbanner.png")} style={styles.galleryImage} />
+          ))}
+        </View>
+      )}
+    </View>
+  );
+}
+
+function RentModal({ visible, onClose, asset, startDate, setStartDate, endDate, setEndDate }: { visible: boolean; onClose: () => void; asset: any; startDate: string; setStartDate: (v: string) => void; endDate: string; setEndDate: (v: string) => void }) {
+  return (
+    <Modal visible={visible} transparent animationType="fade">
+      <View style={styles.modalOverlay}>
+        <View style={styles.modalCard}>
+          <Text style={styles.modalTitle}>Book {asset.companyName}</Text>
+          <View style={styles.dateRow}>
+            <View style={styles.dateBox}>
+              <Text style={styles.label}>Start Date<Text style={{ color: "red" }}> *</Text></Text>
+              <TextInput value={startDate} onChangeText={(text) => setStartDate(formatDate(text))} placeholder="DD/MM/YYYY" placeholderTextColor="#8A8A8A" keyboardType="numeric" maxLength={10} style={styles.modalInput} />
+            </View>
+            <View style={styles.dateBox}>
+              <Text style={styles.label}>End Date<Text style={{ color: "red" }}> *</Text></Text>
+              <TextInput value={endDate} onChangeText={(text) => setEndDate(formatDate(text))} placeholder="DD/MM/YYYY" placeholderTextColor="#8A8A8A" keyboardType="numeric" maxLength={10} style={styles.modalInput} />
+            </View>
+          </View>
+          <Text style={styles.label}>Full Name</Text>
+          <TextInput placeholder="Enter your full name" placeholderTextColor="#A3A3A3" style={styles.modalInput} />
+          <Text style={styles.label}>Email Address</Text>
+          <TextInput placeholder="Enter your email" placeholderTextColor="#A3A3A3" style={styles.modalInput} />
+          <Text style={styles.label}>Phone</Text>
+          <TextInput placeholder="Enter your phone number" placeholderTextColor="#A3A3A3" style={styles.modalInput} />
+          <Text style={styles.label}>Additional Request</Text>
+          <TextInput multiline placeholder="Any special requirements or message" placeholderTextColor="#A3A3A3" style={styles.requestInput} />
+          <Text style={styles.noteText}>* To send a quote for asset rental, a fee of 5 points will be applied.</Text>
+          <View style={styles.modalButtonRow}>
+            <Pressable style={styles.cancelButton} onPress={onClose}><Text style={styles.cancelText}>Cancel</Text></Pressable>
+            <Pressable style={styles.sendButton}><Text style={styles.sendText}>Send Request</Text></Pressable>
+          </View>
+        </View>
+      </View>
+    </Modal>
+  );
+}
+
 export default function AssetDetailsScreen() {
   const dispatch = useDispatch();
   const navigation = useNavigation();
@@ -75,356 +217,22 @@ export default function AssetDetailsScreen() {
 
       <ScreenHeader title="Rent Now" onBack={() => navigation.goBack()} />
 
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.scrollContent}
-      >
-        {/* TITLE */}
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
         <Text style={styles.screenTitle}>Assets</Text>
-
-        {/* BANNER IMAGE */}
-        <Image
-          source={require("../../assets/images/asusbanner.png")}
-          style={styles.banner}
-        />
-
-        {/* CARD */}
-        <View style={styles.card}>
-          {/* AVAILABLE TAG */}
-          <LinearGradient
-            colors={["#00D2FF", "#7BFF5B"]}
-            start={{
-              x: 0,
-              y: 0,
-            }}
-            end={{
-              x: 1,
-              y: 0,
-            }}
-            style={styles.availableBadge}
-          >
-            <View style={styles.greenDot} />
-
-            <Text style={styles.availableText}>Available</Text>
-          </LinearGradient>
-
-          {/* TITLE */}
-          <Text style={styles.assetTitle}>{asset.companyName}</Text>
-
-          {/* DESCRIPTION */}
-          <Text style={styles.description}>{asset.description}</Text>
-
-          {/* AVAILABLE */}
-          <Text style={styles.availableLabel}>
-            AVAILABLE:
-            <Text style={styles.dateText}>
-              {" "}
-              {asset.startDate} TO {asset.endDate}
-            </Text>
-          </Text>
-
-          {/* LOCATION */}
-          <View style={styles.locationRow}>
-            <Image
-              source={require("../../assets/images/location.png")}
-              style={styles.locationImage}
-            />
-
-            <Text style={styles.locationText}>
-              {asset.city}, {asset.state}
-            </Text>
-          </View>
-
-          {/* SOCIALS */}
-          <View style={styles.socialRow}>
-            <View style={styles.socialItem}>
-              <Text style={styles.heart}>❤️</Text>
-
-              <Text style={styles.socialText}>{asset.likes}</Text>
-            </View>
-
-            <View style={styles.socialItem}>
-              <Text style={styles.comment}>💬</Text>
-
-              <Text style={styles.socialText}>{asset.comments}</Text>
-            </View>
-
-            <Pressable>
-              <Image
-                source={require("../../assets/images/share.png")}
-                style={styles.shareIcon}
-              />
-            </Pressable>
-          </View>
-
-          {/* PRICE */}
-          <Text style={styles.price}>{asset.rentPerDay}</Text>
-
-          {/* BUTTONS */}
-          <View style={styles.buttonRow}>
-            <Pressable style={styles.chatButton}>
-              <Image
-                source={require("../../assets/images/chat.png")}
-                style={styles.chatIcon}
-              />
-            </Pressable>
-
-            <LinearGradient
-              colors={["#00C6FF", "#7BFF5B"]}
-              style={styles.requestButton}
-            >
-              <Pressable onPress={() => setShowRentModal(true)}>
-                <Text style={styles.requestText}>Send Request to Rent</Text>
-              </Pressable>
-            </LinearGradient>
-          </View>
-        </View>
-        {/* SINGLE HORIZONTAL TAB BAR */}
-        <View style={styles.tabContainer}>
-          {["Gallery", "What's Provided", "T&C", "Comments & Reviews"].map(
-            (tab) => {
-              const isActive = activeTab === tab;
-
-              const label = tab === "Comments & Reviews" ? "Comments" : tab;
-
-              return (
-                <Pressable
-                  key={tab}
-                  style={[styles.tabItem, isActive && styles.activeTab]}
-                  onPress={() => dispatch(setActiveTab(tab as any))}
-                >
-                  <Text
-                    style={[styles.tabText, isActive && styles.activeTabText]}
-                  >
-                    {label}
-                  </Text>
-                </Pressable>
-              );
-            }
-          )}
-        </View>
-
-        {/* DYNAMIC CONTENT CARD */}
-        <View style={styles.detailsCard}>
-          {/* ASSET DETAILS */}
-          {activeTab === "Asset Details" && (
-            <>
-              <Text style={styles.sectionHeading}>Asset Details</Text>
-
-              <Text style={styles.sectionLabel}>
-                AVAILABLE:
-                <Text style={styles.sectionText}>
-                  {" "}
-                  {asset.availableFrom} TO {asset.availableTo}
-                </Text>
-              </Text>
-
-              <Text style={styles.sectionLabel}>AMENITIES:</Text>
-
-              <Text style={styles.paragraph}>{asset.amenities.join(", ")}</Text>
-
-              <Text style={styles.sectionLabel}>DESCRIPTION:</Text>
-
-              <Text style={styles.paragraph}>{asset.description}</Text>
-            </>
-          )}
-
-          {/* PROVIDED */}
-          {activeTab === "What's Provided" && (
-            <>
-              <Text style={styles.sectionHeading}>
-                What's Provided with This Facility
-              </Text>
-
-              <Text style={styles.paragraph}>
-                {asset.providedFeatures.join(". ")}
-              </Text>
-            </>
-          )}
-
-          {/* PRICE */}
-          {activeTab === "Price Details" && (
-            <>
-              <Text style={styles.sectionHeading}>Price Details</Text>
-
-              <Text style={styles.priceText}>{asset.priceDetails}</Text>
-            </>
-          )}
-
-          {/* TERMS */}
-          {activeTab === "T&C" && (
-            <>
-              <Text style={styles.sectionHeading}>
-                Terms & Conditions / Rules
-              </Text>
-
-              <Text
-                style={styles.paragraph}
-                numberOfLines={showFullTerms ? undefined : 5}
-              >
-                {asset.termsAndConditions}
-              </Text>
-
-              <Pressable onPress={() => dispatch(toggleTerms())}>
-                <Text style={styles.showMore}>
-                  {showFullTerms ? "Show less" : "Show more"}
-                </Text>
-              </Pressable>
-            </>
-          )}
-
-          {/* COMMENTS */}
-          {activeTab === "Comments & Reviews" && (
-            <>
-              <Text style={styles.sectionHeading}>Comments & Reviews</Text>
-
-              <Text style={styles.paragraph}>
-                Rating: {"⭐".repeat(asset.rating)} Reviews (
-                {asset.reviewsCount})
-              </Text>
-
-              <TextInput
-                placeholder="Add Your Comment..."
-                placeholderTextColor="#8A8A8A"
-                style={styles.commentInput}
-              />
-
-              <LinearGradient
-                colors={["#00C6FF", "#7BFF5B"]}
-                style={styles.commentButton}
-              >
-                <Text style={styles.commentButtonText}>Add Comment</Text>
-              </LinearGradient>
-            </>
-          )}
-
-          {/* GALLERY */}
-          {activeTab === "Gallery" && (
-            <View style={styles.galleryGrid}>
-              {asset.gallery.map((image, index) => (
-                <Image
-                  key={image}
-                  source={require("../../assets/images/asusbanner.png")}
-                  style={styles.galleryImage}
-                />
-              ))}
-            </View>
-          )}
-        </View>
+        <Image source={require("../../assets/images/asusbanner.png")} style={styles.banner} />
+        <AssetInfoCard asset={asset} />
+        <DetailsTabs activeTab={activeTab} onTabChange={(tab) => dispatch(setActiveTab(tab as any))} />
+        <TabContent activeTab={activeTab} asset={asset} showFullTerms={showFullTerms} onToggleTerms={() => dispatch(toggleTerms())} />
       </ScrollView>
-      <Modal visible={showRentModal} transparent animationType="fade">
-        <View style={styles.modalOverlay}>
-          <View style={styles.modalCard}>
-            <Text style={styles.modalTitle}>Book {asset.companyName}</Text>
-
-            {/* DATE ROW */}
-            <View style={styles.dateRow}>
-              {/* START DATE */}
-              <View style={styles.dateBox}>
-                <Text style={styles.label}>
-                  Start Date
-                  <Text
-                    style={{
-                      color: "red",
-                    }}
-                  >
-                    {" "}
-                    *
-                  </Text>
-                </Text>
-
-                <TextInput
-                  value={startDate}
-                  onChangeText={(text) => setStartDate(formatDate(text))}
-                  placeholder="DD/MM/YYYY"
-                  placeholderTextColor="#8A8A8A"
-                  keyboardType="numeric"
-                  maxLength={10}
-                  style={styles.modalInput}
-                />
-              </View>
-
-              {/* END DATE */}
-              <View style={styles.dateBox}>
-                <Text style={styles.label}>
-                  End Date
-                  <Text
-                    style={{
-                      color: "red",
-                    }}
-                  >
-                    {" "}
-                    *
-                  </Text>
-                </Text>
-
-                <TextInput
-                  value={endDate}
-                  onChangeText={(text) => setEndDate(formatDate(text))}
-                  placeholder="DD/MM/YYYY"
-                  placeholderTextColor="#8A8A8A"
-                  keyboardType="numeric"
-                  maxLength={10}
-                  style={styles.modalInput}
-                />
-              </View>
-            </View>
-
-            {/* FORM */}
-            <Text style={styles.label}>Full Name</Text>
-
-            <TextInput
-              placeholder="Enter your full name"
-              placeholderTextColor="#A3A3A3"
-              style={styles.modalInput}
-            />
-
-            <Text style={styles.label}>Email Address</Text>
-
-            <TextInput
-              placeholder="Enter your email"
-              placeholderTextColor="#A3A3A3"
-              style={styles.modalInput}
-            />
-
-            <Text style={styles.label}>Phone</Text>
-
-            <TextInput
-              placeholder="Enter your phone number"
-              placeholderTextColor="#A3A3A3"
-              style={styles.modalInput}
-            />
-
-            <Text style={styles.label}>Additional Request</Text>
-
-            <TextInput
-              multiline
-              placeholder="Any special requirements or message"
-              placeholderTextColor="#A3A3A3"
-              style={styles.requestInput}
-            />
-
-            <Text style={styles.noteText}>
-              * To send a quote for asset rental, a fee of 5 points will be
-              applied.
-            </Text>
-
-            {/* BUTTONS */}
-            <View style={styles.modalButtonRow}>
-              <Pressable
-                style={styles.cancelButton}
-                onPress={() => setShowRentModal(false)}
-              >
-                <Text style={styles.cancelText}>Cancel</Text>
-              </Pressable>
-
-              <Pressable style={styles.sendButton}>
-                <Text style={styles.sendText}>Send Request</Text>
-              </Pressable>
-            </View>
-          </View>
-        </View>
-      </Modal>
+      <RentModal
+        visible={showRentModal}
+        onClose={() => setShowRentModal(false)}
+        asset={asset}
+        startDate={startDate}
+        setStartDate={setStartDate}
+        endDate={endDate}
+        setEndDate={setEndDate}
+      />
     </SafeAreaView>
   );
 }

@@ -1,5 +1,6 @@
 import React, {
     useState,
+    useReducer,
     useEffect,
     useRef,
 } from 'react'
@@ -32,6 +33,157 @@ type Props = {
     AppNavigationProp<'ManageAccount'>
 }
 
+function OtpInput({ otp, handleOtpChange, inputRefs }: { otp: string[]; handleOtpChange: (value: string, index: number) => void; inputRefs: React.MutableRefObject<(TextInput | null)[]> }) {
+  return (
+    <View style={styles.otpContainer}>
+      {otp.map((item, index) => (
+        <TextInput
+          key={OTP_FIELD_KEYS[index]}
+          ref={ref => { inputRefs.current[index] = ref }}
+          style={styles.otpInput}
+          keyboardType="number-pad"
+          maxLength={1}
+          value={item}
+          onChangeText={text => handleOtpChange(text, index)}
+        />
+      ))}
+    </View>
+  );
+}
+
+function OtpModalSection({ visible, onClose, otp, handleOtpChange, inputRefs, handleVerify, countdown, email }: {
+  visible: boolean; onClose: () => void; otp: string[]; handleOtpChange: (value: string, index: number) => void;
+  inputRefs: React.MutableRefObject<(TextInput | null)[]>; handleVerify: () => void; countdown: number; email: string;
+}) {
+  return (
+    <Modal visible={visible} transparent animationType="fade" onRequestClose={onClose}>
+      <Pressable style={styles.modalOverlay} onPress={onClose}>
+        <Pressable style={styles.modalContainer}>
+          <Text style={styles.otpTitle}>Enter OTP</Text>
+          <Text style={styles.otpSubtitle}>Enter the 6 digit code sent to {email || 'your email'}</Text>
+          <OtpInput otp={otp} handleOtpChange={handleOtpChange} inputRefs={inputRefs} />
+          <Pressable style={styles.verifyButton} onPress={handleVerify}><Text style={styles.verifyText}>Verify</Text></Pressable>
+          <Pressable><Text style={styles.resendText}>Resend in {countdown} sec</Text></Pressable>
+        </Pressable>
+      </Pressable>
+    </Modal>
+  );
+}
+
+function EditProfileSection({
+  expanded, onToggle, fullName, setFullName, email, setEmail, phone, setPhone, onSave,
+}: {
+  expanded: boolean; onToggle: () => void; fullName: string; setFullName: (v: string) => void;
+  email: string; setEmail: (v: string) => void; phone: string; setPhone: (v: string) => void; onSave: () => void;
+}) {
+  return (
+    <>
+      <Pressable style={styles.dropdownHeader} onPress={onToggle}>
+        <Text style={styles.dropdownTitle}>Edit Profile</Text>
+        <Text style={styles.arrow}>{expanded ? '▲' : '▼'}</Text>
+      </Pressable>
+      {expanded && (
+        <View style={styles.dropdownBody}>
+          <TextField placeholder="Full Name" placeholderTextColor="#8E8E93" value={fullName} onChangeText={setFullName} style={styles.input} />
+          <TextField placeholder="Email Address" placeholderTextColor="#8E8E93" value={email} onChangeText={setEmail} style={styles.input} />
+          <TextField placeholder="Phone Number" placeholderTextColor="#8E8E93" keyboardType="phone-pad" value={phone} onChangeText={setPhone} style={styles.input} />
+          <Pressable style={styles.saveButton} onPress={onSave}><Text style={styles.saveText}>Save Changes</Text></Pressable>
+        </View>
+      )}
+    </>
+  );
+}
+
+function EditEmailSection({
+  expanded, onToggle, newEmail, setNewEmail, onSave,
+}: {
+  expanded: boolean; onToggle: () => void; newEmail: string; setNewEmail: (v: string) => void; onSave: () => void;
+}) {
+  return (
+    <>
+      <Pressable style={styles.dropdownHeader} onPress={onToggle}>
+        <Text style={styles.dropdownTitle}>Edit Email ID</Text>
+        <Text style={styles.arrow}>{expanded ? '▲' : '▼'}</Text>
+      </Pressable>
+      {expanded && (
+        <View style={styles.dropdownBody}>
+          <TextInput placeholder="Email Address" placeholderTextColor="#8E8E93" value={newEmail} onChangeText={setNewEmail} style={styles.input} />
+          <Pressable style={styles.saveButton} onPress={onSave}><Text style={styles.saveText}>Save Changes</Text></Pressable>
+        </View>
+      )}
+    </>
+  );
+}
+
+type ProfileAction =
+    | { type: 'SET_FULL_NAME'; payload: string }
+    | { type: 'SET_EMAIL'; payload: string }
+    | { type: 'SET_PHONE'; payload: string };
+
+interface ProfileState {
+    fullName: string;
+    email: string;
+    phone: string;
+}
+
+const initialProfileState: ProfileState = {
+    fullName: '',
+    email: '',
+    phone: '',
+};
+
+function profileReducer(state: ProfileState, action: ProfileAction): ProfileState {
+    switch (action.type) {
+        case 'SET_FULL_NAME':
+            return { ...state, fullName: action.payload };
+        case 'SET_EMAIL':
+            return { ...state, email: action.payload };
+        case 'SET_PHONE':
+            return { ...state, phone: action.payload };
+        default:
+            return state;
+    }
+}
+
+type OtpAction =
+    | { type: 'SET_OTP_MODAL_VISIBLE'; payload: boolean }
+    | { type: 'SET_COUNTDOWN'; payload: number }
+    | { type: 'DECREMENT_COUNTDOWN' }
+    | { type: 'SET_OTP'; payload: string[] }
+    | { type: 'UPDATE_OTP_AT_INDEX'; payload: { index: number; value: string } };
+
+interface OtpState {
+    otpModalVisible: boolean;
+    countdown: number;
+    otp: string[];
+}
+
+const initialOtpState: OtpState = {
+    otpModalVisible: false,
+    countdown: 30,
+    otp: ['', '', '', '', '', ''],
+};
+
+function otpReducer(state: OtpState, action: OtpAction): OtpState {
+    switch (action.type) {
+        case 'SET_OTP_MODAL_VISIBLE':
+            return { ...state, otpModalVisible: action.payload };
+        case 'SET_COUNTDOWN':
+            return { ...state, countdown: action.payload };
+        case 'DECREMENT_COUNTDOWN':
+            return { ...state, countdown: state.countdown > 0 ? state.countdown - 1 : 0 };
+        case 'SET_OTP':
+            return { ...state, otp: action.payload };
+        case 'UPDATE_OTP_AT_INDEX': {
+            const updated = [...state.otp];
+            updated[action.payload.index] = action.payload.value;
+            return { ...state, otp: updated };
+        }
+        default:
+            return state;
+    }
+}
+
 export default function
     ManageAccountScreen({
         navigation,
@@ -46,47 +198,13 @@ export default function
         | null
     >(null)
 
-    const [
-        otpModalVisible,
-        setOtpModalVisible,
-    ] = useState(false)
-
-    const [
-        countdown,
-        setCountdown,
-    ] = useState(30)
-
-    const [
-        fullName,
-        setFullName,
-    ] = useState('')
-
-    const [
-        email,
-        setEmail,
-    ] = useState('')
-
-    const [
-        phone,
-        setPhone,
-    ] = useState('')
+    const [profileState, dispatchProfile] = useReducer(profileReducer, initialProfileState);
+    const [otpState, dispatchOtp] = useReducer(otpReducer, initialOtpState);
 
     const [
         newEmail,
         setNewEmail,
     ] = useState('')
-
-    const [
-        otp,
-        setOtp,
-    ] = useState([
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-    ])
 
     const inputRefs =
     useRef<
@@ -96,33 +214,19 @@ export default function
     >([])
 
     useEffect(() => {
-        if (!otpModalVisible) return;
+        if (!otpState.otpModalVisible) return;
         const interval = setInterval(() => {
-            setCountdown(prev => {
-                if (prev <= 1) {
-                    clearInterval(interval);
-                    return 0;
-                }
-                return prev - 1;
-            });
+            dispatchOtp({ type: 'DECREMENT_COUNTDOWN' });
         }, 1000);
         return () => clearInterval(interval);
-    }, [otpModalVisible]);
+    }, [otpState.otpModalVisible]);
 
     const handleOtpChange =
         (
             value: string,
             index: number,
         ) => {
-            const updatedOtp =
-                [...otp]
-
-            updatedOtp[index] =
-                value
-
-            setOtp(
-                updatedOtp,
-            )
+            dispatchOtp({ type: 'UPDATE_OTP_AT_INDEX', payload: { index, value } })
 
             if (
                 value &&
@@ -136,20 +240,16 @@ export default function
 
     const openOtpModal =
         () => {
-            setOtpModalVisible(
-                true,
-            )
-            setCountdown(
-                30,
-            )
+            dispatchOtp({ type: 'SET_OTP_MODAL_VISIBLE', payload: true })
+            dispatchOtp({ type: 'SET_COUNTDOWN', payload: 30 })
         }
 
     const handleVerify =
         () => {
-            const compiledOtp = otp.join('')
+            const compiledOtp = otpState.otp.join('')
             if (compiledOtp.length === 6) {
-                setOtpModalVisible(false)
-                setOtp(['', '', '', '', '', ''])
+                dispatchOtp({ type: 'SET_OTP_MODAL_VISIBLE', payload: false })
+                dispatchOtp({ type: 'SET_OTP', payload: ['', '', '', '', '', ''] })
             }
         }
 
@@ -166,292 +266,33 @@ export default function
                 }
             />
 
-            <ScrollView
-                contentContainerStyle={
-                    styles.content
-                }
-                showsVerticalScrollIndicator={
-                    false
-                }
-            >
-                <Pressable
-                    style={
-                        styles.dropdownHeader
-                    }
-                    onPress={() =>
-                        setExpandedSection(
-                            expandedSection ===
-                                'profile'
-                                ? null
-                                : 'profile',
-                        )
-                    }
-                >
-                    <Text
-                        style={
-                            styles.dropdownTitle
-                        }
-                    >
-                        Edit Profile
-                    </Text>
-
-                    <Text
-                        style={
-                            styles.arrow
-                        }
-                    >
-                        {expandedSection ===
-                        'profile'
-                            ? '▲'
-                            : '▼'}
-                    </Text>
-                </Pressable>
-
-                {expandedSection ===
-                    'profile' && (
-                    <View
-                        style={
-                            styles.dropdownBody
-                        }
-                    >
-                        <TextField
-                            placeholder="Full Name"
-                            placeholderTextColor="#8E8E93"
-                            value={fullName}
-                            onChangeText={setFullName}
-                            style={styles.input}
-                        />
-
-                        <TextField
-                            placeholder="Email Address"
-                            placeholderTextColor="#8E8E93"
-                            value={email}
-                            onChangeText={setEmail}
-                            style={styles.input}
-                        />
-
-                        <TextField
-                            placeholder="Phone Number"
-                            placeholderTextColor="#8E8E93"
-                            keyboardType="phone-pad"
-                            value={phone}
-                            onChangeText={setPhone}
-                            style={styles.input}
-                        />
-
-                        <Pressable
-                            style={
-                                styles.saveButton
-                            }
-                            onPress={
-                                openOtpModal
-                            }
-                        >
-                            <Text
-                                style={
-                                    styles.saveText
-                                }
-                            >
-                                Save Changes
-                            </Text>
-                        </Pressable>
-                    </View>
-                )}
-
-                <Pressable
-                    style={
-                        styles.dropdownHeader
-                    }
-                    onPress={() =>
-                        setExpandedSection(
-                            expandedSection ===
-                                'email'
-                                ? null
-                                : 'email',
-                        )
-                    }
-                >
-                    <Text
-                        style={
-                            styles.dropdownTitle
-                        }
-                    >
-                        Edit Email ID
-                    </Text>
-
-                    <Text
-                        style={
-                            styles.arrow
-                        }
-                    >
-                        {expandedSection ===
-                        'email'
-                            ? '▲'
-                            : '▼'}
-                    </Text>
-                </Pressable>
-
-                {expandedSection ===
-                    'email' && (
-                    <View
-                        style={
-                            styles.dropdownBody
-                        }
-                    >
-                        <TextInput
-                            placeholder="Email Address"
-                            placeholderTextColor="#8E8E93"
-                            value={
-                                newEmail
-                            }
-                            onChangeText={
-                                setNewEmail
-                            }
-                            style={
-                                styles.input
-                            }
-                        />
-
-                        <Pressable
-                            style={
-                                styles.saveButton
-                            }
-                            onPress={
-                                openOtpModal
-                            }
-                        >
-                            <Text
-                                style={
-                                    styles.saveText
-                                }
-                            >
-                                Save Changes
-                            </Text>
-                        </Pressable>
-                    </View>
-                )}
+            <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
+                <EditProfileSection
+                  expanded={expandedSection === 'profile'}
+                  onToggle={() => setExpandedSection(expandedSection === 'profile' ? null : 'profile')}
+                  fullName={profileState.fullName} setFullName={(v) => dispatchProfile({ type: 'SET_FULL_NAME', payload: v })}
+                  email={profileState.email} setEmail={(v) => dispatchProfile({ type: 'SET_EMAIL', payload: v })}
+                  phone={profileState.phone} setPhone={(v) => dispatchProfile({ type: 'SET_PHONE', payload: v })}
+                  onSave={openOtpModal}
+                />
+                <EditEmailSection
+                  expanded={expandedSection === 'email'}
+                  onToggle={() => setExpandedSection(expandedSection === 'email' ? null : 'email')}
+                  newEmail={newEmail} setNewEmail={setNewEmail}
+                  onSave={openOtpModal}
+                />
             </ScrollView>
 
-            <Modal
-                visible={
-                    otpModalVisible
-                }
-                transparent
-                animationType="fade"
-                onRequestClose={() =>
-                    setOtpModalVisible(
-                        false,
-                    )
-                }
-            >
-                <Pressable
-                    style={
-                        styles.modalOverlay
-                    }
-                    onPress={() =>
-                        setOtpModalVisible(
-                            false,
-                        )
-                    }
-                >
-                    <Pressable
-                        style={
-                            styles.modalContainer
-                        }
-                    >
-                        <Text
-                            style={
-                                styles.otpTitle
-                            }
-                        >
-                            Enter OTP
-                        </Text>
-
-                        <Text
-                            style={
-                                styles.otpSubtitle
-                            }
-                        >
-                            Enter the
-                            6 digit code
-                            sent to{' '}
-                            {email ||
-                                newEmail ||
-                                'your email'}
-                        </Text>
-
-                        <View
-                            style={
-                                styles.otpContainer
-                            }
-                        >
-                            {otp.map(
-                                (
-                                    item,
-                                    index,
-                                ) => (
-                                    <TextInput
-                                        key={OTP_FIELD_KEYS[index]}
-                                        ref={ref => {
-                                            inputRefs.current[
-                                                index
-                                            ] = ref
-                                        }}
-                                        style={
-                                            styles.otpInput
-                                        }
-                                        keyboardType="number-pad"
-                                        maxLength={
-                                            1
-                                        }
-                                        value={
-                                            item
-                                        }
-                                        onChangeText={text =>
-                                            handleOtpChange(
-                                                text,
-                                                index,
-                                            )
-                                        }
-                                    />
-                                ),
-                            )}
-                        </View>
-
-                        <Pressable
-                            style={
-                                styles.verifyButton
-                            }
-                            onPress={
-                                handleVerify
-                            }
-                        >
-                            <Text
-                                style={
-                                    styles.verifyText
-                                }
-                            >
-                                Verify
-                            </Text>
-                        </Pressable>
-
-                        <Pressable>
-                            <Text
-                                style={
-                                    styles.resendText
-                                }
-                            >
-                                Resend
-                                in{' '}
-                                {
-                                    countdown
-                                }{' '}
-                                sec
-                            </Text>
-                        </Pressable>
-                    </Pressable>
-                </Pressable>
-            </Modal>
+            <OtpModalSection
+                visible={otpState.otpModalVisible}
+                onClose={() => dispatchOtp({ type: 'SET_OTP_MODAL_VISIBLE', payload: false })}
+                otp={otpState.otp}
+                handleOtpChange={handleOtpChange}
+                inputRefs={inputRefs}
+                handleVerify={handleVerify}
+                countdown={otpState.countdown}
+                email={profileState.email || newEmail}
+            />
         </View>
     )
 }

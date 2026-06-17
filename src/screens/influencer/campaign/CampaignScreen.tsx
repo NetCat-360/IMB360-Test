@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState, useReducer } from 'react';
 import {
   View,
   Text,
@@ -117,47 +117,219 @@ const campaignData: CampaignItem[] = [
   }
 ];
 
+function BrowseCampaignsHeader() {
+  return (
+    <View style={styles.browseCampaignsOuterBlockContainer}>
+      <Text style={[Typography.displayMedium, styles.browseCampaignsTitleMainText]}>
+        BROWSE <Text style={styles.browseCampaignsTitleHighlightText}>CAMPAIGNS</Text>
+      </Text>
+      <View style={styles.aiBadgeFloatingContainer}>
+        <Ionicons name="sparkles" size={moderateScale(10)} color={Colors.teal} style={styles.aiBadgeSparkleIcon} />
+        <Text style={[Typography.caption, styles.aiBadgeLabelText]}>AI Browse Campaign</Text>
+      </View>
+    </View>
+  );
+}
+
+function FilterToggleRow({ onToggle }: { onToggle: () => void }) {
+  return (
+    <View style={styles.filterControlActionRow}>
+      <Text style={[Typography.h2, styles.filterResultStaticLabelText]}>Filter Result</Text>
+      <Pressable onPress={onToggle} style={styles.funnelTouchAreaBox}>
+        <Ionicons name="funnel-outline" size={moderateScale(20)} color={Colors.textPrimary} />
+      </Pressable>
+    </View>
+  );
+}
+
+function CampaignCard({ item, isExpanded, onViewPress, onApply }: { item: CampaignItem; isExpanded: boolean; onViewPress: () => void; onApply: () => void }) {
+  return (
+    <View style={styles.campaignCardWrapper}>
+      <View style={styles.cardHeaderRow}>
+        <View style={styles.brandContainer}>
+          <Image source={require('../../../assets/images/overviewlogo.png')} style={styles.brandLogo} />
+          <View style={styles.brandMeta}>
+            <Text style={[Typography.h2, styles.brandNameText]}>{item.companyName}</Text>
+            <View style={styles.socialPlatformRow}>
+              <Image source={require('../../../assets/images/Instagram.png')} style={styles.socialIcon} />
+              <Image source={require('../../../assets/images/facebook.png')} style={styles.socialIcon} />
+              <Image source={require('../../../assets/images/youtube.png')} style={styles.socialIcon} />
+              <Image source={require('../../../assets/images/Twitter.png')} style={styles.socialIcon} />
+            </View>
+          </View>
+        </View>
+        <Text style={[Typography.bodySmall, styles.durationText]}>{item.duration}</Text>
+      </View>
+      <Text style={[Typography.body, styles.descriptionText]}>{item.description}</Text>
+      <View style={styles.appliedRow}>
+        <View style={styles.avatarStack}>
+          <View style={[styles.avatarCircle, styles.avatar1]} />
+          <View style={[styles.avatarCircle, styles.avatar2]} />
+          <View style={[styles.avatarCircle, styles.avatar3]} />
+          <View style={[styles.avatarCircle, styles.avatarCountContainer]}>
+            <Text style={styles.avatarCountText}>+24</Text>
+          </View>
+        </View>
+        <Text style={[Typography.label, styles.appliedCounterText]}>{item.appliedCount} APPLIED</Text>
+      </View>
+      <View style={styles.metricsSplitRow}>
+        <View style={styles.metricColumn}>
+          <Text style={[Typography.label, styles.metricLabel]}>BUDGET RANGE</Text>
+          <Text style={[Typography.statNumber, styles.budgetRangeValue]}>{CURRENCY}{item.budgetMin} - {CURRENCY}{item.budgetMax}</Text>
+        </View>
+        <View style={styles.metricColumn}>
+          <Text style={[Typography.label, styles.metricLabel]}>DEADLINE</Text>
+          <Text style={[Typography.body, styles.deadlineValue]}>{item.deadline}</Text>
+        </View>
+      </View>
+      <View style={styles.requirementsContainer}>
+        <View style={styles.requirementsHeaderRow}>
+          <Ionicons name="shield-checkmark-outline" size={moderateScale(16)} color={Colors.textPrimary} style={styles.shieldIcon} />
+          <Text style={[Typography.h3, styles.requirementsTitleText]}>Campaign Requirements</Text>
+        </View>
+        <View style={styles.requirementsSplitRow}>
+          <View style={styles.requirementBlock}>
+            <Text style={[Typography.caption, styles.requirementBlockLabel]}>MIN. FOLLOWERS</Text>
+            <Text style={[Typography.statNumber, styles.requirementBlockValue]}>{item.minFollowers}</Text>
+          </View>
+          <View style={styles.requirementBlock}>
+            <Text style={[Typography.caption, styles.requirementBlockLabel]}>MIN. ENGAGEMENT</Text>
+            <Text style={[Typography.statNumber, styles.requirementBlockValue]}>{item.minEngagement}</Text>
+          </View>
+        </View>
+      </View>
+      {!isExpanded && (
+        <View style={styles.cardActionAnchorRow}>
+          <Pressable style={styles.alignedRightViewButtonAnchor} onPress={onViewPress}>
+            <LinearGradient colors={[Colors.teal, Colors.lime]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.gradientViewButtonContainer}>
+              <Text style={[Typography.buttonSecondary, styles.viewButtonText]}>View</Text>
+            </LinearGradient>
+          </Pressable>
+        </View>
+      )}
+      {isExpanded && (
+        <View style={styles.expandedContentContainer}>
+          <Text style={[Typography.h3, styles.expandedSectionTitle]}>Target Audience</Text>
+          <Text style={[Typography.body, styles.audienceBodyText]}>
+            {item.audienceText} <Text style={styles.readMoreAccent}>read more...</Text>
+          </Text>
+          <Text style={[Typography.h3, styles.expandedSectionTitle]}>Campaign Categories</Text>
+          <View style={styles.categoryGridContainer}>
+            {item.categories.map((cat, index) => (
+              <View key={cat} style={styles.categoryTagBubble}>
+                <Text style={[Typography.bodySmall, styles.categoryTagText]}>{cat}</Text>
+              </View>
+            ))}
+          </View>
+          <View style={styles.deliverablesCanvasBlock}>
+            <Text style={[Typography.h3, styles.deliverablesCanvasTitle]}>Deliverables</Text>
+            {item.deliverables.map((del, index) => (
+              <View key={del} style={styles.deliverableItemRow}>
+                <Ionicons name="checkmark-circle" size={moderateScale(16)} color={Colors.bgBlack} style={styles.deliverableCheckIcon} />
+                <Text style={[Typography.bodySmall, styles.deliverableMessageText]}>{del}</Text>
+              </View>
+            ))}
+          </View>
+          <View style={styles.expandedActionControlsSplitRow}>
+            <Pressable style={styles.expandedCollapseTriggerTextAnchor} onPress={onViewPress}>
+              <Text style={[Typography.bodySmall, styles.collapseLabelActionText]}>Hide details</Text>
+            </Pressable>
+            <Pressable style={styles.fullWidthApplyButtonAnchor} onPress={onApply}>
+              <LinearGradient colors={[Colors.teal, Colors.lime]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.gradientApplyButtonContainer}>
+                <Text style={[Typography.buttonPrimary, styles.applyButtonText]}>Apply Now</Text>
+              </LinearGradient>
+            </Pressable>
+          </View>
+        </View>
+      )}
+    </View>
+  );
+}
+
+type FiltersAction =
+  | { type: 'SET_IS_FILTER_VISIBLE'; payload: boolean }
+  | { type: 'SET_SEARCH_QUERY'; payload: string }
+  | { type: 'CLOSE_ALL_DROPDOWNS' }
+  | { type: 'TOGGLE_CATEGORY' }
+  | { type: 'SET_CATEGORY'; payload: string }
+  | { type: 'TOGGLE_BUDGET' }
+  | { type: 'SET_BUDGET'; payload: string }
+  | { type: 'TOGGLE_PLATFORM' }
+  | { type: 'SET_PLATFORM'; payload: string };
+
+interface FiltersState {
+  isFilterVisible: boolean;
+  searchQuery: string;
+  isCategoryOpen: boolean;
+  selectedCategory: string;
+  isBudgetOpen: boolean;
+  selectedBudget: string;
+  isPlatformOpen: boolean;
+  selectedPlatform: string;
+}
+
+const initialFiltersState: FiltersState = {
+  isFilterVisible: false,
+  searchQuery: '',
+  isCategoryOpen: false,
+  selectedCategory: 'All Categories',
+  isBudgetOpen: false,
+  selectedBudget: 'All Budgets',
+  isPlatformOpen: false,
+  selectedPlatform: 'All Platforms',
+};
+
+function filtersReducer(state: FiltersState, action: FiltersAction): FiltersState {
+  switch (action.type) {
+    case 'SET_IS_FILTER_VISIBLE':
+      return { ...state, isFilterVisible: action.payload };
+    case 'SET_SEARCH_QUERY':
+      return { ...state, searchQuery: action.payload };
+    case 'CLOSE_ALL_DROPDOWNS':
+      return { ...state, isCategoryOpen: false, isBudgetOpen: false, isPlatformOpen: false };
+    case 'TOGGLE_CATEGORY':
+      return { ...state, isCategoryOpen: !state.isCategoryOpen, isBudgetOpen: false, isPlatformOpen: false };
+    case 'SET_CATEGORY':
+      return { ...state, selectedCategory: action.payload, isCategoryOpen: false };
+    case 'TOGGLE_BUDGET':
+      return { ...state, isBudgetOpen: !state.isBudgetOpen, isCategoryOpen: false, isPlatformOpen: false };
+    case 'SET_BUDGET':
+      return { ...state, selectedBudget: action.payload, isBudgetOpen: false };
+    case 'TOGGLE_PLATFORM':
+      return { ...state, isPlatformOpen: !state.isPlatformOpen, isCategoryOpen: false, isBudgetOpen: false };
+    case 'SET_PLATFORM':
+      return { ...state, selectedPlatform: action.payload, isPlatformOpen: false };
+    default:
+      return state;
+  }
+}
+
 export default function CampaignScreen() {
   const navigation = useNavigation<NativeStackNavigationProp<AppStackParamList>>();
-  const [isFilterVisible, setIsFilterVisible] = useState<boolean>(false);
-  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [filtersState, dispatchFilters] = useReducer(filtersReducer, initialFiltersState);
   const [expandedCampaignId, setExpandedCampaignId] = useState<string | null>(null);
-  
-  const [isCategoryOpen, setIsCategoryOpen] = useState<boolean>(false);
-  const [selectedCategory, setSelectedCategory] = useState<string>('All Categories');
-
-  const [isBudgetOpen, setIsBudgetOpen] = useState<boolean>(false);
-  const [selectedBudget, setSelectedBudget] = useState<string>('All Budgets');
-
-  const [isPlatformOpen, setIsPlatformOpen] = useState<boolean>(false);
-  const [selectedPlatform, setSelectedPlatform] = useState<string>('All Platforms');
 
   const handleToggleFilter = () => {
-    setIsFilterVisible(!isFilterVisible);
-    if (isFilterVisible) {
-      setIsCategoryOpen(false);
-      setIsBudgetOpen(false);
-      setIsPlatformOpen(false);
+    dispatchFilters({ type: 'SET_IS_FILTER_VISIBLE', payload: !filtersState.isFilterVisible });
+    if (filtersState.isFilterVisible) {
+      dispatchFilters({ type: 'CLOSE_ALL_DROPDOWNS' });
     }
   };
 
-  const handleViewPress = (id: string) => {
-    setExpandedCampaignId(expandedCampaignId === id ? null : id);
-  };
+  const handleViewPress = useCallback((id: string) => {
+    setExpandedCampaignId(prev => prev === id ? null : id);
+  }, []);
 
   const handleSelectCategory = useCallback((category: string) => {
-    setSelectedCategory(category);
-    setIsCategoryOpen(false);
+    dispatchFilters({ type: 'SET_CATEGORY', payload: category });
   }, []);
 
   const handleSelectBudget = useCallback((budget: string) => {
-    setSelectedBudget(budget);
-    setIsBudgetOpen(false);
+    dispatchFilters({ type: 'SET_BUDGET', payload: budget });
   }, []);
 
   const handleSelectPlatform = useCallback((platform: string) => {
-    setSelectedPlatform(platform);
-    setIsPlatformOpen(false);
+    dispatchFilters({ type: 'SET_PLATFORM', payload: platform });
   }, []);
 
   const categoryOptions = useMemo(() => ['All Categories', ...CATEGORY_OPTIONS], []);
@@ -169,7 +341,7 @@ export default function CampaignScreen() {
 
   const renderCategoryItem = useCallback(({ item, index }: { item: string; index: number }) => {
     const isLast = index === CATEGORY_OPTIONS.length;
-    const isSelected = selectedCategory === item;
+    const isSelected = filtersState.selectedCategory === item;
     return (
       <Pressable
         style={isLast ? styles.dropdownListItemTouchAreaLast : styles.dropdownListItemTouchArea}
@@ -180,11 +352,11 @@ export default function CampaignScreen() {
         </Text>
       </Pressable>
     );
-  }, [selectedCategory, handleSelectCategory, defaultDropdownItemTextStyle, activeDropdownItemTextStyle]);
+  }, [filtersState.selectedCategory, handleSelectCategory, defaultDropdownItemTextStyle, activeDropdownItemTextStyle]);
 
   const renderBudgetItem = useCallback(({ item, index }: { item: string; index: number }) => {
     const isLast = index === BUDGET_OPTIONS.length;
-    const isSelected = selectedBudget === item;
+    const isSelected = filtersState.selectedBudget === item;
     return (
       <Pressable
         style={isLast ? styles.dropdownListItemTouchAreaLast : styles.dropdownListItemTouchArea}
@@ -195,11 +367,11 @@ export default function CampaignScreen() {
         </Text>
       </Pressable>
     );
-  }, [selectedBudget, handleSelectBudget, defaultDropdownItemTextStyle, activeDropdownItemTextStyle]);
+  }, [filtersState.selectedBudget, handleSelectBudget, defaultDropdownItemTextStyle, activeDropdownItemTextStyle]);
 
   const renderPlatformItem = useCallback(({ item, index }: { item: string; index: number }) => {
     const isLast = index === PLATFORM_OPTIONS.length;
-    const isSelected = selectedPlatform === item;
+    const isSelected = filtersState.selectedPlatform === item;
     return (
       <Pressable
         style={isLast ? styles.dropdownListItemTouchAreaLast : styles.dropdownListItemTouchArea}
@@ -210,148 +382,11 @@ export default function CampaignScreen() {
         </Text>
       </Pressable>
     );
-  }, [selectedPlatform, handleSelectPlatform, defaultDropdownItemTextStyle, activeDropdownItemTextStyle]);
+  }, [filtersState.selectedPlatform, handleSelectPlatform, defaultDropdownItemTextStyle, activeDropdownItemTextStyle]);
 
-  const renderCampaignCard = ({ item }: { item: CampaignItem }) => {
-    const isExpanded = expandedCampaignId === item.id;
-
-    return (
-      <View style={styles.campaignCardWrapper}>
-        <View style={styles.cardHeaderRow}>
-          <View style={styles.brandContainer}>
-            <Image
-              source={require('../../../assets/images/overviewlogo.png')}
-              style={styles.brandLogo}
-            />
-            <View style={styles.brandMeta}>
-              <Text style={[Typography.h2, styles.brandNameText]}>{item.companyName}</Text>
-              <View style={styles.socialPlatformRow}>
-                <Image source={require('../../../assets/images/Instagram.png')} style={styles.socialIcon} />
-                <Image source={require('../../../assets/images/facebook.png')} style={styles.socialIcon} />
-                <Image source={require('../../../assets/images/youtube.png')} style={styles.socialIcon} />
-                <Image source={require('../../../assets/images/Twitter.png')} style={styles.socialIcon} />
-              </View>
-            </View>
-          </View>
-          <Text style={[Typography.bodySmall, styles.durationText]}>{item.duration}</Text>
-        </View>
-
-        <Text style={[Typography.body, styles.descriptionText]}>{item.description}</Text>
-
-        <View style={styles.appliedRow}>
-          <View style={styles.avatarStack}>
-            <View style={[styles.avatarCircle, styles.avatar1]} />
-            <View style={[styles.avatarCircle, styles.avatar2]} />
-            <View style={[styles.avatarCircle, styles.avatar3]} />
-            <View style={[styles.avatarCircle, styles.avatarCountContainer]}>
-              <Text style={styles.avatarCountText}>+24</Text>
-            </View>
-          </View>
-          <Text style={[Typography.label, styles.appliedCounterText]}>{item.appliedCount} APPLIED</Text>
-        </View>
-
-        <View style={styles.metricsSplitRow}>
-          <View style={styles.metricColumn}>
-            <Text style={[Typography.label, styles.metricLabel]}>BUDGET RANGE</Text>
-            <Text style={[Typography.statNumber, styles.budgetRangeValue]}>
-              {CURRENCY}{item.budgetMin} - {CURRENCY}{item.budgetMax}
-            </Text>
-          </View>
-          <View style={styles.metricColumn}>
-            <Text style={[Typography.label, styles.metricLabel]}>DEADLINE</Text>
-            <Text style={[Typography.body, styles.deadlineValue]}>{item.deadline}</Text>
-          </View>
-        </View>
-
-        <View style={styles.requirementsContainer}>
-          <View style={styles.requirementsHeaderRow}>
-            <Ionicons name="shield-checkmark-outline" size={moderateScale(16)} color={Colors.textPrimary} style={styles.shieldIcon} />
-            <Text style={[Typography.h3, styles.requirementsTitleText]}>Campaign Requirements</Text>
-          </View>
-          <View style={styles.requirementsSplitRow}>
-            <View style={styles.requirementBlock}>
-              <Text style={[Typography.caption, styles.requirementBlockLabel]}>MIN. FOLLOWERS</Text>
-              <Text style={[Typography.statNumber, styles.requirementBlockValue]}>{item.minFollowers}</Text>
-            </View>
-            <View style={styles.requirementBlock}>
-              <Text style={[Typography.caption, styles.requirementBlockLabel]}>MIN. ENGAGEMENT</Text>
-              <Text style={[Typography.statNumber, styles.requirementBlockValue]}>{item.minEngagement}</Text>
-            </View>
-          </View>
-        </View>
-
-        {!isExpanded && (
-          <View style={styles.cardActionAnchorRow}>
-            <Pressable
-              style={styles.alignedRightViewButtonAnchor}
-              onPress={() => handleViewPress(item.id)}
-            >
-              <LinearGradient
-                colors={[Colors.teal, Colors.lime]}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 0 }}
-                style={styles.gradientViewButtonContainer}
-              >
-                <Text style={[Typography.buttonSecondary, styles.viewButtonText]}>View</Text>
-              </LinearGradient>
-            </Pressable>
-          </View>
-        )}
-
-        {isExpanded && (
-          <View style={styles.expandedContentContainer}>
-            <Text style={[Typography.h3, styles.expandedSectionTitle]}>Target Audience</Text>
-            <Text style={[Typography.body, styles.audienceBodyText]}>
-              {item.audienceText}{' '}
-              <Text style={styles.readMoreAccent}>read more...</Text>
-            </Text>
-
-            <Text style={[Typography.h3, styles.expandedSectionTitle]}>Campaign Categories</Text>
-            <View style={styles.categoryGridContainer}>
-              {item.categories.map((cat, index) => (
-                <View key={cat} style={styles.categoryTagBubble}>
-                  <Text style={[Typography.bodySmall, styles.categoryTagText]}>{cat}</Text>
-                </View>
-              ))}
-            </View>
-
-            <View style={styles.deliverablesCanvasBlock}>
-              <Text style={[Typography.h3, styles.deliverablesCanvasTitle]}>Deliverables</Text>
-              {item.deliverables.map((del, index) => (
-                <View key={del} style={styles.deliverableItemRow}>
-                  <Ionicons name="checkmark-circle" size={moderateScale(16)} color={Colors.bgBlack} style={styles.deliverableCheckIcon} />
-                  <Text style={[Typography.bodySmall, styles.deliverableMessageText]}>{del}</Text>
-                </View>
-              ))}
-            </View>
-
-            <View style={styles.expandedActionControlsSplitRow}>
-              <Pressable
-                style={styles.expandedCollapseTriggerTextAnchor}
-                onPress={() => handleViewPress(item.id)}
-              >
-                <Text style={[Typography.bodySmall, styles.collapseLabelActionText]}>Hide details</Text>
-              </Pressable>
-
-              <Pressable
-                style={styles.fullWidthApplyButtonAnchor}
-                onPress={() => navigation.navigate('ApplyCampaign', { campaignId: item.id })}
-              >
-                <LinearGradient
-                  colors={[Colors.teal, Colors.lime]}
-                  start={{ x: 0, y: 0 }}
-                  end={{ x: 1, y: 0 }}
-                  style={styles.gradientApplyButtonContainer}
-                >
-                  <Text style={[Typography.buttonPrimary, styles.applyButtonText]}>Apply Now</Text>
-                </LinearGradient>
-              </Pressable>
-            </View>
-          </View>
-        )}
-      </View>
-    );
-  };
+  const renderCampaignItem = useCallback(({ item }) => (
+    <CampaignCard item={item} isExpanded={expandedCampaignId === item.id} onViewPress={() => handleViewPress(item.id)} onApply={() => navigation.navigate('ApplyCampaign', { campaignId: item.id })} />
+  ), [expandedCampaignId, handleViewPress, navigation]);
 
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
@@ -366,111 +401,32 @@ export default function CampaignScreen() {
       </View>
 
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollLayoutContent}>
-        <View style={styles.browseCampaignsOuterBlockContainer}>
-          <Text style={[Typography.displayMedium, styles.browseCampaignsTitleMainText]}>
-            BROWSE <Text style={styles.browseCampaignsTitleHighlightText}>CAMPAIGNS</Text>
-          </Text>
-          <View style={styles.aiBadgeFloatingContainer}>
-            <Ionicons name="sparkles" size={moderateScale(10)} color={Colors.teal} style={styles.aiBadgeSparkleIcon} />
-            <Text style={[Typography.caption, styles.aiBadgeLabelText]}>AI Browse Campaign</Text>
-          </View>
-        </View>
+        <BrowseCampaignsHeader />
+        <FilterToggleRow onToggle={handleToggleFilter} />
 
-        <View style={styles.filterControlActionRow}>
-          <Text style={[Typography.h2, styles.filterResultStaticLabelText]}>Filter Result</Text>
-          <Pressable onPress={handleToggleFilter} style={styles.funnelTouchAreaBox}>
-            <Ionicons name="funnel-outline" size={moderateScale(20)} color={Colors.textPrimary} />
-          </Pressable>
-        </View>
-
-        {isFilterVisible && (
+        {filtersState.isFilterVisible && (
           <View style={styles.filterDrawerStackInlineBlock}>
-            <TextField
-              label="Search campaign"
-              value={searchQuery}
-              onChangeText={setSearchQuery}
-              style={styles.searchTextInputElement}
-            />
-            
-            <FilterDropdown 
-              label={selectedCategory} 
-              iconName="pricetag-outline" 
-              isOpen={isCategoryOpen}
-              onPress={() => {
-                setIsCategoryOpen(!isCategoryOpen);
-                setIsBudgetOpen(false);
-                setIsPlatformOpen(false);
-              }} 
-            />
-
-            {isCategoryOpen && (
+            <TextField label="Search campaign" value={filtersState.searchQuery} onChangeText={(text) => dispatchFilters({ type: 'SET_SEARCH_QUERY', payload: text })} style={styles.searchTextInputElement} />
+            <FilterDropdown label={filtersState.selectedCategory} iconName="pricetag-outline" isOpen={filtersState.isCategoryOpen} onPress={() => dispatchFilters({ type: 'TOGGLE_CATEGORY' })} />
+            {filtersState.isCategoryOpen && (
               <View style={styles.dropdownExpandedListContent}>
-                <FlatList 
-                  nestedScrollEnabled={true} 
-                  showsVerticalScrollIndicator={true}
-                  contentContainerStyle={styles.dropdownScrollContainer}
-                  data={categoryOptions}
-                  keyExtractor={(item) => item}
-                  renderItem={renderCategoryItem}
-                />
+                <FlatList nestedScrollEnabled showsVerticalScrollIndicator contentContainerStyle={styles.dropdownScrollContainer} data={categoryOptions} keyExtractor={(item) => item} renderItem={renderCategoryItem} />
               </View>
             )}
-
-            <FilterDropdown 
-              label={selectedBudget} 
-              iconName="wallet-outline" 
-              isOpen={isBudgetOpen}
-              onPress={() => {
-                setIsBudgetOpen(!isBudgetOpen);
-                setIsCategoryOpen(false);
-                setIsPlatformOpen(false);
-              }} 
-            />
-
-            {isBudgetOpen && (
+            <FilterDropdown label={filtersState.selectedBudget} iconName="wallet-outline" isOpen={filtersState.isBudgetOpen} onPress={() => dispatchFilters({ type: 'TOGGLE_BUDGET' })} />
+            {filtersState.isBudgetOpen && (
               <View style={styles.dropdownExpandedListContent}>
-                <FlatList 
-                  nestedScrollEnabled={true} 
-                  showsVerticalScrollIndicator={true}
-                  contentContainerStyle={styles.dropdownScrollContainer}
-                  data={budgetOptions}
-                  keyExtractor={(item) => item}
-                  renderItem={renderBudgetItem}
-                />
+                <FlatList nestedScrollEnabled showsVerticalScrollIndicator contentContainerStyle={styles.dropdownScrollContainer} data={budgetOptions} keyExtractor={(item) => item} renderItem={renderBudgetItem} />
               </View>
             )}
-
-            <FilterDropdown 
-              label={selectedPlatform} 
-              iconName="desktop-outline" 
-              isOpen={isPlatformOpen}
-              onPress={() => {
-                setIsPlatformOpen(!isPlatformOpen);
-                setIsCategoryOpen(false);
-                setIsBudgetOpen(false);
-              }} 
-            />
-
-            {isPlatformOpen && (
+            <FilterDropdown label={filtersState.selectedPlatform} iconName="desktop-outline" isOpen={filtersState.isPlatformOpen} onPress={() => dispatchFilters({ type: 'TOGGLE_PLATFORM' })} />
+            {filtersState.isPlatformOpen && (
               <View style={styles.dropdownExpandedListContent}>
-                <FlatList 
-                  nestedScrollEnabled={true} 
-                  showsVerticalScrollIndicator={true}
-                  contentContainerStyle={styles.dropdownScrollContainer}
-                  data={platformOptions}
-                  keyExtractor={(item) => item}
-                  renderItem={renderPlatformItem}
-                />
+                <FlatList nestedScrollEnabled showsVerticalScrollIndicator contentContainerStyle={styles.dropdownScrollContainer} data={platformOptions} keyExtractor={(item) => item} renderItem={renderPlatformItem} />
               </View>
             )}
-
             <Pressable style={styles.searchSubmitButtonExecutionContainer}>
-              <LinearGradient
-                colors={[Colors.teal, Colors.lime]}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 0 }}
-                style={styles.searchSubmitButtonGradientLayout}
-              >
+              <LinearGradient colors={[Colors.teal, Colors.lime]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.searchSubmitButtonGradientLayout}>
                 <Text style={[Typography.buttonPrimary, styles.searchSubmitButtonLabelText]}>Search</Text>
               </LinearGradient>
             </Pressable>
@@ -479,7 +435,7 @@ export default function CampaignScreen() {
 
         <FlatList
           data={campaignData}
-          renderItem={renderCampaignCard}
+          renderItem={renderCampaignItem}
           keyExtractor={(item) => item.id}
           scrollEnabled={false}
           showsVerticalScrollIndicator={false}

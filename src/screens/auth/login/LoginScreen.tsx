@@ -1,6 +1,6 @@
 // src/screens/auth/login/LoginScreen.tsx
 
-import React, { useState } from 'react';
+import React, { useState, useReducer } from 'react';
 
 import {
   View,
@@ -73,17 +73,206 @@ const isEmailValid = (
     text,
   );
 
+function RememberForgotRow({ rememberMe, setRememberMe, navigation }: { rememberMe: boolean; setRememberMe: (v: boolean) => void; navigation: any }) {
+  return (
+    <View style={[styles.checkboxContainer, { justifyContent: 'space-between', width: '100%' }]}>
+      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <Pressable style={[styles.customCheckbox, rememberMe && styles.customCheckboxChecked]} onPress={() => setRememberMe(!rememberMe)}>
+          {rememberMe && <Text style={styles.checkmarkIcon}>✓</Text>}
+        </Pressable>
+        <Text style={styles.checkboxLabel}>Remember Me</Text>
+      </View>
+      <Pressable onPress={() => navigation.navigate('ForgotPassword')}>
+        <Text style={[styles.checkboxLabel, { color: Colors.textPrimary }]}>Forgot Password?</Text>
+      </Pressable>
+    </View>
+  );
+}
+
+function SocialRow() {
+  return (
+    <View style={styles.socialRow}>
+      <Pressable style={styles.socialButton}>
+        <Image source={require('../../../assets/images/google.png')} style={styles.socialIcon} />
+        <Text style={styles.socialText}>Google</Text>
+      </Pressable>
+      <Pressable style={styles.socialButton}>
+        <Image source={require('../../../assets/images/apple.png')} style={[styles.socialIcon, { tintColor: Colors.textPrimary }]} />
+        <Text style={styles.socialText}>Apple</Text>
+      </Pressable>
+    </View>
+  );
+}
+
+type FormAction =
+  | { type: 'SET_EMAIL'; payload: string }
+  | { type: 'SET_PASSWORD'; payload: string }
+  | { type: 'SET_REMEMBER_ME'; payload: boolean };
+
+interface FormState {
+  email: string;
+  password: string;
+  rememberMe: boolean;
+}
+
+const initialFormState: FormState = {
+  email: '',
+  password: '',
+  rememberMe: false,
+};
+
+function formReducer(state: FormState, action: FormAction): FormState {
+  switch (action.type) {
+    case 'SET_EMAIL':
+      return { ...state, email: action.payload };
+    case 'SET_PASSWORD':
+      return { ...state, password: action.payload };
+    case 'SET_REMEMBER_ME':
+      return { ...state, rememberMe: action.payload };
+    default:
+      return state;
+  }
+}
+
+function LoginHeader({ navigation }: { navigation: any }) {
+  return (
+    <>
+      <Pressable
+        style={styles.backButton}
+        onPress={() => navigation.goBack()}
+      >
+        <Text style={styles.backButtonText}>←</Text>
+      </Pressable>
+      <View style={localStyles.logoTopContainer}>
+        <Image
+          source={require('../../../assets/images/IMB360_v2.png')}
+          style={localStyles.adaptedLogoStyle}
+          resizeMode="contain"
+        />
+      </View>
+    </>
+  );
+}
+
+function LoginFormContent({
+  email,
+  onEmailChange,
+  password,
+  onPasswordChange,
+  securePassword,
+  setSecurePassword,
+  rememberMe,
+  onRememberMeChange,
+  isFormComplete,
+  loading,
+  onSubmit,
+  navigation,
+}: {
+  email: string;
+  onEmailChange: (text: string) => void;
+  password: string;
+  onPasswordChange: (text: string) => void;
+  securePassword: boolean;
+  setSecurePassword: (v: boolean) => void;
+  rememberMe: boolean;
+  onRememberMeChange: (v: boolean) => void;
+  isFormComplete: boolean;
+  loading: boolean;
+  onSubmit: () => void;
+  navigation: any;
+}) {
+  return (
+    <View
+      style={[
+        styles.formFlowWrapper,
+        {
+          marginTop: verticalScale(-5),
+        },
+      ]}
+    >
+      <Text
+        style={[
+          Typography.h1,
+          localStyles.heading,
+        ]}
+      >
+        WELCOME BACK!
+      </Text>
+
+      <TextField
+        label="Email address"
+        value={email}
+        onChangeText={onEmailChange}
+        keyboardType="email-address"
+        autoCapitalize="none"
+        containerStyle={authInputStyles.inputWrapper}
+        outlineStyle={authInputStyles.inputOutline}
+        outlineActiveStyle={authInputStyles.inputOutlineActive}
+        style={authInputStyles.textInput}
+      />
+
+      <TextField
+        label="Password"
+        value={password}
+        onChangeText={onPasswordChange}
+        secureTextEntry={securePassword}
+        rightComponent={<PasswordToggle securePassword={securePassword} setSecurePassword={setSecurePassword} />}
+        autoCapitalize="none"
+        containerStyle={authInputStyles.inputWrapper}
+        outlineStyle={authInputStyles.inputOutline}
+        outlineActiveStyle={authInputStyles.inputOutlineActive}
+        style={authInputStyles.textInput}
+      />
+
+      <RememberForgotRow rememberMe={rememberMe} setRememberMe={onRememberMeChange} navigation={navigation} />
+
+      <Pressable
+        style={[
+          styles.submitButton,
+          {
+            opacity: isFormComplete && !loading ? 1 : 0.4,
+          },
+        ]}
+        onPress={onSubmit}
+        disabled={!isFormComplete || loading}
+      >
+        <LinearGradient
+          colors={[Colors.teal, Colors.teal]}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 0 }}
+          style={styles.gradientButtonLayout}
+        >
+          <Text style={styles.submitButtonText}>
+            {loading ? 'Signing in...' : 'Sign in'}
+          </Text>
+        </LinearGradient>
+      </Pressable>
+
+      <Text style={styles.dividerText}>Or continue with</Text>
+
+      <SocialRow />
+    </View>
+  );
+}
+
+function RegisterRedirect({ navigation }: { navigation: any }) {
+  return (
+    <Pressable
+      onPress={() => navigation.navigate('Register', { role: 'CREATOR' })}
+      style={styles.redirectLinkWrapper}
+    >
+      <Text style={styles.footerRedirectText}>
+        Don't have an account?{' '}
+        <Text style={styles.linkTextInline}>Sign up</Text>
+      </Text>
+    </Pressable>
+  );
+}
+
 const LoginScreen = ({
   navigation,
 }: Props) => {
-  const [email, setEmail] =
-    useState('');
-
-  const [password, setPassword] =
-    useState('');
-
-  const [rememberMe, setRememberMe] =
-    useState(false);
+  const [formState, dispatchForm] = useReducer(formReducer, initialFormState);
 
   const [
     securePassword,
@@ -100,8 +289,8 @@ const LoginScreen = ({
     useGlobalToast();
 
   const isFormComplete =
-    isEmailValid(email) &&
-    password.trim().length >= 8;
+    isEmailValid(formState.email) &&
+    formState.password.trim().length >= 8;
 
   // ─────────────────────────────
   // Login Handler
@@ -110,10 +299,10 @@ const LoginScreen = ({
   const handleLogin =
     async () => {
       const cleanEmail =
-        sanitizeEmail(email);
+        sanitizeEmail(formState.email);
 
       const cleanPassword =
-        sanitizeText(password, 128);
+        sanitizeText(formState.password, 128);
 
       if (!isEmailValid(cleanEmail)) {
         showToast(
@@ -269,300 +458,22 @@ const LoginScreen = ({
             styles.fixedContentContainer
           }
         >
-          {/* Back Button */}
-          <Pressable
-            style={
-              styles.backButton
-            }
-            onPress={() =>
-              navigation.goBack()
-            }
-          >
-            <Text
-              style={
-                styles.backButtonText
-              }
-            >
-              ←
-            </Text>
-          </Pressable>
-
-          {/* Logo */}
-          <View
-            style={
-              localStyles.logoTopContainer
-            }
-          >
-            <Image
-              source={require('../../../assets/images/IMB360_v2.png')}
-              style={
-                localStyles.adaptedLogoStyle
-              }
-              resizeMode="contain"
-            />
-          </View>
-
-          {/* Form */}
-          <View
-            style={[
-              styles.formFlowWrapper,
-              {
-                marginTop:
-                  verticalScale(
-                    -5,
-                  ),
-              },
-            ]}
-          >
-            <Text
-              style={[
-                Typography.h1,
-                localStyles.heading,
-              ]}
-            >
-              WELCOME BACK!
-            </Text>
-
-            <TextField
-              label="Email address"
-              value={email}
-              onChangeText={setEmail}
-              keyboardType="email-address"
-              autoCapitalize="none"
-              containerStyle={authInputStyles.inputWrapper}
-              outlineStyle={authInputStyles.inputOutline}
-              outlineActiveStyle={authInputStyles.inputOutlineActive}
-              style={authInputStyles.textInput}
-            />
-
-            <TextField
-              label="Password"
-              value={password}
-              onChangeText={setPassword}
-              secureTextEntry={securePassword}
-              rightComponent={<PasswordToggle securePassword={securePassword} setSecurePassword={setSecurePassword} />}
-              autoCapitalize="none"
-              containerStyle={authInputStyles.inputWrapper}
-              outlineStyle={authInputStyles.inputOutline}
-              outlineActiveStyle={authInputStyles.inputOutlineActive}
-              style={authInputStyles.textInput}
-            />
-
-            {/* Remember/Forgot */}
-            <View
-              style={[
-                styles.checkboxContainer,
-                {
-                  justifyContent:
-                    'space-between',
-
-                  width: '100%',
-                },
-              ]}
-            >
-              <View
-                style={{
-                  flexDirection:
-                    'row',
-
-                  alignItems:
-                    'center',
-                }}
-              >
-                <Pressable
-                  style={[
-                    styles.customCheckbox,
-
-                    rememberMe &&
-                      styles.customCheckboxChecked,
-                  ]}
-                  onPress={() =>
-                    setRememberMe(
-                      !rememberMe,
-                    )
-                  }
-                >
-                  {rememberMe && (
-                    <Text
-                      style={
-                        styles.checkmarkIcon
-                      }
-                    >
-                      ✓
-                    </Text>
-                  )}
-                </Pressable>
-
-                <Text
-                  style={
-                    styles.checkboxLabel
-                  }
-                >
-                  Remember Me
-                </Text>
-              </View>
-
-              <Pressable
-                onPress={() =>
-                  navigation.navigate(
-                    'ForgotPassword',
-                  )
-                }
-              >
-                <Text
-                  style={[
-                    styles.checkboxLabel,
-                    {
-                      color:
-                        Colors.textPrimary,
-                    },
-                  ]}
-                >
-                  Forgot Password?
-                </Text>
-              </Pressable>
-            </View>
-
-            {/* Submit */}
-            <Pressable
-              style={[
-                styles.submitButton,
-                {
-                  opacity:
-                    isFormComplete &&
-                    !loading
-                      ? 1
-                      : 0.4,
-                },
-              ]}
-              onPress={
-                handleLogin
-              }
-              disabled={
-                !isFormComplete ||
-                loading
-              }
-            >
-              <LinearGradient
-                colors={[
-                  Colors.teal,
-                  Colors.teal,
-                ]}
-                start={{
-                  x: 0,
-                  y: 0,
-                }}
-                end={{
-                  x: 1,
-                  y: 0,
-                }}
-                style={
-                  styles.gradientButtonLayout
-                }
-              >
-                <Text
-                  style={
-                    styles.submitButtonText
-                  }
-                >
-                  {loading
-                    ? 'Signing in...'
-                    : 'Sign in'}
-                </Text>
-              </LinearGradient>
-            </Pressable>
-
-            {/* Divider */}
-            <Text
-              style={
-                styles.dividerText
-              }
-            >
-              Or continue with
-            </Text>
-
-            {/* Social Buttons */}
-            <View
-              style={
-                styles.socialRow
-              }
-            >
-              <Pressable
-                style={
-                  styles.socialButton
-                }
-              >
-                <Image
-                  source={require('../../../assets/images/google.png')}
-                  style={
-                    styles.socialIcon
-                  }
-                />
-
-                <Text
-                  style={
-                    styles.socialText
-                  }
-                >
-                  Google
-                </Text>
-              </Pressable>
-
-              <Pressable
-                style={
-                  styles.socialButton
-                }
-              >
-                <Image
-                  source={require('../../../assets/images/apple.png')}
-                  style={[
-                    styles.socialIcon,
-                    {
-                      tintColor:
-                        Colors.textPrimary,
-                    },
-                  ]}
-                />
-
-                <Text
-                  style={
-                    styles.socialText
-                  }
-                >
-                  Apple
-                </Text>
-              </Pressable>
-            </View>
-          </View>
-
-          {/* Redirect */}
-          <Pressable
-            onPress={() =>
-              navigation.navigate(
-                'Register',
-                { role: 'CREATOR' },
-              )
-            }
-            style={
-              styles.redirectLinkWrapper
-            }
-          >
-            <Text
-              style={
-                styles.footerRedirectText
-              }
-            >
-              Don't have an
-              account?{' '}
-              <Text
-                style={
-                  styles.linkTextInline
-                }
-              >
-                Sign up
-              </Text>
-            </Text>
-          </Pressable>
+          <LoginHeader navigation={navigation} />
+          <LoginFormContent
+            email={formState.email}
+            onEmailChange={(text) => dispatchForm({ type: 'SET_EMAIL', payload: text })}
+            password={formState.password}
+            onPasswordChange={(text) => dispatchForm({ type: 'SET_PASSWORD', payload: text })}
+            securePassword={securePassword}
+            setSecurePassword={setSecurePassword}
+            rememberMe={formState.rememberMe}
+            onRememberMeChange={(v) => dispatchForm({ type: 'SET_REMEMBER_ME', payload: v })}
+            isFormComplete={isFormComplete}
+            loading={loading}
+            onSubmit={handleLogin}
+            navigation={navigation}
+          />
+          <RegisterRedirect navigation={navigation} />
         </View>
       </KeyboardAvoidingView>
     </SafeAreaView>

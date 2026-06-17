@@ -1,5 +1,6 @@
 import React, {
     useState,
+    useReducer,
     useEffect,
     useRef,
 } from 'react'
@@ -33,47 +34,119 @@ type Props = {
     AppNavigationProp<'ChangePassword'>
 }
 
+function OtpInput({ otp, handleOtpChange, inputRefs }: { otp: string[]; handleOtpChange: (value: string, index: number) => void; inputRefs: React.MutableRefObject<(TextInput | null)[]> }) {
+  return (
+    <View style={styles.otpContainer}>
+      {otp.map((item, index) => (
+        <TextInput
+          key={OTP_FIELD_KEYS[index]}
+          ref={ref => { inputRefs.current[index] = ref }}
+          style={styles.otpInput}
+          keyboardType="number-pad"
+          maxLength={1}
+          value={item}
+          onChangeText={text => handleOtpChange(text, index)}
+        />
+      ))}
+    </View>
+  );
+}
+
+function OtpModal({ visible, onClose, otp, handleOtpChange, inputRefs, handleVerify, countdown }: {
+  visible: boolean; onClose: () => void; otp: string[]; handleOtpChange: (value: string, index: number) => void;
+  inputRefs: React.MutableRefObject<(TextInput | null)[]>; handleVerify: () => void; countdown: number;
+}) {
+  return (
+    <Modal visible={visible} transparent animationType="fade" onRequestClose={onClose}>
+      <Pressable style={styles.modalOverlay} onPress={onClose}>
+        <Pressable style={styles.modalContainer}>
+          <Text style={styles.otpTitle}>Enter OTP</Text>
+          <Text style={styles.otpSubtitle}>OTP sent to the registered email</Text>
+          <OtpInput otp={otp} handleOtpChange={handleOtpChange} inputRefs={inputRefs} />
+          <Pressable style={styles.verifyButton} onPress={handleVerify}><Text style={styles.verifyText}>Verify</Text></Pressable>
+          <Pressable><Text style={styles.resendText}>Resend in {countdown} sec</Text></Pressable>
+        </Pressable>
+      </Pressable>
+    </Modal>
+  );
+}
+
+type PasswordsAction =
+    | { type: 'SET_OLD_PASSWORD'; payload: string }
+    | { type: 'SET_NEW_PASSWORD'; payload: string }
+    | { type: 'SET_CONFIRM_PASSWORD'; payload: string };
+
+interface PasswordsState {
+    oldPassword: string;
+    newPassword: string;
+    confirmPassword: string;
+}
+
+const initialPasswordsState: PasswordsState = {
+    oldPassword: '',
+    newPassword: '',
+    confirmPassword: '',
+};
+
+function passwordsReducer(state: PasswordsState, action: PasswordsAction): PasswordsState {
+    switch (action.type) {
+        case 'SET_OLD_PASSWORD':
+            return { ...state, oldPassword: action.payload };
+        case 'SET_NEW_PASSWORD':
+            return { ...state, newPassword: action.payload };
+        case 'SET_CONFIRM_PASSWORD':
+            return { ...state, confirmPassword: action.payload };
+        default:
+            return state;
+    }
+}
+
+type OtpAction =
+    | { type: 'SET_OTP_MODAL_VISIBLE'; payload: boolean }
+    | { type: 'SET_COUNTDOWN'; payload: number }
+    | { type: 'DECREMENT_COUNTDOWN' }
+    | { type: 'SET_OTP'; payload: string[] }
+    | { type: 'UPDATE_OTP_AT_INDEX'; payload: { index: number; value: string } };
+
+interface OtpState {
+    otpModalVisible: boolean;
+    countdown: number;
+    otp: string[];
+}
+
+const initialOtpState: OtpState = {
+    otpModalVisible: false,
+    countdown: 30,
+    otp: ['', '', '', '', '', ''],
+};
+
+function otpReducer(state: OtpState, action: OtpAction): OtpState {
+    switch (action.type) {
+        case 'SET_OTP_MODAL_VISIBLE':
+            return { ...state, otpModalVisible: action.payload };
+        case 'SET_COUNTDOWN':
+            return { ...state, countdown: action.payload };
+        case 'DECREMENT_COUNTDOWN':
+            return { ...state, countdown: state.countdown > 0 ? state.countdown - 1 : 0 };
+        case 'SET_OTP':
+            return { ...state, otp: action.payload };
+        case 'UPDATE_OTP_AT_INDEX': {
+            const updated = [...state.otp];
+            updated[action.payload.index] = action.payload.value;
+            return { ...state, otp: updated };
+        }
+        default:
+            return state;
+    }
+}
+
 export default function
     ChangePasswordScreen({
         navigation,
     }: Props) {
 
-    const [
-        otpModalVisible,
-        setOtpModalVisible,
-    ] = useState(false)
-
-    const [
-        countdown,
-        setCountdown,
-    ] = useState(30)
-
-    const [
-        oldPassword,
-        setOldPassword,
-    ] = useState('')
-
-    const [
-        newPassword,
-        setNewPassword,
-    ] = useState('')
-
-    const [
-        confirmPassword,
-        setConfirmPassword,
-    ] = useState('')
-
-    const [
-        otp,
-        setOtp,
-    ] = useState([
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-    ])
+    const [passwordsState, dispatchPasswords] = useReducer(passwordsReducer, initialPasswordsState);
+    const [otpState, dispatchOtp] = useReducer(otpReducer, initialOtpState);
 
     const inputRefs =
         useRef<
@@ -83,33 +156,19 @@ export default function
         >([])
 
     useEffect(() => {
-        if (!otpModalVisible) return;
+        if (!otpState.otpModalVisible) return;
         const interval = setInterval(() => {
-            setCountdown(prev => {
-                if (prev <= 1) {
-                    clearInterval(interval);
-                    return 0;
-                }
-                return prev - 1;
-            });
+            dispatchOtp({ type: 'DECREMENT_COUNTDOWN' });
         }, 1000);
         return () => clearInterval(interval);
-    }, [otpModalVisible]);
+    }, [otpState.otpModalVisible]);
 
     const handleOtpChange =
         (
             value: string,
             index: number,
         ) => {
-            const updatedOtp =
-                [...otp]
-
-            updatedOtp[index] =
-                value
-
-            setOtp(
-                updatedOtp,
-            )
+            dispatchOtp({ type: 'UPDATE_OTP_AT_INDEX', payload: { index, value } })
 
             if (
                 value &&
@@ -123,20 +182,16 @@ export default function
 
     const openOtpModal =
         () => {
-            setOtpModalVisible(
-                true,
-            )
-            setCountdown(
-                30,
-            )
+            dispatchOtp({ type: 'SET_OTP_MODAL_VISIBLE', payload: true })
+            dispatchOtp({ type: 'SET_COUNTDOWN', payload: 30 })
         }
 
     const handleVerify =
         () => {
-            const compiledOtp = otp.join('')
+            const compiledOtp = otpState.otp.join('')
             if (compiledOtp.length === 6) {
-                setOtpModalVisible(false)
-                setOtp(['', '', '', '', '', ''])
+                dispatchOtp({ type: 'SET_OTP_MODAL_VISIBLE', payload: false })
+                dispatchOtp({ type: 'SET_OTP', payload: ['', '', '', '', '', ''] })
             }
         }
 
@@ -144,7 +199,7 @@ export default function
         () => {
 
             if (
-                !oldPassword
+                !passwordsState.oldPassword
             ) {
                 Alert.alert(
                     'Error',
@@ -154,7 +209,7 @@ export default function
             }
 
             if (
-                !newPassword
+                !passwordsState.newPassword
             ) {
                 Alert.alert(
                     'Error',
@@ -164,8 +219,8 @@ export default function
             }
 
             if (
-                newPassword !==
-                confirmPassword
+                passwordsState.newPassword !==
+                passwordsState.confirmPassword
             ) {
                 Alert.alert(
                     'Error',
@@ -190,176 +245,22 @@ export default function
                 }
             />
 
-            <ScrollView
-                contentContainerStyle={
-                    styles.content
-                }
-                showsVerticalScrollIndicator={
-                    false
-                }
-            >
-                <TextField
-                    placeholder="Old Password"
-                    placeholderTextColor="#8E8E93"
-                    secureTextEntry
-                    value={oldPassword}
-                    onChangeText={setOldPassword}
-                    style={styles.input}
-                />
-
-                <TextField
-                    placeholder="New Password"
-                    placeholderTextColor="#8E8E93"
-                    secureTextEntry
-                    value={newPassword}
-                    onChangeText={setNewPassword}
-                    style={styles.input}
-                />
-
-                <TextField
-                    placeholder="Re-enter New Password"
-                    placeholderTextColor="#8E8E93"
-                    secureTextEntry
-                    value={confirmPassword}
-                    onChangeText={setConfirmPassword}
-                    style={styles.input}
-                />
-
-                <Pressable
-                    style={
-                        styles.saveButton
-                    }
-                    onPress={
-                        handleSave
-                    }
-                >
-                    <Text
-                        style={
-                            styles.saveText
-                        }
-                    >
-                        Save Changes
-                    </Text>
-                </Pressable>
+            <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
+                <TextField placeholder="Old Password" placeholderTextColor="#8E8E93" secureTextEntry value={passwordsState.oldPassword} onChangeText={(text) => dispatchPasswords({ type: 'SET_OLD_PASSWORD', payload: text })} style={styles.input} />
+                <TextField placeholder="New Password" placeholderTextColor="#8E8E93" secureTextEntry value={passwordsState.newPassword} onChangeText={(text) => dispatchPasswords({ type: 'SET_NEW_PASSWORD', payload: text })} style={styles.input} />
+                <TextField placeholder="Re-enter New Password" placeholderTextColor="#8E8E93" secureTextEntry value={passwordsState.confirmPassword} onChangeText={(text) => dispatchPasswords({ type: 'SET_CONFIRM_PASSWORD', payload: text })} style={styles.input} />
+                <Pressable style={styles.saveButton} onPress={handleSave}><Text style={styles.saveText}>Save Changes</Text></Pressable>
             </ScrollView>
 
-            <Modal
-                visible={
-                    otpModalVisible
-                }
-                transparent
-                animationType="fade"
-                onRequestClose={() =>
-                    setOtpModalVisible(
-                        false,
-                    )
-                }
-            >
-                <Pressable
-                    style={
-                        styles.modalOverlay
-                    }
-                    onPress={() =>
-                        setOtpModalVisible(
-                            false,
-                        )
-                    }
-                >
-                    <Pressable
-                        style={
-                            styles.modalContainer
-                        }
-                    >
-                        <Text
-                            style={
-                                styles.otpTitle
-                            }
-                        >
-                            Enter OTP
-                        </Text>
-
-                        <Text
-                            style={
-                                styles.otpSubtitle
-                            }
-                        >
-                            OTP sent to
-                            the registered
-                            email
-                        </Text>
-
-                        <View
-                            style={
-                                styles.otpContainer
-                            }
-                        >
-                            {otp.map(
-                                (
-                                    item,
-                                    index,
-                                ) => (
-                                    <TextInput
-                                        key={OTP_FIELD_KEYS[index]}
-                                        ref={ref => {
-                                            inputRefs.current[
-                                                index
-                                            ] = ref
-                                        }}
-                                        style={
-                                            styles.otpInput
-                                        }
-                                        keyboardType="number-pad"
-                                        maxLength={
-                                            1
-                                        }
-                                        value={
-                                            item
-                                        }
-                                        onChangeText={text =>
-                                            handleOtpChange(
-                                                text,
-                                                index,
-                                            )
-                                        }
-                                    />
-                                ),
-                            )}
-                        </View>
-
-                        <Pressable
-                            style={
-                                styles.verifyButton
-                            }
-                            onPress={
-                                handleVerify
-                            }
-                        >
-                            <Text
-                                style={
-                                    styles.verifyText
-                                }
-                            >
-                                Verify
-                            </Text>
-                        </Pressable>
-
-                        <Pressable>
-                            <Text
-                                style={
-                                    styles.resendText
-                                }
-                            >
-                                Resend
-                                in{' '}
-                                {
-                                    countdown
-                                }{' '}
-                                sec
-                            </Text>
-                        </Pressable>
-                    </Pressable>
-                </Pressable>
-            </Modal>
+            <OtpModal
+                visible={otpState.otpModalVisible}
+                onClose={() => dispatchOtp({ type: 'SET_OTP_MODAL_VISIBLE', payload: false })}
+                otp={otpState.otp}
+                handleOtpChange={handleOtpChange}
+                inputRefs={inputRefs}
+                handleVerify={handleVerify}
+                countdown={otpState.countdown}
+            />
         </View>
     )
 }

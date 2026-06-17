@@ -156,42 +156,39 @@ const formatDate = (text: string) => {
   return [match[1], match[2], match[3]].filter(Boolean).join("/");
 };
 
-export default function CreateCampaignScreen() {
-  const navigation = useNavigation();
+function Stepper({ currentStep }: { currentStep: number }) {
+  return (
+    <View style={styles.stepperRow}>
+      {[1, 2, 3, 4].map((step) => (
+        <React.Fragment key={step}>
+          <View style={[styles.stepCircle, currentStep >= step && styles.activeStep]}>
+            <Text style={styles.stepText}>{step}</Text>
+          </View>
+          {step !== 4 && <View style={styles.line} />}
+        </React.Fragment>
+      ))}
+    </View>
+  );
+}
 
+function StepNavigation({ currentStep, onPrevious, onNext }: { currentStep: number; onPrevious: () => void; onNext: () => void }) {
+  return (
+    <View style={styles.buttonRow}>
+      {currentStep > 1 && (
+        <Pressable style={styles.previousButton} onPress={onPrevious}>
+          <Text style={styles.buttonText}>Previous</Text>
+        </Pressable>
+      )}
+      <Pressable style={styles.nextButton} onPress={onNext}>
+        <Text style={styles.buttonText}>{currentStep === 4 ? "Submit" : "Next"}</Text>
+      </Pressable>
+    </View>
+  );
+}
+
+function StepOneContent() {
   const dispatch = useDispatch();
-
-  const {
-    currentStep,
-    campaignName,
-    campaignType,
-    description,
-    brandName,
-    industry,
-    showCampaignDropdown,
-    showPlatformDropdown,
-
-    targetPlatform,
-    selectedContentTypes,
-    campaignTags,
-    // STEP 3
-    budget,
-    budgetType,
-    startDate,
-    endDate,
-    campaignTimeline,
-    showBudgetTypeDropdown,
-    showTimelineDropdown,
-
-    minFollowers,
-    engagementRate,
-    targetAudience,
-    brandGuidelines,
-    expectedDeliverables,
-    requireApproval,
-    requireExclusivity,
-    showFollowersDropdown,
-  } = useSelector((state: any) => state.createCampaign);
+  const { campaignName, campaignType, description, brandName, industry, showCampaignDropdown } = useSelector((state: any) => state.createCampaign);
 
   const campaignTypeOptions = useMemo(() =>
     Object.entries(campaignTypes).flatMap(([category, items]) => [
@@ -205,11 +202,6 @@ export default function CreateCampaignScreen() {
     dispatch(closeCampaignDropdown());
   }, [dispatch]);
 
-  const handleTargetPlatformPress = useCallback((platform: string) => {
-    dispatch(setTargetPlatform(platform));
-    dispatch(closePlatformDropdown());
-  }, [dispatch]);
-
   const renderCampaignTypeItem = useCallback(({ item }: { item: { type: 'header' | 'item'; category?: string; item?: string } }) => {
     if (item.type === 'header') {
       return <Text style={styles.categoryHeading}>{item.category}</Text>;
@@ -221,17 +213,10 @@ export default function CreateCampaignScreen() {
     );
   }, [handleCampaignTypePress]);
 
-  const renderPlatformItem = useCallback(({ item }: { item: string }) => (
-    <Pressable onPress={() => handleTargetPlatformPress(item)}>
-      <Text style={styles.platformItem}>{item}</Text>
-    </Pressable>
-  ), [handleTargetPlatformPress]);
-
-  const renderStepOne = () => (
+  return (
     <>
       <Text style={styles.sectionTitle}>Campaign Basic Information</Text>
 
-      {/* Campaign Name */}
       <Text style={styles.label}>
         Campaign Name
         <Text style={styles.required}> *</Text>
@@ -243,7 +228,6 @@ export default function CreateCampaignScreen() {
         onChangeText={(text) => dispatch(setCampaignName(text))}
       />
 
-      {/* Campaign Type */}
       <Text style={styles.label}>
         Campaign Type
         <Text style={styles.required}> *</Text>
@@ -272,7 +256,6 @@ export default function CreateCampaignScreen() {
         </View>
       )}
 
-      {/* Description */}
       <Text style={styles.label}>
         Campaign Description
         <Text style={styles.required}> *</Text>
@@ -295,7 +278,6 @@ export default function CreateCampaignScreen() {
         </Text>
       </View>
 
-      {/* Row */}
       <View style={styles.row}>
         <View style={styles.halfWidth}>
           <Text style={styles.label}>
@@ -326,9 +308,25 @@ export default function CreateCampaignScreen() {
       </View>
     </>
   );
-  const renderStepTwo = () => (
+}
+
+function StepTwoContent() {
+  const dispatch = useDispatch();
+  const { targetPlatform, showPlatformDropdown, selectedContentTypes, campaignTags } = useSelector((state: any) => state.createCampaign);
+
+  const handleTargetPlatformPress = useCallback((platform: string) => {
+    dispatch(setTargetPlatform(platform));
+    dispatch(closePlatformDropdown());
+  }, [dispatch]);
+
+  const renderPlatformItem = useCallback(({ item }: { item: string }) => (
+    <Pressable onPress={() => handleTargetPlatformPress(item)}>
+      <Text style={styles.platformItem}>{item}</Text>
+    </Pressable>
+  ), [handleTargetPlatformPress]);
+
+  return (
     <>
-      {/* TARGET PLATFORM */}
       <Text style={styles.sectionTitle}>
         Target Platforms
         <Text style={styles.required}> *</Text>
@@ -357,7 +355,6 @@ export default function CreateCampaignScreen() {
         </View>
       )}
 
-      {/* CONTENT TYPES */}
       <Text
         style={[
           styles.sectionTitle,
@@ -417,7 +414,6 @@ export default function CreateCampaignScreen() {
         </Pressable>
       ))}
 
-      {/* CAMPAIGN TAGS */}
       <Text
         style={[
           styles.sectionTitle,
@@ -442,11 +438,16 @@ export default function CreateCampaignScreen() {
       </Text>
     </>
   );
-  const renderStepThree = () => (
+}
+
+function StepThreeContent() {
+  const dispatch = useDispatch();
+  const { budget, budgetType, showBudgetTypeDropdown, showTimelineDropdown, startDate, endDate, campaignTimeline } = useSelector((state: any) => state.createCampaign);
+
+  return (
     <>
       <Text style={styles.sectionTitle}>Budget Details</Text>
 
-      {/* Budget */}
       <Text style={styles.label}>
         Budget
         <Text style={styles.required}> *</Text>
@@ -461,7 +462,6 @@ export default function CreateCampaignScreen() {
         onChangeText={(text) => dispatch(setBudget(text))}
       />
 
-      {/* Budget Type */}
       <Text style={styles.label}>Budget Type</Text>
 
       <Pressable
@@ -492,7 +492,6 @@ export default function CreateCampaignScreen() {
         </View>
       )}
 
-      {/* Dates */}
       <View
         style={[
           styles.row,
@@ -530,7 +529,6 @@ export default function CreateCampaignScreen() {
         </View>
       </View>
 
-      {/* Timeline */}
       <Text
         style={[
           styles.label,
@@ -573,13 +571,18 @@ export default function CreateCampaignScreen() {
       )}
     </>
   );
-  const renderStepFour = () => (
+}
+
+function StepFourContent() {
+  const dispatch = useDispatch();
+  const { minFollowers, showFollowersDropdown, engagementRate, targetAudience, brandGuidelines, expectedDeliverables, requireApproval, requireExclusivity } = useSelector((state: any) => state.createCampaign);
+
+  return (
     <>
       <Text style={styles.sectionTitle}>
         Influencer Requirements & Guideline
       </Text>
 
-      {/* MIN FOLLOWERS */}
       <Text style={styles.label}>
         Min. Followers
         <Text style={styles.required}> *</Text>
@@ -609,7 +612,6 @@ export default function CreateCampaignScreen() {
         </View>
       )}
 
-      {/* ENGAGEMENT RATE */}
       <Text style={styles.label}>
         Min. Engagement Rate %<Text style={styles.required}> *</Text>
       </Text>
@@ -621,7 +623,6 @@ export default function CreateCampaignScreen() {
         onChangeText={(text) => dispatch(setEngagementRate(text))}
       />
 
-      {/* TARGET AUDIENCE */}
       <Text style={styles.label}>Target Audience</Text>
 
       <View style={styles.descriptionContainer}>
@@ -641,7 +642,6 @@ export default function CreateCampaignScreen() {
         </Text>
       </View>
 
-      {/* BRAND GUIDELINES */}
       <Text style={styles.label}>Brand Guidelines & Requirements</Text>
 
       <View style={styles.descriptionContainer}>
@@ -650,7 +650,7 @@ export default function CreateCampaignScreen() {
           multiline
           maxLength={100}
           value={brandGuidelines}
-          placeholder="Provide specific guidelines, do’s and don’ts, hashtags to use, mentions required, etc..."
+          placeholder="Provide specific guidelines, do's and don'ts, hashtags to use, mentions required, etc..."
           placeholderTextColor="#9A9A9A"
           onChangeText={(text) => dispatch(setBrandGuidelines(text))}
         />
@@ -661,7 +661,6 @@ export default function CreateCampaignScreen() {
         </Text>
       </View>
 
-      {/* DELIVERABLES */}
       <Text style={styles.label}>Expected Deliverables</Text>
 
       <View style={styles.descriptionContainer}>
@@ -681,7 +680,6 @@ export default function CreateCampaignScreen() {
         </Text>
       </View>
 
-      {/* CHECKBOXES */}
       <Pressable
         style={styles.checkboxRow}
         onPress={() => dispatch(toggleRequireApproval())}
@@ -712,70 +710,34 @@ export default function CreateCampaignScreen() {
       </Text>
     </>
   );
+}
+
+export default function CreateCampaignScreen() {
+  const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const { currentStep } = useSelector((state: any) => state.createCampaign);
+
   return (
     <SafeAreaView style={styles.container} edges={[]}>
       <ScreenHeader
         title="Create Campaign"
         onBack={() => navigation.goBack()}
       />
-
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.scrollContent}
       >
-        <Text style={styles.subtitle}>
-          Launch your next influencer marketing campaign
-        </Text>
-
-        {/* Stepper */}
-        <View style={styles.stepperRow}>
-          {[1, 2, 3, 4].map((step) => (
-            <React.Fragment key={step}>
-              <View
-                style={[
-                  styles.stepCircle,
-
-                  currentStep >= step && styles.activeStep,
-                ]}
-              >
-                <Text style={styles.stepText}>{step}</Text>
-              </View>
-
-              {step !== 4 && <View style={styles.line} />}
-            </React.Fragment>
-          ))}
-        </View>
-
-        {currentStep === 1 && renderStepOne()}
-
-        {currentStep === 2 && renderStepTwo()}
-
-        {currentStep === 3 && renderStepThree()}
-
-        {currentStep === 4 && renderStepFour()}
-
-        <View style={styles.buttonRow}>
-          {currentStep > 1 && (
-            <Pressable
-              style={styles.previousButton}
-              onPress={() => dispatch(previousStep())}
-            >
-              <Text style={styles.buttonText}>Previous</Text>
-            </Pressable>
-          )}
-
-          <Pressable
-            style={styles.nextButton}
-            onPress={() => dispatch(nextStep())}
-          >
-            <Text style={styles.buttonText}>
-              {currentStep === 4 ? "Submit" : "Next"}
-            </Text>
-          </Pressable>
-        </View>
+        <Text style={styles.subtitle}>Launch your next influencer marketing campaign</Text>
+        <Stepper currentStep={currentStep} />
+        {currentStep === 1 && <StepOneContent />}
+        {currentStep === 2 && <StepTwoContent />}
+        {currentStep === 3 && <StepThreeContent />}
+        {currentStep === 4 && <StepFourContent />}
+        <StepNavigation currentStep={currentStep} onPrevious={() => dispatch(previousStep())} onNext={() => dispatch(nextStep())} />
       </ScrollView>
     </SafeAreaView>
   );
 }
+
 
 

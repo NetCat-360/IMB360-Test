@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useReducer } from 'react';
 import {
   View,
   Text,
@@ -23,11 +23,43 @@ interface ApplyCampaignScreenProps {
   navigation: AppNavigationProp<'ApplyCampaign'>;
 }
 
+type FormAction =
+  | { type: 'SET_PROPOSAL_TEXT'; payload: string }
+  | { type: 'SET_EXPERIENCE_TEXT'; payload: string }
+  | { type: 'SET_RATE_TEXT'; payload: string }
+  | { type: 'SET_TIMELINE_TEXT'; payload: string };
+
+interface FormState {
+  proposalText: string;
+  experienceText: string;
+  rateText: string;
+  timelineText: string;
+}
+
+const initialFormState: FormState = {
+  proposalText: '',
+  experienceText: '',
+  rateText: '',
+  timelineText: '',
+};
+
+function formReducer(state: FormState, action: FormAction): FormState {
+  switch (action.type) {
+    case 'SET_PROPOSAL_TEXT':
+      return { ...state, proposalText: action.payload };
+    case 'SET_EXPERIENCE_TEXT':
+      return { ...state, experienceText: action.payload };
+    case 'SET_RATE_TEXT':
+      return { ...state, rateText: action.payload };
+    case 'SET_TIMELINE_TEXT':
+      return { ...state, timelineText: action.payload };
+    default:
+      return state;
+  }
+}
+
 export default function ApplyCampaignScreen({ navigation }: ApplyCampaignScreenProps) {
-  const [proposalText, setProposalText] = useState<string>('');
-  const [experienceText, setExperienceText] = useState<string>('');
-  const [rateText, setRateText] = useState<string>('');
-  const [timelineText, setTimelineText] = useState<string>('');
+  const [formState, dispatchForm] = useReducer(formReducer, initialFormState);
   const [isAgreed, setIsAgreed] = useState<boolean>(false);
   const [selectedMedia, setSelectedMedia] = useState<Asset | null>(null);
 
@@ -47,7 +79,7 @@ export default function ApplyCampaignScreen({ navigation }: ApplyCampaignScreenP
   };
 
   const handleSubmitApplication = () => {
-    if (isAgreed && proposalText.trim() && rateText.trim() && timelineText.trim()) {
+    if (isAgreed && formState.proposalText.trim() && formState.rateText.trim() && formState.timelineText.trim()) {
       navigation.goBack();
     }
   };
@@ -105,8 +137,8 @@ export default function ApplyCampaignScreen({ navigation }: ApplyCampaignScreenP
                 placeholder="0.00"
                 placeholderTextColor={Colors.textMuted}
                 keyboardType="numeric"
-                value={rateText}
-                onChangeText={setRateText}
+                value={formState.rateText}
+                onChangeText={(text) => dispatchForm({ type: 'SET_RATE_TEXT', payload: text })}
               />
             </View>
           </View>
@@ -121,8 +153,8 @@ export default function ApplyCampaignScreen({ navigation }: ApplyCampaignScreenP
                 style={[Typography.body, styles.fieldTextInputNativePrimitive]}
                 placeholder="e.g. 5 Days"
                 placeholderTextColor={Colors.textMuted}
-                value={timelineText}
-                onChangeText={setTimelineText}
+                value={formState.timelineText}
+                onChangeText={(text) => dispatchForm({ type: 'SET_TIMELINE_TEXT', payload: text })}
               />
             </View>
           </View>
@@ -141,8 +173,8 @@ export default function ApplyCampaignScreen({ navigation }: ApplyCampaignScreenP
               numberOfLines={4}
               placeholder="Describe your creative approach, content ideas, and how you'll deliver value for this campaign..."
               placeholderTextColor={Colors.textMuted}
-              value={proposalText}
-              onChangeText={setProposalText}
+              value={formState.proposalText}
+              onChangeText={(text) => dispatchForm({ type: 'SET_PROPOSAL_TEXT', payload: text })}
               textAlignVertical="top"
             />
           </View>
@@ -160,8 +192,8 @@ export default function ApplyCampaignScreen({ navigation }: ApplyCampaignScreenP
               numberOfLines={4}
               placeholder="Share your relevant experience with similar campaigns, brands and content types..."
               placeholderTextColor={Colors.textMuted}
-              value={experienceText}
-              onChangeText={setExperienceText}
+              value={formState.experienceText}
+              onChangeText={(text) => dispatchForm({ type: 'SET_EXPERIENCE_TEXT', payload: text })}
               textAlignVertical="top"
             />
           </View>
