@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 import { Image, StatusBar, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -26,8 +26,6 @@ const SplashScreen = () => {
   const blob2Value = useSharedValue(0);
   const logoOpacity = useSharedValue(0);
   const logoScale = useSharedValue(0.8);
-  const navigationTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
   useEffect(() => {
     // Start Lava Lamp Animations
     blob1Value.value = withRepeat(
@@ -51,6 +49,10 @@ const SplashScreen = () => {
     logoScale.value = withSpring(1, { damping: 12, stiffness: 90 });
 
     // Check for existing session, then transition
+    const navigationTimer = setTimeout(() => {
+      navigation.replace('Onboarding');
+    }, 3000);
+
     const init = async () => {
       const [token, user] = await Promise.all([
         getAccessToken(),
@@ -58,22 +60,16 @@ const SplashScreen = () => {
       ]);
 
       if (token && user) {
+        clearTimeout(navigationTimer);
         dispatch(loginSuccess({ user, accessToken: token, refreshToken: token }));
-        return;
       }
-
-      navigationTimerRef.current = setTimeout(() => {
-        navigation.replace('Onboarding');
-      }, 3000);
     };
 
     init();
     return () => {
-      if (navigationTimerRef.current) clearTimeout(navigationTimerRef.current);
+      clearTimeout(navigationTimer);
     };
-  // All deps (shared values, navigation, dispatch) are stable refs — this effect runs once on mount
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [blob1Value, blob2Value, dispatch, Easing, getAccessToken, getUserFromKeychain, logoOpacity, logoScale, loginSuccess, navigation]);
 
   const animatedBlob1 = useAnimatedStyle(() => ({
     transform: [

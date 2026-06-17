@@ -112,7 +112,7 @@ const MyEarnings = ({ navigation }: Props) => {
         {isEmpty ? (
           <EmptyState tab={selectedTab} />
         ) : (
-          currentItems.map((_, i) => <EarningCard key={`earning-card-${i}`} status={selectedTab} />)
+          currentItems.map((_, i) => <EarningCard key={'earning-' + i} status={selectedTab} />)
         )}
       </ScrollView>
       </SafeAreaView>

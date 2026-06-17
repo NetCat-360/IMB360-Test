@@ -43,7 +43,7 @@ export const Colors = {
   twitter: '#1DA1F2',
 } as const;
 
-export const Spacing = {
+const Spacing = {
   xs: 4,
   sm: 8,
   md: 12,
@@ -52,7 +52,7 @@ export const Spacing = {
   xxl: 24,
 } as const;
 
-export const Radius = {
+const Radius = {
   sm: 8,
   md: 10,
   lg: 12,

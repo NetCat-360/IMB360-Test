@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import {
   View,
   Text,
@@ -94,6 +94,29 @@ const FilterDropdown = ({ label, iconName, onPress, isOpen = false }: FilterDrop
   </Pressable>
 );
 
+const campaignData: CampaignItem[] = [
+  {
+    id: '1',
+    companyName: 'WebHelp365',
+    duration: '3 Months',
+    description: 'We are looking for tech-savvy influencers to explore and review our latest CMS features. Focus on functionality, UI/UX and performance.',
+    appliedCount: 27,
+    budgetMin: '1.5K',
+    budgetMax: '4.0K',
+    deadline: 'Oct 15, 2024',
+    minFollowers: '50.0K',
+    minEngagement: '4.2%',
+    audienceText: 'Influencers should have an audience primarily composed of young professionals, tech enthusiasts',
+    categories: ['Technology', 'CMS', 'Product Review', 'Software', 'WebHelp365'],
+    deliverables: [
+      '1x In-depth YouTube video review (min 8 mins)',
+      '3x High-fidelity Instagram Stories with direct links',
+      'Functionality walkthrough of WebHelp365 CMS',
+      'Authentic UX feedback & product critique'
+    ]
+  }
+];
+
 export default function CampaignScreen() {
   const navigation = useNavigation<NativeStackNavigationProp<AppStackParamList>>();
   const [isFilterVisible, setIsFilterVisible] = useState<boolean>(false);
@@ -109,29 +132,6 @@ export default function CampaignScreen() {
   const [isPlatformOpen, setIsPlatformOpen] = useState<boolean>(false);
   const [selectedPlatform, setSelectedPlatform] = useState<string>('All Platforms');
 
-  const campaignData: CampaignItem[] = [
-    {
-      id: '1',
-      companyName: 'WebHelp365',
-      duration: '3 Months',
-      description: 'We are looking for tech-savvy influencers to explore and review our latest CMS features. Focus on functionality, UI/UX and performance.',
-      appliedCount: 27,
-      budgetMin: '1.5K',
-      budgetMax: '4.0K',
-      deadline: 'Oct 15, 2024',
-      minFollowers: '50.0K',
-      minEngagement: '4.2%',
-      audienceText: 'Influencers should have an audience primarily composed of young professionals, tech enthusiasts',
-      categories: ['Technology', 'CMS', 'Product Review', 'Software', 'WebHelp365'],
-      deliverables: [
-        '1x In-depth YouTube video review (min 8 mins)',
-        '3x High-fidelity Instagram Stories with direct links',
-        'Functionality walkthrough of WebHelp365 CMS',
-        'Authentic UX feedback & product critique'
-      ]
-    }
-  ];
-
   const handleToggleFilter = () => {
     setIsFilterVisible(!isFilterVisible);
     if (isFilterVisible) {
@@ -145,20 +145,72 @@ export default function CampaignScreen() {
     setExpandedCampaignId(expandedCampaignId === id ? null : id);
   };
 
-  const handleSelectCategory = (category: string) => {
+  const handleSelectCategory = useCallback((category: string) => {
     setSelectedCategory(category);
     setIsCategoryOpen(false);
-  };
+  }, []);
 
-  const handleSelectBudget = (budget: string) => {
+  const handleSelectBudget = useCallback((budget: string) => {
     setSelectedBudget(budget);
     setIsBudgetOpen(false);
-  };
+  }, []);
 
-  const handleSelectPlatform = (platform: string) => {
+  const handleSelectPlatform = useCallback((platform: string) => {
     setSelectedPlatform(platform);
     setIsPlatformOpen(false);
-  };
+  }, []);
+
+  const categoryOptions = useMemo(() => ['All Categories', ...CATEGORY_OPTIONS], []);
+  const budgetOptions = useMemo(() => ['All Budgets', ...BUDGET_OPTIONS], []);
+  const platformOptions = useMemo(() => ['All Platforms', ...PLATFORM_OPTIONS], []);
+
+  const defaultDropdownItemTextStyle = useMemo(() => [Typography.body, styles.dropdownListItemText], []);
+  const activeDropdownItemTextStyle = useMemo(() => [Typography.body, styles.dropdownListItemTextActive], []);
+
+  const renderCategoryItem = useCallback(({ item, index }: { item: string; index: number }) => {
+    const isLast = index === CATEGORY_OPTIONS.length;
+    const isSelected = selectedCategory === item;
+    return (
+      <Pressable
+        style={isLast ? styles.dropdownListItemTouchAreaLast : styles.dropdownListItemTouchArea}
+        onPress={() => handleSelectCategory(item)}
+      >
+        <Text style={isSelected ? activeDropdownItemTextStyle : defaultDropdownItemTextStyle}>
+          {item}
+        </Text>
+      </Pressable>
+    );
+  }, [selectedCategory, handleSelectCategory, defaultDropdownItemTextStyle, activeDropdownItemTextStyle]);
+
+  const renderBudgetItem = useCallback(({ item, index }: { item: string; index: number }) => {
+    const isLast = index === BUDGET_OPTIONS.length;
+    const isSelected = selectedBudget === item;
+    return (
+      <Pressable
+        style={isLast ? styles.dropdownListItemTouchAreaLast : styles.dropdownListItemTouchArea}
+        onPress={() => handleSelectBudget(item)}
+      >
+        <Text style={isSelected ? activeDropdownItemTextStyle : defaultDropdownItemTextStyle}>
+          {item}
+        </Text>
+      </Pressable>
+    );
+  }, [selectedBudget, handleSelectBudget, defaultDropdownItemTextStyle, activeDropdownItemTextStyle]);
+
+  const renderPlatformItem = useCallback(({ item, index }: { item: string; index: number }) => {
+    const isLast = index === PLATFORM_OPTIONS.length;
+    const isSelected = selectedPlatform === item;
+    return (
+      <Pressable
+        style={isLast ? styles.dropdownListItemTouchAreaLast : styles.dropdownListItemTouchArea}
+        onPress={() => handleSelectPlatform(item)}
+      >
+        <Text style={isSelected ? activeDropdownItemTextStyle : defaultDropdownItemTextStyle}>
+          {item}
+        </Text>
+      </Pressable>
+    );
+  }, [selectedPlatform, handleSelectPlatform, defaultDropdownItemTextStyle, activeDropdownItemTextStyle]);
 
   const renderCampaignCard = ({ item }: { item: CampaignItem }) => {
     const isExpanded = expandedCampaignId === item.id;
@@ -257,7 +309,7 @@ export default function CampaignScreen() {
             <Text style={[Typography.h3, styles.expandedSectionTitle]}>Campaign Categories</Text>
             <View style={styles.categoryGridContainer}>
               {item.categories.map((cat, index) => (
-                <View key={index} style={styles.categoryTagBubble}>
+                <View key={cat} style={styles.categoryTagBubble}>
                   <Text style={[Typography.bodySmall, styles.categoryTagText]}>{cat}</Text>
                 </View>
               ))}
@@ -266,7 +318,7 @@ export default function CampaignScreen() {
             <View style={styles.deliverablesCanvasBlock}>
               <Text style={[Typography.h3, styles.deliverablesCanvasTitle]}>Deliverables</Text>
               {item.deliverables.map((del, index) => (
-                <View key={index} style={styles.deliverableItemRow}>
+                <View key={del} style={styles.deliverableItemRow}>
                   <Ionicons name="checkmark-circle" size={moderateScale(16)} color={Colors.bgBlack} style={styles.deliverableCheckIcon} />
                   <Text style={[Typography.bodySmall, styles.deliverableMessageText]}>{del}</Text>
                 </View>
@@ -353,34 +405,14 @@ export default function CampaignScreen() {
 
             {isCategoryOpen && (
               <View style={styles.dropdownExpandedListContent}>
-                <ScrollView 
+                <FlatList 
                   nestedScrollEnabled={true} 
                   showsVerticalScrollIndicator={true}
                   contentContainerStyle={styles.dropdownScrollContainer}
-                >
-                  <Pressable 
-                    style={styles.dropdownListItemTouchArea} 
-                    onPress={() => handleSelectCategory('All Categories')}
-                  >
-                    <Text style={[Typography.body, selectedCategory === 'All Categories' ? styles.dropdownListItemTextActive : styles.dropdownListItemText]}>
-                      All Categories
-                    </Text>
-                  </Pressable>
-                  {CATEGORY_OPTIONS.map((category, idx) => {
-                    const isLast = idx === CATEGORY_OPTIONS.length - 1;
-                    return (
-                      <Pressable 
-                        key={category} 
-                        style={isLast ? styles.dropdownListItemTouchAreaLast : styles.dropdownListItemTouchArea} 
-                        onPress={() => handleSelectCategory(category)}
-                      >
-                        <Text style={[Typography.body, selectedCategory === category ? styles.dropdownListItemTextActive : styles.dropdownListItemText]}>
-                          {category}
-                        </Text>
-                      </Pressable>
-                    );
-                  })}
-                </ScrollView>
+                  data={categoryOptions}
+                  keyExtractor={(item) => item}
+                  renderItem={renderCategoryItem}
+                />
               </View>
             )}
 
@@ -397,34 +429,14 @@ export default function CampaignScreen() {
 
             {isBudgetOpen && (
               <View style={styles.dropdownExpandedListContent}>
-                <ScrollView 
+                <FlatList 
                   nestedScrollEnabled={true} 
                   showsVerticalScrollIndicator={true}
                   contentContainerStyle={styles.dropdownScrollContainer}
-                >
-                  <Pressable 
-                    style={styles.dropdownListItemTouchArea} 
-                    onPress={() => handleSelectBudget('All Budgets')}
-                  >
-                    <Text style={[Typography.body, selectedBudget === 'All Budgets' ? styles.dropdownListItemTextActive : styles.dropdownListItemText]}>
-                      All Budgets
-                    </Text>
-                  </Pressable>
-                  {BUDGET_OPTIONS.map((budget, idx) => {
-                    const isLast = idx === BUDGET_OPTIONS.length - 1;
-                    return (
-                      <Pressable 
-                        key={budget} 
-                        style={isLast ? styles.dropdownListItemTouchAreaLast : styles.dropdownListItemTouchArea} 
-                        onPress={() => handleSelectBudget(budget)}
-                      >
-                        <Text style={[Typography.body, selectedBudget === budget ? styles.dropdownListItemTextActive : styles.dropdownListItemText]}>
-                          {budget}
-                        </Text>
-                      </Pressable>
-                    );
-                  })}
-                </ScrollView>
+                  data={budgetOptions}
+                  keyExtractor={(item) => item}
+                  renderItem={renderBudgetItem}
+                />
               </View>
             )}
 
@@ -441,34 +453,14 @@ export default function CampaignScreen() {
 
             {isPlatformOpen && (
               <View style={styles.dropdownExpandedListContent}>
-                <ScrollView 
+                <FlatList 
                   nestedScrollEnabled={true} 
                   showsVerticalScrollIndicator={true}
                   contentContainerStyle={styles.dropdownScrollContainer}
-                >
-                  <Pressable 
-                    style={styles.dropdownListItemTouchArea} 
-                    onPress={() => handleSelectPlatform('All Platforms')}
-                  >
-                    <Text style={[Typography.body, selectedPlatform === 'All Platforms' ? styles.dropdownListItemTextActive : styles.dropdownListItemText]}>
-                      All Platforms
-                    </Text>
-                  </Pressable>
-                  {PLATFORM_OPTIONS.map((platform, idx) => {
-                    const isLast = idx === PLATFORM_OPTIONS.length - 1;
-                    return (
-                      <Pressable 
-                        key={platform} 
-                        style={isLast ? styles.dropdownListItemTouchAreaLast : styles.dropdownListItemTouchArea} 
-                        onPress={() => handleSelectPlatform(platform)}
-                      >
-                        <Text style={[Typography.body, selectedPlatform === platform ? styles.dropdownListItemTextActive : styles.dropdownListItemText]}>
-                          {platform}
-                        </Text>
-                      </Pressable>
-                    );
-                  })}
-                </ScrollView>
+                  data={platformOptions}
+                  keyExtractor={(item) => item}
+                  renderItem={renderPlatformItem}
+                />
               </View>
             )}
 

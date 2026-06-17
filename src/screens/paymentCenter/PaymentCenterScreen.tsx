@@ -3,7 +3,7 @@ import React from 'react';
 import {
     View,
     Text,
-    TouchableOpacity,
+    Pressable,
     ScrollView,
     TextInput,
     Image,
@@ -131,7 +131,7 @@ export default function PaymentCenterScreen({
       >
         {/* TAB SWITCHER */}
         <View style={styles.tabContainer}>
-          <TouchableOpacity
+          <Pressable
             style={[
               styles.tabButton,
               selectedTab ===
@@ -156,9 +156,9 @@ export default function PaymentCenterScreen({
             >
               Purchase Points
             </Text>
-          </TouchableOpacity>
+          </Pressable>
 
-          <TouchableOpacity
+          <Pressable
             style={[
               styles.tabButton,
               selectedTab ===
@@ -183,7 +183,7 @@ export default function PaymentCenterScreen({
             >
               Payment Release
             </Text>
-          </TouchableOpacity>
+          </Pressable>
         </View>
 
         {/* PURCHASE TAB */}
@@ -346,7 +346,7 @@ export default function PaymentCenterScreen({
               </View>
 
               {/* BUTTON */}
-              <TouchableOpacity
+              <Pressable
                 style={
                   styles.razorpayButton
                 }
@@ -358,7 +358,7 @@ export default function PaymentCenterScreen({
                 >
                   Topup with Razorpay
                 </Text>
-              </TouchableOpacity>
+              </Pressable>
 
               {/* RATE */}
               <View
@@ -637,7 +637,7 @@ export default function PaymentCenterScreen({
             : 'No bank details added'}
         </Text>
 
-        <TouchableOpacity
+        <Pressable
           style={
             styles.addButton
           }
@@ -655,7 +655,7 @@ export default function PaymentCenterScreen({
             + Add Bank
             Details
           </Text>
-        </TouchableOpacity>
+        </Pressable>
       </View>
 
       {/* OR */}
@@ -722,7 +722,7 @@ export default function PaymentCenterScreen({
             : 'No UPI details added'}
         </Text>
 
-        <TouchableOpacity
+        <Pressable
           style={
             styles.addButton
           }
@@ -740,7 +740,7 @@ export default function PaymentCenterScreen({
             + Add UPI
             Details
           </Text>
-        </TouchableOpacity>
+        </Pressable>
       </View>
 
       {/* NOTICE */}
@@ -772,7 +772,7 @@ export default function PaymentCenterScreen({
     </View>
 
     {/* NEXT BUTTON */}
-    <TouchableOpacity
+    <Pressable
   style={
     styles.nextButton
   }
@@ -789,10 +789,10 @@ export default function PaymentCenterScreen({
       >
         Next
       </Text>
-    </TouchableOpacity>
+    </Pressable>
 
     {/* REQUEST BUTTON */}
-    <TouchableOpacity
+    <Pressable
       style={
         styles.requestButton
       }
@@ -805,7 +805,7 @@ export default function PaymentCenterScreen({
         Request
         Withdrawal
       </Text>
-    </TouchableOpacity>
+    </Pressable>
   </>
 )}
       </ScrollView>
@@ -958,7 +958,7 @@ export default function PaymentCenterScreen({
           styles.modalButtonRow
         }
       >
-        <TouchableOpacity
+        <Pressable
           style={
             styles.cancelButton
           }
@@ -975,9 +975,9 @@ export default function PaymentCenterScreen({
           >
             Cancel
           </Text>
-        </TouchableOpacity>
+        </Pressable>
 
-        <TouchableOpacity
+        <Pressable
           style={
             styles.addDetailsButton
           }
@@ -1000,7 +1000,7 @@ export default function PaymentCenterScreen({
           >
             Add Details
           </Text>
-        </TouchableOpacity>
+        </Pressable>
       </View>
     </View>
   </View>
@@ -1048,7 +1048,7 @@ export default function PaymentCenterScreen({
         </Text>
       </Text>
 
-      <TouchableOpacity
+      <Pressable
         style={
           styles.dropdownButton
         }
@@ -1073,7 +1073,7 @@ export default function PaymentCenterScreen({
         >
           ˅
         </Text>
-      </TouchableOpacity>
+      </Pressable>
 
       {showPaymentDropdown && (
         <View
@@ -1081,7 +1081,7 @@ export default function PaymentCenterScreen({
             styles.dropdownMenu
           }
         >
-          <TouchableOpacity
+          <Pressable
             style={
               styles.dropdownItem
             }
@@ -1113,9 +1113,9 @@ export default function PaymentCenterScreen({
                 ✓
               </Text>
             )}
-          </TouchableOpacity>
+          </Pressable>
 
-          <TouchableOpacity
+          <Pressable
             style={
               styles.dropdownItem
             }
@@ -1147,7 +1147,7 @@ export default function PaymentCenterScreen({
                 ✓
               </Text>
             )}
-          </TouchableOpacity>
+          </Pressable>
         </View>
       )}
 
@@ -1192,7 +1192,7 @@ export default function PaymentCenterScreen({
           styles.modalButtonRow
         }
       >
-        <TouchableOpacity
+        <Pressable
           style={
             styles.cancelButton
           }
@@ -1209,9 +1209,9 @@ export default function PaymentCenterScreen({
           >
             Cancel
           </Text>
-        </TouchableOpacity>
+        </Pressable>
 
-        <TouchableOpacity
+        <Pressable
           style={
             styles.addDetailsButton
           }
@@ -1234,7 +1234,7 @@ export default function PaymentCenterScreen({
           >
             Add Details
           </Text>
-        </TouchableOpacity>
+        </Pressable>
       </View>
     </View>
   </View>

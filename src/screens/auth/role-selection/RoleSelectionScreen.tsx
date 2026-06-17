@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, ScrollView, StatusBar } from 'react-native';
+import { View, Text, Pressable, StatusBar } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
 import { styles } from './styles';
@@ -27,7 +27,7 @@ export const RoleSelectionScreen: React.FC = () => {
     <View style={styles.container}>
       <StatusBar barStyle="light-content" backgroundColor="#000000" />
       
-      <ScrollView contentContainerStyle={styles.scrollContainer} bounces={false}>
+      <View style={styles.scrollContainer}>
         
         {/* BRAND VIEWPORT SPLIT */}
         <View style={[styles.section, styles.brandSection]}>
@@ -41,7 +41,7 @@ export const RoleSelectionScreen: React.FC = () => {
               </Text>
               
               <View style={styles.buttonContainer}>
-                <TouchableOpacity activeOpacity={0.8} onPress={() => handleAction('BRAND', 'JOIN')}>
+                <Pressable onPress={() => handleAction('BRAND', 'JOIN')}>
                   <LinearGradient
                     colors={['#00B9C0', '#B6D82C']} // Teal-to-lime dynamic vector
                     start={{ x: 0, y: 0 }}
@@ -50,15 +50,14 @@ export const RoleSelectionScreen: React.FC = () => {
                   >
                     <Text style={styles.btnText}>JOIN AS BRAND</Text>
                   </LinearGradient>
-                </TouchableOpacity>
+                </Pressable>
 
-                <TouchableOpacity 
+                <Pressable 
                   style={styles.loginButton} 
-                  activeOpacity={0.7} 
                   onPress={() => handleAction('BRAND', 'LOGIN')}
                 >
                   <Text style={styles.loginText}>Login</Text>
-                </TouchableOpacity>
+                </Pressable>
               </View>
             </View>
 
@@ -93,7 +92,7 @@ export const RoleSelectionScreen: React.FC = () => {
               </Text>
 
               <View style={styles.buttonContainer}>
-                <TouchableOpacity activeOpacity={0.8} onPress={() => handleAction('CREATOR', 'JOIN')}>
+                <Pressable onPress={() => handleAction('CREATOR', 'JOIN')}>
                   <LinearGradient
                     colors={['#00B9C0', '#B6D82C']}
                     start={{ x: 0, y: 0 }}
@@ -102,22 +101,21 @@ export const RoleSelectionScreen: React.FC = () => {
                   >
                     <Text style={styles.btnText}>JOIN AS CREATOR</Text>
                   </LinearGradient>
-                </TouchableOpacity>
+                </Pressable>
 
-                <TouchableOpacity 
+                <Pressable 
                   style={styles.loginButton} 
-                  activeOpacity={0.7} 
                   onPress={() => handleAction('CREATOR', 'LOGIN')}
                 >
                   <Text style={styles.loginText}>Login</Text>
-                </TouchableOpacity>
+                </Pressable>
               </View>
             </View>
 
           </View>
         </View>
 
-      </ScrollView>
+      </View>
     </View>
   );
 };

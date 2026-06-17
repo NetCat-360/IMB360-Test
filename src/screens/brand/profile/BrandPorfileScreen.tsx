@@ -6,7 +6,7 @@ import {
   View,
   Text,
   Image,
-  TouchableOpacity,
+  Pressable,
   ScrollView,
   StatusBar,
 } from 'react-native';
@@ -81,12 +81,9 @@ function MenuItem({
   onPress?: () => void;
 }) {
   return (
-    <TouchableOpacity
+    <Pressable
       style={
         styles.menuCard
-      }
-      activeOpacity={
-        0.8
       }
       onPress={
         onPress
@@ -116,7 +113,7 @@ function MenuItem({
           styles.arrowIcon
         }
       />
-    </TouchableOpacity>
+    </Pressable>
   );
 }
 
@@ -197,7 +194,7 @@ BrandProfileScreen() {
               </Text>
             </View>
 
-            <TouchableOpacity>
+            <Pressable>
               <Image
                 source={require(
                   '../../../assets/images/editprofile.png'
@@ -206,7 +203,7 @@ BrandProfileScreen() {
                   styles.editIcon
                 }
               />
-            </TouchableOpacity>
+            </Pressable>
           </View>
 
           {/* Bio */}
@@ -216,9 +213,7 @@ BrandProfileScreen() {
             }
           >
             <Text
-              style={[
-                Typography.body,
-              ]}
+              style={Typography.body}
             >
               Digital creator |
               Fashion &
@@ -226,15 +221,13 @@ BrandProfileScreen() {
             </Text>
 
             <Text
-              style={[
-                Typography.body,
-              ]}
+              style={Typography.body}
             >
               Helping brands
               grow 🚀
             </Text>
 
-            <TouchableOpacity>
+            <Pressable>
               <Text
                 style={
                   styles.website
@@ -242,7 +235,7 @@ BrandProfileScreen() {
               >
                 Add website 🔗
               </Text>
-            </TouchableOpacity>
+            </Pressable>
           </View>
         </View>
 
@@ -252,7 +245,7 @@ BrandProfileScreen() {
             styles.buttonRow
           }
         >
-          <TouchableOpacity
+          <Pressable
             style={
               styles.actionButton
             }
@@ -269,9 +262,9 @@ BrandProfileScreen() {
             >
               Add Assets
             </Text>
-          </TouchableOpacity>
+          </Pressable>
 
-          <TouchableOpacity
+          <Pressable
             style={
               styles.actionButton
             }
@@ -288,7 +281,7 @@ BrandProfileScreen() {
             >
               Create Campaigns
             </Text>
-          </TouchableOpacity>
+          </Pressable>
         </View>
 
         {/* Info Row */}

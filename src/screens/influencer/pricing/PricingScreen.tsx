@@ -1,8 +1,8 @@
 // src/screens/pricing/PricingScreen.tsx
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import {
   View, Text, Image, Pressable,
-  ScrollView, StatusBar, FlatList,
+  StatusBar, FlatList,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import LinearGradient from 'react-native-linear-gradient';
@@ -123,9 +123,30 @@ const PricingScreen = ({ navigation }: Props) => {
 
   const isEmpty = filtered.length === 0;
 
-  const handleClearCard = (id: string) => {
+  const handleClearCard = useCallback((id: string) => {
     setPricing(prev => prev.filter(element => element.id !== id));
-  };
+  }, []);
+
+  const renderPricingItem = useCallback(({ item }: { item: PricingItem }) => (
+    <PricingCard
+      item={item}
+      onEdit={() => navigation.navigate('EditPricing', { pricingId: item.id })}
+      onDelete={() => handleClearCard(item.id)}
+    />
+  ), [navigation, handleClearCard]);
+
+  const handleFilterPress = useCallback((key: FilterKey) => {
+    setActiveFilter(key);
+  }, []);
+
+  const renderFilterTabItem = useCallback(({ item }: { item: typeof FILTER_TABS[0] }) => (
+    <FilterTab
+      label={item.label}
+      icon={item.icon}
+      active={activeFilter === item.key}
+      onPress={() => handleFilterPress(item.key)}
+    />
+  ), [activeFilter, handleFilterPress]);
 
   return (
     <>
@@ -147,22 +168,15 @@ const PricingScreen = ({ navigation }: Props) => {
 
       <View style={styles.body}>
         <View style={styles.filterContainer}>
-          <ScrollView
+          <FlatList
             horizontal
             showsHorizontalScrollIndicator={false}
             style={styles.filterScrollView}
             contentContainerStyle={styles.filterStrip}
-          >
-            {FILTER_TABS.map(tab => (
-              <FilterTab
-                key={tab.key}
-                label={tab.label}
-                icon={tab.icon}
-                active={activeFilter === tab.key}
-                onPress={() => setActiveFilter(tab.key)}
-              />
-            ))}
-          </ScrollView>
+            data={FILTER_TABS}
+            keyExtractor={(item) => item.key}
+            renderItem={renderFilterTabItem}
+          />
         </View>
 
         {isEmpty ? (
@@ -175,13 +189,7 @@ const PricingScreen = ({ navigation }: Props) => {
             contentContainerStyle={styles.scrollContent}
             data={filtered}
             keyExtractor={item => item.id}
-            renderItem={({ item }) => (
-              <PricingCard
-                item={item}
-                onEdit={() => navigation.navigate('EditPricing', { pricingId: item.id })}
-                onDelete={() => handleClearCard(item.id)}
-              />
-            )}
+            renderItem={renderPricingItem}
           />
         )}
       </View>

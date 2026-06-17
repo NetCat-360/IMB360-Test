@@ -1,11 +1,12 @@
-import React from "react";
+import React, { useCallback, useMemo } from "react";
 import {
   View,
   Text,
-  TouchableOpacity,
+  Pressable,
   ScrollView,
   StatusBar,
   Modal,
+  FlatList,
 } from "react-native";
 
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -29,7 +30,7 @@ const tabs = ["ongoing", "upcoming", "history"];
 export default function BrandCampaignsScreen({ navigation }: any) {
   const [showCompleteModal, setShowCompleteModal] = React.useState(false);
   const [showStartModal, setShowStartModal] = React.useState(false);
-  const [selectedCampaignId, setSelectedCampaignId] = React.useState<
+  const selectedCampaignId = React.useRef<
     number | null
   >(null);
 
@@ -40,6 +41,89 @@ export default function BrandCampaignsScreen({ navigation }: any) {
   );
 
   const filtered = campaigns.filter((item) => item.status === selectedTab);
+
+  const badgeStyle = useMemo(() => [
+    styles.badge,
+    {
+      backgroundColor:
+        selectedTab === "ongoing"
+          ? "#003F00"
+          : selectedTab === "upcoming"
+          ? "#062A5A"
+          : "#403500",
+    },
+  ], [selectedTab]);
+
+  const badgeTextStyle = useMemo(() => [
+    styles.badgeText,
+    {
+      color:
+        selectedTab === "ongoing"
+          ? "#00FF47"
+          : selectedTab === "upcoming"
+          ? "#4DA3FF"
+          : "#FFE500",
+    },
+  ], [selectedTab]);
+
+  const handleCampaignAction = useCallback((id: number) => {
+    selectedCampaignId.current = id;
+    if (selectedTab === "ongoing") {
+      setShowCompleteModal(true);
+    }
+    if (selectedTab === "upcoming") {
+      setShowStartModal(true);
+    }
+  }, [selectedTab]);
+
+  const renderCampaignItem = useCallback(({ item: campaign }: { item: any }) => (
+    <View style={styles.card}>
+      <View style={styles.rowBetween}>
+        <Text style={styles.title}>{campaign.title}</Text>
+        <View>
+          <Text style={styles.budgetLabel}>Budget</Text>
+          <Text style={styles.budget}>₹{campaign.budget.toLocaleString()}</Text>
+        </View>
+      </View>
+      <View style={badgeStyle}>
+        <Text style={badgeTextStyle}>● {selectedTab}</Text>
+      </View>
+      {selectedTab !== "history" ? (
+        <>
+          <Text style={styles.dateLabel}>Start Date</Text>
+          <Text style={styles.date}>{campaign.startDate}</Text>
+          <View style={styles.buttonRow}>
+            <Pressable style={styles.outlineBtn}>
+              <Text style={styles.viewText}>View</Text>
+            </Pressable>
+            <Pressable style={styles.fillBtn} onPress={() => handleCampaignAction(campaign.id)}>
+              <Text style={styles.fillBtnText}>
+                {selectedTab === "ongoing" ? "Completed" : "Start"}
+              </Text>
+            </Pressable>
+          </View>
+        </>
+      ) : (
+        <>
+          <View style={styles.divider} />
+          <View style={styles.historyRow}>
+            <View>
+              <Text style={styles.smallLabel}>Start Date</Text>
+              <Text style={styles.smallValue}>{campaign.startDate}</Text>
+            </View>
+            <View>
+              <Text style={styles.smallLabel}>Budget</Text>
+              <Text style={styles.greenText}>₹{campaign.budget.toLocaleString()}</Text>
+            </View>
+            <View>
+              <Text style={styles.smallLabel}>Total Spent</Text>
+              <Text style={styles.greenText}>₹{campaign.totalSpent?.toLocaleString()}</Text>
+            </View>
+          </View>
+        </>
+      )}
+    </View>
+  ), [badgeStyle, badgeTextStyle, selectedTab, handleCampaignAction]);
 
   return (
     <SafeAreaView style={styles.container} edges={[]}>
@@ -57,7 +141,7 @@ export default function BrandCampaignsScreen({ navigation }: any) {
             const active = selectedTab === tab;
 
             return (
-              <TouchableOpacity
+              <Pressable
                 key={tab}
                 style={[styles.tab, active && styles.activeTab]}
                 onPress={() => dispatch(setSelectedTab(tab as any))}
@@ -65,118 +149,17 @@ export default function BrandCampaignsScreen({ navigation }: any) {
                 <Text style={[styles.tabText, active && styles.activeText]}>
                   {tab.charAt(0).toUpperCase() + tab.slice(1)}
                 </Text>
-              </TouchableOpacity>
+              </Pressable>
             );
           })}
         </View>
 
-        {filtered.map((campaign) => (
-          <View key={campaign.id} style={styles.card}>
-            <View style={styles.rowBetween}>
-              <Text style={styles.title}>{campaign.title}</Text>
-
-              <View>
-                <Text style={styles.budgetLabel}>Budget</Text>
-
-                <Text style={styles.budget}>
-                  ₹{campaign.budget.toLocaleString()}
-                </Text>
-              </View>
-            </View>
-
-            {/* Status Badge */}
-            <View
-              style={[
-                styles.badge,
-                {
-                  backgroundColor:
-                    selectedTab === "ongoing"
-                      ? "#003F00"
-                      : selectedTab === "upcoming"
-                      ? "#062A5A"
-                      : "#403500",
-                },
-              ]}
-            >
-              <Text
-                style={[
-                  styles.badgeText,
-                  {
-                    color:
-                      selectedTab === "ongoing"
-                        ? "#00FF47"
-                        : selectedTab === "upcoming"
-                        ? "#4DA3FF"
-                        : "#FFE500",
-                  },
-                ]}
-              >
-                ● {selectedTab}
-              </Text>
-            </View>
-
-            {selectedTab !== "history" ? (
-              <>
-                <Text style={styles.dateLabel}>Start Date</Text>
-
-                <Text style={styles.date}>{campaign.startDate}</Text>
-
-                <View style={styles.buttonRow}>
-                  <TouchableOpacity style={styles.outlineBtn}>
-                    <Text style={styles.viewText}>View</Text>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity
-                    style={styles.fillBtn}
-                    onPress={() => {
-                      setSelectedCampaignId(campaign.id);
-
-                      if (selectedTab === "ongoing") {
-                        setShowCompleteModal(true);
-                      }
-
-                      if (selectedTab === "upcoming") {
-                        setShowStartModal(true);
-                      }
-                    }}
-                  >
-                    <Text style={styles.fillBtnText}>
-                      {selectedTab === "ongoing" ? "Completed" : "Start"}
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-              </>
-            ) : (
-              <>
-                <View style={styles.divider} />
-
-                <View style={styles.historyRow}>
-                  <View>
-                    <Text style={styles.smallLabel}>Start Date</Text>
-
-                    <Text style={styles.smallValue}>{campaign.startDate}</Text>
-                  </View>
-
-                  <View>
-                    <Text style={styles.smallLabel}>Budget</Text>
-
-                    <Text style={styles.greenText}>
-                      ₹{campaign.budget.toLocaleString()}
-                    </Text>
-                  </View>
-
-                  <View>
-                    <Text style={styles.smallLabel}>Total Spent</Text>
-
-                    <Text style={styles.greenText}>
-                      ₹{campaign.totalSpent?.toLocaleString()}
-                    </Text>
-                  </View>
-                </View>
-              </>
-            )}
-          </View>
-        ))}
+        <FlatList
+          data={filtered}
+          scrollEnabled={false}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={renderCampaignItem}
+        />
       </ScrollView>
       <Modal transparent visible={showCompleteModal} animationType="fade">
         <View style={styles.modalOverlay}>
@@ -188,27 +171,27 @@ export default function BrandCampaignsScreen({ navigation }: any) {
             </Text>
 
             <View style={styles.modalButtonRow}>
-              <TouchableOpacity
+              <Pressable
                 style={styles.cancelBtn}
                 onPress={() => setShowCompleteModal(false)}
               >
                 <Text style={styles.cancelText}>Cancel</Text>
-              </TouchableOpacity>
+              </Pressable>
 
-              <TouchableOpacity
+              <Pressable
                 style={styles.confirmBtn}
                 onPress={() => {
-                  if (selectedCampaignId) {
-                    dispatch(completeCampaign(selectedCampaignId));
+                  if (selectedCampaignId.current) {
+                    dispatch(completeCampaign(selectedCampaignId.current));
                   }
 
                   setShowCompleteModal(false);
 
-                  setSelectedCampaignId(null);
+                  selectedCampaignId.current = null;
                 }}
               >
                 <Text style={styles.confirmText}>Yes</Text>
-              </TouchableOpacity>
+              </Pressable>
             </View>
           </View>
         </View>
@@ -223,27 +206,27 @@ export default function BrandCampaignsScreen({ navigation }: any) {
             </Text>
 
             <View style={styles.modalButtonRow}>
-              <TouchableOpacity
+              <Pressable
                 style={styles.cancelBtn}
                 onPress={() => setShowStartModal(false)}
               >
                 <Text style={styles.cancelText}>Cancel</Text>
-              </TouchableOpacity>
+              </Pressable>
 
-              <TouchableOpacity
+              <Pressable
                 style={styles.confirmBtn}
                 onPress={() => {
-                  if (selectedCampaignId) {
-                    dispatch(startCampaign(selectedCampaignId));
+                  if (selectedCampaignId.current) {
+                    dispatch(startCampaign(selectedCampaignId.current));
                   }
 
                   setShowStartModal(false);
 
-                  setSelectedCampaignId(null);
+                  selectedCampaignId.current = null;
                 }}
               >
                 <Text style={styles.confirmText}>Start</Text>
-              </TouchableOpacity>
+              </Pressable>
             </View>
           </View>
         </View>

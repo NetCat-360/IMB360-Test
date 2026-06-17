@@ -1,13 +1,16 @@
 import React, {
   useRef,
+  useState,
+  useCallback,
 } from "react";import {
   View,
   Text,
   StatusBar,
   ScrollView,
   TextInput,
-  TouchableOpacity,
+  Pressable,
   Image,
+  FlatList,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -28,30 +31,36 @@ type Props = {
   navigation: AppNavigationProp<"AddAssets">;
 };
 
+const categories = [
+  "Camera",
+  "Drone",
+  "Laptop",
+  "Lighting",
+  "Microphone",
+  "Studio",
+  "Vehicle",
+  "Fashion",
+  "Sports",
+  "Other",
+];
+
+const conditions = ["Excellent", "Good", "Fair"];
+
+const amenitiesList = [
+  "Warranty Included",
+  "Free Delivery",
+  "Setup Assistance",
+  "Insurance Covered",
+  "Backup Equipment",
+  "24/7 Support",
+  "Usage Training",
+  "Accessories Included",
+];
+
+const defaultCheckboxStyle = [styles.checkbox];
+const selectedCheckboxStyle = [styles.checkbox, styles.checkboxSelected];
+
 export default function AddAssetsScreen({ navigation }: Props) {
-  const categories = [
-    "Camera",
-    "Drone",
-    "Laptop",
-    "Lighting",
-    "Microphone",
-    "Studio",
-    "Vehicle",
-    "Fashion",
-    "Sports",
-    "Other",
-  ];
-  const conditions = ["Excellent", "Good", "Fair"];
-  const amenitiesList = [
-    "Warranty Included",
-    "Free Delivery",
-    "Setup Assistance",
-    "Insurance Covered",
-    "Backup Equipment",
-    "24/7 Support",
-    "Usage Training",
-    "Accessories Included",
-  ];
   const dispatch = useDispatch();
 
   const [showCategories, setShowCategories] = React.useState(false);
@@ -61,6 +70,7 @@ export default function AddAssetsScreen({ navigation }: Props) {
   const [showFromDate, setShowFromDate] = React.useState(false);
 
   const [showToDate, setShowToDate] = React.useState(false);
+  const [today] = useState(() => new Date());
   const [step,
     setStep] =
     React.useState(1);
@@ -81,21 +91,21 @@ export default function AddAssetsScreen({ navigation }: Props) {
     },
     [step]
   );
-  const handleChange = (key: keyof typeof asset, value: any) => {
+  const handleChange = useCallback((key: keyof typeof asset, value: any) => {
     dispatch(
       updateField({
         key,
         value,
       })
     );
-  };
-  const toggleAmenity = (amenity: string) => {
+  }, [dispatch]);
+  const toggleAmenity = useCallback((amenity: string) => {
     const updatedAmenities = asset.amenities.includes(amenity)
       ? asset.amenities.filter((item) => item !== amenity)
       : [...asset.amenities, amenity];
 
     handleChange("amenities", updatedAmenities);
-  };
+  }, [asset.amenities, handleChange]);
 
   const handleCreateAsset = () => {
     console.log("Asset Data:", asset);
@@ -106,6 +116,53 @@ export default function AddAssetsScreen({ navigation }: Props) {
   const handleCancel = () => {
     dispatch(resetAssetForm());
   };
+
+  const handleCategoryPress = useCallback((item: string) => {
+    handleChange("category", item);
+    setShowCategories(false);
+  }, [handleChange]);
+
+  const handleConditionPress = useCallback((item: string) => {
+    handleChange("condition", item);
+    setShowConditions(false);
+  }, [handleChange]);
+
+  const handleAmenityPress = useCallback((item: string) => {
+    toggleAmenity(item);
+  }, [toggleAmenity]);
+
+  const renderCategoryItem = useCallback(({ item }: { item: string }) => (
+    <Pressable
+      style={styles.dropdownItem}
+      onPress={() => handleCategoryPress(item)}
+    >
+      <Text style={styles.dropdownItemText}>{item}</Text>
+    </Pressable>
+  ), [handleCategoryPress]);
+
+  const renderConditionItem = useCallback(({ item }: { item: string }) => (
+    <Pressable
+      style={styles.dropdownItem}
+      onPress={() => handleConditionPress(item)}
+    >
+      <Text style={styles.dropdownItemText}>{item}</Text>
+    </Pressable>
+  ), [handleConditionPress]);
+
+  const renderAmenityItem = useCallback(({ item }: { item: string }) => {
+    const selected = asset.amenities.includes(item);
+    return (
+      <Pressable
+        style={styles.checkboxRow}
+        onPress={() => handleAmenityPress(item)}
+      >
+        <Text style={styles.checkboxLabel}>{item}</Text>
+        <View
+          style={selected ? selectedCheckboxStyle : defaultCheckboxStyle}
+        />
+      </Pressable>
+    );
+  }, [asset.amenities, handleAmenityPress]);
 
   return (
     <>
@@ -189,7 +246,7 @@ export default function AddAssetsScreen({ navigation }: Props) {
           />
 
           {/* CATEGORY */}
-          <TouchableOpacity
+          <Pressable
             style={styles.dropdown}
             onPress={() => setShowCategories(!showCategories)}
           >
@@ -201,28 +258,17 @@ export default function AddAssetsScreen({ navigation }: Props) {
               source={require("../../../assets/images/downarrow.png")}
               style={styles.arrow}
             />
-          </TouchableOpacity>
+          </Pressable>
 
           {showCategories && (
             <View style={styles.dropdownContainer}>
-              <ScrollView
+              <FlatList
                 nestedScrollEnabled
                 showsVerticalScrollIndicator={false}
-              >
-                {categories.map((item) => (
-                  <TouchableOpacity
-                    key={item}
-                    style={styles.dropdownItem}
-                    onPress={() => {
-                      handleChange("category", item);
-
-                      setShowCategories(false);
-                    }}
-                  >
-                    <Text style={styles.dropdownItemText}>{item}</Text>
-                  </TouchableOpacity>
-                ))}
-              </ScrollView>
+                data={categories}
+                keyExtractor={(item) => item}
+                renderItem={renderCategoryItem}
+              />
             </View>
           )}
 
@@ -356,7 +402,7 @@ export default function AddAssetsScreen({ navigation }: Props) {
                 <Text style={styles.required}> *</Text>
               </Text>
 
-              <TouchableOpacity
+              <Pressable
                 style={styles.dropdown}
                 onPress={() => setShowConditions(!showConditions)}
               >
@@ -368,28 +414,17 @@ export default function AddAssetsScreen({ navigation }: Props) {
                   source={require("../../../assets/images/downarrow.png")}
                   style={styles.arrow}
                 />
-              </TouchableOpacity>
+              </Pressable>
 
               {showConditions && (
                 <View style={styles.dropdownContainer}>
-                  <ScrollView
+                  <FlatList
                     nestedScrollEnabled
                     showsVerticalScrollIndicator={false}
-                  >
-                    {conditions.map((item) => (
-                      <TouchableOpacity
-                        key={item}
-                        style={styles.dropdownItem}
-                        onPress={() => {
-                          handleChange("condition", item);
-
-                          setShowConditions(false);
-                        }}
-                      >
-                        <Text style={styles.dropdownItemText}>{item}</Text>
-                      </TouchableOpacity>
-                    ))}
-                  </ScrollView>
+                    data={conditions}
+                    keyExtractor={(item) => item}
+                    renderItem={renderConditionItem}
+                  />
                 </View>
               )}
             </View>
@@ -423,7 +458,7 @@ export default function AddAssetsScreen({ navigation }: Props) {
         verticalScale(5),
     }}
   >
-    <TouchableOpacity
+    <Pressable
       style={
         styles.createButton
       }
@@ -440,7 +475,7 @@ export default function AddAssetsScreen({ navigation }: Props) {
       >
         Next
       </Text>
-    </TouchableOpacity>
+    </Pressable>
   </View>
 )}
           {step === 2 && (
@@ -465,7 +500,7 @@ export default function AddAssetsScreen({ navigation }: Props) {
           {/* AMENITIES */}
           <Text style={styles.sectionHeading}>Amenities & Features</Text>
 
-          <TouchableOpacity
+          <Pressable
             style={styles.dropdown}
             onPress={() => setShowAmenities(!showAmenities)}
           >
@@ -479,35 +514,17 @@ export default function AddAssetsScreen({ navigation }: Props) {
               source={require("../../../assets/images/downarrow.png")}
               style={styles.arrow}
             />
-          </TouchableOpacity>
+          </Pressable>
 
           {showAmenities && (
             <View style={styles.amenitiesContainer}>
-              <ScrollView
+              <FlatList
                 nestedScrollEnabled
                 showsVerticalScrollIndicator={false}
-              >
-                {amenitiesList.map((item) => {
-                  const selected = asset.amenities.includes(item);
-
-                  return (
-                    <TouchableOpacity
-                      key={item}
-                      style={styles.checkboxRow}
-                      onPress={() => toggleAmenity(item)}
-                    >
-                      <Text style={styles.checkboxLabel}>{item}</Text>
-
-                      <View
-                        style={[
-                          styles.checkbox,
-                          selected && styles.checkboxSelected,
-                        ]}
-                      />
-                    </TouchableOpacity>
-                  );
-                })}
-              </ScrollView>
+                data={amenitiesList}
+                keyExtractor={(item) => item}
+                renderItem={renderAmenityItem}
+              />
             </View>
           )}
 
@@ -516,7 +533,7 @@ export default function AddAssetsScreen({ navigation }: Props) {
 
           <Text style={styles.label}>Cover Image</Text>
 
-          <TouchableOpacity style={styles.uploadBox}>
+          <Pressable style={styles.uploadBox}>
             <Image
               source={require("../../../assets/images/gallery.png")}
               style={styles.uploadIcon}
@@ -527,13 +544,13 @@ export default function AddAssetsScreen({ navigation }: Props) {
                 ? "Image Selected"
                 : "Click to upload cover image"}
             </Text>
-          </TouchableOpacity>
+          </Pressable>
 
           <Text style={styles.uploadInfo}>Max. size to upload is 50MB</Text>
 
           <Text style={styles.label}>Gallery</Text>
 
-          <TouchableOpacity style={styles.uploadBox}>
+          <Pressable style={styles.uploadBox}>
             <Image
               source={require("../../../assets/images/gallery.png")}
               style={styles.uploadIcon}
@@ -544,7 +561,7 @@ export default function AddAssetsScreen({ navigation }: Props) {
                 ? `${asset.gallery.length} files selected`
                 : "Click to upload images or videos"}
             </Text>
-          </TouchableOpacity>
+          </Pressable>
 
           <Text style={styles.uploadInfo}>
             Max. 6 images or videos can be uploaded up to 50MB each
@@ -558,7 +575,7 @@ export default function AddAssetsScreen({ navigation }: Props) {
       styles.buttonRow
     }
   >
-    <TouchableOpacity
+    <Pressable
       style={
         styles.cancelButton
       }
@@ -575,9 +592,9 @@ export default function AddAssetsScreen({ navigation }: Props) {
       >
         Previous
       </Text>
-    </TouchableOpacity>
+    </Pressable>
 
-    <TouchableOpacity
+    <Pressable
       style={
         styles.createButton
       }
@@ -594,7 +611,7 @@ export default function AddAssetsScreen({ navigation }: Props) {
       >
         Next
       </Text>
-    </TouchableOpacity>
+    </Pressable>
   </View>
 )}
 {step === 3 && (
@@ -607,7 +624,7 @@ export default function AddAssetsScreen({ navigation }: Props) {
             <Text style={styles.required}> *</Text>
           </Text>
 
-          <TouchableOpacity
+          <Pressable
             style={styles.dateInput}
             onPress={() => setShowFromDate(true)}
           >
@@ -616,10 +633,10 @@ export default function AddAssetsScreen({ navigation }: Props) {
                 value={
                   asset.availableFrom
                     ? new Date(asset.availableFrom)
-                    : new Date()
+                    : today
                 }
                 mode="date"
-                minimumDate={new Date()}
+                minimumDate={today}
                 display="default"
                 onChange={(event, selectedDate) => {
                   setShowFromDate(false);
@@ -640,7 +657,7 @@ export default function AddAssetsScreen({ navigation }: Props) {
               source={require("../../../assets/images/calendar.png")}
               style={styles.calendarIcon}
             />
-          </TouchableOpacity>
+          </Pressable>
 
           <Text style={styles.helperText}>Cannot select past dates.</Text>
 
@@ -656,20 +673,20 @@ export default function AddAssetsScreen({ navigation }: Props) {
             <Text style={styles.required}> *</Text>
           </Text>
 
-          <TouchableOpacity
+          <Pressable
             onPress={() => setShowToDate(true)}
             style={styles.dateInput}
           >
             {showToDate && (
               <DateTimePicker
                 value={
-                  asset.availableTo ? new Date(asset.availableTo) : new Date()
+                  asset.availableTo ? new Date(asset.availableTo) : today
                 }
                 mode="date"
                 minimumDate={
                   asset.availableFrom
                     ? new Date(asset.availableFrom)
-                    : new Date()
+                    : today
                 }
                 display="default"
                 onChange={(event, selectedDate) => {
@@ -691,7 +708,7 @@ export default function AddAssetsScreen({ navigation }: Props) {
               source={require("../../../assets/images/calendar.png")}
               style={styles.calendarIcon}
             />
-          </TouchableOpacity>
+          </Pressable>
 
           {/* ADDITIONAL INFO */}
           <Text
@@ -769,7 +786,7 @@ export default function AddAssetsScreen({ navigation }: Props) {
     styles.buttonRow
   }
 >
-  <TouchableOpacity
+  <Pressable
     style={
       styles.cancelButton
     }
@@ -786,9 +803,9 @@ export default function AddAssetsScreen({ navigation }: Props) {
     >
       Previous
     </Text>
-  </TouchableOpacity>
+  </Pressable>
 
-  <TouchableOpacity
+  <Pressable
     style={
       styles.createButton
     }
@@ -803,7 +820,7 @@ export default function AddAssetsScreen({ navigation }: Props) {
     >
       Create Asset
     </Text>
-  </TouchableOpacity>
+  </Pressable>
 </View>
           </>
 

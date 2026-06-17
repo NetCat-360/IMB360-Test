@@ -5,7 +5,7 @@ import React, {
   import {
     View,
     Text,
-    TouchableOpacity,
+    Pressable,
     ScrollView,
     StatusBar,
     Image,
@@ -130,7 +130,7 @@ import React, {
               styles.tabContainer
             }
           >
-            <TouchableOpacity
+            <Pressable
               style={[
                 styles.tabButton,
                 selectedTab ===
@@ -153,9 +153,9 @@ import React, {
               >
                 Statement
               </Text>
-            </TouchableOpacity>
+            </Pressable>
   
-            <TouchableOpacity
+            <Pressable
               style={[
                 styles.tabButton,
                 selectedTab ===
@@ -178,7 +178,7 @@ import React, {
               >
                 History
               </Text>
-            </TouchableOpacity>
+            </Pressable>
           </View>
   
           {/* ==========================
@@ -244,7 +244,7 @@ import React, {
                     Start Date
                   </Text>
   
-                  <TouchableOpacity
+                  <Pressable
                     style={
                       styles.dateInput
                     }
@@ -269,7 +269,7 @@ import React, {
                       size={20}
                       color="#FFF"
                     />
-                  </TouchableOpacity>
+                  </Pressable>
                 </View>
   
                 <View
@@ -293,7 +293,7 @@ import React, {
                     End Date
                   </Text>
   
-                  <TouchableOpacity
+                  <Pressable
                     style={
                       styles.dateInput
                     }
@@ -318,7 +318,7 @@ import React, {
                       size={20}
                       color="#FFF"
                     />
-                  </TouchableOpacity>
+                  </Pressable>
   
                   <Text
                     style={
@@ -341,7 +341,7 @@ import React, {
                 Format
               </Text>
   
-              <TouchableOpacity
+              <Pressable
                 style={
                   styles.dropdownButton
                 }
@@ -370,7 +370,7 @@ import React, {
                   size={22}
                   color="#BDBDBD"
                 />
-              </TouchableOpacity>
+              </Pressable>
   
               {showDropdown && (
                 <View
@@ -383,7 +383,7 @@ import React, {
                     'Excel',
                     'CSV',
                   ].map(item => (
-                    <TouchableOpacity
+                    <Pressable
                       key={item}
                       style={
                         styles.dropdownItem
@@ -414,12 +414,12 @@ import React, {
                           color="#FFF"
                         />
                       )}
-                    </TouchableOpacity>
+                    </Pressable>
                   ))}
                 </View>
               )}
   
-              <TouchableOpacity
+              <Pressable
                 style={
                   styles.generateButton
                 }
@@ -432,7 +432,7 @@ import React, {
                   Generate
                   Statement
                 </Text>
-              </TouchableOpacity>
+              </Pressable>
   
               <View
                 style={
@@ -481,7 +481,7 @@ import React, {
         styles.historyTabsContainer
       }
     >
-      <TouchableOpacity
+      <Pressable
         style={
           selectedHistoryTab ===
           'release'
@@ -504,9 +504,9 @@ import React, {
         >
           Date of Release
         </Text>
-      </TouchableOpacity>
+      </Pressable>
 
-      <TouchableOpacity
+      <Pressable
         style={
           selectedHistoryTab ===
           'transaction'
@@ -529,9 +529,9 @@ import React, {
         >
           Transaction ID
         </Text>
-      </TouchableOpacity>
+      </Pressable>
 
-      <TouchableOpacity
+      <Pressable
         style={
           selectedHistoryTab ===
           'amount'
@@ -554,9 +554,9 @@ import React, {
         >
           Amount
         </Text>
-      </TouchableOpacity>
+      </Pressable>
 
-      <TouchableOpacity
+      <Pressable
         style={
           selectedHistoryTab ===
           'paymentMode'
@@ -579,7 +579,7 @@ import React, {
         >
           Mode of Payment
         </Text>
-      </TouchableOpacity>
+      </Pressable>
     </ScrollView>
 
     {/* EMPTY STATE FOR ALL TABS */}

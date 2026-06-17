@@ -5,7 +5,7 @@ import {
   Text,
   Image,
   ScrollView,
-  TouchableOpacity,
+  Pressable,
   StatusBar,
 } from "react-native";
 import LinearGradient
@@ -426,7 +426,7 @@ BrandCampaignDetailsScreen() {
           index
         ) => (
           <View
-            key={index}
+            key={item}
             style={
               styles.deliverableRow
             }
@@ -451,8 +451,7 @@ BrandCampaignDetailsScreen() {
         )
       )}
   </View>
-  <TouchableOpacity
-  activeOpacity={0.85}
+  <Pressable
   onPress={() =>
     navigation.goBack()
   }
@@ -485,7 +484,7 @@ BrandCampaignDetailsScreen() {
       Close
     </Text>
   </LinearGradient>
-</TouchableOpacity>
+</Pressable>
 </View>
       </ScrollView>
     </SafeAreaView>

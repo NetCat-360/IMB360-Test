@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
     overflow: "hidden",
 
     zIndex: 999,
-    elevation: 10,
+    boxShadow: '0 4px 10px rgba(0,0,0,0.3)',
   },
 
   dropdownItem: {

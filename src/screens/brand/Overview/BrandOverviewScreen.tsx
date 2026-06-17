@@ -4,10 +4,10 @@ import React from "react";
 import {
   View,
   Text,
-  TouchableOpacity,
+  Pressable,
   ScrollView,
   StatusBar,
-  Dimensions,
+  useWindowDimensions,
 } from "react-native";
 import ScreenHeader from "../../../components/ScreenHeader";
 import {
@@ -56,15 +56,11 @@ import {
 import Typography
 from "../../../styles/typography";
 
-const screenWidth =
-  Dimensions.get(
-    "window"
-  ).width;
-
 const BrandOverviewScreen =
 ({
   navigation,
 }: any) => {
+  const { width: screenWidth } = useWindowDimensions();
   const dispatch =
     useDispatch();
 

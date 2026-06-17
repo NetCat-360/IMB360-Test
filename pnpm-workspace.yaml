@@ -1,0 +1,13 @@
+packages:
+  - 'packages/*'
+onlyBuiltDependencies:
+  - react-native-reanimated
+  - react-native
+  - react-native-worklets
+  - core-js
+  - esbuild
+  - msgpackr-extract
+  - lmdb
+minimumReleaseAge: 10080
+trustPolicy: no-downgrade
+

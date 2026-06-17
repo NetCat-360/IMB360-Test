@@ -9,6 +9,8 @@ import { verticalScale } from 'react-native-size-matters';
 import styles from '../register/styles';
 import { localStyles } from './styles';
 
+const OTP_FIELD_KEYS = ['otp-0', 'otp-1', 'otp-2', 'otp-3', 'otp-4', 'otp-5'];
+
 const VerificationScreen = ({ navigation, route }: any) => {
   const targetDestination = route?.params?.destination || 'your email';
   const flowType = route?.params?.flow || 'password_reset';
@@ -117,7 +119,7 @@ const VerificationScreen = ({ navigation, route }: any) => {
 
             <View style={localStyles.otpInputContainerRow}>
               {code.map((digit, index) => (
-                <View key={`otp-${index}`} style={localStyles.otpBoxWrapper}>
+                <View key={OTP_FIELD_KEYS[index]} style={localStyles.otpBoxWrapper}>
                   <TextInput
                     // FIXED: Wrapped statement in braces to return void, resolving the type overload breakdown
                     ref={(el) => { inputRefs.current[index] = el; }}

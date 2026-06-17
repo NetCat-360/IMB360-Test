@@ -1,6 +1,6 @@
 import React from 'react'
 import {
-  TouchableOpacity,
+  Pressable,
   Text,
   StyleSheet,
   ViewStyle,
@@ -36,8 +36,7 @@ const GradientButton = ({
   iconStyle,
 }: Props) => {
   return (
-    <TouchableOpacity
-      activeOpacity={0.8}
+    <Pressable
       onPress={onPress}
     >
       <LinearGradient
@@ -81,7 +80,7 @@ const GradientButton = ({
           </Text>
         </View>
       </LinearGradient>
-    </TouchableOpacity>
+    </Pressable>
   )
 }
 

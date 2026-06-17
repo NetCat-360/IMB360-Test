@@ -14,6 +14,8 @@ import {
 import LinearGradient from 'react-native-linear-gradient';
 import { scale, verticalScale, moderateScale } from '../../../utils/scaling';
 
+const OTP_FIELD_KEYS = ['otp-0', 'otp-1', 'otp-2', 'otp-3', 'otp-4', 'otp-5'];
+
 interface OtpModalSheetProps {
   visible: boolean;
   onClose: () => void;
@@ -168,7 +170,7 @@ export const OtpModalSheet: React.FC<OtpModalSheetProps> = ({
               <View style={localStyles.otpInputRowGrid}>
                 {code.map((digit, index) => (
                   <View
-                    key={`otp-${index}`}
+                    key={OTP_FIELD_KEYS[index]}
                     style={[
                       localStyles.digitInputBoxFrame,
                       index !== 5 && localStyles.inputBoxSpacingRight,

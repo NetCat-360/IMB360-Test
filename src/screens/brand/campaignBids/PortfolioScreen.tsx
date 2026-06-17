@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import {
   View,
   Text,
-  TouchableOpacity,
+  Pressable,
   ScrollView,
   Modal,
 } from "react-native";
@@ -65,9 +65,9 @@ const PortfolioScreen = () => {
           >
             <Text style={styles.name}>{bid.creatorName}</Text>
 
-            <TouchableOpacity style={styles.profileBtn}>
+            <Pressable style={styles.profileBtn}>
               <Text style={styles.profileText}>View Profile</Text>
-            </TouchableOpacity>
+            </Pressable>
           </View>
         </View>
 
@@ -125,7 +125,7 @@ const PortfolioScreen = () => {
           <View style={styles.sampleCard}>
             <View style={styles.sampleRow}>
               {bid.portfolioSamples.map((item: string, index: number) => (
-                <View key={index} style={styles.sampleBox}>
+                <View key={item} style={styles.sampleBox}>
                   <Text
                     style={{
                       color: "#777",
@@ -137,27 +137,27 @@ const PortfolioScreen = () => {
               ))}
             </View>
 
-            <TouchableOpacity style={styles.viewAllBtn}>
+            <Pressable style={styles.viewAllBtn}>
               <Text style={styles.viewAllText}>View All</Text>
-            </TouchableOpacity>
+            </Pressable>
           </View>
         </View>
 
         {/* Buttons */}
         <View style={styles.bottomButtons}>
-          <TouchableOpacity
+          <Pressable
             style={styles.acceptBtn}
             onPress={() => setModalType("accept")}
           >
             <Text style={styles.acceptText}>Accept</Text>
-          </TouchableOpacity>
+          </Pressable>
 
-          <TouchableOpacity
+          <Pressable
             style={styles.rejectBtn}
             onPress={() => setModalType("reject")}
           >
             <Text style={styles.rejectText}>Reject</Text>
-          </TouchableOpacity>
+          </Pressable>
         </View>
       </ScrollView>
 
@@ -177,14 +177,14 @@ const PortfolioScreen = () => {
             </Text>
 
             <View style={styles.modalRow}>
-              <TouchableOpacity
+              <Pressable
                 style={styles.cancelBtn}
                 onPress={() => setModalType(null)}
               >
                 <Text style={styles.cancelText}>Cancel</Text>
-              </TouchableOpacity>
+              </Pressable>
 
-              <TouchableOpacity
+              <Pressable
                 style={styles.confirmBtn}
                 onPress={() => {
                   if (modalType === "accept") {
@@ -201,7 +201,7 @@ const PortfolioScreen = () => {
                 <Text style={styles.confirmText}>
                   {modalType === "accept" ? "Accept" : "Reject"}
                 </Text>
-              </TouchableOpacity>
+              </Pressable>
             </View>
           </View>
         </View>

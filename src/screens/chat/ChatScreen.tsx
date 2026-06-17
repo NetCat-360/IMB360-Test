@@ -3,7 +3,7 @@ import React from "react";
 import {
   View,
   Text,
-  TouchableOpacity,
+  Pressable,
   FlatList,
   StyleSheet,
 } from "react-native";
@@ -73,10 +73,7 @@ ChatScreen() {
         ];
 
       return (
-        <TouchableOpacity
-          activeOpacity={
-            0.9
-          }
+        <Pressable
           style={
             styles.chatCard
           }
@@ -151,7 +148,7 @@ ChatScreen() {
           </View>
 
           {/* DELETE */}
-          <TouchableOpacity
+          <Pressable
             onPress={() =>
               dispatch(
                 deleteChat(
@@ -170,8 +167,8 @@ ChatScreen() {
             >
               −
             </Text>
-          </TouchableOpacity>
-        </TouchableOpacity>
+          </Pressable>
+        </Pressable>
       );
     };
 

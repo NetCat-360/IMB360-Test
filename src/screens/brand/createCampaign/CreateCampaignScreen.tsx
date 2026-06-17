@@ -1,11 +1,12 @@
-import React from "react";
+import React, { useCallback, useMemo } from "react";
 
 import {
   View,
   Text,
-  TouchableOpacity,
+  Pressable,
   TextInput,
   ScrollView,
+  FlatList,
 } from "react-native";
 
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -57,6 +58,104 @@ import {
 
 import type { CampaignType } from "../../../store/slices/Brand/createCampaignSlice";
 
+const platforms = [
+  "Instagram",
+  "Facebook",
+  "Youtube",
+  "TikTok",
+  "Snapchat",
+  "LinkedIn",
+  "Twitter",
+  "Telegram",
+  "WhatsApp",
+  "Quora",
+  "Reddit",
+  "Discord",
+  "WeChat",
+  "Weibo",
+  "Kuaishou",
+  "Douyin",
+  "VK (VKontakte)",
+  "Threads",
+  "Tumblr",
+  "Medium",
+  "QQ",
+  "Messenger",
+  "Twitch",
+  "Bilibili",
+  "Clubhouse",
+  "YouNow",
+  "Vimeo",
+  "SoundCloud",
+  "Spotify",
+  "Zalo",
+  "Mastodon",
+  "Xiaohongshu",
+  "Bluesky",
+  "GitHub",
+  "Unknown",
+];
+
+const campaignTypes = {
+  "AWARENESS CAMPAIGNS": [
+    "Brand Awareness",
+    "Brand Positioning",
+    "Rebranding",
+  ],
+
+  "PRODUCT CAMPAIGNS": ["Product Launch", "Product Review", "Product Demo"],
+
+  "PROMOTIONAL CAMPAIGNS": [
+    "Seasonal Campaigns",
+    "Discount/Sale",
+    "Contest/Giveaway",
+    "Flash Sale",
+  ],
+
+  "EVENT CAMPAIGNS": ["Event Promotion", "Webinar", "Trade Show"],
+
+  "ENGAGEMENT CAMPAIGNS": [
+    "Brand Ambassador",
+    "Influencer Marketing",
+    "User-Generated Content",
+  ],
+
+  "CONVERSION CAMPAIGNS": [
+    "Lead Generation",
+    "Retargeting",
+    "Email Marketing",
+  ],
+
+  "CUSTOMER MARKETING": ["Customer Retention", "Win-back", "Loyalty Program"],
+
+  "CONTENT MARKETING": ["Video Marketing", "Blog Series", "Case Study"],
+
+  "SPECIALITY CAMPAIGNS": [
+    "CSR/Cause Marketing",
+    "Partnership Announcement",
+    "Crisis Management",
+  ],
+};
+
+const budgetTypes = ["Total Campaign Budget", "Per Influencer Budget"];
+
+const timelineOptions = [
+  "Flexible",
+  "Urgent (1-2 weeks)",
+  "Standard (2-4 weeks)",
+  "Extended (1-3 months)",
+];
+
+const formatDate = (text: string) => {
+  const cleaned = text.replace(/\D/g, "");
+
+  const match = cleaned.match(/^(\d{0,2})(\d{0,2})(\d{0,2})$/);
+
+  if (!match) return text;
+
+  return [match[1], match[2], match[3]].filter(Boolean).join("/");
+};
+
 export default function CreateCampaignScreen() {
   const navigation = useNavigation();
 
@@ -93,91 +192,40 @@ export default function CreateCampaignScreen() {
     requireExclusivity,
     showFollowersDropdown,
   } = useSelector((state: any) => state.createCampaign);
-  const platforms = [
-    "Instagram",
-    "Facebook",
-    "Youtube",
-    "TikTok",
-    "Snapchat",
-    "LinkedIn",
-    "Twitter",
-    "Telegram",
-    "WhatsApp",
-    "Quora",
-    "Reddit",
-    "Discord",
-    "WeChat",
-    "Weibo",
-    "Kuaishou",
-    "Douyin",
-    "VK (VKontakte)",
-    "Threads",
-    "Tumblr",
-    "Medium",
-    "QQ",
-    "Messenger",
-    "Twitch",
-    "Bilibili",
-    "Clubhouse",
-    "YouNow",
-    "Vimeo",
-    "SoundCloud",
-    "Spotify",
-    "Zalo",
-    "Mastodon",
-    "Xiaohongshu",
-    "Bluesky",
-    "GitHub",
-    "Unknown",
-  ];
-  const campaignTypes = {
-    "AWARENESS CAMPAIGNS": [
-      "Brand Awareness",
-      "Brand Positioning",
-      "Rebranding",
-    ],
 
-    "PRODUCT CAMPAIGNS": ["Product Launch", "Product Review", "Product Demo"],
+  const campaignTypeOptions = useMemo(() =>
+    Object.entries(campaignTypes).flatMap(([category, items]) => [
+      { type: 'header' as const, category },
+      ...items.map(item => ({ type: 'item' as const, item })),
+    ]),
+  []);
 
-    "PROMOTIONAL CAMPAIGNS": [
-      "Seasonal Campaigns",
-      "Discount/Sale",
-      "Contest/Giveaway",
-      "Flash Sale",
-    ],
+  const handleCampaignTypePress = useCallback((type: CampaignType) => {
+    dispatch(setCampaignType(type));
+    dispatch(closeCampaignDropdown());
+  }, [dispatch]);
 
-    "EVENT CAMPAIGNS": ["Event Promotion", "Webinar", "Trade Show"],
+  const handleTargetPlatformPress = useCallback((platform: string) => {
+    dispatch(setTargetPlatform(platform));
+    dispatch(closePlatformDropdown());
+  }, [dispatch]);
 
-    "ENGAGEMENT CAMPAIGNS": [
-      "Brand Ambassador",
-      "Influencer Marketing",
-      "User-Generated Content",
-    ],
+  const renderCampaignTypeItem = useCallback(({ item }: { item: { type: 'header' | 'item'; category?: string; item?: string } }) => {
+    if (item.type === 'header') {
+      return <Text style={styles.categoryHeading}>{item.category}</Text>;
+    }
+    return (
+      <Pressable onPress={() => handleCampaignTypePress(item.item as CampaignType)}>
+        <Text style={styles.campaignItem}>{item.item}</Text>
+      </Pressable>
+    );
+  }, [handleCampaignTypePress]);
 
-    "CONVERSION CAMPAIGNS": [
-      "Lead Generation",
-      "Retargeting",
-      "Email Marketing",
-    ],
-
-    "CUSTOMER MARKETING": ["Customer Retention", "Win-back", "Loyalty Program"],
-
-    "CONTENT MARKETING": ["Video Marketing", "Blog Series", "Case Study"],
-
-    "SPECIALITY CAMPAIGNS": [
-      "CSR/Cause Marketing",
-      "Partnership Announcement",
-      "Crisis Management",
-    ],
-  };
-  const budgetTypes = ["Total Campaign Budget", "Per Influencer Budget"];
-
-  const timelineOptions = [
-    "Flexible",
-    "Urgent (1-2 weeks)",
-    "Standard (2-4 weeks)",
-    "Extended (1-3 months)",
-  ];
+  const renderPlatformItem = useCallback(({ item }: { item: string }) => (
+    <Pressable onPress={() => handleTargetPlatformPress(item)}>
+      <Text style={styles.platformItem}>{item}</Text>
+    </Pressable>
+  ), [handleTargetPlatformPress]);
 
   const renderStepOne = () => (
     <>
@@ -201,7 +249,7 @@ export default function CreateCampaignScreen() {
         <Text style={styles.required}> *</Text>
       </Text>
 
-      <TouchableOpacity
+      <Pressable
         style={styles.dropdown}
         onPress={() => dispatch(toggleCampaignDropdown())}
       >
@@ -210,30 +258,17 @@ export default function CreateCampaignScreen() {
         </Text>
 
         <Text style={styles.dropdownArrow}>⌄</Text>
-      </TouchableOpacity>
+      </Pressable>
 
       {showCampaignDropdown && (
         <View style={styles.campaignDropdown}>
-          <ScrollView nestedScrollEnabled showsVerticalScrollIndicator={false}>
-            {Object.entries(campaignTypes).map(([category, items]) => (
-              <View key={category}>
-                <Text style={styles.categoryHeading}>{category}</Text>
-
-                {items.map((item) => (
-                  <TouchableOpacity
-                    key={item}
-                    onPress={() => {
-                      dispatch(setCampaignType(item as CampaignType));
-
-                      dispatch(closeCampaignDropdown());
-                    }}
-                  >
-                    <Text style={styles.campaignItem}>{item}</Text>
-                  </TouchableOpacity>
-                ))}
-              </View>
-            ))}
-          </ScrollView>
+          <FlatList
+            nestedScrollEnabled
+            showsVerticalScrollIndicator={false}
+            data={campaignTypeOptions}
+            keyExtractor={(item, index) => item.type === 'header' ? `header-${item.category}` : `item-${item.item}`}
+            renderItem={renderCampaignTypeItem}
+          />
         </View>
       )}
 
@@ -299,7 +334,7 @@ export default function CreateCampaignScreen() {
         <Text style={styles.required}> *</Text>
       </Text>
 
-      <TouchableOpacity
+      <Pressable
         style={styles.dropdown}
         onPress={() => dispatch(togglePlatformDropdown())}
       >
@@ -308,24 +343,17 @@ export default function CreateCampaignScreen() {
         </Text>
 
         <Text style={styles.dropdownArrow}>⌄</Text>
-      </TouchableOpacity>
+      </Pressable>
 
       {showPlatformDropdown && (
         <View style={styles.platformDropdown}>
-          <ScrollView nestedScrollEnabled showsVerticalScrollIndicator={false}>
-            {platforms.map((platform) => (
-              <TouchableOpacity
-                key={platform}
-                onPress={() => {
-                  dispatch(setTargetPlatform(platform));
-
-                  dispatch(closePlatformDropdown());
-                }}
-              >
-                <Text style={styles.platformItem}>{platform}</Text>
-              </TouchableOpacity>
-            ))}
-          </ScrollView>
+          <FlatList
+            nestedScrollEnabled
+            showsVerticalScrollIndicator={false}
+            data={platforms}
+            keyExtractor={(item) => item}
+            renderItem={renderPlatformItem}
+          />
         </View>
       )}
 
@@ -368,7 +396,7 @@ export default function CreateCampaignScreen() {
           desc: "Content created by users",
         },
       ].map((item) => (
-        <TouchableOpacity
+        <Pressable
           key={item.title}
           style={styles.checkboxRow}
           onPress={() => dispatch(toggleContentType(item.title))}
@@ -386,7 +414,7 @@ export default function CreateCampaignScreen() {
 
             <Text style={styles.checkboxDesc}>{item.desc}</Text>
           </View>
-        </TouchableOpacity>
+        </Pressable>
       ))}
 
       {/* CAMPAIGN TAGS */}
@@ -414,16 +442,6 @@ export default function CreateCampaignScreen() {
       </Text>
     </>
   );
-  const formatDate = (text: string) => {
-    const cleaned = text.replace(/\D/g, "");
-
-    const match = cleaned.match(/^(\d{0,2})(\d{0,2})(\d{0,2})$/);
-
-    if (!match) return text;
-
-    return [match[1], match[2], match[3]].filter(Boolean).join("/");
-  };
-
   const renderStepThree = () => (
     <>
       <Text style={styles.sectionTitle}>Budget Details</Text>
@@ -446,7 +464,7 @@ export default function CreateCampaignScreen() {
       {/* Budget Type */}
       <Text style={styles.label}>Budget Type</Text>
 
-      <TouchableOpacity
+      <Pressable
         style={styles.dropdown}
         onPress={() => dispatch(toggleBudgetTypeDropdown())}
       >
@@ -455,12 +473,12 @@ export default function CreateCampaignScreen() {
         </Text>
 
         <Text style={styles.dropdownArrow}>⌄</Text>
-      </TouchableOpacity>
+      </Pressable>
 
       {showBudgetTypeDropdown && (
         <View style={styles.platformDropdown}>
           {budgetTypes.map((item) => (
-            <TouchableOpacity
+            <Pressable
               key={item}
               onPress={() => {
                 dispatch(setBudgetType(item));
@@ -469,7 +487,7 @@ export default function CreateCampaignScreen() {
               }}
             >
               <Text style={styles.platformItem}>{item}</Text>
-            </TouchableOpacity>
+            </Pressable>
           ))}
         </View>
       )}
@@ -524,7 +542,7 @@ export default function CreateCampaignScreen() {
         Campaign Timeline
       </Text>
 
-      <TouchableOpacity
+      <Pressable
         style={styles.dropdown}
         onPress={() => dispatch(toggleTimelineDropdown())}
       >
@@ -535,12 +553,12 @@ export default function CreateCampaignScreen() {
         </Text>
 
         <Text style={styles.dropdownArrow}>⌄</Text>
-      </TouchableOpacity>
+      </Pressable>
 
       {showTimelineDropdown && (
         <View style={styles.platformDropdown}>
           {timelineOptions.map((item) => (
-            <TouchableOpacity
+            <Pressable
               key={item}
               onPress={() => {
                 dispatch(setCampaignTimeline(item));
@@ -549,7 +567,7 @@ export default function CreateCampaignScreen() {
               }}
             >
               <Text style={styles.platformItem}>{item}</Text>
-            </TouchableOpacity>
+            </Pressable>
           ))}
         </View>
       )}
@@ -567,25 +585,25 @@ export default function CreateCampaignScreen() {
         <Text style={styles.required}> *</Text>
       </Text>
 
-      <TouchableOpacity
+      <Pressable
         style={styles.dropdown}
         onPress={() => dispatch(toggleFollowersDropdown())}
       >
         <Text style={styles.selectedText}>{minFollowers}</Text>
 
         <Text style={styles.dropdownArrow}>⌄</Text>
-      </TouchableOpacity>
+      </Pressable>
 
       {showFollowersDropdown && (
         <View style={styles.platformDropdown}>
           {["1K+", "5K+", "10K+", "25K+", "50K+", "100K+", "500K+", "1M+"].map(
             (item) => (
-              <TouchableOpacity
+              <Pressable
                 key={item}
                 onPress={() => dispatch(setMinFollowers(item))}
               >
                 <Text style={styles.platformItem}>{item}</Text>
-              </TouchableOpacity>
+              </Pressable>
             )
           )}
         </View>
@@ -664,7 +682,7 @@ export default function CreateCampaignScreen() {
       </View>
 
       {/* CHECKBOXES */}
-      <TouchableOpacity
+      <Pressable
         style={styles.checkboxRow}
         onPress={() => dispatch(toggleRequireApproval())}
       >
@@ -673,9 +691,9 @@ export default function CreateCampaignScreen() {
         <Text style={styles.checkboxTitle}>
           Require content approval before posting
         </Text>
-      </TouchableOpacity>
+      </Pressable>
 
-      <TouchableOpacity
+      <Pressable
         style={styles.checkboxRow}
         onPress={() => dispatch(toggleRequireExclusivity())}
       >
@@ -686,7 +704,7 @@ export default function CreateCampaignScreen() {
         <Text style={styles.checkboxTitle}>
           Require exclusivity (no competing brands)
         </Text>
-      </TouchableOpacity>
+      </Pressable>
 
       <Text style={styles.tagHelper}>
         * A charge of 20 points will be automatically deducted from your balance
@@ -738,22 +756,22 @@ export default function CreateCampaignScreen() {
 
         <View style={styles.buttonRow}>
           {currentStep > 1 && (
-            <TouchableOpacity
+            <Pressable
               style={styles.previousButton}
               onPress={() => dispatch(previousStep())}
             >
               <Text style={styles.buttonText}>Previous</Text>
-            </TouchableOpacity>
+            </Pressable>
           )}
 
-          <TouchableOpacity
+          <Pressable
             style={styles.nextButton}
             onPress={() => dispatch(nextStep())}
           >
             <Text style={styles.buttonText}>
               {currentStep === 4 ? "Submit" : "Next"}
             </Text>
-          </TouchableOpacity>
+          </Pressable>
         </View>
       </ScrollView>
     </SafeAreaView>

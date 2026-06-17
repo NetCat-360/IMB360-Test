@@ -4,7 +4,7 @@ import {
   View,
   Text,
   Image,
-  TouchableOpacity,
+  Pressable,
 } from "react-native";
 
 import {
@@ -46,7 +46,7 @@ AppHeader({
       >
         {/* CHAT */}
         {showChat && (
-          <TouchableOpacity
+          <Pressable
             style={
               styles.topBarIcon
             }
@@ -63,12 +63,12 @@ AppHeader({
             >
               💬
             </Text>
-          </TouchableOpacity>
+          </Pressable>
         )}
 
         {/* SETTINGS */}
         {showSettings && (
-          <TouchableOpacity
+          <Pressable
             style={
               styles.topBarIcon
             }
@@ -85,7 +85,7 @@ AppHeader({
             >
               ⚙️
             </Text>
-          </TouchableOpacity>
+          </Pressable>
         )}
       </View>
     </View>

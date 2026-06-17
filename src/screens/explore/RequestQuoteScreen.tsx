@@ -8,10 +8,27 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { Colors } from '../../config/theme'
 import Typography from '../../styles/typography'
 import { AppStackParamList } from '../../types/navigation'
-import PaymentModal from '../../components/common/PaymentModal'
+import PaymentModal from '../../components/common/PaymentModal/PaymentModal'
 import styles from './styles'
 
 type RequestQuoteRouteProp = RouteProp<AppStackParamList, 'RequestQuote'>
+
+const platformMap: Record<string, { label: string; icon: string; color: string }> = {
+  instagram: { label: 'Instagram', icon: 'logo-instagram', color: Colors.instagram },
+  facebook: { label: 'Facebook', icon: 'logo-facebook', color: Colors.facebook },
+  youtube: { label: 'Youtube', icon: 'logo-youtube', color: Colors.youtube },
+  tiktok: { label: 'TikTok', icon: 'logo-tiktok', color: Colors.textPrimary },
+  snapchat: { label: 'Snapchat', icon: 'logo-snapchat', color: '#FFFC00' },
+}
+
+const services = [
+  { type: 'Reels', value: 1200 },
+  { type: 'Story', value: 1200 },
+  { type: 'Post', value: 1700 },
+  { type: 'Short Video', value: 2000 },
+  { type: 'Long Video', value: 3500 },
+  { type: 'Meetup', value: 6000 },
+]
 
 export default function RequestQuoteScreen() {
   const navigation = useNavigation<NativeStackNavigationProp<AppStackParamList>>()
@@ -25,24 +42,7 @@ export default function RequestQuoteScreen() {
   const [selectedServices, setSelectedServices] = useState<string[]>(['Story'])
   const [showPaymentModal, setShowPaymentModal] = useState(false)
 
-  const platformMap: Record<string, { label: string; icon: string; color: string }> = {
-    instagram: { label: 'Instagram', icon: 'logo-instagram', color: Colors.instagram },
-    facebook: { label: 'Facebook', icon: 'logo-facebook', color: Colors.facebook },
-    youtube: { label: 'Youtube', icon: 'logo-youtube', color: Colors.youtube },
-    tiktok: { label: 'TikTok', icon: 'logo-tiktok', color: Colors.textPrimary },
-    snapchat: { label: 'Snapchat', icon: 'logo-snapchat', color: '#FFFC00' },
-  }
-
   const selectedPlatform = platformMap[platformId]
-
-  const services = [
-    { type: 'Reels', value: 1200 },
-    { type: 'Story', value: 1200 },
-    { type: 'Post', value: 1700 },
-    { type: 'Short Video', value: 2000 },
-    { type: 'Long Video', value: 3500 },
-    { type: 'Meetup', value: 6000 },
-  ]
 
   const totalEstimatedCost = services
     .filter((service) => selectedServices.includes(service.type))

@@ -1,12 +1,13 @@
 import React, {
     useState,
+    useRef,
   } from "react";
 
 import {
   Modal,
   View,
   Text,
-  TouchableOpacity,
+  Pressable,
   FlatList,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -59,10 +60,7 @@ const CampaignBidsScreen = () => {
     | null
   >(null);
   
-  const [
-    selectedId,
-    setSelectedId,
-  ] = useState<
+  const selectedId = useRef<
     number | null
   >(null);
 
@@ -146,14 +144,12 @@ const CampaignBidsScreen = () => {
         styles.actionRow
       }
     >
-      <TouchableOpacity
+      <Pressable
         style={
           styles.acceptBtn
         }
         onPress={() => {
-            setSelectedId(
-              item.id
-            );
+            selectedId.current = item.id;
           
             setModalType(
               "accept"
@@ -167,16 +163,14 @@ const CampaignBidsScreen = () => {
         >
           Accept
         </Text>
-      </TouchableOpacity>
+      </Pressable>
 
-      <TouchableOpacity
+      <Pressable
         style={
           styles.rejectBtn
         }
         onPress={() => {
-            setSelectedId(
-              item.id
-            );
+            selectedId.current = item.id;
           
             setModalType(
               "reject"
@@ -190,7 +184,7 @@ const CampaignBidsScreen = () => {
         >
           Reject
         </Text>
-      </TouchableOpacity>
+      </Pressable>
     </View>
 
     <View
@@ -198,7 +192,7 @@ const CampaignBidsScreen = () => {
         styles.actionRow
       }
     >
-      <TouchableOpacity
+      <Pressable
         style={
           styles.outlineBtn
         }
@@ -210,9 +204,9 @@ const CampaignBidsScreen = () => {
         >
           Message
         </Text>
-      </TouchableOpacity>
+      </Pressable>
 
-      <TouchableOpacity
+      <Pressable
   style={
     styles.outlineBtn
   }
@@ -232,7 +226,7 @@ const CampaignBidsScreen = () => {
   >
     Portfolio
   </Text>
-</TouchableOpacity>
+</Pressable>
     </View>
   </View>
 </View>
@@ -372,7 +366,7 @@ const CampaignBidsScreen = () => {
               Payment Status
             </Text>
 
-            <TouchableOpacity
+            <Pressable
               disabled={
                 item.paymentStatus !==
                 "pending"
@@ -389,9 +383,7 @@ const CampaignBidsScreen = () => {
                   styles.reportedBtn,
               ]}
               onPress={() => {
-                setSelectedId(
-                  item.id
-                );
+                selectedId.current = item.id;
               
                 setModalType(
                   "release"
@@ -411,7 +403,7 @@ const CampaignBidsScreen = () => {
                   ? "Released"
                   : "Reported"}
               </Text>
-            </TouchableOpacity>
+            </Pressable>
           </View>
 
           {/* Bottom */}
@@ -438,15 +430,13 @@ const CampaignBidsScreen = () => {
               {item.amount.toLocaleString()}
             </Text>
 
-            <TouchableOpacity
+            <Pressable
               disabled={
                 item.paymentStatus ===
                 "reported"
               }
               onPress={() => {
-                setSelectedId(
-                  item.id
-                );
+                selectedId.current = item.id;
               
                 setModalType(
                   "report"
@@ -466,7 +456,7 @@ const CampaignBidsScreen = () => {
                   ? "Reported"
                   : "Report"}
               </Text>
-            </TouchableOpacity>
+            </Pressable>
           </View>
         </View>
       </View>
@@ -486,7 +476,7 @@ const CampaignBidsScreen = () => {
       <View
         style={styles.tabContainer}
       >
-        <TouchableOpacity
+        <Pressable
           style={[
             styles.tab,
             selectedTab ===
@@ -508,9 +498,9 @@ const CampaignBidsScreen = () => {
           >
             Campaign Bids
           </Text>
-        </TouchableOpacity>
+        </Pressable>
 
-        <TouchableOpacity
+        <Pressable
           style={[
             styles.tab,
             selectedTab ===
@@ -532,7 +522,7 @@ const CampaignBidsScreen = () => {
           >
             Recent Activity
           </Text>
-        </TouchableOpacity>
+        </Pressable>
       </View>
 
       {/* List */}
@@ -583,16 +573,14 @@ const CampaignBidsScreen = () => {
     setModalType(null)
   }
 >
-  <TouchableOpacity
-    activeOpacity={1}
+  <Pressable
     style={styles.modalOverlay}
     onPress={() =>
       setModalType(null)
     }
   >
-    <TouchableOpacity
-      activeOpacity={1}
-      style={styles.modalCard}
+    <Pressable
+    style={styles.modalCard}
       onPress={() => {}}
     >
       <Text style={styles.modalTitle}>
@@ -625,7 +613,7 @@ const CampaignBidsScreen = () => {
           styles.modalButtonRow
         }
       >
-        <TouchableOpacity
+        <Pressable
           style={
             styles.cancelBtn
           }
@@ -642,15 +630,15 @@ const CampaignBidsScreen = () => {
           >
             Cancel
           </Text>
-        </TouchableOpacity>
+        </Pressable>
 
-        <TouchableOpacity
+        <Pressable
           style={
             styles.confirmBtn
           }
           onPress={() => {
             if (
-              selectedId !==
+              selectedId.current !==
               null
             ) {
               switch (
@@ -659,7 +647,7 @@ const CampaignBidsScreen = () => {
                 case "accept":
                   dispatch(
                     acceptBid(
-                      selectedId
+                      selectedId.current
                     )
                   );
                   break;
@@ -667,7 +655,7 @@ const CampaignBidsScreen = () => {
                 case "reject":
                   dispatch(
                     rejectBid(
-                      selectedId
+                      selectedId.current
                     )
                   );
                   break;
@@ -675,7 +663,7 @@ const CampaignBidsScreen = () => {
                 case "release":
                   dispatch(
                     releasePayment(
-                      selectedId
+                      selectedId.current
                     )
                   );
                   break;
@@ -683,7 +671,7 @@ const CampaignBidsScreen = () => {
                 case "report":
                   dispatch(
                     reportIssue(
-                      selectedId
+                      selectedId.current
                     )
                   );
                   break;
@@ -711,10 +699,10 @@ const CampaignBidsScreen = () => {
               ? "Report"
               : "Release"}
           </Text>
-        </TouchableOpacity>
+        </Pressable>
       </View>
-    </TouchableOpacity>
-  </TouchableOpacity>
+    </Pressable>
+  </Pressable>
 </Modal>
     </SafeAreaView>
   );

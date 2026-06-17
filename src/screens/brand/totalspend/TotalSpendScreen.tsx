@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import {
   View,
   Text,
-  TouchableOpacity,
+  Pressable,
   FlatList,
   Image,
 } from "react-native";
@@ -24,12 +24,13 @@ import {
   setSelectedYear,
 } from "../../../store/slices/Brand/totalSpendSlice";
 
-const TotalSpendScreen = () => {
-  const tabSets = [
-    ["campaign", "influencer", "paymentDate"],
+const tabSets = [
+  ["campaign", "influencer", "paymentDate"],
 
-    ["spentAmount", "status"],
-  ];
+  ["spentAmount", "status"],
+];
+
+const TotalSpendScreen = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const navigation = useNavigation();
 
@@ -70,19 +71,19 @@ const TotalSpendScreen = () => {
 
       {/* YEAR BUTTON */}
       <View style={styles.yearWrapper}>
-        <TouchableOpacity
+        <Pressable
           style={styles.yearButton}
           onPress={() => setShowYearDropdown(!showYearDropdown)}
         >
           <Text style={styles.yearText}>{selectedYear}</Text>
 
           <Text style={styles.arrow}>▼</Text>
-        </TouchableOpacity>
+        </Pressable>
 
         {showYearDropdown && (
           <View style={styles.dropdown}>
             {years.map((year: number) => (
-              <TouchableOpacity
+              <Pressable
                 key={year}
                 style={styles.dropdownItem}
                 onPress={() => {
@@ -92,7 +93,7 @@ const TotalSpendScreen = () => {
                 }}
               >
                 <Text style={styles.dropdownText}>{year}</Text>
-              </TouchableOpacity>
+              </Pressable>
             ))}
           </View>
         )}
@@ -122,7 +123,7 @@ const TotalSpendScreen = () => {
       <View style={styles.tabBox}>
         <View style={styles.tabContainer}>
           {tabSets[currentStep].map((tab) => (
-            <TouchableOpacity
+            <Pressable
               key={tab}
               style={[styles.tab, selectedTab === tab && styles.activeTab]}
               onPress={() =>
@@ -142,7 +143,7 @@ const TotalSpendScreen = () => {
                   ? "Status"
                   : tab.charAt(0).toUpperCase() + tab.slice(1)}
               </Text>
-            </TouchableOpacity>
+            </Pressable>
           ))}
         </View>
 
@@ -175,14 +176,14 @@ const TotalSpendScreen = () => {
       </View>
 
       {/* NEXT BUTTON */}
-      <TouchableOpacity
+      <Pressable
         style={styles.nextButton}
         onPress={() => setCurrentStep(currentStep === 0 ? 1 : 0)}
       >
         <Text style={styles.nextText}>
           {currentStep === 0 ? "Next" : "Previous"}
         </Text>
-      </TouchableOpacity>
+      </Pressable>
     </SafeAreaView>
   );
 };

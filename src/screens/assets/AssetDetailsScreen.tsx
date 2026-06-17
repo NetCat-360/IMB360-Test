@@ -4,7 +4,7 @@ import {
   View,
   Text,
   Image,
-  TouchableOpacity,
+  Pressable,
   ScrollView,
   StatusBar,
   StyleSheet,
@@ -29,6 +29,25 @@ import { Colors } from "../../config/theme";
 import { RootState } from "../../store/store";
 import { setActiveTab, toggleTerms } from "../../store/slices/assetSlice";
 
+const formatDate = (text: string) => {
+  const cleaned = text.replace(/\D/g, "");
+
+  let formatted = cleaned;
+
+  if (cleaned.length > 2) {
+    formatted = `${cleaned.slice(0, 2)}/${cleaned.slice(2, 4)}`;
+  }
+
+  if (cleaned.length > 4) {
+    formatted = `${cleaned.slice(0, 2)}/${cleaned.slice(
+      2,
+      4
+    )}/${cleaned.slice(4, 8)}`;
+  }
+
+  return formatted;
+};
+
 export default function AssetDetailsScreen() {
   const dispatch = useDispatch();
   const navigation = useNavigation();
@@ -44,29 +63,11 @@ export default function AssetDetailsScreen() {
   const [endDate, setEndDate] = React.useState("");
   useEffect(() => {
     dispatch(setActiveTab("Gallery" as any));
-  }, []);
+  }, [dispatch]);
 
   if (!asset) {
     return null;
   }
-  const formatDate = (text: string) => {
-    const cleaned = text.replace(/\D/g, "");
-
-    let formatted = cleaned;
-
-    if (cleaned.length > 2) {
-      formatted = `${cleaned.slice(0, 2)}/${cleaned.slice(2, 4)}`;
-    }
-
-    if (cleaned.length > 4) {
-      formatted = `${cleaned.slice(0, 2)}/${cleaned.slice(
-        2,
-        4
-      )}/${cleaned.slice(4, 8)}`;
-    }
-
-    return formatted;
-  };
 
   return (
     <SafeAreaView style={styles.container} edges={[]}>
@@ -148,12 +149,12 @@ export default function AssetDetailsScreen() {
               <Text style={styles.socialText}>{asset.comments}</Text>
             </View>
 
-            <TouchableOpacity>
+            <Pressable>
               <Image
                 source={require("../../assets/images/share.png")}
                 style={styles.shareIcon}
               />
-            </TouchableOpacity>
+            </Pressable>
           </View>
 
           {/* PRICE */}
@@ -161,20 +162,20 @@ export default function AssetDetailsScreen() {
 
           {/* BUTTONS */}
           <View style={styles.buttonRow}>
-            <TouchableOpacity style={styles.chatButton}>
+            <Pressable style={styles.chatButton}>
               <Image
                 source={require("../../assets/images/chat.png")}
                 style={styles.chatIcon}
               />
-            </TouchableOpacity>
+            </Pressable>
 
             <LinearGradient
               colors={["#00C6FF", "#7BFF5B"]}
               style={styles.requestButton}
             >
-              <TouchableOpacity onPress={() => setShowRentModal(true)}>
+              <Pressable onPress={() => setShowRentModal(true)}>
                 <Text style={styles.requestText}>Send Request to Rent</Text>
-              </TouchableOpacity>
+              </Pressable>
             </LinearGradient>
           </View>
         </View>
@@ -187,9 +188,8 @@ export default function AssetDetailsScreen() {
               const label = tab === "Comments & Reviews" ? "Comments" : tab;
 
               return (
-                <TouchableOpacity
+                <Pressable
                   key={tab}
-                  activeOpacity={0.85}
                   style={[styles.tabItem, isActive && styles.activeTab]}
                   onPress={() => dispatch(setActiveTab(tab as any))}
                 >
@@ -198,7 +198,7 @@ export default function AssetDetailsScreen() {
                   >
                     {label}
                   </Text>
-                </TouchableOpacity>
+                </Pressable>
               );
             }
           )}
@@ -265,11 +265,11 @@ export default function AssetDetailsScreen() {
                 {asset.termsAndConditions}
               </Text>
 
-              <TouchableOpacity onPress={() => dispatch(toggleTerms())}>
+              <Pressable onPress={() => dispatch(toggleTerms())}>
                 <Text style={styles.showMore}>
                   {showFullTerms ? "Show less" : "Show more"}
                 </Text>
-              </TouchableOpacity>
+              </Pressable>
             </>
           )}
 
@@ -303,7 +303,7 @@ export default function AssetDetailsScreen() {
             <View style={styles.galleryGrid}>
               {asset.gallery.map((image, index) => (
                 <Image
-                  key={index}
+                  key={image}
                   source={require("../../assets/images/asusbanner.png")}
                   style={styles.galleryImage}
                 />
@@ -411,16 +411,16 @@ export default function AssetDetailsScreen() {
 
             {/* BUTTONS */}
             <View style={styles.modalButtonRow}>
-              <TouchableOpacity
+              <Pressable
                 style={styles.cancelButton}
                 onPress={() => setShowRentModal(false)}
               >
                 <Text style={styles.cancelText}>Cancel</Text>
-              </TouchableOpacity>
+              </Pressable>
 
-              <TouchableOpacity style={styles.sendButton}>
+              <Pressable style={styles.sendButton}>
                 <Text style={styles.sendText}>Send Request</Text>
-              </TouchableOpacity>
+              </Pressable>
             </View>
           </View>
         </View>

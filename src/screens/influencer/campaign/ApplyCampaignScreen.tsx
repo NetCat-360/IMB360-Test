@@ -260,7 +260,7 @@ export default function ApplyCampaignScreen({ navigation }: ApplyCampaignScreenP
               colors={isAgreed ? [Colors.teal, Colors.lime] : [Colors.borderDefault, Colors.borderDefault]}
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 0 }}
-              style={[{ width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center', borderRadius: moderateScale(8) }]}
+              style={{ width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center', borderRadius: moderateScale(8) }}
             >
               <Text style={[Typography.buttonPrimary, styles.submitButtonTextLabel]}>Submit Application</Text>
             </LinearGradient>

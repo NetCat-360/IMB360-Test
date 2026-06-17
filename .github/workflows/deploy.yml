@@ -9,9 +9,8 @@ permissions:
   contents: read
 
 jobs:
-  deploy-android:
-    name: Deploy Android to Play Store
-    if: false
+  install:
+    name: Install dependencies
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -22,7 +21,29 @@ jobs:
         with:
           node-version: '22'
           cache: 'pnpm'
-      - run: pnpm install --frozen-lockfile
+      - run: pnpm install --frozen-lockfile --ignore-scripts
+      - uses: actions/cache/save@v4
+        with:
+          path: node_modules
+          key: node-modules-${{ hashFiles('pnpm-lock.yaml') }}
+
+  deploy-android:
+    name: Deploy Android to Play Store
+    if: false
+    needs: install
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: pnpm/action-setup@v4
+        with:
+          version: latest
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+      - uses: actions/cache/restore@v4
+        with:
+          path: node_modules
+          key: node-modules-${{ hashFiles('pnpm-lock.yaml') }}
 
       - name: Set up JDK
         uses: actions/setup-java@v4
@@ -47,6 +68,7 @@ jobs:
   deploy-ios:
     name: Deploy iOS to App Store
     if: false
+    needs: install
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v5
@@ -56,8 +78,10 @@ jobs:
       - uses: actions/setup-node@v5
         with:
           node-version: '22'
-          cache: 'pnpm'
-      - run: pnpm install --frozen-lockfile
+      - uses: actions/cache/restore@v4
+        with:
+          path: node_modules
+          key: node-modules-${{ hashFiles('pnpm-lock.yaml') }}
 
       - name: Install CocoaPods
         working-directory: ios

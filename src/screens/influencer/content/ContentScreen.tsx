@@ -1,8 +1,8 @@
 // src/screens/content/ContentScreen.tsx
-import React, { useState } from 'react'; 
+import React, { useState, useCallback } from 'react'; 
 import {
   View, Text, Image, Pressable,
-  ScrollView, StatusBar, FlatList,
+  StatusBar, FlatList,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import LinearGradient from 'react-native-linear-gradient';
@@ -93,6 +93,27 @@ const ContentScreen = ({ navigation }: Props) => {
 
   const isEmpty = filtered.length === 0;
 
+  const renderContentItem = useCallback(({ item }: { item: ContentItem }) => (
+    <ContentCard
+      item={item}
+      onEdit={() => navigation.navigate('EditContent', { contentId: item.id })}
+      onDelete={() => {}}
+    />
+  ), [navigation]);
+
+  const handleFilterPress = useCallback((key: FilterKey) => {
+    setActiveFilter(key);
+  }, []);
+
+  const renderFilterTabItem = useCallback(({ item }: { item: typeof FILTER_TABS[0] }) => (
+    <FilterTab
+      label={item.label}
+      icon={item.icon}
+      active={activeFilter === item.key}
+      onPress={() => handleFilterPress(item.key)}
+    />
+  ), [activeFilter, handleFilterPress]);
+
   return (
     <>
       <StatusBar barStyle="light-content" backgroundColor="#000000" />
@@ -119,21 +140,14 @@ const ContentScreen = ({ navigation }: Props) => {
 
       <View style={mainStyles.body}>
         <View style={mainStyles.filterContainer}>
-          <ScrollView
+          <FlatList
             horizontal
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={mainStyles.filterStrip}
-          >
-            {FILTER_TABS.map(tab => (
-              <FilterTab
-                key={tab.key}
-                label={tab.label}
-                icon={tab.icon}
-                active={activeFilter === tab.key}
-                onPress={() => setActiveFilter(tab.key)}
-              />
-            ))}
-          </ScrollView>
+            data={FILTER_TABS}
+            keyExtractor={(item) => item.key}
+            renderItem={renderFilterTabItem}
+          />
         </View>
 
         {isEmpty ? (
@@ -144,13 +158,7 @@ const ContentScreen = ({ navigation }: Props) => {
             contentContainerStyle={mainStyles.grid}
             data={filtered}
             keyExtractor={item => item.id}
-            renderItem={({ item }) => (
-              <ContentCard
-                item={item}
-                onEdit={() => navigation.navigate('EditContent', { contentId: item.id })}
-                onDelete={() => {}}
-              />
-            )}
+            renderItem={renderContentItem}
           />
         )}
       </View>

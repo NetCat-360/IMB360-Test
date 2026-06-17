@@ -4,7 +4,7 @@ import {
   Text,
   StatusBar,
   ScrollView,
-  TouchableOpacity,
+  Pressable,
   Image,
   TextInput,
 } from "react-native";
@@ -97,7 +97,7 @@ export default function AssetsScreen() {
             Filter Result
           </Text>
 
-          <TouchableOpacity
+          <Pressable
             onPress={() =>
               setShowFilters(
                 !showFilters
@@ -111,7 +111,7 @@ export default function AssetsScreen() {
               }
               resizeMode="contain"
             />
-          </TouchableOpacity>
+          </Pressable>
         </View>
 
         {/* FILTERS */}
@@ -162,7 +162,7 @@ export default function AssetsScreen() {
             </View>
 
             {/* CATEGORY */}
-            <TouchableOpacity
+            <Pressable
   style={styles.dropdown}
 >
   <Image
@@ -186,7 +186,7 @@ export default function AssetsScreen() {
       styles.downArrow
     }
   />
-</TouchableOpacity>
+</Pressable>
 {/* SEARCH */}
 <GradientButton
   title="Search"

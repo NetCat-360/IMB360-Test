@@ -1,7 +1,5 @@
-import { StyleSheet, Dimensions } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
-
-const { height } = Dimensions.get('window');
 
 export const styles = StyleSheet.create({
   container: {
@@ -9,10 +7,10 @@ export const styles = StyleSheet.create({
     backgroundColor: '#000000', // Pitch black canvas
   },
   scrollContainer: {
-    flexGrow: 1,
+    flex: 1,
   },
   section: {
-    height: height / 2, // Perfect symmetrical viewport split
+    flex: 1,
     paddingHorizontal: scale(20),
     justifyContent: 'center',
     position: 'relative',

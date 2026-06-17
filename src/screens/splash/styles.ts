@@ -1,7 +1,5 @@
-import { Dimensions, StyleSheet } from 'react-native';
-import { moderateScale, scale } from '../../utils/scaling';
-
-const { width, height } = Dimensions.get('window');
+import { StyleSheet } from 'react-native';
+import { moderateScale, scale, verticalScale } from '../../utils/scaling';
 
 const styles = StyleSheet.create({
   container: {
@@ -18,8 +16,8 @@ const styles = StyleSheet.create({
     borderRadius: scale(140),
     backgroundColor: '#b6d82c', // From handoff: #b6d82c
     opacity: 0.4, // Softened for better logo legibility
-    top: height * 0.15,
-    left: width * -0.05,
+    top: verticalScale(120),
+    left: scale(-20),
   },
   blobBlue: {
     position: 'absolute',
@@ -28,8 +26,8 @@ const styles = StyleSheet.create({
     borderRadius: scale(150),
     backgroundColor: '#00b9c0', // From handoff: #00b9c0
     opacity: 0.35,
-    bottom: height * 0.12,
-    right: width * -0.1,
+    bottom: verticalScale(100),
+    right: scale(-40),
   },
   glowBlob: {
     position: 'absolute',

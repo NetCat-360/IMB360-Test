@@ -7,7 +7,7 @@ import React, {
     Text,
     FlatList,
     TextInput,
-    TouchableOpacity,
+    Pressable,
     StyleSheet,
     KeyboardAvoidingView,
     Platform,
@@ -135,7 +135,7 @@ import React, {
     if (!chat) {
       return null;
     }
-  
+
     const handleSend =
       () => {
   
@@ -156,6 +156,94 @@ import React, {
         setMessage("");
       };
   
+    const renderMessageItem = ({ item, index }: { item: { id: string; text: string; sender: string; timestamp: string }; index: number }) => {
+      const isMine = item.sender === "me";
+      const previousMessage = chat.messages[index - 1];
+      const showAvatar = !isMine && previousMessage?.sender !== item.sender;
+
+      return (
+        <View
+          style={[
+            styles.messageWrapper,
+            isMine
+              ? styles.myMessageRow
+              : styles.otherMessageRow,
+          ]}
+        >
+          {!isMine && (
+            showAvatar ? (
+              <View
+                style={[
+                  styles.avatar,
+                  {
+                    backgroundColor:
+                      chat.avatarColor ||
+                      "#5B21B6",
+                  },
+                ]}
+              >
+                <Text
+                  style={
+                    styles.avatarText
+                  }
+                >
+                  {chat.name
+                    .split(" ")
+                    .map(word => word[0])
+                    .join("")
+                    .slice(0, 2)
+                    .toUpperCase()}
+                </Text>
+              </View>
+            ) : (
+              <View
+                style={
+                  styles.avatarSpacer
+                }
+              />
+            )
+          )}
+
+          <View
+            style={{
+              maxWidth: "78%",
+            }}
+          >
+            <View
+              style={[
+                styles.messageBubble,
+                isMine
+                  ? styles.myBubble
+                  : styles.otherBubble,
+              ]}
+            >
+              <Text
+                style={
+                  styles.messageText
+                }
+              >
+                {item.text}
+              </Text>
+            </View>
+
+            <Text
+              style={[
+                styles.time,
+                {
+                  textAlign:
+                    isMine
+                      ? "right"
+                      : "left",
+                },
+              ]}
+            >
+              {item.timestamp}
+            </Text>
+          </View>
+        </View>
+      );
+    };
+
     return (
       <SafeAreaView
         style={
@@ -198,128 +286,7 @@ import React, {
             showsVerticalScrollIndicator={
               false
             }
-            renderItem={({
-              item,
-              index,
-            }) => {
-  
-              const isMine =
-                item.sender ===
-                "me";
-  
-              const previousMessage =
-                chat.messages[
-                  index - 1
-                ];
-  
-              const showAvatar =
-                !isMine &&
-                previousMessage
-                  ?.sender !==
-                  item.sender;
-  
-              return (
-                <View
-                  style={[
-                    styles.messageWrapper,
-                    isMine
-                      ? styles.myMessageRow
-                      : styles.otherMessageRow,
-                  ]}
-                >
-                  {/* OTHER USER AVATAR */}
-                  {!isMine &&
-                    (
-                      showAvatar
-                        ? (
-                            <View
-                              style={[
-                                styles.avatar,
-                                {
-                                  backgroundColor:
-                                    chat.avatarColor ||
-                                    "#5B21B6",
-                                },
-                              ]}
-                            >
-                              <Text
-                                style={
-                                  styles.avatarText
-                                }
-                              >
-                                {chat.name
-                                  .split(
-                                    " "
-                                  )
-                                  .map(
-                                    word =>
-                                      word[0]
-                                  )
-                                  .join(
-                                    ""
-                                  )
-                                  .slice(
-                                    0,
-                                    2
-                                  )
-                                  .toUpperCase()}
-                              </Text>
-                            </View>
-                          )
-                        : (
-                            <View
-                              style={
-                                styles.avatarSpacer
-                              }
-                            />
-                          )
-                    )}
-  
-                  {/* MESSAGE */}
-                  <View
-                    style={{
-                      maxWidth:
-                        "78%",
-                    }}
-                  >
-                    <View
-                      style={[
-                        styles.messageBubble,
-                        isMine
-                          ? styles.myBubble
-                          : styles.otherBubble,
-                      ]}
-                    >
-                      <Text
-                        style={
-                          styles.messageText
-                        }
-                      >
-                        {
-                          item.text
-                        }
-                      </Text>
-                    </View>
-  
-                    <Text
-                      style={[
-                        styles.time,
-                        {
-                          textAlign:
-                            isMine
-                              ? "right"
-                              : "left",
-                        },
-                      ]}
-                    >
-                      {
-                        item.timestamp
-                      }
-                    </Text>
-                  </View>
-                </View>
-              );
-            }}
+            renderItem={renderMessageItem}
           />
   
           {/* INPUT */}
@@ -342,10 +309,7 @@ import React, {
               }
             />
   
-            <TouchableOpacity
-              activeOpacity={
-                0.9
-              }
+            <Pressable
               onPress={
                 handleSend
               }
@@ -367,7 +331,7 @@ import React, {
                   Send
                 </Text>
               </LinearGradient>
-            </TouchableOpacity>
+            </Pressable>
           </View>
         </KeyboardAvoidingView>
       </SafeAreaView>

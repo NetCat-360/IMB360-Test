@@ -1,7 +1,5 @@
-import { StyleSheet, Dimensions } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { scale, verticalScale, moderateScale } from '../../utils/scaling';
-
-const { width } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   container: {
@@ -34,8 +32,8 @@ const styles = StyleSheet.create({
     paddingTop: verticalScale(20),
   },
   imageContainer: {
-    width: width * 0.8,
-    height: width * 0.8,
+    width: moderateScale(300),
+    height: moderateScale(300),
     marginBottom: verticalScale(30),
   },
   image: {

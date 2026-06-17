@@ -54,7 +54,7 @@ export async function saveRefreshToken(token: string): Promise<void> {
   });
 }
 
-export async function getRefreshToken(): Promise<string | null> {
+async function getRefreshToken(): Promise<string | null> {
   try {
     const creds = await Keychain.getGenericPassword({ service: KC_REFRESH_TOKEN });
     return creds ? creds.password : null;

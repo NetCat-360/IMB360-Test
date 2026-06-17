@@ -25,6 +25,8 @@ import {
 } from '../../../types/navigation'
 import { styles } from './styles'
 
+const OTP_FIELD_KEYS = ['otp-0', 'otp-1', 'otp-2', 'otp-3', 'otp-4', 'otp-5'];
+
 type Props = {
     navigation:
     AppNavigationProp<'ManageAccount'>
@@ -389,7 +391,7 @@ export default function
                                     index,
                                 ) => (
                                     <TextInput
-                                        key={`otp-${index}`}
+                                        key={OTP_FIELD_KEYS[index]}
                                         ref={ref => {
                                             inputRefs.current[
                                                 index

@@ -1,7 +1,5 @@
-import { StyleSheet, Dimensions } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { scale, verticalScale, moderateScale } from '../../../utils/scaling';
-
-const { height } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   container: {
@@ -23,7 +21,7 @@ const styles = StyleSheet.create({
     fontSize: moderateScale(26),
   },
   imageContainer: {
-    height: height * 0.42,
+    height: verticalScale(380),
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: scale(20),

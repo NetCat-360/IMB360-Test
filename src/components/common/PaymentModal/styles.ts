@@ -18,11 +18,7 @@ export default StyleSheet.create({
     paddingVertical: verticalScale(32),
     alignItems: 'center',
     // Smooth shadow drop for depth visibility
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 5,
+    boxShadow: '0 4px 8px rgba(0,0,0,0.3)',
   },
   modalTitle: {
     fontSize: scale(26),

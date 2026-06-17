@@ -1,5 +1,5 @@
 // src/screens/pricing/AddPricingScreen.tsx
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import {
   View, Text, Pressable, ScrollView,
   StatusBar, FlatList,
@@ -31,22 +31,31 @@ const Dropdown = ({
 
 const PickerOverlay = ({
   options, onSelect, onClose,
-}: { options: string[]; onSelect: (v: string) => void; onClose: () => void }) => (
-  <View style={pickerStyles.overlay}>
-    <Pressable style={pickerStyles.backdrop} onPress={onClose} />
-    <View style={pickerStyles.sheet}>
-      <FlatList
-        data={options}
-        keyExtractor={opt => opt}
-        renderItem={({ item }) => (
-          <Pressable style={pickerStyles.option} onPress={() => { onSelect(item); onClose(); }}>
-            <Text style={pickerStyles.optionText}>{item}</Text>
-          </Pressable>
-        )}
-      />
+}: { options: string[]; onSelect: (v: string) => void; onClose: () => void }) => {
+  const handleOptionPress = useCallback((item: string) => {
+    onSelect(item);
+    onClose();
+  }, [onSelect, onClose]);
+
+  const renderPickerItem = useCallback(({ item }: { item: string }) => (
+    <Pressable style={pickerStyles.option} onPress={() => handleOptionPress(item)}>
+      <Text style={pickerStyles.optionText}>{item}</Text>
+    </Pressable>
+  ), [handleOptionPress]);
+
+  return (
+    <View style={pickerStyles.overlay}>
+      <Pressable style={pickerStyles.backdrop} onPress={onClose} />
+      <View style={pickerStyles.sheet}>
+        <FlatList
+          data={options}
+          keyExtractor={opt => opt}
+          renderItem={renderPickerItem}
+        />
+      </View>
     </View>
-  </View>
-);
+  );
+};
 
 
 
