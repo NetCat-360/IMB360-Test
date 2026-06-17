@@ -1,8 +1,5 @@
 import React from 'react';
-import {
-  View,
-  Image,
-} from 'react-native';
+import { View } from 'react-native';
 
 import {
   createBottomTabNavigator,
@@ -12,10 +9,21 @@ import {
   createNativeStackNavigator,
 } from '@react-navigation/native-stack';
 
+import { SvgXml } from 'react-native-svg';
+
 import {
-  moderateScale,
-  verticalScale,
-} from '../utils/scaling';
+  NB_PROFILE_SVG,
+  NB_PROFILE_ACTIVE_SVG,
+  NB_CAMPAIGN_SVG,
+  NB_CAMPAIGN_ACTIVE_SVG,
+  NB_EXPLORE_SVG,
+  NB_EXPLORE_ACTIVE_SVG,
+  NB_ASSETS_SVG,
+  NB_ASSETS_ACTIVE_SVG,
+  navbarIconContainerStyle,
+} from './navbarIcons';
+
+import { BrandBottomTabParamList } from '../types/navigation';
 
 import { Colors }
 from '../config/theme';
@@ -103,7 +111,7 @@ from '../screens/paymentCenter/PaymentStatementScreen';
 /* -------------------------------------------------------------------------- */
 
 const Tab =
-  createBottomTabNavigator();
+  createBottomTabNavigator<BrandBottomTabParamList>();
 
 const Stack =
   createNativeStackNavigator();
@@ -480,28 +488,22 @@ BrandNavigator() {
 
         tabBarStyle: {
           backgroundColor:
-            Colors.bgSurface,
+            '#000',
 
           borderTopWidth:
             1,
 
           borderTopColor:
-            Colors.teal,
+            '#00ACB3',
 
           height:
-            verticalScale(
-              60
-            ),
+            80,
 
           paddingBottom:
-            verticalScale(
-              4
-            ),
+            8,
 
           paddingTop:
-            verticalScale(
-              4
-            ),
+            8,
         },
 
         tabBarItemStyle:
@@ -514,135 +516,146 @@ BrandNavigator() {
           },
 
         tabBarActiveTintColor:
-          Colors.teal,
+          '#00D2FF',
 
         tabBarInactiveTintColor:
-          '#7A7A7A',
+          '#FFFFFF',
 
         tabBarLabelStyle:
           {
             fontSize:
-              moderateScale(
-                12
-              ),
+              11,
 
             fontWeight:
               '600',
 
             marginTop:
-              verticalScale(
-                2
-              ),
+              8,
           },
 
         tabBarIcon:
-          ({ focused }) => {
-            let icon;
-
+          ({ color, focused }) => {
             switch (
               route.name
             ) {
               case 'Profile':
-                icon =
-                  require(
-                    '../assets/images/profilelogo.png'
-                  );
-                break;
-
-              case 'Campaigns':
-                icon =
-                  require(
-                    '../assets/images/campaignlogo.png'
-                  );
-                break;
+                return (
+                  <View style={[
+                    navbarIconContainerStyle,
+                    focused && {
+                      top: -12,
+                    },
+                  ]}>
+                    <SvgXml
+                      xml={
+                        focused
+                          ? NB_PROFILE_ACTIVE_SVG
+                          : NB_PROFILE_SVG
+                      }
+                      width={
+                        focused
+                          ? 50
+                          : 32
+                      }
+                      height={
+                        focused
+                          ? 50
+                          : 32
+                      }
+                      color={color}
+                    />
+                  </View>
+                );
 
               case 'Explore':
-                icon =
-                  require(
-                    '../assets/images/explorelogo.png'
-                  );
-                break;
+                return (
+                  <View style={[
+                    navbarIconContainerStyle,
+                    focused && {
+                      top: -12,
+                    },
+                  ]}>
+                    <SvgXml
+                      xml={
+                        focused
+                          ? NB_EXPLORE_ACTIVE_SVG
+                          : NB_EXPLORE_SVG
+                      }
+                      width={
+                        focused
+                          ? 50
+                          : 32
+                      }
+                      height={
+                        focused
+                          ? 50
+                          : 32
+                      }
+                      color={color}
+                    />
+                  </View>
+                );
 
               case 'Assets':
-                icon =
-                  require(
-                    '../assets/images/assetslogo.png'
-                  );
-                break;
+                return (
+                  <View style={[
+                    navbarIconContainerStyle,
+                    focused && {
+                      top: -12,
+                    },
+                  ]}>
+                    <SvgXml
+                      xml={
+                        focused
+                          ? NB_ASSETS_ACTIVE_SVG
+                          : NB_ASSETS_SVG
+                      }
+                      width={
+                        focused
+                          ? 50
+                          : 32
+                      }
+                      height={
+                        focused
+                          ? 50
+                          : 32
+                      }
+                      color={color}
+                    />
+                  </View>
+                );
 
-              default:
-                return null;
+              case 'Campaigns':
+                return (
+                  <View style={[
+                    navbarIconContainerStyle,
+                    focused && {
+                      top: -12,
+                    },
+                  ]}>
+                    <SvgXml
+                      xml={
+                        focused
+                          ? NB_CAMPAIGN_ACTIVE_SVG
+                          : NB_CAMPAIGN_SVG
+                      }
+                      width={
+                        focused
+                          ? 50
+                          : 32
+                      }
+                      height={
+                        focused
+                          ? 50
+                          : 32
+                      }
+                      color={color}
+                    />
+                  </View>
+                );
             }
 
-            return (
-              <View
-                style={{
-                  justifyContent:
-                    'center',
-
-                  alignItems:
-                    'center',
-
-                  top:
-                    focused
-                      ? -8
-                      : 0,
-                }}
-              >
-                <View
-                  style={{
-                    width:
-                      focused
-                        ? 52
-                        : 20,
-
-                    height:
-                      focused
-                        ? 52
-                        : 20,
-
-                    borderRadius:
-                      24,
-
-                    justifyContent:
-                      'center',
-
-                    alignItems:
-                      'center',
-
-                    backgroundColor:
-                      focused
-                        ? Colors.teal
-                        : 'transparent',
-                  }}
-                >
-                  <Image
-                    source={
-                      icon
-                    }
-                    style={{
-                      width:
-                        focused
-                          ? 40
-                          : 32,
-
-                      height:
-                        focused
-                          ? 40
-                          : 32,
-
-                      resizeMode:
-                        'contain',
-
-                      tintColor:
-                        focused
-                          ? '#000'
-                          : '#7A7A7A',
-                    }}
-                  />
-                </View>
-              </View>
-            );
+            return null;
           },
       })}
     >

@@ -1,130 +1,125 @@
-import React, { useState } from 'react';
-import { View, Text, Image, Pressable, StatusBar } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import Animated, { useAnimatedStyle, withTiming } from 'react-native-reanimated';
+import React from 'react';
+import { View, Text, TouchableOpacity, ScrollView, StatusBar } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import { useNavigation } from '@react-navigation/native';
+import { styles } from './styles';
+
+// SVG Asset Imports matching your project directories
+import RoleBrandSvg from '../../../assets/images/Role Brand.svg';
+import RoleCreatorSvg from '../../../assets/images/Role Creator.svg';
+
 import { AuthNavigationProp } from '../../../types/navigation';
-import styles from './styles';
 
-export type RoleType = 'BRAND' | 'CREATOR' | null;
+type NavigationProp = AuthNavigationProp<'RoleSelection'>;
 
-const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
+export const RoleSelectionScreen: React.FC = () => {
+  const navigation = useNavigation<NavigationProp>();
 
-const RoleSelectionScreen = ({ navigation }: { navigation: AuthNavigationProp<'RoleSelection'> }) => {
-  const [selectedRole, setSelectedRole] = useState<RoleType>(null);
-
-  const handleContinue = () => {
-    if (!selectedRole) return;
-    
-    // Smoothly passes chosen profile context to intermediate entry screen
-    navigation.navigate('AuthEntryPoint', { role: selectedRole });
+  const handleAction = (role: 'BRAND' | 'CREATOR', flow: 'JOIN' | 'LOGIN') => {
+    if (flow === 'LOGIN') {
+      navigation.navigate('Login');
+    } else {
+      navigation.navigate('Register', { role });
+    }
   };
 
-  // Brand Card Dynamic Scale, Vignette tint, and Border Glow Animations
-  const brandAnimatedStyle = useAnimatedStyle(() => {
-    const isSelected = selectedRole === 'BRAND';
-    const isDimmed = selectedRole !== null && selectedRole !== 'BRAND';
-    
-    return {
-      transform: [{ scale: withTiming(isSelected ? 1.02 : 1, { duration: 250 }) }],
-      opacity: withTiming(isDimmed ? 0.4 : 1, { duration: 250 }),
-      borderColor: withTiming(isSelected ? '#00b9c0' : '#2C2C2E', { duration: 250 }),
-      backgroundColor: withTiming(isSelected ? '#0A1416' : '#000000', { duration: 250 }),
-    };
-  }, [selectedRole]);
-
-  // Creator Card Dynamic Scale, Vignette tint, and Border Glow Animations
-  const creatorAnimatedStyle = useAnimatedStyle(() => {
-    const isSelected = selectedRole === 'CREATOR';
-    const isDimmed = selectedRole !== null && selectedRole !== 'CREATOR';
-    
-    return {
-      transform: [{ scale: withTiming(isSelected ? 1.02 : 1, { duration: 250 }) }],
-      opacity: withTiming(isDimmed ? 0.4 : 1, { duration: 250 }),
-      borderColor: withTiming(isSelected ? '#b6d82c' : '#2C2C2E', { duration: 250 }),
-      backgroundColor: withTiming(isSelected ? '#12160A' : '#000000', { duration: 250 }),
-    };
-  }, [selectedRole]);
-
   return (
-    <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
+    <View style={styles.container}>
       <StatusBar barStyle="light-content" backgroundColor="#000000" />
       
-      <View style={styles.header}>
-        <Text style={styles.headerTitle}>CHOOSE YOUR PROFILE</Text>
-      </View>
-
-      <View style={styles.cardsContainer}>
+      <ScrollView contentContainerStyle={styles.scrollContainer} bounces={false}>
         
-        {/* BRAND CARD */}
-        <AnimatedPressable
-          onPress={() => setSelectedRole('BRAND')}
-          style={[styles.card, brandAnimatedStyle]}
-        >
-          <View style={styles.imageWrapper}>
-            <Image 
-              source={require('../../../assets/images/brand.png')}
-              style={styles.cardImage} 
-              resizeMode="contain" 
-            />
-          </View>
-          <View style={styles.textWrapper}>
-            <Text style={styles.cardTitle}>I'M A <Text style={styles.brandHighlight}>BRAND</Text></Text>
-            <Text style={styles.cardDescription}>
-              Scale your campaigns and find the perfect creators for your products.
-            </Text>
-          </View>
-        </AnimatedPressable>
+        {/* BRAND VIEWPORT SPLIT */}
+        <View style={[styles.section, styles.brandSection]}>
+          <View style={styles.contentRow}>
+            
+            <View style={styles.textContainer}>
+              <Text style={styles.label}>I'M A</Text>
+              <Text style={[styles.title, styles.brandHighlight]}>BRAND</Text>
+              <Text style={styles.description}>
+                Scale your campaigns and find the perfect creators for your brand
+              </Text>
+              
+              <View style={styles.buttonContainer}>
+                <TouchableOpacity activeOpacity={0.8} onPress={() => handleAction('BRAND', 'JOIN')}>
+                  <LinearGradient
+                    colors={['#00B9C0', '#B6D82C']} // Teal-to-lime dynamic vector
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 0 }}
+                    style={styles.gradientButton}
+                  >
+                    <Text style={styles.btnText}>JOIN AS BRAND</Text>
+                  </LinearGradient>
+                </TouchableOpacity>
 
-        {/* CREATOR CARD */}
-        <AnimatedPressable
-          onPress={() => setSelectedRole('CREATOR')}
-          style={[styles.card, creatorAnimatedStyle]}
-        >
-          <View style={styles.imageWrapper}>
-            <Image 
-              source={require('../../../assets/images/creator-illustration.png')}
-              style={styles.cardImage} 
-              resizeMode="contain" 
-            />
-          </View>
-          <View style={styles.textWrapper}>
-            <Text style={styles.cardTitle}>I'M A <Text style={styles.creatorHighlight}>CREATOR</Text></Text>
-            <Text style={styles.cardDescription}>
-              Partner with top brands, monetize your content, and grow your digital footprint.
-            </Text>
-          </View>
-        </AnimatedPressable>
-
-      </View>
-
-      <View style={styles.footer}>
-        <Pressable 
-          onPress={handleContinue}
-          disabled={selectedRole === null}
-          style={styles.buttonTouchArea}
-        >
-          {selectedRole ? (
-            <LinearGradient
-              colors={['#00b9c0', '#b6d82c']}
-              start={{ x: 0, y: 0.5 }}
-              end={{ x: 1, y: 0.5 }}
-              style={styles.buttonGradient}
-            >
-              <Text style={styles.buttonText}>Continue</Text>
-              <Text style={styles.buttonIcon}>›</Text>
-            </LinearGradient>
-          ) : (
-            <View style={styles.buttonDisabled}>
-              <Text style={styles.buttonTextDisabled}>Select a Profile</Text>
+                <TouchableOpacity 
+                  style={styles.loginButton} 
+                  activeOpacity={0.7} 
+                  onPress={() => handleAction('BRAND', 'LOGIN')}
+                >
+                  <Text style={styles.loginText}>Login</Text>
+                </TouchableOpacity>
+              </View>
             </View>
-          )}
-        </Pressable>
-      </View>
-    </SafeAreaView>
+
+            <View style={styles.imageContainer}>
+              <RoleBrandSvg width="100%" height="100%" />
+            </View>
+
+          </View>
+        </View>
+
+        {/* HUD INTERMEDIARY SYSTEM BREAKPOINT */}
+        <View style={styles.dividerContainer}>
+          <View style={styles.dividerLineLeft} />
+          <View style={styles.dividerCircle} />
+          <View style={styles.dividerLineRight} />
+        </View>
+
+        {/* CREATOR VIEWPORT SPLIT */}
+        <View style={[styles.section, styles.creatorSection]}>
+          {/* Reversing row structure horizontally matches the image layout composition */}
+          <View style={[styles.contentRow, styles.rowReverse]}>
+            
+            <View style={styles.imageContainer}>
+              <RoleCreatorSvg width="100%" height="100%" />
+            </View>
+
+            <View style={styles.textContainer}>
+              <Text style={styles.label}>I'M A</Text>
+              <Text style={[styles.title, styles.creatorHighlight]}>CREATOR</Text>
+              <Text style={styles.description}>
+                Partner with top brands and grow your influence
+              </Text>
+
+              <View style={styles.buttonContainer}>
+                <TouchableOpacity activeOpacity={0.8} onPress={() => handleAction('CREATOR', 'JOIN')}>
+                  <LinearGradient
+                    colors={['#00B9C0', '#B6D82C']}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 0 }}
+                    style={styles.gradientButton}
+                  >
+                    <Text style={styles.btnText}>JOIN AS CREATOR</Text>
+                  </LinearGradient>
+                </TouchableOpacity>
+
+                <TouchableOpacity 
+                  style={styles.loginButton} 
+                  activeOpacity={0.7} 
+                  onPress={() => handleAction('CREATOR', 'LOGIN')}
+                >
+                  <Text style={styles.loginText}>Login</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+
+          </View>
+        </View>
+
+      </ScrollView>
+    </View>
   );
 };
-
-
 
 export default RoleSelectionScreen;

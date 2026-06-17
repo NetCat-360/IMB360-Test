@@ -1,114 +1,131 @@
-import { StyleSheet, Platform } from 'react-native';
-import { scale, verticalScale, moderateScale } from '../../../utils/scaling';
+import { StyleSheet, Dimensions } from 'react-native';
+import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
 
-const styles = StyleSheet.create({
+const { height } = Dimensions.get('window');
+
+export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#000000',
+    backgroundColor: '#000000', // Pitch black canvas
   },
-  header: {
-    alignItems: 'center',
-    marginTop: verticalScale(20),
-    marginBottom: verticalScale(10),
+  scrollContainer: {
+    flexGrow: 1,
   },
-  headerTitle: {
-    color: '#ffffff',
-    fontSize: moderateScale(20),
-    fontWeight: 'bold',
-    letterSpacing: 1,
-  },
-  cardsContainer: {
-    flex: 1,
+  section: {
+    height: height / 2, // Perfect symmetrical viewport split
+    paddingHorizontal: scale(20),
     justifyContent: 'center',
-    paddingHorizontal: scale(24),
-  },
-  card: {
-    flexDirection: 'row',
-    height: verticalScale(140),
-    borderWidth: 1,
-    borderRadius: moderateScale(16),
-    marginBottom: verticalScale(20),
-    padding: scale(16),
-    alignItems: 'center',
-    overflow: 'hidden',
-  },
-  imageWrapper: {
-    width: '35%',
-    height: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  cardImage: {
-    width: '100%',
-    height: '100%',
-  },
-  textWrapper: {
-    width: '65%',
-    paddingLeft: scale(12),
-    justifyContent: 'center',
-  },
-  cardTitle: {
-    color: '#ffffff',
-    fontSize: moderateScale(18),
-    fontWeight: 'bold',
-    marginBottom: verticalScale(6),
-    letterSpacing: 0.5,
-  },
-  brandHighlight: {
-    color: '#00b9c0',
-  },
-  creatorHighlight: {
-    color: '#b6d82c',
-  },
-  cardDescription: {
-    color: '#888888',
-    fontSize: moderateScale(12),
-    lineHeight: verticalScale(16),
-  },
-  footer: {
-    paddingHorizontal: scale(24),
-    paddingBottom: verticalScale(30),
-  },
-  buttonTouchArea: {
-    width: '100%',
-    height: verticalScale(50),
-  },
-  buttonGradient: {
-    flex: 1,
-    borderRadius: moderateScale(25),
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
     position: 'relative',
   },
-  buttonText: {
-    color: '#000000',
-    fontSize: moderateScale(16),
-    fontWeight: 'bold',
+  brandSection: {
+    paddingTop: verticalScale(20),
+  },
+  creatorSection: {
+    paddingBottom: verticalScale(20),
+  },
+  contentRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  // Dynamic layout reversal for the Creator section to match image_b0ee89.png
+  rowReverse: {
+    flexDirection: 'row-reverse',
+  },
+  textContainer: {
+    width: '45%',
+    zIndex: 2,
+  },
+  imageContainer: {
+    width: '55%',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  label: {
+    fontSize: moderateScale(18),
+    color: '#FFFFFF',
+    fontWeight: '700',
     letterSpacing: 0.5,
   },
-  buttonIcon: {
-    color: '#000000',
-    fontSize: moderateScale(22),
-    fontWeight: 'bold',
-    position: 'absolute',
-    right: scale(24),
-    top: Platform.OS === 'ios' ? verticalScale(10) : verticalScale(8),
+  title: {
+    fontSize: moderateScale(26),
+    fontWeight: '900',
+    marginTop: verticalScale(2),
+    marginBottom: verticalScale(6),
+    letterSpacing: 1,
   },
-  buttonDisabled: {
-    flex: 1,
-    backgroundColor: '#1C1C1E',
-    borderRadius: moderateScale(25),
-    justifyContent: 'center',
+  brandHighlight: {
+    color: '#00B9C0', // Brand Neon Teal
+  },
+  creatorHighlight: {
+    color: '#B6D82C', // Creator Neon Lime
+  },
+  description: {
+    fontSize: moderateScale(11),
+    color: '#8E8E93',
+    lineHeight: moderateScale(15),
+    marginBottom: verticalScale(16),
+  },
+  buttonContainer: {
+    width: '100%',
+    gap: verticalScale(8),
+  },
+  gradientButton: {
+    borderRadius: moderateScale(8),
+    paddingVertical: verticalScale(10),
     alignItems: 'center',
+    justifyContent: 'center',
+  },
+  btnText: {
+    color: '#000000',
+    fontWeight: '700',
+    fontSize: moderateScale(12),
+    letterSpacing: 0.5,
+  },
+  loginButton: {
+    borderRadius: moderateScale(8),
+    paddingVertical: verticalScale(10),
+    alignItems: 'center',
+    justifyContent: 'center',
     borderWidth: 1,
     borderColor: '#2C2C2E',
+    backgroundColor: '#1C1C1E',
   },
-  buttonTextDisabled: {
-    color: '#444444',
-    fontSize: moderateScale(16),
-    fontWeight: 'bold',
+  loginText: {
+    color: '#AEAEB2',
+    fontWeight: '600',
+    fontSize: moderateScale(12),
+  },
+  // Center Line Divider with the middle circle node
+  dividerContainer: {
+    position: 'absolute',
+    top: '50%',
+    left: 0,
+    right: 0,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    transform: [{ translateY: -20 }],
+    zIndex: 10,
+    pointerEvents: 'none',
+  },
+  dividerLineLeft: {
+    flex: 1,
+    height: 2,
+    backgroundColor: '#00B9C0',
+  },
+  dividerLineRight: {
+    flex: 1,
+    height: 2,
+    backgroundColor: '#B6D82C',
+  },
+  dividerCircle: {
+    width: scale(36),
+    height: scale(36),
+    borderRadius: scale(18),
+    borderWidth: 2,
+    borderColor: '#545456',
+    backgroundColor: '#000000',
+    marginHorizontal: scale(4),
   },
 });
-
-export default styles;
