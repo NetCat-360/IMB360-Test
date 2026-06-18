@@ -1,6 +1,7 @@
 packages:
   - 'packages/*'
-minimumReleaseAge: 10080
+overrides:
+  form-data: 4.0.6
 onlyBuiltDependencies:
   - react-native-reanimated
   - react-native
