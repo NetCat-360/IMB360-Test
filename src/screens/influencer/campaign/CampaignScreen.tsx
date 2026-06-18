@@ -215,7 +215,7 @@ function CampaignCard({ item, isExpanded, onViewPress, onApply }: { item: Campai
           </Text>
           <Text style={[Typography.h3, styles.expandedSectionTitle]}>Campaign Categories</Text>
           <View style={styles.categoryGridContainer}>
-            {item.categories.map((cat, index) => (
+            {item.categories.map((cat, _index) => (
               <View key={cat} style={styles.categoryTagBubble}>
                 <Text style={[Typography.bodySmall, styles.categoryTagText]}>{cat}</Text>
               </View>
@@ -223,7 +223,7 @@ function CampaignCard({ item, isExpanded, onViewPress, onApply }: { item: Campai
           </View>
           <View style={styles.deliverablesCanvasBlock}>
             <Text style={[Typography.h3, styles.deliverablesCanvasTitle]}>Deliverables</Text>
-            {item.deliverables.map((del, index) => (
+            {item.deliverables.map((del, _index) => (
               <View key={del} style={styles.deliverableItemRow}>
                 <Ionicons name="checkmark-circle" size={moderateScale(16)} color={Colors.bgBlack} style={styles.deliverableCheckIcon} />
                 <Text style={[Typography.bodySmall, styles.deliverableMessageText]}>{del}</Text>
@@ -340,7 +340,7 @@ export default function CampaignScreen() {
   const activeDropdownItemTextStyle = useMemo(() => [Typography.body, styles.dropdownListItemTextActive], []);
 
   const renderCategoryItem = useCallback(({ item, index: _index }: { item: string; index: number }) => {
-    const isLast = index === CATEGORY_OPTIONS.length;
+    const isLast = _index === CATEGORY_OPTIONS.length;
     const isSelected = filtersState.selectedCategory === item;
     return (
       <Pressable
@@ -355,7 +355,7 @@ export default function CampaignScreen() {
   }, [filtersState.selectedCategory, handleSelectCategory, defaultDropdownItemTextStyle, activeDropdownItemTextStyle]);
 
   const renderBudgetItem = useCallback(({ item, index: _index }: { item: string; index: number }) => {
-    const isLast = index === BUDGET_OPTIONS.length;
+    const isLast = _index === BUDGET_OPTIONS.length;
     const isSelected = filtersState.selectedBudget === item;
     return (
       <Pressable
@@ -370,7 +370,7 @@ export default function CampaignScreen() {
   }, [filtersState.selectedBudget, handleSelectBudget, defaultDropdownItemTextStyle, activeDropdownItemTextStyle]);
 
   const renderPlatformItem = useCallback(({ item, index: _index }: { item: string; index: number }) => {
-    const isLast = index === PLATFORM_OPTIONS.length;
+    const isLast = _index === PLATFORM_OPTIONS.length;
     const isSelected = filtersState.selectedPlatform === item;
     return (
       <Pressable

@@ -19,7 +19,6 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import { RootState } from "../../../store/store";
 import {
   updateField,
-  resetAssetForm,
 } from "../../../store/slices/addAssetSlice";
 import ScreenHeader from "../../../components/ScreenHeader";
 import styles from "./AddAssetsStyles";
