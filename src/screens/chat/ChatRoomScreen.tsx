@@ -268,7 +268,7 @@ import React, {
             Platform.OS ===
             "ios"
               ? "padding"
-              : undefined
+              : "height"
           }
         >
           <FlatList
