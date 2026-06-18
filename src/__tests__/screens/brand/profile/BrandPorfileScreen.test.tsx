@@ -5,7 +5,7 @@ import BrandProfileScreen from '../../../../screens/brand/profile/BrandPorfileSc
 const mockNavigate = jest.fn();
 
 jest.mock('@react-navigation/native', () => ({
-  useNavigation: () => ({ navigate: mockNavigate }),
+  useNavigation: () => ({ navigate: mockNavigate } as any),
 }));
 
 describe('BrandProfileScreen', () => {
@@ -24,7 +24,7 @@ describe('BrandProfileScreen', () => {
   });
 
   it('renders edit profile button', () => {
-    const { UNSAFE_getByType } = render(<BrandProfileScreen />);
+    render(<BrandProfileScreen />);
   });
 
   it('renders bio text', () => {

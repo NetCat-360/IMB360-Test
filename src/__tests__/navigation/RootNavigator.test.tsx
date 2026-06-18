@@ -17,7 +17,7 @@ jest.mock('react-redux', () => ({
 
 jest.mock('@react-navigation/native', () => ({
   NavigationContainer: ({ children }: any) => children,
-  useNavigation: () => ({}),
+  useNavigation: () => ({} as any),
 }));
 
 jest.mock('@react-navigation/native-stack', () => ({

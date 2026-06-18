@@ -629,7 +629,7 @@ async function validateAndSubmitHandler(
   countryState: CountryState,
   toggleCheckBox: boolean,
   userRole: string,
-  showToast: (msg: string, type: string) => void,
+  showToast: (msg: string, type?: 'error' | 'success' | 'info') => void,
   setLoading: (v: boolean) => void,
   navigation: any,
 ) {
@@ -703,7 +703,7 @@ async function validateAndSubmitHandler(
 
 function handleSendVerificationCodeHandler(
   formState: FormState,
-  showToast: (msg: string, type: string) => void,
+  showToast: (msg: string, type?: 'error' | 'success' | 'info') => void,
 ) {
   const cleanEmail = sanitizeEmail(formState.email);
 

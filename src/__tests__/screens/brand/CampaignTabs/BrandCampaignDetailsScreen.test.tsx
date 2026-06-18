@@ -10,7 +10,7 @@ const mockGoBack = jest.fn();
 const mockPop = jest.fn();
 
 jest.mock('@react-navigation/native', () => ({
-  useNavigation: () => ({ navigate: mockNavigate, goBack: mockGoBack, pop: mockPop }),
+  useNavigation: () => ({ navigate: mockNavigate, goBack: mockGoBack, pop: mockPop } as any),
   useRoute: () => ({ params: { campaignId: '1' } }),
 }));
 

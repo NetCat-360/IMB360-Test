@@ -11,7 +11,7 @@ const createMockNav = () => ({
   replace: jest.fn(),
   goBack: jest.fn(),
   pop: jest.fn(),
-});
+} as any);
 
 describe('AuthEntryPointScreen', () => {
   it('renders CREATOR variant correctly', () => {

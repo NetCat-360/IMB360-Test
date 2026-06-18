@@ -9,7 +9,7 @@ const mockNavigate = jest.fn();
 const mockGoBack = jest.fn();
 
 jest.mock('@react-navigation/native', () => ({
-  useNavigation: () => ({ navigate: mockNavigate, goBack: mockGoBack }),
+  useNavigation: () => ({ navigate: mockNavigate, goBack: mockGoBack } as any),
 }));
 
 const createTestStore = () =>
@@ -151,7 +151,7 @@ describe('TotalSpendScreen', () => {
   });
 
   it('calls goBack when back is pressed', () => {
-    const { getByText } = render(
+    render(
       <Provider store={store}>
         <TotalSpendScreen />
       </Provider>

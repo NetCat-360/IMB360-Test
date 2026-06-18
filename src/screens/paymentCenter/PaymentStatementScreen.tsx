@@ -1,5 +1,4 @@
 import React, {
-    useState,
     useReducer,
   } from 'react';
   
@@ -121,8 +120,8 @@ import React, {
   }
 
   function StatementTab({
-    startDate, setStartDate, endDate, setEndDate,
-    openStartPicker, setOpenStartPicker, openEndPicker, setOpenEndPicker,
+    startDate, setStartDate: _setStartDate, endDate, setEndDate: _setEndDate,
+    openStartPicker: _openStartPicker, setOpenStartPicker, openEndPicker: _openEndPicker, setOpenEndPicker,
     selectedFormat, setSelectedFormat, showDropdown, setShowDropdown,
   }: {
     startDate: Date; setStartDate: (d: Date) => void;

@@ -20,7 +20,7 @@ import { CURRENCY } from '../../../config/constants';
 import TextField from '../../../components/common/TextField/TextField';
 import { AppStackParamList } from '../../../types/navigation';
 import styles from './styles';
-import AppHeader from '../../../components/AppHeader';
+
 
 interface CampaignItem {
   id: string;
@@ -339,7 +339,7 @@ export default function CampaignScreen() {
   const defaultDropdownItemTextStyle = useMemo(() => [Typography.body, styles.dropdownListItemText], []);
   const activeDropdownItemTextStyle = useMemo(() => [Typography.body, styles.dropdownListItemTextActive], []);
 
-  const renderCategoryItem = useCallback(({ item, index }: { item: string; index: number }) => {
+  const renderCategoryItem = useCallback(({ item, index: _index }: { item: string; index: number }) => {
     const isLast = index === CATEGORY_OPTIONS.length;
     const isSelected = filtersState.selectedCategory === item;
     return (
@@ -354,7 +354,7 @@ export default function CampaignScreen() {
     );
   }, [filtersState.selectedCategory, handleSelectCategory, defaultDropdownItemTextStyle, activeDropdownItemTextStyle]);
 
-  const renderBudgetItem = useCallback(({ item, index }: { item: string; index: number }) => {
+  const renderBudgetItem = useCallback(({ item, index: _index }: { item: string; index: number }) => {
     const isLast = index === BUDGET_OPTIONS.length;
     const isSelected = filtersState.selectedBudget === item;
     return (
@@ -369,7 +369,7 @@ export default function CampaignScreen() {
     );
   }, [filtersState.selectedBudget, handleSelectBudget, defaultDropdownItemTextStyle, activeDropdownItemTextStyle]);
 
-  const renderPlatformItem = useCallback(({ item, index }: { item: string; index: number }) => {
+  const renderPlatformItem = useCallback(({ item, index: _index }: { item: string; index: number }) => {
     const isLast = index === PLATFORM_OPTIONS.length;
     const isSelected = filtersState.selectedPlatform === item;
     return (
@@ -384,7 +384,7 @@ export default function CampaignScreen() {
     );
   }, [filtersState.selectedPlatform, handleSelectPlatform, defaultDropdownItemTextStyle, activeDropdownItemTextStyle]);
 
-  const renderCampaignItem = useCallback(({ item }) => (
+  const renderCampaignItem = useCallback(({ item }: { item: any }) => (
     <CampaignCard item={item} isExpanded={expandedCampaignId === item.id} onViewPress={() => handleViewPress(item.id)} onApply={() => navigation.navigate('ApplyCampaign', { campaignId: item.id })} />
   ), [expandedCampaignId, handleViewPress, navigation]);
 

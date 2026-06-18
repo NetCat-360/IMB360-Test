@@ -239,7 +239,7 @@ export default function ViewPlansScreen({
                     <View style={styles.divider} />
 
                     {/* Checklist Feature Matrix Iterator */}
-                    {currentPlan.features.map((feature, idx) => (
+                    {currentPlan.features.map((feature, _idx) => (
                         <View
                             key={feature}
                             style={styles.featureItem}

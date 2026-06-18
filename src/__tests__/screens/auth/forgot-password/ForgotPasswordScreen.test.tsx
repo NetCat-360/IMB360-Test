@@ -16,7 +16,7 @@ const createMockNav = () => ({
   goBack: jest.fn(),
   pop: jest.fn(),
   reset: jest.fn(),
-});
+} as any);
 
 describe('ForgotPasswordScreen', () => {
   it('renders FORGOT PASSWORD title', () => {

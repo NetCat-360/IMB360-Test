@@ -3,7 +3,7 @@ import { render, fireEvent } from '@testing-library/react-native';
 import PaymentStatementScreen from '../../../screens/paymentCenter/PaymentStatementScreen';
 
 jest.mock('@react-navigation/native', () => ({
-  useNavigation: () => ({ navigate: jest.fn(), goBack: jest.fn(), pop: jest.fn(), replace: jest.fn() }),
+  useNavigation: () => ({ navigate: jest.fn(), goBack: jest.fn(), pop: jest.fn(), replace: jest.fn() } as any),
 }));
 
 jest.mock('react-native-date-picker', () => 'DatePicker');
@@ -24,7 +24,7 @@ jest.mock('../../../components/ScreenHeader', () => {
 describe('PaymentStatementScreen', () => {
   it('renders header and tab switcher', () => {
     const { getByText } = render(
-      <PaymentStatementScreen navigation={{ goBack: jest.fn() }} />
+      <PaymentStatementScreen navigation={{ goBack: jest.fn() } as any} />
     );
     expect(getByText('Payment Center')).toBeTruthy();
     expect(getByText('Statement')).toBeTruthy();
@@ -33,21 +33,21 @@ describe('PaymentStatementScreen', () => {
 
   it('renders statement card in statement tab', () => {
     const { getByText } = render(
-      <PaymentStatementScreen navigation={{ goBack: jest.fn() }} />
+      <PaymentStatementScreen navigation={{ goBack: jest.fn() } as any} />
     );
     expect(getByText('Payment Statement')).toBeTruthy();
   });
 
   it('renders Generate Statement button', () => {
     const { getByText } = render(
-      <PaymentStatementScreen navigation={{ goBack: jest.fn() }} />
+      <PaymentStatementScreen navigation={{ goBack: jest.fn() } as any} />
     );
     expect(getByText('Generate Statement')).toBeTruthy();
   });
 
   it('switches to history tab', () => {
-    const { getByText, queryByText } = render(
-      <PaymentStatementScreen navigation={{ goBack: jest.fn() }} />
+    const { getByText } = render(
+      <PaymentStatementScreen navigation={{ goBack: jest.fn() } as any} />
     );
     fireEvent.press(getByText('History'));
     expect(getByText('Date of Release')).toBeTruthy();
@@ -55,7 +55,7 @@ describe('PaymentStatementScreen', () => {
 
   it('opens format dropdown', () => {
     const { getByText } = render(
-      <PaymentStatementScreen navigation={{ goBack: jest.fn() }} />
+      <PaymentStatementScreen navigation={{ goBack: jest.fn() } as any} />
     );
     expect(getByText('PDF')).toBeTruthy();
   });

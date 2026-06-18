@@ -40,7 +40,6 @@ import React, {
   
   import {
     scale,
-    moderateScale,
     verticalScale,
   } from "../../../utils/scaling";
   
@@ -133,7 +132,7 @@ import React, {
     );
   }
 
-  function StatusDropdown({ show, options, selected, onSelect, onClose }: { show: boolean; options: string[]; selected: string; onSelect: (item: string) => void; onClose: () => void }) {
+  function StatusDropdown({ show, options, selected: _selected, onSelect, onClose }: { show: boolean; options: string[]; selected: string; onSelect: (item: string) => void; onClose: () => void }) {
     if (!show) return null;
     return (
       <View style={styles.dropdownContainer}>
@@ -360,13 +359,6 @@ function ScreenTitle() {
     );
   
     const [
-        expandedId,
-        setExpandedId,
-      ] = useState<
-        string | null
-      >(null);
-      
-      const [
         showStatusDropdown,
         setShowStatusDropdown,
       ] = useState(
@@ -453,7 +445,7 @@ function ScreenTitle() {
               show={showStatusDropdown}
               options={statusOptions}
               selected={selectedStatus}
-              onSelect={(item) => dispatch(setSelectedStatus(item))}
+              onSelect={(item) => dispatch(setSelectedStatus(item as CampaignStatus))}
               onClose={() => setShowStatusDropdown(false)}
             />
                   {/* CAMPAIGNS */}

@@ -32,6 +32,7 @@ import {
   setWithdrawalAmount,
   addBankDetails,
   addUpiDetails,
+  PaymentTab,
 } from '../../store/slices/paymentSlice';
 
 import styles
@@ -194,11 +195,12 @@ function ReleaseTab({
   availableWithdrawal: number;
   reservedAmount: number;
   withdrawalAmount: string;
-  bankAdded: string;
-  upiAdded: string;
+  bankAdded: boolean;
+  upiAdded: boolean;
   onWithdrawalChange: (text: string) => void;
   onOpenBankModal: () => void;
   onOpenUpiModal: () => void;
+  onNext: () => void;
 }) {
   return (
     <>
@@ -431,7 +433,7 @@ export default function PaymentCenterScreen({
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.scrollContent}
       >
-        <TabSwitcher selectedTab={selectedTab} onTabChange={(tab) => dispatch(setSelectedTab(tab))} />
+        <TabSwitcher selectedTab={selectedTab} onTabChange={(tab: string) => dispatch(setSelectedTab(tab as PaymentTab))} />
 
         {selectedTab === 'purchase' && (
           <PurchaseTab currentBalance={currentBalance} accountType={accountType} expiryDate={expiryDate} />

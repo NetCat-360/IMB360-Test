@@ -3,7 +3,7 @@ import { render, fireEvent } from '@testing-library/react-native';
 import ManageAccountScreen from '../../../../screens/settings/ManageAccount/ManageAccountScreen';
 
 jest.mock('@react-navigation/native', () => ({
-  useNavigation: () => ({ navigate: jest.fn(), goBack: jest.fn(), pop: jest.fn(), replace: jest.fn() }),
+  useNavigation: () => ({ navigate: jest.fn(), goBack: jest.fn(), pop: jest.fn(), replace: jest.fn() } as any),
 }));
 
 jest.mock('../../../../components/ScreenHeader', () => {
@@ -26,14 +26,14 @@ jest.mock('../../../../components/common/TextField/TextField', () => {
 describe('ManageAccountScreen', () => {
   it('renders screen header', () => {
     const { getByText } = render(
-      <ManageAccountScreen navigation={{ goBack: jest.fn() }} />
+      <ManageAccountScreen navigation={{ goBack: jest.fn() } as any} />
     );
     expect(getByText('Manage Account')).toBeTruthy();
   });
 
   it('renders dropdown sections', () => {
     const { getByText } = render(
-      <ManageAccountScreen navigation={{ goBack: jest.fn() }} />
+      <ManageAccountScreen navigation={{ goBack: jest.fn() } as any} />
     );
     expect(getByText('Edit Profile')).toBeTruthy();
     expect(getByText('Edit Email ID')).toBeTruthy();
@@ -41,7 +41,7 @@ describe('ManageAccountScreen', () => {
 
   it('expands Edit Profile section on press', () => {
     const { getByText, getByPlaceholderText } = render(
-      <ManageAccountScreen navigation={{ goBack: jest.fn() }} />
+      <ManageAccountScreen navigation={{ goBack: jest.fn() } as any} />
     );
     fireEvent.press(getByText('Edit Profile'));
     expect(getByPlaceholderText('Full Name')).toBeTruthy();
@@ -51,7 +51,7 @@ describe('ManageAccountScreen', () => {
 
   it('expands Edit Email ID section on press', () => {
     const { getByText, getByPlaceholderText } = render(
-      <ManageAccountScreen navigation={{ goBack: jest.fn() }} />
+      <ManageAccountScreen navigation={{ goBack: jest.fn() } as any} />
     );
     fireEvent.press(getByText('Edit Email ID'));
     expect(getByPlaceholderText('Email Address')).toBeTruthy();

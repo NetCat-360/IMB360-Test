@@ -22,15 +22,7 @@ import {
 import AppHeader
 from '../../../components/AppHeader';
 
-import {
-  scale,
-  verticalScale,
-  moderateScale,
-} from '../../../utils/scaling';
 import styles from './styles';
-
-import { Colors }
-from '../../../config/theme';
 
 import Typography
 from '../../../styles/typography';
@@ -117,7 +109,7 @@ function MenuItem({
   );
 }
 
-function ProfileHeader() {
+function ProfileHeader({ navigation }: { navigation: any }) {
   return (
     <>
       <View style={styles.banner} />
@@ -128,7 +120,7 @@ function ProfileHeader() {
             <Text style={styles.name}>Username</Text>
             <Text style={styles.username}>@username1212</Text>
           </View>
-          <Pressable>
+          <Pressable onPress={() => navigation.navigate('ManageAccount')}>
             <Image source={require('../../../assets/images/editprofile.png')} style={styles.editIcon} />
           </Pressable>
         </View>
@@ -216,7 +208,7 @@ BrandProfileScreen() {
       <AppHeader />
 
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
-        <ProfileHeader />
+        <ProfileHeader navigation={navigation} />
         <ActionButtons navigation={navigation} />
         <InfoRow />
         <StatsDashboard />

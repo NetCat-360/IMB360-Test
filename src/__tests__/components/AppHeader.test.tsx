@@ -6,7 +6,7 @@ import AppHeader from '../../components/AppHeader';
 const mockNavigate = jest.fn();
 
 jest.mock('@react-navigation/native', () => ({
-  useNavigation: () => ({ navigate: mockNavigate }),
+  useNavigation: () => ({ navigate: mockNavigate } as any),
 }));
 
 describe('AppHeader', () => {

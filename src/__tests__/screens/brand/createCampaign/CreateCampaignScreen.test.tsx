@@ -9,7 +9,7 @@ const mockNavigate = jest.fn();
 const mockGoBack = jest.fn();
 
 jest.mock('@react-navigation/native', () => ({
-  useNavigation: () => ({ navigate: mockNavigate, goBack: mockGoBack }),
+  useNavigation: () => ({ navigate: mockNavigate, goBack: mockGoBack } as any),
 }));
 
 const createTestStore = () =>
@@ -160,7 +160,7 @@ describe('CreateCampaignScreen', () => {
   });
 
   it('renders step 4 influencer requirements', () => {
-    const { getByText, getAllByText, getByPlaceholderText } = render(
+    const { getByText, getAllByText } = render(
       <Provider store={store}>
         <CreateCampaignScreen />
       </Provider>
@@ -216,7 +216,7 @@ describe('CreateCampaignScreen', () => {
   });
 
   it('calls goBack on back button press', () => {
-    const { getByText } = render(
+    render(
       <Provider store={store}>
         <CreateCampaignScreen />
       </Provider>

@@ -5,7 +5,7 @@ import CampaignScreen from '../../../../screens/influencer/campaign/CampaignScre
 const mockNavigate = jest.fn();
 
 jest.mock('@react-navigation/native', () => ({
-  useNavigation: () => ({ navigate: mockNavigate }),
+  useNavigation: () => ({ navigate: mockNavigate } as any),
 }));
 
 describe('CampaignScreen', () => {

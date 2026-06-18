@@ -6,7 +6,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import paymentReducer from '../../../store/slices/paymentSlice';
 
 jest.mock('@react-navigation/native', () => ({
-  useNavigation: () => ({ navigate: jest.fn(), goBack: jest.fn(), pop: jest.fn(), replace: jest.fn() }),
+  useNavigation: () => ({ navigate: jest.fn(), goBack: jest.fn(), pop: jest.fn(), replace: jest.fn() } as any),
 }));
 
 jest.mock('../../../components/ScreenHeader', () => {
@@ -28,7 +28,7 @@ describe('PaymentCenterScreen', () => {
   it('renders header and tabs', () => {
     const { getByText } = render(
       <Provider store={store}>
-        <PaymentCenterScreen navigation={{ goBack: jest.fn(), navigate: jest.fn() }} />
+        <PaymentCenterScreen navigation={{ goBack: jest.fn(), navigate: jest.fn() } as any} />
       </Provider>
     );
     expect(getByText('Payment Center')).toBeTruthy();
@@ -39,16 +39,16 @@ describe('PaymentCenterScreen', () => {
   it('shows current balance in purchase tab', () => {
     const { getByText } = render(
       <Provider store={store}>
-        <PaymentCenterScreen navigation={{ goBack: jest.fn(), navigate: jest.fn() }} />
+        <PaymentCenterScreen navigation={{ goBack: jest.fn(), navigate: jest.fn() } as any} />
       </Provider>
     );
     expect(getByText('Current Balance')).toBeTruthy();
   });
 
   it('switches to release tab on press', () => {
-    const { getByText, queryByText } = render(
+    const { getByText } = render(
       <Provider store={store}>
-        <PaymentCenterScreen navigation={{ goBack: jest.fn(), navigate: jest.fn() }} />
+        <PaymentCenterScreen navigation={{ goBack: jest.fn(), navigate: jest.fn() } as any} />
       </Provider>
     );
     fireEvent.press(getByText('Payment Release'));
@@ -56,9 +56,9 @@ describe('PaymentCenterScreen', () => {
   });
 
   it('opens bank modal from release tab', () => {
-    const { getByText, getByTestId } = render(
+    const { getByText } = render(
       <Provider store={store}>
-        <PaymentCenterScreen navigation={{ goBack: jest.fn(), navigate: jest.fn() }} />
+        <PaymentCenterScreen navigation={{ goBack: jest.fn(), navigate: jest.fn() } as any} />
       </Provider>
     );
     fireEvent.press(getByText('Payment Release'));

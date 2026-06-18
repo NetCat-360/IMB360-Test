@@ -3,7 +3,6 @@ import {
   Pressable,
   Text,
   StyleSheet,
-  ViewStyle,
   TextStyle,
   Image,
   ImageStyle,

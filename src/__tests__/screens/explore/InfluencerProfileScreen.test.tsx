@@ -3,10 +3,10 @@ import { render, fireEvent } from '@testing-library/react-native';
 import InfluencerProfileScreen from '../../../screens/explore/InfluencerProfileScreen';
 
 jest.mock('@react-navigation/native', () => ({
-  useNavigation: () => ({ navigate: jest.fn(), goBack: jest.fn(), pop: jest.fn(), replace: jest.fn() }),
+  useNavigation: () => ({ navigate: jest.fn(), goBack: jest.fn(), pop: jest.fn(), replace: jest.fn() } as any),
 }));
 
-jest.mock('react-native-linear-gradient', () => ({ children, colors, ...props }: any) => {
+jest.mock('react-native-linear-gradient', () => ({ children, ...props }: any) => {
   const React = require('react');
   const { View } = require('react-native');
   return <View {...props}>{children}</View>;
@@ -84,7 +84,7 @@ describe('InfluencerProfileScreen', () => {
   });
 
   it('switches to pricing tab', () => {
-    const { getByText, queryByText } = render(<InfluencerProfileScreen />);
+    const { getByText } = render(<InfluencerProfileScreen />);
     fireEvent.press(getByText('Pricing'));
     expect(getByText('Instagram')).toBeTruthy();
     expect(getByText('Facebook')).toBeTruthy();

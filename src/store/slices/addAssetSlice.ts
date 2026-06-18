@@ -64,11 +64,11 @@ const addAssetSlice =
       updateField: (
         state,
         action: PayloadAction<{
-          key: keyof AddAssetState;
+          key: string;
           value: any;
         }>
       ) => {
-        state[
+        (state as any)[
           action.payload.key
         ] =
           action.payload.value;

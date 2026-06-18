@@ -14,7 +14,7 @@ jest.mock('@react-navigation/native', () => ({
     replace: mockReplace,
     goBack: jest.fn(),
     pop: jest.fn(),
-  }),
+  } as any),
 }));
 
 jest.mock('../../../security/encryption', () => ({

@@ -15,8 +15,6 @@ import { scale, verticalScale, moderateScale } from '../../../utils/scaling';
 import { Colors } from '../../../config/theme';
 import Typography from '../../../styles/typography';
 import styles from './styles';
-import AppHeader from '../../../components/AppHeader';
-
 // ==========================================
 // Static Mock Data Matrix
 // ==========================================
@@ -106,12 +104,12 @@ function PerformanceTrendsSection() {
       </View>
 
       <View style={styles.chartContainer}>
-        {barHeights.map((height, idx) => (
-          <View key={dates[idx]} style={styles.chartColumn}>
+        {barHeights.map((height, _idx) => (
+          <View key={dates[_idx]} style={styles.chartColumn}>
             <View style={styles.barTrack}>
               <View style={[styles.barFill, { height }]} />
             </View>
-            <Text style={[Typography.caption, styles.chartAxisLabel]}>{dates[idx]}</Text>
+            <Text style={[Typography.caption, styles.chartAxisLabel]}>{dates[_idx]}</Text>
           </View>
         ))}
       </View>
@@ -164,7 +162,7 @@ function PlatformDistributionSection() {
         </View>
 
         <View style={styles.legendBlock}>
-          {PLATFORM_DATA.map((item, idx) => (
+          {PLATFORM_DATA.map((item, _idx) => (
             <View key={item.name} style={styles.platformLegendItem}>
               <View style={styles.platformLabelGroup}>
                 <View style={[styles.legendDot, { backgroundColor: item.color }]} />
@@ -206,7 +204,7 @@ function AudienceInsightsSection() {
           AGE DEMOGRAPHICS
         </Text>
         
-        {AGE_DEMOGRAPHICS.map((item, idx) => (
+        {AGE_DEMOGRAPHICS.map((item, _idx) => (
           <View key={item.range} style={styles.ageDemographicRow}>
             <Text style={[Typography.bodySmall, styles.textSecondary, { width: scale(45) }]}>{item.range}</Text>
             <View style={styles.ageProgressTrack}>
@@ -226,7 +224,7 @@ function GrowthInsightsSection() {
   return (
     <View style={{ marginTop: verticalScale(20) }}>
       <Text style={[Typography.h2, styles.textWhite, { marginBottom: verticalScale(12) }]}>Growth Insights</Text>
-      {GROWTH_INSIGHTS.map((item, idx) => (
+      {GROWTH_INSIGHTS.map((item, _idx) => (
         <View key={item.title} style={styles.insightRowCard}>
           <View style={styles.insightIconBadge}>
             {item.icon === 'trendUp' ? (
@@ -264,7 +262,7 @@ function SmartRecommendationsSection() {
   return (
     <View style={{ marginTop: verticalScale(20), marginBottom: verticalScale(30) }}>
       <Text style={[Typography.h2, styles.textWhite, { marginBottom: verticalScale(12) }]}>Smart Recommendations</Text>
-      {SMART_RECOMMENDATIONS.map((item, idx) => (
+      {SMART_RECOMMENDATIONS.map((item, _idx) => (
         <View key={item.title} style={styles.recommendationCard}>
           <View style={styles.recHeaderRow}>
             {item.icon === 'video' ? (

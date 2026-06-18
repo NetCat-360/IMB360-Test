@@ -1,9 +1,9 @@
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react-native';
+import { render } from '@testing-library/react-native';
 import SocialMediaScreen from '../../../../screens/settings/SocialMedia/SocialMediaScreen';
 
 jest.mock('@react-navigation/native', () => ({
-  useNavigation: () => ({ navigate: jest.fn(), goBack: jest.fn(), pop: jest.fn(), replace: jest.fn() }),
+  useNavigation: () => ({ navigate: jest.fn(), goBack: jest.fn(), pop: jest.fn(), replace: jest.fn() } as any),
 }));
 
 jest.mock('react-native-element-dropdown', () => {
@@ -34,28 +34,28 @@ jest.mock('../../../../components/common/TextField/TextField', () => {
 describe('SocialMediaScreen', () => {
   it('renders screen header', () => {
     const { getByText } = render(
-      <SocialMediaScreen navigation={{ goBack: jest.fn() }} />
+      <SocialMediaScreen navigation={{ goBack: jest.fn() } as any} />
     );
     expect(getByText('Social Media Platforms')).toBeTruthy();
   });
 
   it('renders user handle input', () => {
     const { getByPlaceholderText } = render(
-      <SocialMediaScreen navigation={{ goBack: jest.fn() }} />
+      <SocialMediaScreen navigation={{ goBack: jest.fn() } as any} />
     );
     expect(getByPlaceholderText('Enter your user handle')).toBeTruthy();
   });
 
   it('renders Add Profile button', () => {
     const { getByText } = render(
-      <SocialMediaScreen navigation={{ goBack: jest.fn() }} />
+      <SocialMediaScreen navigation={{ goBack: jest.fn() } as any} />
     );
     expect(getByText('Add Profile')).toBeTruthy();
   });
 
   it('renders dropdown with Select Platforms placeholder', () => {
     const { queryByText } = render(
-      <SocialMediaScreen navigation={{ goBack: jest.fn() }} />
+      <SocialMediaScreen navigation={{ goBack: jest.fn() } as any} />
     );
     expect(queryByText('Select Platforms')).toBeTruthy();
   });

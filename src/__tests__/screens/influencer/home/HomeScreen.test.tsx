@@ -5,7 +5,7 @@ import HomeScreen from '../../../../screens/influencer/home/HomeScreen';
 const mockNavigate = jest.fn();
 
 jest.mock('@react-navigation/native', () => ({
-  useNavigation: () => ({ navigate: mockNavigate }),
+  useNavigation: () => ({ navigate: mockNavigate } as any),
 }));
 
 jest.mock('../../../../hooks/redux', () => ({

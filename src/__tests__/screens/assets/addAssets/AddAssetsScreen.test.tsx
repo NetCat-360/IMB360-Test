@@ -6,7 +6,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import addAssetReducer from '../../../../store/slices/addAssetSlice';
 
 jest.mock('@react-navigation/native', () => ({
-  useNavigation: () => ({ navigate: jest.fn(), goBack: jest.fn(), pop: jest.fn(), replace: jest.fn() }),
+  useNavigation: () => ({ navigate: jest.fn(), goBack: jest.fn(), pop: jest.fn(), replace: jest.fn() } as any),
 }));
 
 jest.mock('@react-native-community/datetimepicker', () => 'DateTimePicker');
@@ -30,7 +30,7 @@ describe('AddAssetsScreen', () => {
   it('renders stepper and basic form fields', () => {
     const { getByText, getByPlaceholderText } = render(
       <Provider store={store}>
-        <AddAssetsScreen navigation={{ pop: jest.fn() }} />
+        <AddAssetsScreen navigation={{ pop: jest.fn() } as any} />
       </Provider>
     );
     expect(getByText('Add New Asset')).toBeTruthy();
@@ -41,7 +41,7 @@ describe('AddAssetsScreen', () => {
   it('goes to step 2 on Next press', () => {
     const { getByText, getByPlaceholderText } = render(
       <Provider store={store}>
-        <AddAssetsScreen navigation={{ pop: jest.fn() }} />
+        <AddAssetsScreen navigation={{ pop: jest.fn() } as any} />
       </Provider>
     );
     fireEvent.press(getByText('Next'));
@@ -51,7 +51,7 @@ describe('AddAssetsScreen', () => {
   it('renders category dropdown', () => {
     const { getByText } = render(
       <Provider store={store}>
-        <AddAssetsScreen navigation={{ pop: jest.fn() }} />
+        <AddAssetsScreen navigation={{ pop: jest.fn() } as any} />
       </Provider>
     );
     expect(getByText('Select Category')).toBeTruthy();

@@ -227,7 +227,7 @@ function OverviewTabContent({ direction }: { direction: any }) {
   );
 }
 
-function ContentTabContent({ direction, profile }: { direction: any; profile: ProfileData }) {
+function ContentTabContent({ direction, profile: _profile }: { direction: any; profile: ProfileData }) {
   return (
     <Animated.View entering={direction('content').entering} exiting={direction('content').exiting}>
       <View style={styles.contentGridSystem}>

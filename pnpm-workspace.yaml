@@ -8,5 +8,4 @@ onlyBuiltDependencies:
   - esbuild
   - msgpackr-extract
   - lmdb
-minimumReleaseAge: 10080
 

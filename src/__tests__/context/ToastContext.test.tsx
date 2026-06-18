@@ -6,18 +6,14 @@ describe('ToastContext', () => {
   describe('ToastProvider', () => {
     it('renders children', () => {
       const { getByText } = render(
-        <ToastProvider>
-          <Text>Test Child</Text>
-        </ToastProvider>,
+        <ToastProvider children={<Text>Test Child</Text>} />
       );
       expect(getByText('Test Child')).toBeTruthy();
     });
 
     it('does not show toast by default', () => {
       const { queryByText } = render(
-        <ToastProvider>
-          <Text>Child</Text>
-        </ToastProvider>,
+        <ToastProvider children={<Text>Child</Text>} />
       );
       expect(queryByText('error')).toBeNull();
       expect(queryByText('success')).toBeNull();
@@ -33,9 +29,7 @@ describe('ToastContext', () => {
         return null;
       };
       render(
-        <ToastProvider>
-          <Consumer />
-        </ToastProvider>,
+        <ToastProvider children={<Consumer />} />
       );
       expect(contextValue).toBeDefined();
       expect(typeof contextValue.showToast).toBe('function');

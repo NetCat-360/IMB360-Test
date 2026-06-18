@@ -334,7 +334,7 @@ export default function AddAssetsScreen({ navigation }: Props) {
     },
     [step]
   );
-  const handleChange = useCallback((key: keyof typeof asset, value: any) => {
+  const handleChange = useCallback((key: string, value: any) => {
     dispatch(
       updateField({
         key,
@@ -354,10 +354,6 @@ export default function AddAssetsScreen({ navigation }: Props) {
     console.log("Asset Data:", asset);
 
     // API Call Here
-  };
-
-  const handleCancel = () => {
-    dispatch(resetAssetForm());
   };
 
   const handleCategoryPress = useCallback((item: string) => {

@@ -3,7 +3,7 @@ import { render, fireEvent } from '@testing-library/react-native';
 import ChangePasswordScreen from '../../../../screens/settings/ChangePassword/ChangePasswordScreen';
 
 jest.mock('@react-navigation/native', () => ({
-  useNavigation: () => ({ navigate: jest.fn(), goBack: jest.fn(), pop: jest.fn(), replace: jest.fn() }),
+  useNavigation: () => ({ navigate: jest.fn(), goBack: jest.fn(), pop: jest.fn(), replace: jest.fn() } as any),
 }));
 
 jest.mock('../../../../components/ScreenHeader', () => {
@@ -26,14 +26,14 @@ jest.mock('../../../../components/common/TextField/TextField', () => {
 describe('ChangePasswordScreen', () => {
   it('renders screen header', () => {
     const { getByText } = render(
-      <ChangePasswordScreen navigation={{ goBack: jest.fn() }} />
+      <ChangePasswordScreen navigation={{ goBack: jest.fn() } as any} />
     );
     expect(getByText('Change Password')).toBeTruthy();
   });
 
   it('renders password input fields', () => {
     const { getByPlaceholderText } = render(
-      <ChangePasswordScreen navigation={{ goBack: jest.fn() }} />
+      <ChangePasswordScreen navigation={{ goBack: jest.fn() } as any} />
     );
     expect(getByPlaceholderText('Old Password')).toBeTruthy();
     expect(getByPlaceholderText('New Password')).toBeTruthy();
@@ -42,14 +42,14 @@ describe('ChangePasswordScreen', () => {
 
   it('renders Save Changes button', () => {
     const { getByText } = render(
-      <ChangePasswordScreen navigation={{ goBack: jest.fn() }} />
+      <ChangePasswordScreen navigation={{ goBack: jest.fn() } as any} />
     );
     expect(getByText('Save Changes')).toBeTruthy();
   });
 
   it('opens OTP modal on Save Changes press', () => {
     const { getByText, getByPlaceholderText } = render(
-      <ChangePasswordScreen navigation={{ goBack: jest.fn() }} />
+      <ChangePasswordScreen navigation={{ goBack: jest.fn() } as any} />
     );
     fireEvent.changeText(getByPlaceholderText('Old Password'), 'old123');
     fireEvent.changeText(getByPlaceholderText('New Password'), 'new123');

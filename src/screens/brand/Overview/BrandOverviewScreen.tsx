@@ -4,7 +4,6 @@ import React from "react";
 import {
   View,
   Text,
-  Pressable,
   ScrollView,
   StatusBar,
   useWindowDimensions,
@@ -28,9 +27,6 @@ import {
   useSelector,
 } from "react-redux";
 
-import AppHeader
-from "../../../components/AppHeader";
-
 import {
   RootState,
 } from "../../../store/store";
@@ -41,7 +37,6 @@ import {
 
 import {
   scale,
-  verticalScale,
   moderateScale,
 } from "../../../utils/scaling";
 import styles from "./styles";
@@ -49,12 +44,7 @@ import styles from "./styles";
 import {
   Colors,
 } from "../../../config/theme";
-import {
-  BrandNavigationProp,
-} from '../../../types/navigation';
 
-import Typography
-from "../../../styles/typography";
 
 function RunningCampaignsSection({ currentData }: { currentData: any }) {
   return (

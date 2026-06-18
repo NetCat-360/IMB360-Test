@@ -1,5 +1,5 @@
 // src/screens/content/AddContentScreen.tsx
-import React, { useState, useReducer, useCallback } from 'react';
+import React, { useReducer, useCallback } from 'react';
 import {
   View, Text, Pressable, ScrollView,
   StatusBar, FlatList,

@@ -8,7 +8,7 @@ import BrandCampaignTabScreen from '../../../../screens/brand/CampaignTabs/Brand
 const mockNavigate = jest.fn();
 
 jest.mock('@react-navigation/native', () => ({
-  useNavigation: () => ({ navigate: mockNavigate }),
+  useNavigation: () => ({ navigate: mockNavigate } as any),
 }));
 
 jest.mock('react-native-chart-kit', () => ({
@@ -121,7 +121,7 @@ describe('BrandCampaignTabScreen', () => {
   });
 
   it('renders campaign details section', () => {
-    const { getAllByText, getByText } = render(
+    const { getAllByText } = render(
       <Provider store={store}>
         <BrandCampaignTabScreen />
       </Provider>

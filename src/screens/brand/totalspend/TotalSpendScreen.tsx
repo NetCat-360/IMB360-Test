@@ -16,7 +16,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import ScreenHeader from "../../../components/ScreenHeader";
 
-import { moderateScale, verticalScale, scale } from "../../../utils/scaling";
+
 import styles from "./styles";
 
 import {

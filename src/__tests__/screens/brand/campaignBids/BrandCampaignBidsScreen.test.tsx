@@ -9,7 +9,7 @@ const mockNavigate = jest.fn();
 const mockGoBack = jest.fn();
 
 jest.mock('@react-navigation/native', () => ({
-  useNavigation: () => ({ navigate: mockNavigate, goBack: mockGoBack }),
+  useNavigation: () => ({ navigate: mockNavigate, goBack: mockGoBack } as any),
 }));
 
 const createTestStore = () =>
@@ -148,7 +148,7 @@ describe('BrandCampaignBidsScreen', () => {
   });
 
   it('opens release modal on Release Payment press', () => {
-    const { getByText, getAllByText, queryByText } = render(
+    const { getByText, getAllByText } = render(
       <Provider store={store}>
         <CampaignBidsScreen />
       </Provider>

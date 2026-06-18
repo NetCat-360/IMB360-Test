@@ -1,12 +1,11 @@
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react-native';
+import { render } from '@testing-library/react-native';
 import AssetDetailsScreen from '../../../screens/assets/AssetDetailsScreen';
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
-import assetReducer from '../../../store/slices/assetSlice';
 
 jest.mock('@react-navigation/native', () => ({
-  useNavigation: () => ({ navigate: jest.fn(), goBack: jest.fn(), pop: jest.fn(), replace: jest.fn() }),
+  useNavigation: () => ({ navigate: jest.fn(), goBack: jest.fn(), pop: jest.fn(), replace: jest.fn() } as any),
 }));
 
 jest.mock('../../../components/ScreenHeader', () => {

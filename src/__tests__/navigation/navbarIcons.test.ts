@@ -26,7 +26,7 @@ describe('navbarIcons', () => {
     { name: 'NB_CAMPAIGN_ACTIVE_SVG', value: NB_CAMPAIGN_ACTIVE_SVG },
   ];
 
-  describe.each(iconExports)('$name', ({ name, value }) => {
+  describe.each(iconExports)('$name', ({ name: _name, value }) => {
     it('is a non-empty string containing SVG markup', () => {
       expect(typeof value).toBe('string');
       expect(value.length).toBeGreaterThan(0);

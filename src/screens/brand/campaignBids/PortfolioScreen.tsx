@@ -16,7 +16,7 @@ import { useRoute, useNavigation } from "@react-navigation/native";
 
 import ScreenHeader from "../../../components/ScreenHeader";
 
-import { moderateScale, verticalScale } from "../../../utils/scaling";
+import { moderateScale } from "../../../utils/scaling";
 import { portfolioStyles as styles } from "./styles";
 
 import {
@@ -124,7 +124,7 @@ const PortfolioScreen = () => {
 
           <View style={styles.sampleCard}>
             <View style={styles.sampleRow}>
-              {bid.portfolioSamples.map((item: string, index: number) => (
+              {bid.portfolioSamples.map((item: string, _index: number) => (
                 <View key={item} style={styles.sampleBox}>
                   <Text
                     style={{

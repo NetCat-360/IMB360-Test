@@ -56,7 +56,7 @@ describe('AddPricingScreen', () => {
   });
 
   it('selects platform from picker', () => {
-    const { getAllByText, getByText, queryByText } = render(
+    const { getAllByText, getByText } = render(
       <AddPricingScreen navigation={navigation} />,
     );
     const dropdowns = getAllByText('Select Platform');

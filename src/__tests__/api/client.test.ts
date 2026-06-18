@@ -53,7 +53,6 @@ describe('apiClient', () => {
   });
 
   it('uses Config.API_BASE_URL for baseURL', () => {
-    const originalEnv = process.env;
     jest.isolateModules(() => {
       const mockedCreate = axios.create as jest.Mock;
       mockedCreate.mockClear();

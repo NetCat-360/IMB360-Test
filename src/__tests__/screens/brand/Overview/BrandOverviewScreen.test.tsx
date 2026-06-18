@@ -9,7 +9,7 @@ const mockNavigate = jest.fn();
 const mockGoBack = jest.fn();
 
 jest.mock('@react-navigation/native', () => ({
-  useNavigation: () => ({ navigate: mockNavigate, goBack: mockGoBack }),
+  useNavigation: () => ({ navigate: mockNavigate, goBack: mockGoBack } as any),
 }));
 
 jest.mock('react-native-chart-kit', () => ({
@@ -97,7 +97,7 @@ describe('BrandOverviewScreen', () => {
         <BrandOverviewScreen />
       </Provider>
     );
-    fireEvent.press(getByText('Profile Overview').parent?.querySelector?.('Image') || getByText('Profile Overview'));
+    fireEvent.press(getByText('Profile Overview'));
   });
 
   it('renders total budget as a number with ₹ symbol', () => {

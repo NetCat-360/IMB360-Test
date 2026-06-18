@@ -469,7 +469,7 @@ import {
   
         resetCampaignForm:
           (
-            state
+            _state
           ) => {
             return initialState;
           },

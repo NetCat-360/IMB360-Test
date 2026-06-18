@@ -1,9 +1,9 @@
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react-native';
+import { render } from '@testing-library/react-native';
 import BioScreen from '../../../../screens/settings/Bio/BioScreen';
 
 jest.mock('@react-navigation/native', () => ({
-  useNavigation: () => ({ navigate: jest.fn(), goBack: jest.fn(), pop: jest.fn(), replace: jest.fn() }),
+  useNavigation: () => ({ navigate: jest.fn(), goBack: jest.fn(), pop: jest.fn(), replace: jest.fn() } as any),
 }));
 
 jest.mock('../../../../components/ScreenHeader', () => {
@@ -26,28 +26,28 @@ jest.mock('../../../../components/common/TextField/TextField', () => {
 describe('BioScreen', () => {
   it('renders screen header', () => {
     const { getByText } = render(
-      <BioScreen navigation={{ goBack: jest.fn() }} />
+      <BioScreen navigation={{ goBack: jest.fn() } as any} />
     );
     expect(getByText('Edit Bio')).toBeTruthy();
   });
 
   it('renders description text', () => {
     const { getByText } = render(
-      <BioScreen navigation={{ goBack: jest.fn() }} />
+      <BioScreen navigation={{ goBack: jest.fn() } as any} />
     );
     expect(getByText(/Bio appears on the top of your profile/)).toBeTruthy();
   });
 
   it('renders bio input', () => {
     const { getByPlaceholderText } = render(
-      <BioScreen navigation={{ goBack: jest.fn() }} />
+      <BioScreen navigation={{ goBack: jest.fn() } as any} />
     );
     expect(getByPlaceholderText('Tell us about yourself')).toBeTruthy();
   });
 
   it('renders Save Changes button', () => {
     const { getByText } = render(
-      <BioScreen navigation={{ goBack: jest.fn() }} />
+      <BioScreen navigation={{ goBack: jest.fn() } as any} />
     );
     expect(getByText('Save Changes')).toBeTruthy();
   });

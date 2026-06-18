@@ -16,30 +16,4 @@ export const AUTH = {
   VERIFY_OTP:      '/auth/verify-otp',
 } as const;
 
-const USER = {
-  PROFILE:         '/user/profile',
-  UPDATE_PROFILE:  '/user/profile',
-  AVATAR:          '/user/avatar',
-} as const;
 
-const CAMPAIGNS = {
-  LIST:            '/campaigns',
-  DETAIL:          (id: string) => `/campaigns/${id}`,
-  APPLY:           (id: string) => `/campaigns/${id}/apply`,
-} as const;
-
-const EARNINGS = {
-  SUMMARY:         '/earnings/summary',
-  LIST:            '/earnings',
-  WITHDRAW:        '/earnings/withdraw',
-} as const;
-
-const CONTENT = {
-  LIST:            '/content',
-  DETAIL:          (id: string) => `/content/${id}`,
-} as const;
-
-const ANALYTICS = {
-  OVERVIEW:        '/analytics/overview',
-  PLATFORMS:       '/analytics/platforms',
-} as const;

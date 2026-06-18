@@ -3,7 +3,7 @@ import { render } from '@testing-library/react-native';
 import AdditionalInfoScreen from '../../../../screens/settings/AdditionalInfo/AdditionalInfoScreen';
 
 jest.mock('@react-navigation/native', () => ({
-  useNavigation: () => ({ navigate: jest.fn(), goBack: jest.fn(), pop: jest.fn(), replace: jest.fn() }),
+  useNavigation: () => ({ navigate: jest.fn(), goBack: jest.fn(), pop: jest.fn(), replace: jest.fn() } as any),
 }));
 
 jest.mock('react-native-date-picker', () => 'DatePicker');
@@ -46,28 +46,28 @@ jest.mock('../../../../components/common/TextField/TextField', () => {
 describe('AdditionalInfoScreen', () => {
   it('renders screen header', () => {
     const { getByText } = render(
-      <AdditionalInfoScreen navigation={{ goBack: jest.fn() }} />
+      <AdditionalInfoScreen navigation={{ goBack: jest.fn() } as any} />
     );
     expect(getByText('Additional Info')).toBeTruthy();
   });
 
   it('renders description text', () => {
     const { getByText } = render(
-      <AdditionalInfoScreen navigation={{ goBack: jest.fn() }} />
+      <AdditionalInfoScreen navigation={{ goBack: jest.fn() } as any} />
     );
     expect(getByText(/This makes it easier for you to recover your account/)).toBeTruthy();
   });
 
   it('renders address input', () => {
     const { getByPlaceholderText } = render(
-      <AdditionalInfoScreen navigation={{ goBack: jest.fn() }} />
+      <AdditionalInfoScreen navigation={{ goBack: jest.fn() } as any} />
     );
     expect(getByPlaceholderText('Enter your Street address')).toBeTruthy();
   });
 
   it('renders Save Info button', () => {
     const { getByText } = render(
-      <AdditionalInfoScreen navigation={{ goBack: jest.fn() }} />
+      <AdditionalInfoScreen navigation={{ goBack: jest.fn() } as any} />
     );
     expect(getByText('Save Info')).toBeTruthy();
   });

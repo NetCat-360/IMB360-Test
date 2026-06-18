@@ -7,7 +7,7 @@ const createMockNav = () => ({
   replace: jest.fn(),
   goBack: jest.fn(),
   pop: jest.fn(),
-});
+} as any);
 
 describe('OnboardingScreen', () => {
   it('renders first slide with FIND CREATORS title', () => {

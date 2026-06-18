@@ -9,7 +9,7 @@ const mockNavigate = jest.fn();
 const mockGoBack = jest.fn();
 
 jest.mock('@react-navigation/native', () => ({
-  useNavigation: () => ({ navigate: mockNavigate, goBack: mockGoBack }),
+  useNavigation: () => ({ navigate: mockNavigate, goBack: mockGoBack } as any),
 }));
 
 const createTestStore = () =>
@@ -101,13 +101,11 @@ describe('BrandCampaignsScreen', () => {
   });
 
   it('calls goBack when back is pressed', () => {
-    const { getByText } = render(
+    render(
       <Provider store={store}>
         <BrandCampaignsScreen />
       </Provider>
     );
-    const state = store.getState().brandCampaign;
-    const ongoing = state.campaigns.filter(c => c.status === 'ongoing');
   });
 
   it('renders history tab with history items', () => {

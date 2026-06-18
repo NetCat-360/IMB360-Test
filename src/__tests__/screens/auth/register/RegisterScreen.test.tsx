@@ -15,7 +15,7 @@ const createMockNav = () => ({
   replace: jest.fn(),
   goBack: jest.fn(),
   pop: jest.fn(),
-});
+} as any);
 
 describe('RegisterScreen', () => {
   it('renders CREATE YOUR ACCOUNT title', () => {

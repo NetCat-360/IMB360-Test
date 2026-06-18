@@ -3,7 +3,7 @@ import { render } from '@testing-library/react-native';
 import SubscriptionScreen from '../../../../screens/settings/Subscription/SubscriptionScreen';
 
 jest.mock('@react-navigation/native', () => ({
-  useNavigation: () => ({ navigate: jest.fn(), goBack: jest.fn(), pop: jest.fn(), replace: jest.fn() }),
+  useNavigation: () => ({ navigate: jest.fn(), goBack: jest.fn(), pop: jest.fn(), replace: jest.fn() } as any),
 }));
 
 jest.mock('../../../../components/ScreenHeader', () => {
@@ -20,14 +20,14 @@ jest.mock('../../../../components/ScreenHeader', () => {
 describe('SubscriptionScreen', () => {
   it('renders screen header', () => {
     const { getAllByText } = render(
-      <SubscriptionScreen navigation={{ goBack: jest.fn() }} />
+      <SubscriptionScreen navigation={{ goBack: jest.fn() } as any} />
     );
     expect(getAllByText('Subscription').length).toBeGreaterThanOrEqual(1);
   });
 
   it('renders body text', () => {
     const { getAllByText } = render(
-      <SubscriptionScreen navigation={{ goBack: jest.fn() }} />
+      <SubscriptionScreen navigation={{ goBack: jest.fn() } as any} />
     );
     expect(getAllByText('Subscription').length).toBe(2);
   });

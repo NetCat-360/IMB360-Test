@@ -24,9 +24,6 @@ import {
   useNavigation,
 } from "@react-navigation/native";
 
-import AppHeader
-from "../../../components/AppHeader";
-
 import ScreenHeader from "../../../components/ScreenHeader";
 
 import styles
@@ -123,7 +120,7 @@ function DeliverablesSection({ campaign }: { campaign: any }) {
   return (
     <View style={styles.deliverableCard}>
       <Text style={styles.deliverableTitle}>Deliverables</Text>
-      {campaign.deliverables?.map((item: string, index: number) => (
+      {campaign.deliverables?.map((item: string, _index: number) => (
         <View key={item} style={styles.deliverableRow}>
           <Image source={require("../../../assets/images/checkbox.png")} style={styles.checkIcon} />
           <Text style={styles.deliverableText}>{item}</Text>

@@ -5,7 +5,7 @@ import BrandExploreScreen from '../../../../screens/brand/explore/BrandExploreSc
 const mockNavigate = jest.fn();
 
 jest.mock('@react-navigation/native', () => ({
-  useNavigation: () => ({ navigate: mockNavigate }),
+  useNavigation: () => ({ navigate: mockNavigate } as any),
 }));
 
 jest.mock('react-native-linear-gradient', () => 'LinearGradient');
@@ -21,7 +21,7 @@ describe('BrandExploreScreen', () => {
   });
 
   it('renders the logo', () => {
-    const { UNSAFE_getByType } = render(<BrandExploreScreen />);
+    render(<BrandExploreScreen />);
   });
 
   it('renders tabs with Brands active by default', () => {

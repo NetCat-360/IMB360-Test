@@ -20,7 +20,7 @@ const createMockNav = () => ({
   replace: jest.fn(),
   goBack: jest.fn(),
   pop: jest.fn(),
-});
+} as any);
 
 describe('LoginScreen', () => {
   it('renders the WELCOME BACK title', () => {
@@ -92,7 +92,7 @@ describe('LoginScreen', () => {
       <LoginScreen navigation={navigation} />,
     );
     expect(queryByText('✓')).toBeNull();
-    fireEvent.press(getByText('Forgot Password?').parent);
+    fireEvent.press(getByText('Forgot Password?').parent!);
     expect(queryByText('✓')).toBeNull();
   });
 });

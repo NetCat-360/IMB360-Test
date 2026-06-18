@@ -17,7 +17,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import ScreenHeader from "../../../components/ScreenHeader";
 
-import { moderateScale, scale, verticalScale } from "../../../utils/scaling";
+import { verticalScale } from "../../../utils/scaling";
 import styles from "./styles";
 
 import {
@@ -250,7 +250,7 @@ function StepOneContent() {
             nestedScrollEnabled
             showsVerticalScrollIndicator={false}
             data={campaignTypeOptions}
-            keyExtractor={(item, index) => item.type === 'header' ? `header-${item.category}` : `item-${item.item}`}
+            keyExtractor={(item, _index) => item.type === 'header' ? `header-${item.category}` : `item-${item.item}`}
             renderItem={renderCampaignTypeItem}
           />
         </View>

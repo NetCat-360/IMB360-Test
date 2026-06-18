@@ -12,7 +12,6 @@ import {
   FlatList,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { useNavigation } from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux";
 import ScreenHeader from "../../../components/ScreenHeader";
@@ -37,6 +36,7 @@ import {
     rejectBid,
     releasePayment,
     reportIssue,
+    BidTab,
   } from "../../../store/slices/Brand/brandCampaignBidsSlice";
 
 import {
@@ -204,7 +204,7 @@ const CampaignBidsScreen = () => {
     setModalType(null);
   };
 
-  const renderBidItem = useCallback(({ item }) => (
+  const renderBidItem = useCallback(({ item }: { item: any }) => (
     <BidCard
       item={item}
       onAccept={() => { selectedId.current = item.id; setModalType("accept"); }}
@@ -213,7 +213,7 @@ const CampaignBidsScreen = () => {
     />
   ), [navigation, setModalType]);
 
-  const renderRecentActivityItem = useCallback(({ item }) => (
+  const renderRecentActivityItem = useCallback(({ item }: { item: any }) => (
     <RecentActivityCard
       item={item}
       onRelease={() => { selectedId.current = item.id; setModalType("release"); }}
@@ -224,7 +224,7 @@ const CampaignBidsScreen = () => {
   return (
     <SafeAreaView style={styles.container} edges={[]}>
       <ScreenHeader title="Campaign Bids" onBack={() => navigation.goBack()} />
-      <TabBar selectedTab={selectedTab} onTabChange={(tab) => dispatch(setSelectedTab(tab))} />
+      <TabBar selectedTab={selectedTab} onTabChange={(tab) => dispatch(setSelectedTab(tab as BidTab))} />
       {selectedTab === "campaignBids" ? (
         <FlatList
           data={bids}

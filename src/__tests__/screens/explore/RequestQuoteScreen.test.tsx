@@ -3,11 +3,11 @@ import { render, fireEvent } from '@testing-library/react-native';
 import RequestQuoteScreen from '../../../screens/explore/RequestQuoteScreen';
 
 jest.mock('@react-navigation/native', () => ({
-  useNavigation: () => ({ navigate: jest.fn(), goBack: jest.fn(), pop: jest.fn(), replace: jest.fn() }),
+  useNavigation: () => ({ navigate: jest.fn(), goBack: jest.fn(), pop: jest.fn(), replace: jest.fn() } as any),
   useRoute: () => ({ params: { platformId: 'instagram', influencerName: 'Rage' } }),
 }));
 
-jest.mock('react-native-linear-gradient', () => ({ children, colors, ...props }: any) => {
+jest.mock('react-native-linear-gradient', () => ({ children, ...props }: any) => {
   const React = require('react');
   const { View } = require('react-native');
   return <View {...props}>{children}</View>;

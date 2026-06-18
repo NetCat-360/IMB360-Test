@@ -12,7 +12,7 @@ jest.mock('react-native-svg', () => ({
 }));
 
 jest.mock('@react-navigation/native', () => ({
-  useNavigation: () => ({ navigate: jest.fn() }),
+  useNavigation: () => ({ navigate: jest.fn() } as any),
 }));
 
 describe('AnalyticsScreen', () => {

@@ -15,7 +15,7 @@ const createMockNav = () => ({
   goBack: jest.fn(),
   pop: jest.fn(),
   reset: jest.fn(),
-});
+} as any);
 
 describe('VerificationScreen', () => {
   it('renders VERIFICATION title', () => {

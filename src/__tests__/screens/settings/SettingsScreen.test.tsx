@@ -1,12 +1,11 @@
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react-native';
+import { render } from '@testing-library/react-native';
 import SettingsScreen from '../../../screens/settings/SettingsScreen';
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
-import authReducer from '../../../store/slices/authSlice';
 
 jest.mock('@react-navigation/native', () => ({
-  useNavigation: () => ({ navigate: jest.fn(), goBack: jest.fn(), pop: jest.fn(), replace: jest.fn() }),
+  useNavigation: () => ({ navigate: jest.fn(), goBack: jest.fn(), pop: jest.fn(), replace: jest.fn() } as any),
 }));
 
 jest.mock('../../../components/ScreenHeader', () => {
@@ -41,7 +40,7 @@ describe('SettingsScreen', () => {
   it('renders screen header', () => {
     const { getByText } = render(
       <Provider store={store}>
-        <SettingsScreen navigation={{ navigate: jest.fn(), goBack: jest.fn() }} />
+        <SettingsScreen navigation={{ navigate: jest.fn(), goBack: jest.fn() } as any} />
       </Provider>
     );
     expect(getByText('Settings')).toBeTruthy();
@@ -50,7 +49,7 @@ describe('SettingsScreen', () => {
   it('renders user name and username from store', () => {
     const { getByText } = render(
       <Provider store={store}>
-        <SettingsScreen navigation={{ navigate: jest.fn(), goBack: jest.fn() }} />
+        <SettingsScreen navigation={{ navigate: jest.fn(), goBack: jest.fn() } as any} />
       </Provider>
     );
     expect(getByText('Test User')).toBeTruthy();
@@ -60,7 +59,7 @@ describe('SettingsScreen', () => {
   it('renders user role', () => {
     const { getByText } = render(
       <Provider store={store}>
-        <SettingsScreen navigation={{ navigate: jest.fn(), goBack: jest.fn() }} />
+        <SettingsScreen navigation={{ navigate: jest.fn(), goBack: jest.fn() } as any} />
       </Provider>
     );
     expect(getByText('Brand')).toBeTruthy();
@@ -69,7 +68,7 @@ describe('SettingsScreen', () => {
   it('renders personal info section', () => {
     const { getByText } = render(
       <Provider store={store}>
-        <SettingsScreen navigation={{ navigate: jest.fn(), goBack: jest.fn() }} />
+        <SettingsScreen navigation={{ navigate: jest.fn(), goBack: jest.fn() } as any} />
       </Provider>
     );
     expect(getByText('Personal Info')).toBeTruthy();
@@ -82,7 +81,7 @@ describe('SettingsScreen', () => {
   it('renders logout button', () => {
     const { getByText } = render(
       <Provider store={store}>
-        <SettingsScreen navigation={{ navigate: jest.fn(), goBack: jest.fn() }} />
+        <SettingsScreen navigation={{ navigate: jest.fn(), goBack: jest.fn() } as any} />
       </Provider>
     );
     expect(getByText('Log out')).toBeTruthy();

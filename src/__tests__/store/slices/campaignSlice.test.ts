@@ -3,7 +3,7 @@ import campaignReducer, {
 } from '../../../store/slices/campaignSlice';
 
 describe('campaignSlice', () => {
-  const { campaigns } = campaignReducer(undefined, { type: 'unknown' });
+  campaignReducer(undefined, { type: 'unknown' });
 
   it('should return initial state with 3 campaigns', () => {
     const state = campaignReducer(undefined, { type: 'unknown' });

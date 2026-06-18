@@ -5,7 +5,7 @@ import ExploreScreen from '../../../../screens/influencer/explore/ExploreScreen'
 const mockNavigate = jest.fn();
 
 jest.mock('@react-navigation/native', () => ({
-  useNavigation: () => ({ navigate: mockNavigate }),
+  useNavigation: () => ({ navigate: mockNavigate } as any),
 }));
 
 describe('ExploreScreen', () => {

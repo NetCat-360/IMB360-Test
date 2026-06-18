@@ -1,12 +1,12 @@
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react-native';
+import { render } from '@testing-library/react-native';
 import ChatRoomScreen from '../../../screens/chat/ChatRoomScreen';
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 import chatReducer from '../../../store/slices/chatSlice';
 
 jest.mock('@react-navigation/native', () => ({
-  useNavigation: () => ({ navigate: jest.fn(), goBack: jest.fn(), pop: jest.fn(), replace: jest.fn(), getParent: () => ({ setOptions: jest.fn() }) }),
+  useNavigation: () => ({ navigate: jest.fn(), goBack: jest.fn(), pop: jest.fn(), replace: jest.fn(), getParent: () => ({ setOptions: jest.fn() }) } as any),
   useRoute: () => ({ params: { chatId: '1' } }),
   useFocusEffect: jest.fn(),
 }));
